@@ -1,0 +1,24 @@
+{
+  "name": "perpetual-mechanical-array-bot",
+  "version": "1.0.0",
+  "description": "Discord Bot for [Traveler Mains Server](https://discord.gg/RsdUnupKpj)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Unlicence",
+  "bugs": {
+    "url": "https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot/issues"
+  },
+  "homepage": "https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot#readme",
+  "dependencies": {
+    "@ruinguard/core": "^0.1.1",
+    "discord.js": "^13.3.1"
+  }
+}
