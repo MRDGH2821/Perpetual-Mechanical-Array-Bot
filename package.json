@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot#readme",
   "dependencies": {
+    "@discordjs/builders": "^0.9.0",
     "@ruinguard/core": "^0.1.1",
     "discord.js": "^13.3.1"
   }
