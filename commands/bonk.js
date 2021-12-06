@@ -9,9 +9,19 @@ module.exports = {
         .setName("target")
         .setDescription("The member to bonk")
         .setRequired(true)
+    )
+    .addStringOption(option =>
+      option.setName("reason").setDescription("Reason to bonk")
     ),
   async execute(interaction) {
     const user = interaction.options.getUser("target");
-    return interaction.reply({ content: `${user.username} has been bonked!` });
+    const reason = interaction.options.getString("reason");
+    if (!reason) {
+      return interaction.reply({ content: `${user} has been bonked!` });
+    } else {
+      return interaction.reply({
+        content: `${user} has been bonked!\nReason: ${reason}`
+      });
+    }
   }
 };
