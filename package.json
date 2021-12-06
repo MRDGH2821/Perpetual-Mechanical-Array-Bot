@@ -4,7 +4,11 @@
   "description": "Discord Bot for [Traveler Mains Server](https://discord.gg/RsdUnupKpj)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prestart": "node deploy-commands.js",
+    "predev": "npm run prestart",
+    "start": "node .",
+    "dev": "nodemon ."
   },
   "repository": {
     "type": "git",
