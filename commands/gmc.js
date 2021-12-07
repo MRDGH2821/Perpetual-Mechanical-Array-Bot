@@ -6,71 +6,92 @@ export default new Command({
     description: "Geo Main Character",
     options: [
       {
-        type: 2,
-        name: "techs",
-        description: "Technologies which power GMC",
+        type: 1,
+        name: "starfell_sword",
+        description: "Starfell sword of GMC",
         options: [
           {
-            type: 2,
-            name: "rockstep",
-            description: "Rock Step",
-            options: [
+            type: 3,
+            name: "techs",
+            description: "Technologies which power GMC",
+            choices: [
               {
-                type: 1,
-                name: "default",
-                description: "Rockstep using Main Character"
+                value: "rockstep",
+                name: "Rock Step"
               },
               {
-                type: 1,
-                name: "noelle",
-                description: "Rockstep using Noelle"
+                value: "rockstep_noelle",
+                name: "Rockstep using Noelle"
+              },
+              {
+                value: "phantom_step",
+                name: "Phantom step"
+              },
+              {
+                value: "phantom_step_noelle",
+                name: "Phantom step using Noelle"
+              },
+              {
+                value: "phantom_step_diluc",
+                name: "Phantom step using Diluc"
+              },
+              {
+                value: "solarstep",
+                name: "Solar Step"
+              },
+              {
+                value: "star_wall",
+                name: "Star Wall"
+              },
+              {
+                value: "aimrock",
+                name: "Aim Starfell sword"
               }
             ]
-          },
-          {
-            type: 2,
-            name: "phantom_step",
-            description: "Phantom step",
-            options: [
-              {
-                type: 1,
-                name: "default",
-                description: "Phantom step using Main Character"
-              },
-              {
-                type: 1,
-                name: "noelle",
-                description: "Phantom step using Noelle"
-              },
-              {
-                type: 1,
-                name: "diluc",
-                description: "Phantom step using Diluc"
-              }
-            ]
-          },
-          {
-            type: 2,
-            name: "solarstep",
-            description: "Solar Step"
           }
         ]
       }
     ]
   },
-
   async run(interaction) {
-    await interaction.deferReply("Calculating");
-    const option = interaction.options.getSubcommand();
-    console.log(option);
-    interaction.editReply(`Selected option: ${option}`);
-    /*switch (interaction.options.getSubcommand()) {
-      case "normal": {
-        const expression = interaction.options.getString("expression");
-        const result = eval(expression);
-        console.log(result);
-        await interaction.editReply(`${expression} = ${result}`);
-      }
-    }*/
+    await interaction.deferReply("gmc");
+    const option = interaction.options.getString("techs");
+    let gif;
+    let name;
+    switch (option) {
+      case "rockstep":
+        gif = "https://i.imgur.com/Hwqb8ng.mp4";
+        name = "Rock step";
+        break;
+      case "rockstep_noelle":
+        gif = "https://i.imgur.com/mtTFyzo.mp4";
+        name = "Rockstep using Noelle";
+        break;
+      case "phantom_step":
+        gif = "https://i.imgur.com/R1l9a1e.mp4";
+        name = "Phantom step";
+        break;
+      case "phantom_step_noelle":
+        gif = "https://i.imgur.com/kUzqUF1.mp4";
+        name = "Phantom step using Noelle";
+        break;
+      case "phantom_step_diluc":
+        gif = "https://i.imgur.com/1cbBwCr.mp4";
+        name = "Phantom step using Diluc";
+        break;
+      case "solarstep":
+        gif = "https://i.imgur.com/6zhpNF3.mp4";
+        name = "Solar Step";
+        break;
+      case "star_wall":
+        gif = "https://i.imgur.com/bF1lrtI.mp4";
+        name = "Star Wall";
+        break;
+      case "aimrock":
+        gif = "https://i.imgur.com/1xn1Cd9.mp4";
+        name = "Aim Starfell sword";
+        break;
+    }
+    await interaction.editReply({ content: `**${name}**\n\n${gif}` });
   }
 });
