@@ -8,12 +8,12 @@ export default new Command({
       {
         type: 1,
         name: "starfell_sword",
-        description: "Starfell sword of GMC",
+        description: "GMC skill",
         options: [
           {
             type: 3,
             name: "techs",
-            description: "Technologies which power GMC",
+            description: "Technologies which power skill",
             choices: [
               {
                 value: "rockstep",
