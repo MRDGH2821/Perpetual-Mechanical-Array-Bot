@@ -37,11 +37,11 @@ export default new Command({
     switch (option) {
       case "cyronadoguoba":
         gif = "https://i.imgur.com/v2OWCkz.mp4";
-        name = "Rock step";
+        name = "Cyronado: Guoba";
         break;
       case "cyronadobaron":
         gif = "https://i.imgur.com/sjEmHjY.mp4";
-        name = "Rockstep using Noelle";
+        name = "Cyronado: Baron Bunny";
         break;
     }
     await interaction.editReply({ content: `**${name}**\n\n${gif}` });
