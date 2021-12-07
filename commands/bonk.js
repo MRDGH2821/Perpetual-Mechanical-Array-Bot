@@ -1,18 +1,24 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
+import { Command } from "@ruinguard/core";
 
-module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("bonk")
-    .setDescription("Select a member and bonk them.")
-    .addUserOption(option =>
-      option
-        .setName("target")
-        .setDescription("The member to bonk")
-        .setRequired(true)
-    )
-    .addStringOption(option =>
-      option.setName("reason").setDescription("Reason to bonk")
-    ),
+export default new Command({
+  data: {
+    name: "bonk",
+    description: "Select a member and bonk them.",
+    options: [
+      {
+        type: 6,
+        name: "target",
+        description: "The member to bonk",
+        required: true
+      },
+      {
+        type: 3,
+        name: "reason",
+        description: "Reason to bonk"
+      }
+    ]
+  },
+flags: [1<<1],
   async execute(interaction) {
     const user = interaction.options.getUser("target");
     const reason = interaction.options.getString("reason");
@@ -24,4 +30,4 @@ module.exports = {
       });
     }
   }
-};
+});

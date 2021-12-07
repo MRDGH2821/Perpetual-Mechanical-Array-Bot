@@ -1,9 +1,10 @@
 import { Module } from "@ruinguard/core";
 import essentials from "@ruinguard/essentials";
-const { token, clientId, guildId } = require("./config.js");
+import { config as ENV } from "dotenv";
+ENV();
 
 await Module.registerGuildCommands([essentials], {
-  app: clientId,
-  guild: guildId,
-  token: token
+  app: process.env.CLIENTID,
+  guild: process.env.GUILDID,
+  token: process.env.TOKEN
 }).then(console.log);

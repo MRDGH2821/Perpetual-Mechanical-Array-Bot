@@ -1,9 +1,11 @@
 import { Bot } from "@ruinguard/core";
 import essentials from "@ruinguard/essentials";
-const { token } = require("./config.js");
+
+import { config as ENV } from "dotenv";
+ENV();
 
 const bot = new Bot({
   modules: [essentials]
 });
 
-await bot.login(token);
+await bot.login(process.env.TOKEN);
