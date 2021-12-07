@@ -5,7 +5,7 @@ export default new Command({
     name: "padoru",
     description: "Will sing Padoru (as text)"
   },
-
+  flags: [1 << 3],
   async run(interaction) {
     const channel = interaction.channel;
     await interaction.reply({
@@ -19,5 +19,6 @@ export default new Command({
     await channel.send(
       "<:LuminePadoru:912033737280192562><:LuminePadoru:912033737280192562><:LuminePadoru:912033737280192562><:LuminePadoru:912033737280192562>"
     );
+    //  await channel.send({ stickers: [917799217320316928] });
   }
 });
