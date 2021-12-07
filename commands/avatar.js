@@ -13,7 +13,7 @@ export default new Command({
     ]
   },
 flags: [1<<1],
-  async execute(interaction) {
+  async run(interaction) {
     const user = interaction.options.getUser("target");
     if (user)
       return interaction.reply(
