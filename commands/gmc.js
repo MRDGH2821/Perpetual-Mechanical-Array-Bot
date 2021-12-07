@@ -14,6 +14,7 @@ export default new Command({
             type: 3,
             name: "techs",
             description: "Technologies which power skill",
+            required: true,
             choices: [
               {
                 value: "rockstep",

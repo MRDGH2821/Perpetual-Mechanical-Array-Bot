@@ -14,6 +14,7 @@ export default new Command({
             type: 3,
             name: "techs",
             description: "Technologies which power burst",
+            required: true,
             choices: [
               {
                 value: "cyronadoguoba",
