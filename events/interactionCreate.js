@@ -6,5 +6,6 @@ export default new Event({
     console.log(
       `${interaction.user.tag} in #${interaction.channel.name} triggered an interaction.`
     );
+    interaction.client._onInteractionCreate(interaction);
   }
 });
