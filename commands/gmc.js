@@ -11,7 +11,7 @@ export default new Command({
         description: "Technologies which power GMC",
         options: [
           {
-            type: 1,
+            type: 2,
             name: "rockstep",
             description: "Rock Step",
             options: [
@@ -28,7 +28,7 @@ export default new Command({
             ]
           },
           {
-            type: 1,
+            type: 2,
             name: "phantom_step",
             description: "Phantom step",
             options: [
@@ -50,7 +50,7 @@ export default new Command({
             ]
           },
           {
-            type: 1,
+            type: 2,
             name: "solarstep",
             description: "Solar Step"
           }
