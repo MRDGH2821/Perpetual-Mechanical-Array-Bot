@@ -86,6 +86,49 @@ export default new Command({
           }
         ]
       }
+      /*  {
+        type: 1,
+        name: "gmce",
+        description: "Starfell Sword Damage Calculator",
+        options: [
+          {
+            type: 4,
+            name: "char_level",
+            description: "Enter Character level",
+            required: true
+          },
+          {
+            type: 4,
+            name: "talent_level",
+            description: "Enter Talent level",
+            required: true
+          },
+          {
+            type: 4,
+            name: "atk",
+            description: "Enter total attack ",
+            required: true
+          },
+          {
+            type: 10,
+            name: "crit_rate",
+            description: "Enter Critical Rate%",
+            required: true
+          },
+          {
+            type: 10,
+            name: "crit_dmg",
+            description: "Enter Critical Dmg%",
+            required: true
+          },
+          {
+            type: 10,
+            name: "geo_dmg",
+            description: "Enter Geo Dmg Bonus%",
+            required: true
+          }
+        ]
+      } */
     ]
   },
 
@@ -109,6 +152,7 @@ export default new Command({
           `**Damage Calculation:**\n\n${atk} * (1 + ${cr / 100} * ${cdmg /
             100}) = ${result}`
         );
+        break;
       }
       case "dmg_compare": {
         const atk1 = interaction.options.getInteger("atk_1");
@@ -120,15 +164,28 @@ export default new Command({
 
         const result1 = atk1 * (1 + ((cr1 / 100) * cdmg1) / 100);
         const result2 = atk2 * (1 + ((cr2 / 100) * cdmg2) / 100);
+        let preferred;
         if (result1 > result2) {
-          const preferred = "First Set preferred";
+          preferred = "First Set preferred";
+        } else if (result1 < result2) {
+          preferred = "Second Set preferred";
         } else {
-          const preferred = "Second Set preferred";
+          preferred = "Any set should do";
         }
         await interaction.editReply(
-          `**Damage Comparision:**\n\nFirst set = **${result1}**\nSecond set = **${result2}\n\nVerdict: ${preferred}**`
+          `**Damage Comparision:**\n\nFirst set = **${result1}**\nSecond set = **${result2}**\n\nVerdict: ${preferred}`
         );
+        break;
       }
+      /*  case "gmce":{
+        const charlvl = interaction.options.getInteger("char_level");
+        const talentlvl = interaction.options.getInteger("talent_level");
+        const atk = interaction.options.getInteger("atk");
+        const cr = interaction.options.getNumber("crit_rate");
+        const cdmg = interaction.options.getNumber("crit_dmg");
+        const gdmg = interaction.options.getNumber("geo_dmg");
+
+      } */
     }
   }
 });
