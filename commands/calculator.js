@@ -148,10 +148,25 @@ export default new Command({
         const cr = interaction.options.getNumber("crit_rate");
         const cdmg = interaction.options.getNumber("crit_dmg");
         const result = atk * (1 + ((cr / 100) * cdmg) / 100);
-        await interaction.editReply(
-          `**Damage Calculation:**\n\n${atk} * (1 + ${cr / 100} * ${cdmg /
-            100}) = ${result}`
-        );
+        await interaction.editReply({
+          embeds: [
+            {
+              title: "Damage Calculation",
+              description: `This command allows you to calculate an estimated "damage" that you can achieve from three stats: Attack, Crit Rate and Crit Damage. \nIdeally, you would want a damage value above 4000 for main dps units, and well-invested units tend to reach 5000+ above damage values.`,
+              fields: [
+                {
+                  name: "**Stats**",
+                  value: `Attack: \`${atk}\` \nCrit Rate: \`${cr}%\` \nCrit Damage: \`${cdmg}\``
+                },
+                {
+                  name: "**Result**",
+                  value: `${atk} * (1 + ${cr / 100} * ${cdmg /
+                    100}) = ${Math.round(result * 100) / 100}`
+                }
+              ]
+            }
+          ]
+        });
         break;
       }
       case "dmg_compare": {
@@ -172,9 +187,32 @@ export default new Command({
         } else {
           preferred = "Any set should do";
         }
-        await interaction.editReply(
-          `**Damage Comparision:**\n\nFirst set = **${result1}**\nSecond set = **${result2}**\n\nVerdict: ${preferred}`
-        );
+        await interaction.editReply({
+          embeds: [
+            {
+              title: `**Damage Comparision**`,
+              description: `This command allows you to compare two sets based only on three factors, namely Attack, Crit Rate and Crit Damage. \nThis serves as a simple way to compare sets, but is not the only way to evaluate which set is better since other variables (such as external bonuses or buffs) can exist. \nIdeally, you would want a damage value above 4000 for main dps units, and well-invested units tend to reach 5000+ damage values.`,
+              fields: [
+                {
+                  name: "**First Set**",
+                  value: `Attack: \`${atk1}\` \nCrit Rate: \`${cr1}%\` \nCrit Damage: \`${cdmg1}%\` \n\nResult: \`${Math.round(
+                    result1 * 100
+                  ) / 100}\``
+                },
+                {
+                  name: "**Second Set**",
+                  value: `Attack: \`${atk2}\` \nCrit Rate: \`${cr2}%\` \nCrit Damage: \`${cdmg2}%\` \n\nResult: \`${Math.round(
+                    result2 * 100
+                  ) / 100}\``
+                },
+                {
+                  name: "**Verdict**",
+                  value: preferred
+                }
+              ]
+            }
+          ]
+        });
         break;
       }
       /*  case "gmce":{
