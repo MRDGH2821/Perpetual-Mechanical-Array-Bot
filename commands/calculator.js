@@ -140,7 +140,7 @@ export default new Command({
         const expression = interaction.options.getString("expression");
         const result = eval(expression);
         console.log(result);
-        await interaction.editReply(`${expression} = ${result}`);
+        await interaction.editReply(`\`${expression}\` = ${result}`);
         break;
       }
       case "damage": {
