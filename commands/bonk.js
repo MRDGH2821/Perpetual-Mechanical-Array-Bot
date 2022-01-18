@@ -1,33 +1,39 @@
-import { Command } from "@ruinguard/core";
+import { Command } from '@ruinguard/core';
+import { SlashCommandBuilder } from '@discordjs/builders';
+import { MessageEmbed } from 'discord.js';
+
+const cmd = new SlashCommandBuilder()
+  .setName('bonk')
+  .setDescription('Select a member and bonk them.')
+  .addUserOption(option => option
+    .setName('target')
+    .setDescription('The member to bonk')
+    .setRequired(true))
+  .addStringOption(option => option.setName('reason').setDescription('Reason to bonk'));
 
 export default new Command({
-  data: {
-    name: "bonk",
-    description: "Select a member and bonk them.",
-    options: [
-      {
-        type: 6,
-        name: "target",
-        description: "The member to bonk",
-        required: true
-      },
-      {
-        type: 3,
-        name: "reason",
-        description: "Reason to bonk"
-      }
-    ]
-  },
-flags: [1<<1],
+  data: cmd,
+  flags: [1 << 1],
   async run(interaction) {
-    const user = interaction.options.getUser("target");
-    const reason = interaction.options.getString("reason");
-    if (!reason) {
-      return interaction.reply({ content: `${user} has been bonked!` });
-    } else {
-      return interaction.reply({
-        content: `${user} has been bonked!\nReason: ${reason}`
-      });
-    }
-  }
+    const user = await interaction.options.getUser('target');
+    const reasons = ['Unspecified', '||For no reason :joy:||'];
+    const reason
+      = (await interaction.options.getString('reason'))
+      || reasons[Math.floor(Math.random() * reasons.length)];
+
+    const gifs = [
+      'https://c.tenor.com/CsXEC2e1F6MAAAAC/klee-klee-bonk.gif',
+      'https://c.tenor.com/KGlqdROpWEEAAAAd/genshin-keqing.gif',
+    ];
+    // console.log(gifs);
+    const gif = gifs[Math.floor(Math.random() * gifs.length)];
+    console.log(gif);
+    const embed = new MessageEmbed()
+      .setColor('#524437')
+      .setTitle('**Bonked!**')
+      .setThumbnail(await user.displayAvatarURL({ dynamic: true }))
+      .setDescription(`${user} has been bonked!\nReason: ${reason}`)
+      .setImage(gif);
+    return interaction.reply({ embeds: [embed] });
+  },
 });
