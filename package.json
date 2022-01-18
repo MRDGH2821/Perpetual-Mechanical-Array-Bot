@@ -3,13 +3,15 @@
   "version": "1.0.3",
   "description": "Discord Bot for [Traveler Mains Server](https://discord.gg/RsdUnupKpj)",
   "main": "index.js",
+  "private": true,
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prestart": "node deploy-commands.js",
     "predev": "npm run prestart",
     "start": "node .",
-    "dev": "nodemon ."
+    "dev": "nodemon .",
+    "commit": "cz"
   },
   "repository": {
     "type": "git",
@@ -23,10 +25,20 @@
   },
   "homepage": "https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot#readme",
   "dependencies": {
-    "@ruinguard/core": "^0.1.1",
-    "@ruinguard/essentials": "^0.1.2",
-    "discord.js": "^13.3.1",
-    "dotenv": "^10.0.0",
+    "@discordjs/builders": "^0.11.0",
+    "@ruinguard/core": "^1.1.0",
+    "@ruinguard/essentials": "^1.0.0",
+    "discord.js": "^13.6.0",
+    "dotenv": "^14.2.0",
     "file-ez": "^0.2.2"
+  },
+  "devDependencies": {
+    "commitizen": "^4.2.4",
+    "cz-conventional-changelog": "^3.3.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
