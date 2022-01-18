@@ -34,11 +34,20 @@
   },
   "devDependencies": {
     "commitizen": "^4.2.4",
-    "cz-conventional-changelog": "^3.3.0"
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint-config-ruinguard": "^1.0.0",
+    "prettier-config-mrdgh2821": "^1.0.0"
   },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "prettier": "prettier-config-mrdgh2821",
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "eslint-config-ruinguard"
+    ]
   }
 }
