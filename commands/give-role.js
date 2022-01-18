@@ -48,7 +48,10 @@ export default new Command({
         ephemeral: true,
       });
     } else {
-      await interaction.reply({ content: `You can't give roles, not eeven to yourself <:PepeKekPoint:849624262625198131>` });
+      await interaction.reply({
+        content: `You can't give roles, not even to yourself <:PepeKekPoint:849624262625198131>`,
+        ephemeral: true,
+      });
     }
   },
 });
