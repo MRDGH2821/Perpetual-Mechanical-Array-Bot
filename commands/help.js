@@ -1,6 +1,7 @@
 import { Command } from '@ruinguard/core';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { MessageEmbed } from 'discord.js';
+import { version } from '../package.json';
 
 export default new Command({
   data: new SlashCommandBuilder().setName('help').setDescription('Need Help?'),
@@ -9,7 +10,7 @@ export default new Command({
     const help = new MessageEmbed()
       .setColor('#524437')
       .setTitle('Help')
-      .setDescription('Need Help?')
+      .setDescription(`Need Help?\nBot version = ${version}`)
       .addFields(
         { name: '/amc', value: 'Shows various AMC techs' },
         {
