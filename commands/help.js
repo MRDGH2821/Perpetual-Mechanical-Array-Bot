@@ -48,6 +48,11 @@ export default new Command({
           value: 'The help command',
         },
         {
+          name: '/joke',
+          value:
+            'Tells you a joke from given categories: Programming, Misc, Pun, Spooky & Christmas. By default any random category will be picked.',
+        },
+        {
           name: '/padoru',
           value: 'Sings padoru as text',
         },
