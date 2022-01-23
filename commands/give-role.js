@@ -1,6 +1,6 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { Command } from '@ruinguard/core';
-import { Permissions } from 'discord.js';
+import PermCheck from '../lib/staff-roles.js';
 
 export default new Command({
   data: new SlashCommandBuilder()
@@ -14,25 +14,24 @@ export default new Command({
       .setName('role')
       .setDescription('Select role to give')
       .setRequired(true)
-      .addChoice('Abyssal Conqueror', '804225878685908992')
-      .addChoice('Arbitrator of Fate', '859430358419243038')
-      .addChoice(`Ten'nō of Thunder`, '856509454970781696')
-      .addChoice(`Jūnzhǔ of Earth`, '816210137613205554')
-      .addChoice('Herrscher of Wind', '815938264875532298')
-      .addChoice('Illustrious in Inazuma', '809026481112088596')
-      .addChoice('Legend in Liyue', '804595502960214026')
-      .addChoice('Megastar in Mondstadt', '804595515437613077')
-      .addChoice('Affluent Adventurer', '804010525411246140')),
+      .addChoice('Abyssal Conqueror 🌀', '804225878685908992')
+      .addChoice('Arbitrator of Fate 👑', '859430358419243038')
+      .addChoice(`Ten'nō of Thunder 👑⛈️`, '856509454970781696')
+      .addChoice(`Jūnzhǔ of Earth 👑🌏`, '816210137613205554')
+      .addChoice('Herrscher of Wind 👑🌬️', '815938264875532298')
+      .addChoice('Illustrious in Inazuma 🚶⛈️', '809026481112088596')
+      .addChoice('Legend in Liyue 🚶🌏', '804595502960214026')
+      .addChoice('Megastar in Mondstadt 🚶🌬️', '804595515437613077')
+      .addChoice('Affluent Adventurer 💰', '804010525411246140')),
 
   flags: [1 << 28],
 
   async run(interaction) {
     const user = await interaction.options.getMember('user');
     const role = await interaction.options.getString('role');
-    /* console.log(user);
-       console.log(role); */
+    const permcheck = new PermCheck(interaction.member);
 
-    if (interaction.member.permissions.has([Permissions.FLAGS.MANAGE_ROLES])) {
+    if (permcheck.isStaff() || permcheck.canGibRole()) {
       user.roles.add(role);
       await interaction.reply({
         embeds: [
