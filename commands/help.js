@@ -2,9 +2,7 @@ import { Command } from '@ruinguard/core';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { MessageEmbed } from 'discord.js';
 import { readFile } from 'fs/promises';
-const json = JSON.parse(
-  await readFile(new URL('../package.json', import.meta.url)),
-);
+const json = JSON.parse(await readFile(new URL('../package.json', import.meta.url)));
 
 export default new Command({
   data: new SlashCommandBuilder().setName('help').setDescription('Need Help?'),
