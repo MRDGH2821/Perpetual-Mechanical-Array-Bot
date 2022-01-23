@@ -1,6 +1,9 @@
 import { Command } from '@ruinguard/core';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { MessageEmbed } from 'discord.js';
+import BonkU from '../lib/bonk-gifs.js';
+
+const Bonk = new BonkU();
 
 const cmd = new SlashCommandBuilder()
   .setName('bonk')
@@ -16,53 +19,29 @@ export default new Command({
   flags: [1 << 1],
   async run(interaction) {
     const user = await interaction.options.getUser('target');
-    const reasons = [
-      'Unspecified',
-      '||For no reason :joy:||',
-      'You need no reason to be told',
-      'Because you are my Test Subject uwu',
-      'Ah my hands slipped',
-      'Just because...',
-      'Because why not <:BoreasKek:829620211190595605>',
-    ];
+
     const inputReason = await interaction.options.getString('reason');
-    const reason
-      = inputReason || reasons[Math.floor(Math.random() * reasons.length)];
+    const reason = inputReason || Bonk.bonkReason();
 
     const isHorny
-      = /h+o+r+n+y/gm.test(inputReason)
-      || /s+e+g+s/gm.test(inputReason)
-      || /s+e+x/gm.test(inputReason);
+      = /h+o+r+n+(y|i)/gim.test(inputReason)
+      || /s+e+g+s/gim.test(inputReason)
+      || /s+e+x/gim.test(inputReason);
     const isSelf = user === interaction.user;
 
-    const gifs = [
-      'https://c.tenor.com/CsXEC2e1F6MAAAAC/klee-klee-bonk.gif',
-      'https://c.tenor.com/KGlqdROpWEEAAAAd/genshin-keqing.gif',
-      'https://c.tenor.com/636jxoYmHfgAAAAd/bonk-ultimate-bonk.gif',
-      'https://c.tenor.com/GQVoTVtfLvoAAAAC/psyduck-farfetchd.gif',
-      'https://c.tenor.com/yaEqa7kN91MAAAAd/zhongli-bonk.gif',
-      'https://c.tenor.com/tfgcD7qcy1cAAAAC/bonk.gif',
-    ];
-    console.log('Bonk GIFs', gifs);
+    console.log('Bonk GIFs', Bonk.bonkGifs);
 
-    const hornyBonkGifs = [
-      'https://c.tenor.com/8pGG6mJFMRsAAAAM/bonk-bonk-go-to-jail.gif',
-      'https://c.tenor.com/TKbDxDPCkegAAAAC/horny-jail-go-to-horny-jail.gif',
-    ];
-    console.log('Horny Bonk GIFs', hornyBonkGifs);
+    console.log('Horny Bonk GIFs', Bonk.hornyBonkGifs);
 
-    const selfHornyBonkGifs = hornyBonkGifs.concat(['https://c.tenor.com/wCqp5yu_7awAAAAS/horny-bonk-bonk.gif']);
-    console.log('Self Horny Bonk GIFs', selfHornyBonkGifs);
+    console.log('Self Horny Bonk GIFs', Bonk.selfHornyBonkGifs);
 
-    const gif = gifs[Math.floor(Math.random() * gifs.length)];
+    const gif = Bonk.bonkGif();
     console.log('Selected Bonk: ', gif);
 
-    const selfHornyBonkGif
-      = selfHornyBonkGifs[Math.floor(Math.random() * selfHornyBonkGifs.length)];
+    const selfHornyBonkGif = Bonk.selfHornyBonkGif();
     console.log('Selected Self Horny Bonk', selfHornyBonkGif);
 
-    const hornyBonkGif
-      = hornyBonkGifs[Math.floor(Math.random() * hornyBonkGifs.length)];
+    const hornyBonkGif = Bonk.hornyBonkGif();
     console.log('Selected Horny Bonk: ', hornyBonkGif);
 
     const bonk = new MessageEmbed()
