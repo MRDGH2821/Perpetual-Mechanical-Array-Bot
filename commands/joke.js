@@ -1,6 +1,6 @@
 import { Command } from '@ruinguard/core';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { MessageEmbed, MessageActionRow, MessageButton } from 'discord.js';
+import { MessageActionRow, MessageButton } from 'discord.js';
 import axios from 'axios';
 
 const baseAPI = 'https://v2.jokeapi.dev/joke/';
@@ -43,13 +43,20 @@ export default new Command({
       joke = `${data.setup}\n\n${data.delivery}`;
     }
 
-    const jokeEmbed = new MessageEmbed()
-      .setColor('#524437')
-      .setTitle('**Joke!**')
-      .setDescription(`${joke}`)
-      .addField('**Type & ID**', `${data.category}, ${data.id}`);
-
+    const jokeEmbed = {
+      color: 0x524437,
+      title: `**${data.category} Joke!**`,
+      description: `${joke}`,
+      footer: {
+        text: `Requested by ${interaction.user.tag}, Joke ID: ${data.id}`,
+        icon_url: await interaction.user.displayAvatarURL({ dynamic: true }),
+      },
+    };
     await interaction.reply({
+      content: `Selected type: ${type}`,
+      ephemeral: true,
+    });
+    await interaction.channel.send({
       embeds: [jokeEmbed],
       components: [submitJoke],
     });
