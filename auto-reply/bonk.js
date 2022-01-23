@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js';
+import { MessageEmbed } from '@ruinguard/core';
 import Bonkgif from '../lib/bonk-gifs.js';
 
 const Bonk = new Bonkgif();
@@ -32,12 +32,15 @@ export default class bonk {
   reason = this.allReasons[Math.floor(Math.random() * this.allReasons.length)];
 
   isHorny() {
-    //  console.log(this.text);
-    return (
-      /h+o+r+n+(y|i)/gim.test(this.text) ||
-      /s+e+g+s/gim.test(this.text) ||
-      /s+e+x/gim.test(this.text)
-    );
+    const reallyHorny
+      = /h+o+r+n+(y|i)/gim.test(this.text)
+      || /s+e+g+s/gim.test(this.text)
+      || /s+e+x/gim.test(this.text);
+    if (reallyHorny) {
+      console.log('Detected Horny user:', this.member.user.tag);
+      return true;
+    }
+    return false;
   }
 
   async hornyBonk() {
