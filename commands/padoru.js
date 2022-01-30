@@ -8,10 +8,7 @@ export default new Command({
   flags: [1 << 3],
   async run(interaction) {
     const channel = interaction.channel;
-    await interaction.reply({
-      content: 'Sending',
-      ephemeral: true,
-    });
+    await interaction.reply({ content: `Merry Christmas ${interaction.user.tag}!` });
     await channel.send('<@&813613841488936971> Hashire sori yo');
     await channel.send('<@&813613841488936971> Kazeno yuu ni');
     await channel.send('<@&813613841488936971> Tsukkimihara wo');
