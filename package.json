@@ -12,7 +12,9 @@
     "start": "node .",
     "dev": "nodemon .",
     "commit": "cz",
-    "lint": "eslint . --fix"
+    "lint": "eslint . --fix",
+    "pretty": "prettier . --write",
+    "postpretty": "npm run lint"
   },
   "repository": {
     "type": "git",
@@ -26,12 +28,12 @@
   },
   "homepage": "https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot#readme",
   "dependencies": {
-    "@discordjs/builders": "^0.11.0",
+    "@discordjs/builders": "^0.12.0",
     "@ruinguard/core": "^1.1.0",
     "@ruinguard/essentials": "^1.0.0",
     "axios": "^0.25.0",
     "discord.js": "^13.6.0",
-    "dotenv": "^14.2.0",
+    "dotenv": "^14.3.2",
     "file-ez": "^0.2.2"
   },
   "devDependencies": {
@@ -39,6 +41,7 @@
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.7.0",
     "eslint-config-ruinguard": "^1.0.0",
+    "prettier": "^2.5.1",
     "prettier-config-mrdgh2821": "^1.0.0"
   },
   "config": {

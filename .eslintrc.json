@@ -1,7 +1,5 @@
 {
-  "extends": [
-    "eslint-config-ruinguard"
-  ],
+  "extends": ["eslint-config-ruinguard"],
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module"

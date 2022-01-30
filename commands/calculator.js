@@ -93,8 +93,9 @@ export default new Command({
               },
               {
                 name: '**Result**',
-                value: `${atk} * (1 + (${cr / 100} * ${cdmg
-                    / 100})) = **${Math.round(result * 100) / 100}**`,
+                value: `${atk} * (1 + (${cr / 100} * ${cdmg / 100})) = **${
+                  Math.round(result * 100) / 100
+                }**`,
               },
             ],
           },
@@ -133,11 +134,15 @@ export default new Command({
             fields: [
               {
                 name: '**First Set**',
-                value: `Attack: \`${atk1}\` \nCrit Rate: \`${cr1}%\` \nCrit Damage: \`${cdmg1}%\` \n\nResult: \`${Math.round(result1 * 100) / 100}\``,
+                value: `Attack: \`${atk1}\` \nCrit Rate: \`${cr1}%\` \nCrit Damage: \`${cdmg1}%\` \n\nResult: \`${
+                  Math.round(result1 * 100) / 100
+                }\``,
               },
               {
                 name: '**Second Set**',
-                value: `Attack: \`${atk2}\` \nCrit Rate: \`${cr2}%\` \nCrit Damage: \`${cdmg2}%\` \n\nResult: \`${Math.round(result2 * 100) / 100}\``,
+                value: `Attack: \`${atk2}\` \nCrit Rate: \`${cr2}%\` \nCrit Damage: \`${cdmg2}%\` \n\nResult: \`${
+                  Math.round(result2 * 100) / 100
+                }\``,
               },
               {
                 name: '**Verdict**',
