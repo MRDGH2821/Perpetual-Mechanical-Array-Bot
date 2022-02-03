@@ -21,7 +21,8 @@ export default new Command({
         },
         {
           name: '/calculator normal',
-          value: 'Your regular calculator',
+          value:
+            'Your regular calculator. Usage is similar to [Math Notepad](https://mathnotepad.com/docs/overview.html). Some features might not be available like variables. This command uses [Math.js](https://api.mathjs.org/) API to solve expressions.',
         },
         {
           name: '/calculator dmg_compare',
