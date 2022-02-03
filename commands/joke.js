@@ -49,6 +49,7 @@ export default new Command({
       description: `${joke}`,
       footer: {
         text: `Requested by ${interaction.user.tag}, Joke ID: ${data.id}`,
+        // eslint-disable-next-line camelcase
         icon_url: await interaction.user.displayAvatarURL({ dynamic: true }),
       },
     };
