@@ -3,7 +3,8 @@ function isHorny(text) {
     = /h+o+r+n+(y|i)/gim.test(text)
     || /s+e+g+s/gim.test(text)
     || /s+e+x/gim.test(text);
-  if (reallyHorny) {
+  const notHorny = /(n+o)\s((h+o+r+n+(y|i))|(s+e+g+s)|(s+e+x))/gim.test(text);
+  if (reallyHorny && !notHorny) {
     console.log('Horny Detected in msg');
     return true;
   }
@@ -26,7 +27,7 @@ export default function react(message) {
   if (/(b+r+e+a+d)|🍞|🥐|🥖|🥪/gim.test(msg)) {
     const breads = ['🍞', '🥐', '🥖', '🥪'];
     const bread = breads[Math.floor(Math.random() * breads.length)];
-    message.react(bread);
+    message.react(bread).catch(console.error);
   }
 
   if (isHorny(msg)) {
@@ -38,10 +39,10 @@ export default function react(message) {
     ];
 
     const emote = emotes[Math.floor(Math.random() * emotes.length)];
-    message.react(emote);
+    message.react(emote).catch(console.error);
   }
 
-  if (/(q+u+a+c+k)|(h+o+n+k)|🦆/gim.test(msg)) {
+  if (/(q+u+a+c+k)|\b(h+o+n+k)|🦆/gim.test(msg)) {
     const unavaiableEmotes = [
       '<:GoosetherAlert:907305613892145162>',
       '<:goose:907301800472883230>',
@@ -60,6 +61,18 @@ export default function react(message) {
       '🦆',
     ];
     const emote = emotes[Math.floor(Math.random() * emotes.length)];
-    message.react(emote);
+    message.react(emote).catch(console.error);
+  }
+
+  if (/(yawning|<@!98966314055405568>|<@98966314055405568>)/gim.test(msg)) {
+    const emotes = ['👴', '👑'];
+    const emote = emotes[Math.floor(Math.random() * emotes.length)];
+    message.react(emote).catch(console.error);
+  }
+
+  if (/(noodle|<@!581430330653671434>|<@581430330653671434>)/gim.test(msg)) {
+    const emotes = ['🍜', '🍝'];
+    const emote = emotes[Math.floor(Math.random() * emotes.length)];
+    message.react(emote).catch(console.error);
   }
 }

@@ -36,7 +36,8 @@ export default class bonk {
       = /h+o+r+n+(y|i)/gim.test(this.text)
       || /s+e+g+s/gim.test(this.text)
       || /s+e+x/gim.test(this.text);
-    if (reallyHorny) {
+    const notHorny = /(n+o)\s((h+o+r+n+(y|i))|(s+e+g+s)|(s+e+x))/gim.test(this.text);
+    if (reallyHorny && !notHorny) {
       console.log('Detected Horny user:', this.member.user.tag);
       return true;
     }
