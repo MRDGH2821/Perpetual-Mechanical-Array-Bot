@@ -29,7 +29,6 @@ export default new Event({
               value: `${interaction.user.id}`,
             },
           ],
-
         },
       ],
     });
