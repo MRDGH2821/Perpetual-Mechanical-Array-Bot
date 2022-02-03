@@ -7,3 +7,19 @@ Invite link - click [here](https://discord.com/api/oauth2/authorize?client_id=91
 ## Bot permissions
 
 ![Bot Permissions](https://i.imgur.com/sDjzvmL.png)
+
+## Hosting
+
+Manage this bot using pm2!
+
+Install pm2 by using this command -
+
+```sh
+npm i pm2 -g
+```
+
+Start the bot process by -
+
+```sh
+pm2 start pma-bot.config.cjs
+```
