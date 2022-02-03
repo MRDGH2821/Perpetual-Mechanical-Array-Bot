@@ -1,5 +1,6 @@
 import { Command } from '@ruinguard/core';
 import { SlashCommandBuilder } from '@discordjs/builders';
+import axios from 'axios';
 const cmd = new SlashCommandBuilder()
   .setName('calculator')
   .setDescription('Calculates Stuff')
@@ -62,8 +63,13 @@ export default new Command({
     switch (await interaction.options.getSubcommand()) {
     case 'normal': {
       const expression = await interaction.options.getString('expression');
-      const result = eval(expression);
-      console.log(result);
+      const { data } = await axios({
+        method: 'get',
+        url: `http://api.mathjs.org/v4/?expr=${encodeURIComponent(expression)}&precision=2`,
+        headers: {},
+      });
+      const result = data;
+      console.log(expression, '=', result);
       await interaction.editReply({
         embeds: [
           {
