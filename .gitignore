@@ -78,3 +78,4 @@ typings/
 config.json
 config.js
 package-lock.json
+deploy-stats.txt
