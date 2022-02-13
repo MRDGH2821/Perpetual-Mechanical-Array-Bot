@@ -25,6 +25,8 @@ export default class bonk {
     'No Segs <:HmmMine:830243258960838717>',
     'No Segs <:HmmTher:830243224105779290>',
     '<:AetherBonk:821169357765345291>',
+    '*You are the sole reason why this chat has become impure*',
+    '***You shall be bonked***',
   ];
 
   allReasons = this.crowdSourcedReasons.concat(this.reasons);
@@ -36,7 +38,9 @@ export default class bonk {
       = /h+o+r+n+(y|i)/gim.test(this.text)
       || /s+e+g+s/gim.test(this.text)
       || /s+e+x/gim.test(this.text);
-    const notHorny = /(n+o)\s((h+o+r+n+(y|i))|(s+e+g+s)|(s+e+x))/gim.test(this.text);
+    const notHorny
+      = /((n+o)|(n+o+t))\s((h+o+r+n+(y|i))|(s+e+g+s)|(s+e+x))/gim.test(this.text);
+
     if (reallyHorny && !notHorny) {
       console.log('Detected Horny user:', this.member.user.tag);
       return true;

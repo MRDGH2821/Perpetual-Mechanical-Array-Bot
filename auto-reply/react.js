@@ -3,7 +3,9 @@ function isHorny(text) {
     = /h+o+r+n+(y|i)/gim.test(text)
     || /s+e+g+s/gim.test(text)
     || /s+e+x/gim.test(text);
-  const notHorny = /(n+o)\s((h+o+r+n+(y|i))|(s+e+g+s)|(s+e+x))/gim.test(text);
+  const notHorny
+    = /((n+o)|(n+o+t))\s((h+o+r+n+(y|i))|(s+e+g+s)|(s+e+x))/gim.test(text);
+
   if (reallyHorny && !notHorny) {
     console.log('Horny Detected in msg');
     return true;
@@ -36,6 +38,13 @@ export default function react(message) {
       '<:HmmTher:830243224105779290>',
       '<:HmmMine:830243258960838717>',
       '<:AetherBonk:821169357765345291>',
+      '<:AetherBruh:813355624796520478>',
+      '<:AetherYikes:810278255336489020>',
+      '<:Keqing_No:804883023723233321>',
+      '<:LumineMAD_REEE:814814997196308491>',
+      '<:AetherMAD_REEE:865476945427824690>',
+      '<:LuminePanic:814883112998666241>',
+      '<:TarouAngy:854040153555468329>',
     ];
 
     const emote = emotes[Math.floor(Math.random() * emotes.length)];
