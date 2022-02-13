@@ -24,32 +24,38 @@ export default new Command({
     const anonymous
       = (await interaction.options.getBoolean('anonymous')) || false;
     const userAvatar = await interaction.user.displayAvatarURL({ dynamic: true });
-    const template = new MessageEmbed()
+
+    const confessEmbed = new MessageEmbed()
+      .setColor('524437')
+      .setDescription(`${confessionText}`)
+      .setThumbnail(userAvatar)
+      .setTimestamp()
+      .setTitle('**A New Confession!**')
+      .setAuthor({
+        name: await interaction.user.tag,
+        iconURL: userAvatar,
+      });
+
+    const anonEmbed = new MessageEmbed()
       .setColor('524437')
       .setDescription(`${confessionText}`)
       .setTimestamp()
-      .setTitle('**A New Confession!**');
-
-    const confessEmbed = template.setAuthor({
-      name: await interaction.user.tag,
-      iconURL: userAvatar,
-    });
-
-    // const anonEmbed = template.setAuthor({ name: 'Anonymous' });
+      .setTitle('**A New Confession!**')
+      .setAuthor({ name: 'Anonymous' });
 
     if (anonymous) {
-      confessionchannel.send({ embeds: [template.setAuthor({ name: 'Anonymous' })] });
+      confessionchannel.send({ embeds: [anonEmbed] });
       await interaction.reply({
-        content: 'Confession sent as Anonymous!',
+        content: `Confession sent as Anonymous!\nCheck out ${confessionchannel}`,
         ephemeral: true,
       });
     } else {
-      confessionchannel.send({ embeds: [confessEmbed.setThumbnail(userAvatar)] });
+      confessionchannel.send({ embeds: [confessEmbed] });
       await interaction.reply({
-        content: 'Confession sent!',
+        content: 'Confession sent!\nCheck out ${confessionchannel}',
         ephemeral: true,
       });
     }
-    logchannel.send({ embeds: [confessEmbed.setThumbnail(userAvatar)] });
+    logchannel.send({ embeds: [confessEmbed] });
   },
 });
