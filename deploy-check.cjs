@@ -42,9 +42,7 @@ async function compare(oldPath, pkgPath) {
           return stdout;
         });
       }
-      fs.writeFile(oldPath, newHash).then(
-        console.log('\nUpdated with new hash!'),
-      );
+      fs.writeFile(oldPath, newHash).then(console.log('\nUpdated with new hash!'));
     });
 }
 

@@ -10,7 +10,7 @@ const blacklist
 const cmd = new SlashCommandBuilder()
   .setName('joke')
   .setDescription('Get a random joke!')
-  .addStringOption(option => option
+  .addStringOption((option) => option
     .setName('type')
     .setDescription('Select category of joke')
     .addChoice('Programming', 'Programming')

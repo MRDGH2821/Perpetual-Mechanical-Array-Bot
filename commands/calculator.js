@@ -4,52 +4,52 @@ import axios from 'axios';
 const cmd = new SlashCommandBuilder()
   .setName('calculator')
   .setDescription('Calculates Stuff')
-  .addSubcommand(subcommand => subcommand
+  .addSubcommand((subcommand) => subcommand
     .setName('normal')
     .setDescription('Functions like your regular calculator')
-    .addStringOption(option => option
+    .addStringOption((option) => option
       .setName('expression')
       .setDescription('Enter expression')
       .setRequired(true)))
-  .addSubcommand(subcommand => subcommand
+  .addSubcommand((subcommand) => subcommand
     .setName('damage')
     .setDescription('Calculates damage of your character')
-    .addNumberOption(option => option
+    .addNumberOption((option) => option
       .setName('total_attack')
       .setDescription('Enter total attack')
       .setRequired(true))
-    .addNumberOption(option => option
+    .addNumberOption((option) => option
       .setName('crit_rate')
       .setDescription('Enter Critical Rate%')
       .setRequired(true))
-    .addNumberOption(option => option
+    .addNumberOption((option) => option
       .setName('crit_dmg')
       .setDescription('Enter Critical Dmg%')
       .setRequired(true)))
-  .addSubcommand(subcommand => subcommand
+  .addSubcommand((subcommand) => subcommand
     .setName('dmg_compare')
     .setDescription('Compares Damage of character equipping 2 different sets')
-    .addNumberOption(option => option
+    .addNumberOption((option) => option
       .setName('atk_1')
       .setDescription('Enter total attack for Set 1')
       .setRequired(true))
-    .addNumberOption(option => option
+    .addNumberOption((option) => option
       .setName('crit_rate_1')
       .setDescription('Enter Critical Rate% for Set 1')
       .setRequired(true))
-    .addNumberOption(option => option
+    .addNumberOption((option) => option
       .setName('crit_dmg_1')
       .setDescription('Enter Critical Dmg% for Set 1')
       .setRequired(true))
-    .addNumberOption(option => option
+    .addNumberOption((option) => option
       .setName('atk_2')
       .setDescription('Enter total attack for Set 2')
       .setRequired(true))
-    .addNumberOption(option => option
+    .addNumberOption((option) => option
       .setName('crit_rate_2')
       .setDescription('Enter Critical Rate% for Set 2')
       .setRequired(true))
-    .addNumberOption(option => option
+    .addNumberOption((option) => option
       .setName('crit_dmg_2')
       .setDescription('Enter Critical Dmg% for Set 2')
       .setRequired(true)));

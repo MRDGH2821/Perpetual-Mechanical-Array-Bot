@@ -6,8 +6,8 @@ export default new Command({
   data: new SlashCommandBuilder()
     .setName('give-role')
     .setDescription('Gives role to a selected user!')
-    .addUserOption(option => option.setName('user').setDescription('Select user').setRequired(true))
-    .addStringOption(option => option
+    .addUserOption((option) => option.setName('user').setDescription('Select user').setRequired(true))
+    .addStringOption((option) => option
       .setName('role')
       .setDescription('Select role to give')
       .setRequired(true)

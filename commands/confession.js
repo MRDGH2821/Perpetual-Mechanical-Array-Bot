@@ -7,11 +7,11 @@ import { MessageEmbed } from 'discord.js';
 const cmd = new SlashCommandBuilder()
   .setName('confession')
   .setDescription('Wanna confess something?')
-  .addStringOption(option => option
+  .addStringOption((option) => option
     .setName('confess')
     .setDescription('Enter your confession!')
     .setRequired(true))
-  .addBooleanOption(option => option.setName('anonymous').setDescription('Want to be Anonymous?'));
+  .addBooleanOption((option) => option.setName('anonymous').setDescription('Want to be Anonymous?'));
 
 export default new Command({
   data: cmd,

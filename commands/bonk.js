@@ -8,11 +8,11 @@ const Bonk = new BonkU();
 const cmd = new SlashCommandBuilder()
   .setName('bonk')
   .setDescription('Select a member and bonk them.')
-  .addUserOption(option => option
+  .addUserOption((option) => option
     .setName('target')
     .setDescription('The member to bonk')
     .setRequired(true))
-  .addStringOption(option => option.setName('reason').setDescription('Reason to bonk'));
+  .addStringOption((option) => option.setName('reason').setDescription('Reason to bonk'));
 
 export default new Command({
   data: cmd,

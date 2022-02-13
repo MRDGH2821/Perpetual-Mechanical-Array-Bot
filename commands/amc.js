@@ -4,10 +4,10 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 const cmd = new SlashCommandBuilder()
   .setName('amc')
   .setDescription('Anemo Main Character')
-  .addSubcommand(subcommand => subcommand
+  .addSubcommand((subcommand) => subcommand
     .setName('gust_surge')
     .setDescription('AMC Burst')
-    .addStringOption(option => option
+    .addStringOption((option) => option
       .setName('techs')
       .setDescription('Technologies which power burst')
       .setRequired(true)
