@@ -5,6 +5,8 @@
     "sourceType": "module"
   },
   "rules": {
-    "arrow-parens": ["error", "always"]
+    "arrow-parens": ["error", "always"],
+    "array-bracket-newline": ["error", { "multiline": true }],
+    "function-paren-newline": ["error", { "minItems": 4 }]
   }
 }
