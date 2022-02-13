@@ -15,7 +15,7 @@ export default new Event({
       console.log('ICD: ', timeLeft);
       if (timeLeft < 1 || timeLeft === false) {
         await bonk.hornyBonk();
-        await icd.add('bonkCD', 60000);
+        await icd.add('bonkCD', 300000);
       } else {
         console.log('Reached else part, Bonk CD: ', await icd.check('bonkCD'));
       }
