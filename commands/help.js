@@ -2,6 +2,7 @@ import { Command } from '@ruinguard/core';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { MessageEmbed } from 'discord.js';
 import { readFile } from 'fs/promises';
+import { EmbedColor } from '../lib/constants.js';
 const json = JSON.parse(await readFile(new URL('../package.json', import.meta.url)));
 
 export default new Command({
@@ -9,7 +10,7 @@ export default new Command({
 
   async run(interaction) {
     const help = new MessageEmbed()
-      .setColor('#524437')
+      .setColor(EmbedColor)
       .setTitle('Help')
       .setDescription(`Need Help?\nBot version = ${json.version}`)
       .addFields(

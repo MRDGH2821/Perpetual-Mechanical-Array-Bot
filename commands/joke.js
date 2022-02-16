@@ -2,6 +2,7 @@ import { Command } from '@ruinguard/core';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { MessageActionRow, MessageButton } from 'discord.js';
 import axios from 'axios';
+import { EmbedColorHex } from '../lib/constants.js';
 
 const baseAPI = 'https://v2.jokeapi.dev/joke/';
 const blacklist
@@ -44,7 +45,7 @@ export default new Command({
     }
 
     const jokeEmbed = {
-      color: 0x524437,
+      color: EmbedColorHex,
       title: `**${data.category} Joke!**`,
       description: `${joke}`,
       footer: {

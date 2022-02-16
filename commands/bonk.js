@@ -2,6 +2,7 @@ import { Command } from '@ruinguard/core';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { MessageEmbed } from 'discord.js';
 import BonkU from '../lib/bonk-gifs.js';
+import { EmbedColor } from '../lib/constants.js';
 
 const Bonk = new BonkU();
 
@@ -45,21 +46,21 @@ export default new Command({
     console.log('Selected Horny Bonk: ', hornyBonkGif);
 
     const bonk = new MessageEmbed()
-      .setColor('#524437')
+      .setColor(EmbedColor)
       .setTitle('**Bonked!**')
       .setThumbnail(await user.displayAvatarURL({ dynamic: true }))
       .setDescription(`${user} has been bonked!\nReason: ${reason}`)
       .setImage(gif);
 
     const hornyBonk = new MessageEmbed()
-      .setColor('#524437')
+      .setColor(EmbedColor)
       .setTitle('**Bonked!**')
       .setThumbnail(await user.displayAvatarURL({ dynamic: true }))
       .setDescription(`${user} has been bonked!\nReason: ${reason}`)
       .setImage(hornyBonkGif);
 
     const selfHornyBonk = new MessageEmbed()
-      .setColor('#524437')
+      .setColor(EmbedColor)
       .setTitle('**Bonked!**')
       .setThumbnail(await user.displayAvatarURL({ dynamic: true }))
       .setDescription(`${user} has been bonked!\nReason: ${reason}`)

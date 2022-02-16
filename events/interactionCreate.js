@@ -1,4 +1,5 @@
 import { Event } from '@ruinguard/core';
+import { EmbedColorHex } from '../lib/constants.js';
 
 export default new Event({
   event: 'interactionCreate',
@@ -10,7 +11,7 @@ export default new Event({
     logchannel.send({
       embeds: [
         {
-          color: 0x524437,
+          color: EmbedColorHex,
           author: {
             name: await interaction.user.tag,
             // eslint-disable-next-line camelcase

@@ -1,6 +1,8 @@
 import { Command } from '@ruinguard/core';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import axios from 'axios';
+import { EmbedColorHex } from '../lib/constants.js';
+
 const cmd = new SlashCommandBuilder()
   .setName('calculator')
   .setDescription('Calculates Stuff')
@@ -73,7 +75,7 @@ export default new Command({
       await interaction.editReply({
         embeds: [
           {
-            color: 0x524437,
+            color: EmbedColorHex,
             title: '**Calculation**',
             description: `**\`${expression}\`** = **\`${result}\`**`,
           },
@@ -90,7 +92,7 @@ export default new Command({
       await interaction.editReply({
         embeds: [
           {
-            color: 0x524437,
+            color: EmbedColorHex,
             title: 'Damage Calculation',
             fields: [
               {
@@ -135,7 +137,7 @@ export default new Command({
       await interaction.editReply({
         embeds: [
           {
-            color: 0x524437,
+            color: EmbedColorHex,
             title: `**Damage Comparision**`,
             fields: [
               {
