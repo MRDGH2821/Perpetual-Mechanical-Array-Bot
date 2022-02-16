@@ -1,5 +1,6 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { Command } from '@ruinguard/core';
+import { EmbedColorHex } from '../lib/constants.js';
 import PermCheck from '../lib/staff-roles.js';
 
 export default new Command({
@@ -33,7 +34,7 @@ export default new Command({
       await interaction.reply({
         embeds: [
           {
-            color: 0x524437,
+            color: EmbedColorHex,
             title: '**Role Given!**',
             description: `<@&${role}> given to ${user}`,
           },
@@ -41,6 +42,10 @@ export default new Command({
       });
       await interaction.followUp({
         content: `>award ${user.id} 250`,
+        ephemeral: true,
+      });
+      await interaction.followUp({
+        content: `Copy paste that command. And a message by <@!485962834782453762> should come up like [this](https://i.imgur.com/yQvOAzZ.png)`,
         ephemeral: true,
       });
     } else {
