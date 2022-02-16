@@ -1,8 +1,7 @@
 import { Command } from '@ruinguard/core';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { MessageEmbed } from 'discord.js';
-/* const conftext = '𝒲𝒶𝓃𝓃𝒶 𝒸𝑜𝓃𝒻𝑒𝓈𝓈 𝓈𝑜𝓂𝑒𝓉𝒽𝒾𝓃𝑔?';
-   console.log(conftext); */
+import { EmbedColor } from '../lib/constants.js';
 
 const cmd = new SlashCommandBuilder()
   .setName('confession')
@@ -26,7 +25,7 @@ export default new Command({
     const userAvatar = await interaction.user.displayAvatarURL({ dynamic: true });
 
     const confessEmbed = new MessageEmbed()
-      .setColor('524437')
+      .setColor(EmbedColor)
       .setDescription(`${confessionText}`)
       .setThumbnail(userAvatar)
       .setTimestamp()
@@ -37,7 +36,7 @@ export default new Command({
       });
 
     const anonEmbed = new MessageEmbed()
-      .setColor('524437')
+      .setColor(EmbedColor)
       .setDescription(`${confessionText}`)
       .setTimestamp()
       .setTitle('**A New Confession!**')
@@ -52,7 +51,7 @@ export default new Command({
     } else {
       confessionchannel.send({ embeds: [confessEmbed] });
       await interaction.reply({
-        content: 'Confession sent!\nCheck out ${confessionchannel}',
+        content: `Confession sent!\nCheck out ${confessionchannel}`,
         ephemeral: true,
       });
     }
