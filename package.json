@@ -41,10 +41,10 @@
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.9.0",
-    "eslint-config-ruinguard": "^1.0.0",
+    "eslint-config-mrdgh2821": "^2.0.0",
     "node-fetch": "^3.2.0",
     "prettier": "^2.5.1",
-    "prettier-config-mrdgh2821": "^1.0.0"
+    "prettier-config-mrdgh2821": "^2.0.0"
   },
   "config": {
     "commitizen": {

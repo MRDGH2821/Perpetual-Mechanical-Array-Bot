@@ -64,31 +64,31 @@ export default new Command({
     console.log(interaction.options.getSubcommand());
     switch (await interaction.options.getSubcommand()) {
     case 'normal': {
-      const expression = await interaction.options.getString('expression');
-      const { data } = await axios({
-        method: 'get',
-        url: `http://api.mathjs.org/v4/?expr=${encodeURIComponent(expression)}&precision=2`,
-        headers: {},
-      });
-      const result = data;
+      const expression = await interaction.options.getString('expression'),
+        { data } = await axios({
+          method: 'get',
+          url: `http://api.mathjs.org/v4/?expr=${encodeURIComponent(expression)}&precision=2`,
+          headers: {}
+        }),
+        result = data;
       console.log(expression, '=', result);
       await interaction.editReply({
         embeds: [
           {
             color: EmbedColorHex,
             title: '**Calculation**',
-            description: `**\`${expression}\`** = **\`${result}\`**`,
-          },
-        ],
+            description: `**\`${expression}\`** = **\`${result}\`**`
+          }
+        ]
       });
       break;
     }
     case 'damage': {
-      const atk = await interaction.options.getNumber('total_attack');
-      const cr = await interaction.options.getNumber('crit_rate');
-      const cdmg = await interaction.options.getNumber('crit_dmg');
-      const cproduct = (cr / 100) * (cdmg / 100);
-      const result = atk * (1 + cproduct);
+      const atk = await interaction.options.getNumber('total_attack'),
+        cr = await interaction.options.getNumber('crit_rate'),
+        cdmg = await interaction.options.getNumber('crit_dmg'),
+        cproduct = (cr / 100) * (cdmg / 100),
+        result = atk * (1 + cproduct);
       await interaction.editReply({
         embeds: [
           {
@@ -97,40 +97,42 @@ export default new Command({
             fields: [
               {
                 name: '**Stats**',
-                value: `Attack: \`${atk}\` \nCrit Rate: \`${cr}%\` \nCrit Damage: \`${cdmg}%\``,
+                value: `Attack: \`${atk}\` \nCrit Rate: \`${cr}%\` \nCrit Damage: \`${cdmg}%\``
               },
               {
                 name: '**Result**',
                 value: `${atk} * (1 + (${cr / 100} * ${cdmg / 100})) = **${
                   Math.round(result * 100) / 100
-                }**`,
-              },
-            ],
-          },
-        ],
+                }**`
+              }
+            ]
+          }
+        ]
       });
       break;
     }
     case 'dmg_compare': {
-      const atk1 = await interaction.options.getNumber('atk_1');
-      const cr1 = await interaction.options.getNumber('crit_rate_1');
-      const cdmg1 = await interaction.options.getNumber('crit_dmg_1');
-      const atk2 = await interaction.options.getNumber('atk_2');
-      const cr2 = await interaction.options.getNumber('crit_rate_2');
-      const cdmg2 = await interaction.options.getNumber('crit_dmg_2');
+      const atk1 = await interaction.options.getNumber('atk_1'),
+        cr1 = await interaction.options.getNumber('crit_rate_1'),
+        cdmg1 = await interaction.options.getNumber('crit_dmg_1'),
+        atk2 = await interaction.options.getNumber('atk_2'),
+        cr2 = await interaction.options.getNumber('crit_rate_2'),
+        cdmg2 = await interaction.options.getNumber('crit_dmg_2'),
 
-      const cprod1 = (cr1 / 100) * (cdmg1 / 100);
-      const cprod2 = (cr2 / 100) * (cdmg2 / 100);
+        cprod1 = (cr1 / 100) * (cdmg1 / 100),
+        cprod2 = (cr2 / 100) * (cdmg2 / 100),
 
-      const result1 = atk1 * (1 + cprod1);
-      const result2 = atk2 * (1 + cprod2);
+        result1 = atk1 * (1 + cprod1),
+        result2 = atk2 * (1 + cprod2);
 
       let preferred;
       if (result1 > result2) {
         preferred = 'First Set preferred';
-      } else if (result1 < result2) {
+      }
+      else if (result1 < result2) {
         preferred = 'Second Set preferred';
-      } else {
+      }
+      else {
         preferred = 'Any set should do';
       }
 
@@ -138,30 +140,30 @@ export default new Command({
         embeds: [
           {
             color: EmbedColorHex,
-            title: `**Damage Comparision**`,
+            title: '**Damage Comparision**',
             fields: [
               {
                 name: '**First Set**',
                 value: `Attack: \`${atk1}\` \nCrit Rate: \`${cr1}%\` \nCrit Damage: \`${cdmg1}%\` \n\nResult: \`${
                   Math.round(result1 * 100) / 100
-                }\``,
+                }\``
               },
               {
                 name: '**Second Set**',
                 value: `Attack: \`${atk2}\` \nCrit Rate: \`${cr2}%\` \nCrit Damage: \`${cdmg2}%\` \n\nResult: \`${
                   Math.round(result2 * 100) / 100
-                }\``,
+                }\``
               },
               {
                 name: '**Verdict**',
-                value: preferred,
-              },
-            ],
-          },
-        ],
+                value: preferred
+              }
+            ]
+          }
+        ]
       });
       break;
     }
     }
-  },
+  }
 });

@@ -6,13 +6,13 @@ module.exports = {
       env_prod: { NODE_ENV: 'prod' },
       name: 'PMA-Bot',
       script: './index.js',
-      watch: true,
+      watch: true
     },
     {
       autorestart: false,
       name: 'Deploy PMA-Bot',
       script: './deploy-check.cjs',
-      watch: true,
-    },
-  ],
+      watch: true
+    }
+  ]
 };

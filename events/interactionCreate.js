@@ -6,8 +6,10 @@ export default new Event({
   async run(interaction) {
     console.log(`${interaction.user.tag} in #${interaction.channel.name} triggered an interaction.\nUser ID: ${interaction.user.id}, Command: ${interaction.commandName}\n---`);
 
-    const logchannel = await interaction.guild.channels.fetch('806110144110919730');
-    const avatarUrl = await interaction.user.displayAvatarURL({ dynamic: true });
+    const logchannel = await interaction.guild.channels.fetch('806110144110919730'),
+      avatarUrl = await interaction.user.displayAvatarURL({
+        dynamic: true
+      });
     logchannel.send({
       embeds: [
         {
@@ -15,7 +17,7 @@ export default new Event({
           author: {
             name: await interaction.user.tag,
             // eslint-disable-next-line camelcase
-            icon_url: avatarUrl,
+            icon_url: avatarUrl
           },
           title: '**Interaction log**',
           thumbnail: { url: avatarUrl },
@@ -23,17 +25,17 @@ export default new Event({
           fields: [
             {
               name: '**Command Name**',
-              value: `${interaction.commandName}`,
+              value: `${interaction.commandName}`
             },
             {
               name: '**User ID**',
-              value: `${interaction.user.id}`,
-            },
-          ],
-        },
-      ],
+              value: `${interaction.user.id}`
+            }
+          ]
+        }
+      ]
     });
 
     interaction.client._onInteractionCreate(interaction);
-  },
+  }
 });

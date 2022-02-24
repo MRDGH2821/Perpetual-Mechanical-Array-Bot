@@ -18,8 +18,8 @@ export default new Command({
   async run(interaction) {
     await interaction.deferReply('gmc');
     const option = interaction.options.getString('techs');
-    let gif;
-    let name;
+    let gif,
+      name;
     switch (option) {
     case 'cyronadoguoba':
       gif = 'https://i.imgur.com/v2OWCkz.mp4';
@@ -31,5 +31,5 @@ export default new Command({
       break;
     }
     await interaction.editReply({ content: `**${name}**\n\n${gif}` });
-  },
+  }
 });

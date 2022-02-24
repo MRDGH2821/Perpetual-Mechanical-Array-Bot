@@ -5,5 +5,5 @@ export default new Event({
   run(err) {
     console.log('Error: ');
     console.error(err);
-  },
+  }
 });
