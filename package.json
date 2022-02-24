@@ -14,7 +14,8 @@
     "commit": "cz",
     "lint": "eslint . --fix",
     "pretty": "prettier . --write",
-    "postpretty": "npm run lint"
+    "postpretty": "npm run lint",
+    "pm2:prod": "pm2 startOrRestart pma-bot.config.cjs --env prod"
   },
   "repository": {
     "type": "git",
