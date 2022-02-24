@@ -6,9 +6,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prestart": "node deploy-commands.js",
-    "predev": "npm run prestart",
+    "deploy": "node deploy-commands.js",
+    "prestart": "npm run deploy",
+    "predev": "npm run deploy",
     "start": "node index.js",
     "dev": "nodemon index.js",
     "commit": "cz",
