@@ -34,7 +34,8 @@
     "axios": "^0.26.0",
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
-    "file-ez": "^0.2.2"
+    "file-ez": "^0.2.2",
+    "mathjs": "^10.1.1"
   },
   "devDependencies": {
     "ansi-regex": "^6.0.1",
