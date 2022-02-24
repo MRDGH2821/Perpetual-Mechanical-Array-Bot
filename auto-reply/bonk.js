@@ -1,5 +1,5 @@
+import Bonkgif from '../lib/bonk-utilities.js';
 import { MessageEmbed } from '@ruinguard/core';
-import Bonkgif from '../lib/bonk-gifs.js';
 
 const Bonk = new Bonkgif();
 
