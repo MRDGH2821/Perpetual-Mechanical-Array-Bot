@@ -12,7 +12,7 @@ module.exports = {
       autorestart: false,
       name: 'Deploy PMA-Bot',
       script: './deploy-check.cjs',
-      watch: true
+      watch: false
     }
   ]
 };
