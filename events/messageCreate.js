@@ -1,4 +1,4 @@
-import { Event, CooldownManager } from '@ruinguard/core';
+import { CooldownManager, Event } from '@ruinguard/core';
 import Bonk from '../auto-reply/bonk.js';
 import react from '../auto-reply/react.js';
 const icd = new CooldownManager();
@@ -16,9 +16,10 @@ export default new Event({
       if (timeLeft < 1 || timeLeft === false) {
         await bonk.hornyBonk();
         await icd.add('bonkCD', 300000);
-      } else {
+      }
+      else {
         console.log('Reached else part, Bonk CD: ', await icd.check('bonkCD'));
       }
     }
-  },
+  }
 });

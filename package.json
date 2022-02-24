@@ -1,20 +1,21 @@
 {
   "name": "perpetual-mechanical-array-bot",
-  "version": "1.5.2",
+  "version": "1.6.1",
   "description": "Discord Bot for [Traveler Mains Server](https://discord.gg/RsdUnupKpj)",
   "main": "index.js",
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prestart": "node deploy-commands.js",
-    "predev": "npm run prestart",
+    "deploy": "node deploy-commands.js",
+    "prestart": "npm run deploy",
+    "predev": "npm run deploy",
     "start": "node index.js",
     "dev": "nodemon index.js",
     "commit": "cz",
     "lint": "eslint . --fix",
     "pretty": "prettier . --write",
-    "postpretty": "npm run lint"
+    "postpretty": "npm run lint",
+    "pm2:prod": "pm2 startOrRestart pma-bot.config.cjs --env prod"
   },
   "repository": {
     "type": "git",
@@ -34,17 +35,18 @@
     "axios": "^0.26.0",
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
-    "file-ez": "^0.2.2"
+    "file-ez": "^0.2.2",
+    "mathjs": "^10.1.1"
   },
   "devDependencies": {
     "ansi-regex": "^6.0.1",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.9.0",
-    "eslint-config-ruinguard": "^1.0.0",
+    "eslint-config-mrdgh2821": "^2.0.0",
     "node-fetch": "^3.2.0",
     "prettier": "^2.5.1",
-    "prettier-config-mrdgh2821": "^1.0.0"
+    "prettier-config-mrdgh2821": "^2.0.0"
   },
   "config": {
     "commitizen": {

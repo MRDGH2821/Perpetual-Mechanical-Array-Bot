@@ -1,12 +1,7 @@
 {
-  "extends": ["eslint-config-ruinguard", "eslint:recommended"],
+  "extends": ["eslint-config-mrdgh2821"],
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module"
-  },
-  "rules": {
-    "arrow-parens": ["error", "always"],
-    "array-bracket-newline": ["error", { "multiline": true }],
-    "function-paren-newline": ["error", { "minItems": 4 }]
   }
 }

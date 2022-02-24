@@ -1,5 +1,5 @@
+import Bonkgif from '../lib/bonk-utilities.js';
 import { MessageEmbed } from '@ruinguard/core';
-import Bonkgif from '../lib/bonk-gifs.js';
 
 const Bonk = new Bonkgif();
 
@@ -12,10 +12,10 @@ export default class bonk {
   }
 
   crowdSourcedReasons = [
-    `"Simply ungood" - <@!823564960671072336>`,
-    `"You can do better than that" - <@!621330211220226049>`,
-    `"Do better" - <@!621330211220226049>`,
-    `"You suck" - <@!505390548232699906>`,
+    '"Simply ungood" - <@!823564960671072336>',
+    '"You can do better than that" - <@!621330211220226049>',
+    '"Do better" - <@!621330211220226049>',
+    '"You suck" - <@!505390548232699906>'
   ];
 
   reasons = [
@@ -26,7 +26,7 @@ export default class bonk {
     'No Segs <:HmmTher:830243224105779290>',
     '<:AetherBonk:821169357765345291>',
     '*You are the sole reason why this chat has become impure*',
-    '***You shall be bonked***',
+    '***You shall be bonked***'
   ];
 
   allReasons = this.crowdSourcedReasons.concat(this.reasons);
@@ -34,12 +34,12 @@ export default class bonk {
   reason = this.allReasons[Math.floor(Math.random() * this.allReasons.length)];
 
   isHorny() {
-    const reallyHorny
-      = /h+o+r+n+(y|i)/gim.test(this.text)
-      || /s+e+g+s/gim.test(this.text)
-      || /s+e+x/gim.test(this.text);
-    const notHorny
-      = /((n+o)|(n+o+t))\s((h+o+r+n+(y|i))|(s+e+g+s)|(s+e+x))/gim.test(this.text);
+    const reallyHorny =
+      (/h+o+r+n+(y|i)/gim).test(this.text) ||
+      (/s+e+g+s/gim).test(this.text) ||
+      (/s+e+x/gim).test(this.text),
+      notHorny =
+      (/((n+o)|(n+o+t))\s((h+o+r+n+(y|i))|(s+e+g+s)|(s+e+x))/gim).test(this.text);
 
     if (reallyHorny && !notHorny) {
       console.log('Detected Horny user:', this.member.user.tag);
@@ -58,7 +58,7 @@ export default class bonk {
       if (this.channel.id !== '840268374621945906') {
         await this.message.reply({
           embeds: [hornyBonk],
-          ephemeral: true,
+          ephemeral: true
         });
       }
     }

@@ -23,7 +23,8 @@ async function compare(oldPath, pkgPath) {
       console.log(`Hash stored in ${oldPath} :\n`, hash);
       if (hash === newHash) {
         console.log('\nHashes are same, no need to deploy commands.');
-      } else {
+      }
+      else {
         execFlag = true;
       }
     })
@@ -35,7 +36,8 @@ async function compare(oldPath, pkgPath) {
         exec('node deploy-commands.js', (error, stdout, stderr) => {
           if (error) {
             return error;
-          } else if (stderr) {
+          }
+          else if (stderr) {
             return stderr;
           }
           console.log(stdout);

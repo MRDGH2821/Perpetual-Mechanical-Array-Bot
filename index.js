@@ -5,6 +5,10 @@ import commands from './CommandIndex.js';
 import { config as ENV } from 'dotenv';
 ENV();
 
-const bot = new Bot({ modules: [essentials, events, commands] });
+const bot = new Bot({ modules: [
+  essentials,
+  events,
+  commands
+] });
 
 await bot.login(process.env.TOKEN);

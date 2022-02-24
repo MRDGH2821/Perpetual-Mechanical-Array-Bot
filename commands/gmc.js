@@ -18,47 +18,47 @@ export default new Command({
             choices: [
               {
                 value: 'rockstep',
-                name: 'Rock Step',
+                name: 'Rock Step'
               },
               {
                 value: 'rockstep_noelle',
-                name: 'Rockstep using Noelle',
+                name: 'Rockstep using Noelle'
               },
               {
                 value: 'phantom_step',
-                name: 'Phantom step',
+                name: 'Phantom step'
               },
               {
                 value: 'phantom_step_noelle',
-                name: 'Phantom step using Noelle',
+                name: 'Phantom step using Noelle'
               },
               {
                 value: 'phantom_step_diluc',
-                name: 'Phantom step using Diluc',
+                name: 'Phantom step using Diluc'
               },
               {
                 value: 'solarstep',
-                name: 'Solar Step',
+                name: 'Solar Step'
               },
               {
                 value: 'star_wall',
-                name: 'Star Wall',
+                name: 'Star Wall'
               },
               {
                 value: 'aimrock',
-                name: 'Aim Starfell sword',
-              },
-            ],
-          },
-        ],
-      },
-    ],
+                name: 'Aim Starfell sword'
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
   async run(interaction) {
     await interaction.deferReply('gmc');
     const option = interaction.options.getString('techs');
-    let gif;
-    let name;
+    let gif,
+      name;
     switch (option) {
     case 'rockstep':
       gif = 'https://i.imgur.com/Hwqb8ng.mp4';
@@ -94,5 +94,5 @@ export default new Command({
       break;
     }
     await interaction.editReply({ content: `**${name}**\n\n${gif}` });
-  },
+  }
 });
