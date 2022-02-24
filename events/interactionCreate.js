@@ -4,7 +4,9 @@ import { EmbedColorHex } from '../lib/constants.js';
 export default new Event({
   event: 'interactionCreate',
   async run(interaction) {
-    console.log(`${interaction.user.tag} in #${interaction.channel.name} triggered an interaction.\nUser ID: ${interaction.user.id}, Command: ${interaction.commandName}\n---`);
+    console.log('------');
+    console.log(`${interaction.user.tag} in #${interaction.channel.name} triggered an interaction.\nUser ID: ${interaction.user.id}, Command: ${interaction.commandName}\n`);
+    console.log('---\nCommand Logs:');
 
     const logchannel = await interaction.guild.channels.fetch('806110144110919730'),
       avatarUrl = await interaction.user.displayAvatarURL({
