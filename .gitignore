@@ -82,3 +82,6 @@ deploy-stats.txt
 
 .vscode/
 already-old/
+.env.prod
+.env.dev
+.env.*
