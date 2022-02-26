@@ -1,30 +1,39 @@
+// eslint-disable-next-line no-unused-vars
+import { Interaction, MessageEmbed } from 'discord.js';
+import { EmbedColor } from '../lib/constants.js';
 import { Event } from '@ruinguard/core';
-import { EmbedColorHex } from '../lib/constants.js';
+import { archivesID } from '../lib/channelIDs.js';
 
 export default new Event({
   event: 'interactionCreate',
-  async run(interaction) {
-    console.log('------');
-    console.log(`${interaction.user.tag} in #${interaction.channel.name} triggered an interaction.\nUser ID: ${interaction.user.id}, Command: ${interaction.commandName}\n`);
-    console.log('---\nCommand Logs:');
 
-    const logchannel = await interaction.guild.channels.fetch('806110144110919730'),
-      avatarUrl = await interaction.user.displayAvatarURL({
-        dynamic: true
-      });
-    logchannel.send({
-      embeds: [
-        {
-          color: EmbedColorHex,
-          author: {
-            name: await interaction.user.tag,
-            // eslint-disable-next-line camelcase
-            icon_url: avatarUrl
-          },
-          title: '**Interaction log**',
-          thumbnail: { url: avatarUrl },
-          description: `${interaction.user} in ${interaction.channel} triggered an interaction.`,
-          fields: [
+  /**
+   * interaction event
+   * @async
+   * @function run
+   * @param {Interaction} interaction - interaction object
+   */
+  async run(interaction) {
+    if (!interaction.isAutocomplete()) {
+      console.log('------');
+
+      console.log(`${interaction.user.tag} in #${interaction.channel.name} triggered an interaction.\nUser ID: ${interaction.user.id}, Command: ${interaction.commandName}\n`);
+
+      console.log('---\nCommand Logs:');
+
+      const avatarUrl = interaction.user.displayAvatarURL({
+          dynamic: true
+        }),
+        logEmbed = new MessageEmbed()
+          .setTitle('**Interaction log**')
+          .setAuthor({
+            iconURL: avatarUrl,
+            name: interaction.user.tag
+          })
+          .setColor(EmbedColor)
+          .setThumbnail(avatarUrl)
+          .setDescription(`${interaction.user} in ${interaction.channel} triggered an interaction.`)
+          .addFields([
             {
               name: '**Command Name**',
               value: `${interaction.commandName}`
@@ -33,11 +42,14 @@ export default new Event({
               name: '**User ID**',
               value: `${interaction.user.id}`
             }
-          ]
-        }
-      ]
-    });
+          ]),
+        logchannel = await interaction.guild.channels.fetch(archivesID);
 
+      logchannel.send({
+        embeds: [logEmbed]
+      });
+    }
+    // eslint-disable-next-line no-underscore-dangle
     interaction.client._onInteractionCreate(interaction);
   }
 });
