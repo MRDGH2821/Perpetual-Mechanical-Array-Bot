@@ -1,7 +1,6 @@
 import {
   SlashCommandBuilder,
   channelMention,
-  formatEmoji,
   roleMention
 } from '@discordjs/builders';
 import { botSpamID, commandCenterID } from '../lib/channelIDs.js';
@@ -32,7 +31,7 @@ export default new Command({
       await channel.send(`${roleMention(archonsID)} Kazeno yuu ni`);
       await channel.send(`${roleMention(archonsID)} Tsukkimihara wo`);
       await channel.send(`${roleMention(archonsID)} PADORU PADORU`);
-      await channel.send(`${formatEmoji(LuminePadoru)}${formatEmoji(LuminePadoru)}${formatEmoji(LuminePadoru)}${formatEmoji(LuminePadoru)}`);
+      await channel.send(`${LuminePadoru}${LuminePadoru}${LuminePadoru}${LuminePadoru}`);
       await channel.send({ stickers: ['912034014112649276'] });
     }
     else {
