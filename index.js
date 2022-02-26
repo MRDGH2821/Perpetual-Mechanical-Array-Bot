@@ -1,9 +1,8 @@
 import { Bot } from '@ruinguard/core';
 import commands from './CommandIndex.js';
+import { configuration } from './lib/ConfigManager.js';
 import essentials from '@ruinguard/essentials';
 import events from './EventsIndex.js';
-
-import { token } from './lib/ConfigManager.js';
 
 const bot = new Bot({ modules: [
   essentials,
@@ -11,4 +10,4 @@ const bot = new Bot({ modules: [
   commands
 ] });
 
-await bot.login(token);
+await bot.login(configuration.token);
