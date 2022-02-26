@@ -1,7 +1,9 @@
+// eslint-disable-next-line no-unused-vars
+import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { archivesID, confessionID } from '../lib/channelIDs.js';
 import { Command } from '@ruinguard/core';
-import { SlashCommandBuilder } from '@discordjs/builders';
-import { MessageEmbed } from 'discord.js';
 import { EmbedColor } from '../lib/constants.js';
+import { SlashCommandBuilder } from '@discordjs/builders';
 
 const cmd = new SlashCommandBuilder()
   .setName('confession')
@@ -15,49 +17,52 @@ const cmd = new SlashCommandBuilder()
 export default new Command({
   data: cmd,
 
+  /**
+   * send confession to confession channel & log channel
+   * @async
+   * @function run
+   * @param {CommandInteraction} interaction - interaction object
+   */
   async run(interaction) {
-    const confessionchannel = await interaction.guild.channels.fetch('938763983551356928'),
-      logchannel = await interaction.guild.channels.fetch('806110144110919730'),
-
-      confessionText = await interaction.options.getString('confess'),
-      anonymous =
-      (await interaction.options.getBoolean('anonymous')) || false,
-      userAvatar = await interaction.user.displayAvatarURL({
-        dynamic: true
-      }),
-
-      confessEmbed = new MessageEmbed()
+    const anonymous = interaction.options.getBoolean('anonymous') || false,
+      channelConfess = await interaction.guild.channels.fetch(confessionID),
+      channelLog = await interaction.guild.channels.fetch(archivesID),
+      confessionText = interaction.options.getString('confess'),
+      embedAnon = new MessageEmbed()
         .setColor(EmbedColor)
         .setDescription(`${confessionText}`)
-        .setThumbnail(userAvatar)
+        .setTimestamp()
+        .setTitle('**A New Confession!**')
+        .setAuthor({ name: 'Anonymous' }),
+      embedConfess = new MessageEmbed()
+        .setColor(EmbedColor)
+        .setDescription(`${confessionText}`)
+        .setThumbnail(interaction.user.displayAvatarURL({
+          dynamic: true
+        }))
         .setTimestamp()
         .setTitle('**A New Confession!**')
         .setAuthor({
-          name: await interaction.user.tag,
-          iconURL: userAvatar
-        }),
-
-      anonEmbed = new MessageEmbed()
-        .setColor(EmbedColor)
-        .setDescription(`${confessionText}`)
-        .setTimestamp()
-        .setTitle('**A New Confession!**')
-        .setAuthor({ name: 'Anonymous' });
+          iconURL: interaction.user.displayAvatarURL({
+            dynamic: true
+          }),
+          name: interaction.user.tag
+        });
 
     if (anonymous) {
-      confessionchannel.send({ embeds: [anonEmbed] });
+      channelConfess.send({ embeds: [embedAnon] });
       await interaction.reply({
-        content: `Confession sent as Anonymous!\nCheck out ${confessionchannel}`,
+        content: `Confession sent as Anonymous!\nCheck out ${channelConfess}`,
         ephemeral: true
       });
     }
     else {
-      confessionchannel.send({ embeds: [confessEmbed] });
+      channelConfess.send({ embeds: [embedConfess] });
       await interaction.reply({
-        content: `Confession sent!\nCheck out ${confessionchannel}`,
+        content: `Confession sent!\nCheck out ${channelConfess}`,
         ephemeral: true
       });
     }
-    logchannel.send({ embeds: [confessEmbed] });
+    channelLog.send({ embeds: [embedConfess] });
   }
 });
