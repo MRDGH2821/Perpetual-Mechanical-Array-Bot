@@ -3,11 +3,13 @@ import commands from './CommandIndex.js';
 import { configuration } from './lib/ConfigManager.js';
 import essentials from '@ruinguard/essentials';
 import events from './EventsIndex.js';
+import triggers from './TriggerIndex.js';
 
 const bot = new Bot({ modules: [
+  commands,
   essentials,
   events,
-  commands
+  triggers
 ] });
 
 await bot.login(configuration.token);
