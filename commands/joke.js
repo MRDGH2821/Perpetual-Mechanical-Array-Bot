@@ -1,13 +1,11 @@
-import { Command } from '@ruinguard/core';
-import { SlashCommandBuilder } from '@discordjs/builders';
 import { MessageActionRow, MessageButton } from 'discord.js';
-import axios from 'axios';
+import { Command } from '@ruinguard/core';
 import { EmbedColorHex } from '../lib/constants.js';
+import { SlashCommandBuilder } from '@discordjs/builders';
+import axios from 'axios';
 
 const baseAPI = 'https://v2.jokeapi.dev/joke/',
-  blacklist =
-  '?blacklistFlags=nsfw,religious,political,racist,sexist,explicit',
-
+  blacklist = '?blacklistFlags=nsfw,religious,political,racist,sexist,explicit',
   cmd = new SlashCommandBuilder()
     .setName('joke')
     .setDescription('Get a random joke!')
@@ -20,7 +18,6 @@ const baseAPI = 'https://v2.jokeapi.dev/joke/',
       .addChoice('Spooky', 'Spooky')
       .addChoice('Christmas', 'Christmas')
       .addChoice('Any', 'Any')),
-
   submitJoke = new MessageActionRow().addComponents(new MessageButton()
     .setLabel('Submit a joke!')
     .setStyle('LINK')
@@ -30,7 +27,6 @@ export default new Command({
   data: cmd,
   async run(interaction) {
     const type = (await interaction.options.getString('type')) || 'Any',
-
       apiURL = `${baseAPI + type + blacklist}&safe-mode`;
     console.log('API URL: ', apiURL);
 

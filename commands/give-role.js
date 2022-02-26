@@ -1,7 +1,8 @@
-import { SlashCommandBuilder } from '@discordjs/builders';
 import { Command } from '@ruinguard/core';
 import { EmbedColorHex } from '../lib/constants.js';
+import { PepeKekPoint } from '../lib/emoteIDs.js';
 import PermCheck from '../lib/staff-roles.js';
+import { SlashCommandBuilder } from '@discordjs/builders';
 
 export default new Command({
   data: new SlashCommandBuilder()
@@ -23,12 +24,10 @@ export default new Command({
       .addChoice('Megastar in Mondstadt 🚶🌬️', '804595515437613077')
       .addChoice('Affluent Adventurer 💰', '804010525411246140')),
 
-  flags: [1 << 28],
-
   async run(interaction) {
-    const user = await interaction.options.getMember('user'),
+    const permcheck = new PermCheck(interaction.member),
       role = await interaction.options.getString('role'),
-      permcheck = new PermCheck(interaction.member);
+      user = await interaction.options.getMember('user');
 
     if (permcheck.isStaff() || permcheck.canGibRole()) {
       user.roles.add(role);
@@ -36,8 +35,8 @@ export default new Command({
         embeds: [
           {
             color: EmbedColorHex,
-            title: '**Role Given!**',
-            description: `<@&${role}> given to ${user}`
+            description: `<@&${role}> given to ${user}`,
+            title: '**Role Given!**'
           }
         ]
       });
@@ -46,13 +45,14 @@ export default new Command({
         ephemeral: true
       });
       await interaction.followUp({
-        content: 'Copy paste that command. And a message by <@!485962834782453762> should come up like [this](https://i.imgur.com/yQvOAzZ.png)',
+        content:
+          'Copy paste that command. And a message by <@!485962834782453762> should come up like [this](https://i.imgur.com/yQvOAzZ.png)',
         ephemeral: true
       });
     }
     else {
       await interaction.reply({
-        content: 'You can\'t give roles, not even to yourself <:PepeKekPoint:849624262625198131>',
+        content: `You can't give roles, not even to yourself ${PepeKekPoint}`,
         ephemeral: true
       });
     }

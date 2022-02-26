@@ -1,8 +1,9 @@
+import { KEKW, worrySmart } from '../lib/emoteIDs.js';
 import { Command } from '@ruinguard/core';
-import { SlashCommandBuilder } from '@discordjs/builders';
-import { MessageEmbed } from 'discord.js';
-import { readFile } from 'fs/promises';
 import { EmbedColor } from '../lib/constants.js';
+import { MessageEmbed } from 'discord.js';
+import { SlashCommandBuilder } from '@discordjs/builders';
+import { readFile } from 'fs/promises';
 const json = JSON.parse(await readFile(new URL('../package.json', import.meta.url)));
 
 export default new Command({
@@ -18,8 +19,7 @@ export default new Command({
         { name: '/amc', value: 'Shows various AMC techs' },
         {
           name: '/bonk',
-          value:
-            'Bonk a user <:KEKW:913272497405841408>\n(You can also specify a reason <:worrySmart:839141261411745802>)'
+          value: `Bonk a user ${KEKW}\n(You can also specify a reason ${worrySmart})`
         },
         {
           name: '/calculator normal',
@@ -58,6 +58,6 @@ export default new Command({
           value: 'Sings padoru as text'
         }
       );
-    return interaction.reply({ embeds: [help] });
+    await interaction.reply({ embeds: [help] });
   }
 });
