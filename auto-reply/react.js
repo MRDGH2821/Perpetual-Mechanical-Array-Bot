@@ -1,10 +1,10 @@
 function isHorny(text) {
-  const reallyHorny =
-    (/h+o+r+n+(y|i)/gim).test(text) ||
-    (/s+e+g+s/gim).test(text) ||
-    (/s+e+x/gim).test(text),
-    notHorny =
-    (/((n+o)|(n+o+t))\s((h+o+r+n+(y|i))|(s+e+g+s)|(s+e+x))/gim).test(text);
+  const notHorny =
+      (/((n+o)|(n+o+t))\s((h+o+r+n+(y|i))|(s+e+g+s)|(s+e+x))/gimu).test(text),
+    reallyHorny =
+      (/h+o+r+n+(y|i)/gimu).test(text) ||
+      (/s+e+g+s/gimu).test(text) ||
+      (/s+e+x/gimu).test(text);
 
   if (reallyHorny && !notHorny) {
     console.log('Horny Detected in msg');
@@ -15,32 +15,32 @@ function isHorny(text) {
 
 export default function react(message) {
   const msg = message.content;
-  if ((/(c+o+o+k+i+e)|🍪/gim).test(msg)) {
+  if ((/(c+o+o+k+i+e)|🍪/gimu).test(msg)) {
     message.react('🍪');
   }
-  if ((/(r+i+c+e)|🍚|🍙|🍘|🎑|🌾/gim).test(msg)) {
-    const rices = [
+  if ((/(r+i+c+e)|🍚|🍙|🍘|🎑|🌾/gimu).test(msg)) {
+    const emoteRices = [
         '🍚',
         '🍙',
         '🍘',
         '🎑',
         '🌾'
       ],
-      rice = rices[Math.floor(Math.random() * rices.length)];
-    message.react(rice);
+      randomRice = emoteRices[Math.floor(Math.random() * emoteRices.length)];
+    message.react(randomRice);
   }
-  if ((/(s+u+s+h+i)|🍣/gim).test(msg)) {
+  if ((/(s+u+s+h+i)|🍣/gimu).test(msg)) {
     message.react('🍣');
   }
-  if ((/(b+r+e+a+d)|🍞|🥐|🥖|🥪/gim).test(msg)) {
+  if ((/(b+r+e+a+d)|🍞|🥐|🥖|🥪/gimu).test(msg)) {
     const breads = [
         '🍞',
         '🥐',
         '🥖',
         '🥪'
       ],
-      bread = breads[Math.floor(Math.random() * breads.length)];
-    message.react(bread).catch(console.error);
+      randomBread = breads[Math.floor(Math.random() * breads.length)];
+    message.react(randomBread).catch(console.error);
   }
 
   if (isHorny(msg)) {
@@ -57,20 +57,11 @@ export default function react(message) {
         '<:LuminePanic:814883112998666241>',
         '<:TarouAngy:854040153555468329>'
       ],
-
-      emote = emotes[Math.floor(Math.random() * emotes.length)];
-    message.react(emote).catch(console.error);
+      randomEmote = emotes[Math.floor(Math.random() * emotes.length)];
+    message.react(randomEmote).catch(console.error);
   }
 
-  if ((/(q+u+a+c+k)|\b(h+o+n+k)|🦆/gim).test(msg)) {
-    const unavaiableEmotes = [
-      '<:GoosetherAlert:907305613892145162>',
-      '<:goose:907301800472883230>',
-      '<:QuackStab:859333036851855361>',
-      '<:goose_stab:907301775365767227>',
-      '<:goose_pizza:907301733519196220>'
-    ];
-    console.log(unavaiableEmotes[1]);
+  if ((/(q+u+a+c+k)|\b(h+o+n+k)|🦆/gimu).test(msg)) {
     const emotes = [
         '<:AetherNoU:905099437767024712>',
         '<:BoreasKek:829620211190595605>',
@@ -80,25 +71,33 @@ export default function react(message) {
         '<a:goose:907301647896690738>',
         '🦆'
       ],
-      emote = emotes[Math.floor(Math.random() * emotes.length)];
-    message.react(emote).catch(console.error);
+      randomEmote = emotes[Math.floor(Math.random() * emotes.length)],
+      unavailableEmotes = [
+        '<:GoosetherAlert:907305613892145162>',
+        '<:goose:907301800472883230>',
+        '<:QuackStab:859333036851855361>',
+        '<:goose_stab:907301775365767227>',
+        '<:goose_pizza:907301733519196220>'
+      ];
+    console.log(unavailableEmotes[1]);
+    message.react(randomEmote).catch(console.error);
   }
 
-  if ((/(yawning|<@!98966314055405568>|<@98966314055405568>)/gim).test(msg)) {
+  if ((/(yawning|<@!98966314055405568>|<@98966314055405568>)/gimu).test(msg)) {
     const emotes = [
         '👴',
         '👑'
       ],
-      emote = emotes[Math.floor(Math.random() * emotes.length)];
-    message.react(emote).catch(console.error);
+      randomEmote = emotes[Math.floor(Math.random() * emotes.length)];
+    message.react(randomEmote).catch(console.error);
   }
 
-  if ((/(noodle|<@!581430330653671434>|<@581430330653671434>)/gim).test(msg)) {
+  if ((/(noodle|<@!581430330653671434>|<@581430330653671434>)/gimu).test(msg)) {
     const emotes = [
         '🍜',
         '🍝'
       ],
-      emote = emotes[Math.floor(Math.random() * emotes.length)];
-    message.react(emote).catch(console.error);
+      randomEmote = emotes[Math.floor(Math.random() * emotes.length)];
+    message.react(randomEmote).catch(console.error);
   }
 }
