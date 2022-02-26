@@ -1,59 +1,48 @@
-import { Command } from '@ruinguard/core';
 // eslint-disable-next-line no-unused-vars
-import { CommandInteraction } from 'discord.js';
+import { AutocompleteInteraction, CommandInteraction } from 'discord.js';
+import { AMCTechs } from '../lib/TravelerTechnologies.js';
+import { Command } from '@ruinguard/core';
 import { SlashCommandBuilder } from '@discordjs/builders';
 
-const cmd = new SlashCommandBuilder()
-  .setName('amc')
-  .setDescription('Anemo Main Character')
-  .addSubcommand((subcommand) => subcommand
-    .setName('gust_surge')
-    .setDescription('AMC Burst')
-    .addStringOption((option) => option
-      .setName('techs')
-      .setDescription('Technologies which power burst')
-      .setRequired(true)
-      .addChoice('Cyronado: Guoba', 'cyronadoguoba')
-      .addChoice('Cyronado: Baron Bunny', 'cyronadobaron')))
-  .addSubcommand((subcommand) => subcommand.setName('guide').setDescription('Guide on AMC'));
-
 export default new Command({
-  data: cmd,
+  data: new SlashCommandBuilder()
+    .setName('amc')
+    .setDescription('Anemo Main Character')
+    .addSubcommand((subcommand) => subcommand
+      .setName('gust_surge')
+      .setDescription('AMC Burst')
+      .addStringOption((option) => option
+        .setName('techs')
+        .setDescription('Technologies which power burst')
+        .setRequired(true)
+        .setAutocomplete(true)))
+    .addSubcommand((subcommand) => subcommand.setName('guide').setDescription('Guide on AMC')),
 
   /**
    * show amc techs & guide
-   * @async
    * @function run
-   * @param {CommandInteraction} interaction - interaction object
+   * @param {CommandInteraction | AutocompleteInteraction} interaction - interaction object
+   * @returns {Promise<void>} - interaction promise object
    */
-  async run(interaction) {
-    await interaction.deferReply();
-    switch (await interaction.options.getSubcommand()) {
+  // eslint-disable-next-line consistent-return
+  run(interaction) {
+    if (interaction.isAutocomplete()) {
+      const focusedVal = interaction.options.getFocused(),
+        values = AMCTechs.burstTechs.filter((choice) => choice.name.startsWith(focusedVal));
+      return interaction.respond(values.map((choice) => ({ name: choice.name, value: choice.id })));
+    }
+
+    switch (interaction.options.getSubcommand()) {
     case 'gust_surge': {
-      const option = interaction.options.getString('techs');
-      let gif = '',
-        name = '';
-      switch (option) {
-      case 'cyronadoguoba': {
-        gif = 'https://i.imgur.com/v2OWCkz.mp4';
-        name = 'Cyronado: Guoba';
-        break;
-      }
-      case 'cyronadobaron': {
-        gif = 'https://i.imgur.com/sjEmHjY.gif';
-        name = 'Cyronado: Baron Bunny';
-        break;
-      }
-          // no default
-      }
-      await interaction.editReply({
-        content: `**${name}**\n\n${gif}`
+      const selectedID = interaction.options.getString('techs'),
+        skill = AMCTechs.burstTechs.find((tech) => tech.id === selectedID);
+      console.log(selectedID);
+      return interaction.reply({
+        content: `**${skill.name}** \n\n${skill.gif}`
       });
-      break;
     }
     case 'guide': {
-      await interaction.editReply('https://keqingmains.com/anemo-traveler/');
-      break;
+      return interaction.editReply('https://keqingmains.com/anemo-traveler/');
     }
       // no default
     }
