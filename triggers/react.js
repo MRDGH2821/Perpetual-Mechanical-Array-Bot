@@ -135,7 +135,7 @@ export default new Event({
       }
 
       if (
-        (/(noodle|<@!581430330653671434>|<@581430330653671434>|ramen|noods)/gimu).test(msg)
+        (/(noodle|<@!581430330653671434>|<@581430330653671434>|ramen|noods|<@&826393865275047946>)/gimu).test(msg)
       ) {
         const emotes = [
           '🍜',
