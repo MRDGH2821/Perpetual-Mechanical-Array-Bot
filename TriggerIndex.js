@@ -1,6 +1,6 @@
 import { Module } from '@ruinguard/core';
-import { getDir } from 'file-ez';
+import { resolve } from 'path';
 
 export default await new Module({
-  events: getDir('./triggers').path
+  events: resolve('./triggers')
 });

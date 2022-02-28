@@ -1,7 +1,8 @@
+import { Intents } from 'discord.js';
 import { Module } from '@ruinguard/core';
-import { getDir } from 'file-ez';
+import { resolve } from 'path';
 
 export default await new Module({
-  commands: getDir('./commands').path,
-  intents: [1 << 0]
+  commands: resolve('./commands'),
+  intents: [Intents.FLAGS.GUILDS]
 });

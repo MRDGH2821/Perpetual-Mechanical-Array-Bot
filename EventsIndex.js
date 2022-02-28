@@ -1,10 +1,11 @@
+import { Intents } from 'discord.js';
 import { Module } from '@ruinguard/core';
-import { getDir } from 'file-ez';
+import { resolve } from 'path';
 
 export default await new Module({
-  events: getDir('./events').path,
+  events: resolve('./events'),
   intents: [
-    1 << 0,
-    1 << 9
+    Intents.FLAGS.GUILDS,
+    Intents.FLAGS.GUILD_MESSAGES
   ]
 });
