@@ -1,7 +1,8 @@
+// eslint-disable-next-line no-unused-vars
+import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { KEKW, worrySmart } from '../lib/emoteIDs.js';
 import { Command } from '@ruinguard/core';
 import { EmbedColor } from '../lib/constants.js';
-import { MessageEmbed } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { readFile } from 'fs/promises';
 const json = JSON.parse(await readFile(new URL('../package.json', import.meta.url)));
@@ -10,6 +11,12 @@ export default new Command({
   data: new SlashCommandBuilder().setName('help')
     .setDescription('Need Help?'),
 
+  /**
+   * sends help
+   * @async
+   * @function run
+   * @param {CommandInteraction} interaction - interaction object
+   */
   async run(interaction) {
     const help = new MessageEmbed()
       .setColor(EmbedColor)

@@ -36,7 +36,7 @@ export default new Command({
    * tell a joke
    * @async
    * @function run
-   * @param {CommandInteraction} interaction
+   * @param {CommandInteraction} interaction - interaction object
    */
   async run(interaction) {
     const jokeEmbed = new MessageEmbed(),
