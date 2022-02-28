@@ -1,17 +1,6 @@
-function isHorny(text) {
-  const notHorny =
-      (/((n+o)|(n+o+t))\s((h+o+r+n+(y|i))|(s+e+g+s)|(s+e+x))/gimu).test(text),
-    reallyHorny =
-      (/h+o+r+n+(y|i)/gimu).test(text) ||
-      (/s+e+g+s/gimu).test(text) ||
-      (/s+e+x/gimu).test(text);
+import Bonk from '../../lib/bonk-utilities.js';
 
-  if (reallyHorny && !notHorny) {
-    console.log('Horny Detected in msg');
-    return true;
-  }
-  return false;
-}
+const { isHorny } = new Bonk();
 
 export default function react(message) {
   const msg = message.content;
@@ -61,7 +50,7 @@ export default function react(message) {
     message.react(randomEmote).catch(console.error);
   }
 
-  if ((/(q+u+a+c+k)|\b(h+o+n+k)|🦆/gimu).test(msg)) {
+  if ((/\b(q+u+a+c+k)\b|\b(h+o+n+k)\b|🦆/gimu).test(msg)) {
     const emotes = [
         '<:AetherNoU:905099437767024712>',
         '<:BoreasKek:829620211190595605>',
