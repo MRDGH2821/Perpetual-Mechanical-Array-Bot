@@ -1,57 +1,171 @@
+import {
+  AbyssalConquerorID,
+  AnemoCrownID,
+  ElectroCrownID,
+  GeoCrownID,
+  InazumaReputationID,
+  LiyueReputationID,
+  MondstadtReputationID,
+  NonEleCrownID,
+  WhaleID
+} from '../lib/roleIDs.js';
+import {
+  // eslint-disable-next-line no-unused-vars
+  ButtonInteraction,
+  // eslint-disable-next-line no-unused-vars
+  CommandInteraction,
+  MessageActionRow,
+  MessageEmbed,
+  MessageSelectMenu
+} from 'discord.js';
+import { SlashCommandBuilder, roleMention } from '@discordjs/builders';
+import CheckRolePerms from '../lib/staff-roles.js';
 import { Command } from '@ruinguard/core';
-import { EmbedColorHex } from '../lib/constants.js';
+import { EmbedColor } from '../lib/constants.js';
 import { PepeKekPoint } from '../lib/emoteIDs.js';
-import PermCheck from '../lib/staff-roles.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
 
 export default new Command({
   data: new SlashCommandBuilder()
     .setName('give-role')
     .setDescription('Gives role to a selected user!')
     .addUserOption((option) => option.setName('user').setDescription('Select user')
-      .setRequired(true))
-    .addStringOption((option) => option
-      .setName('role')
-      .setDescription('Select role to give')
-      .setRequired(true)
-      .addChoice('Abyssal Conqueror 🌀', '804225878685908992')
-      .addChoice('Arbitrator of Fate 👑', '859430358419243038')
-      .addChoice('Ten\'nō of Thunder 👑⛈️', '856509454970781696')
-      .addChoice('Jūnzhǔ of Earth 👑🌏', '816210137613205554')
-      .addChoice('Herrscher of Wind 👑🌬️', '815938264875532298')
-      .addChoice('Illustrious in Inazuma 🚶⛈️', '809026481112088596')
-      .addChoice('Legend in Liyue 🚶🌏', '804595502960214026')
-      .addChoice('Megastar in Mondstadt 🚶🌬️', '804595515437613077')
-      .addChoice('Affluent Adventurer 💰', '804010525411246140')),
+      .setRequired(true)),
 
+  /**
+   * gives role to selected user
+   * @async
+   * @function run
+   * @param {CommandInteraction} interaction
+   */
   async run(interaction) {
-    const permcheck = new PermCheck(interaction.member),
-      role = await interaction.options.getString('role'),
-      user = await interaction.options.getMember('user');
+    await interaction.deferReply();
+    const permCheck = new CheckRolePerms(interaction.member),
+      target = interaction.options.getMember('user');
+    if (permCheck.isStaff() || permCheck.canGibRole()) {
+      const AbyssalConquerorRole = await interaction.guild.roles.fetch(AbyssalConquerorID),
+        AnemoCrownRole = await interaction.guild.roles.fetch(AnemoCrownID),
+        ElectroCrownRole = await interaction.guild.roles.fetch(ElectroCrownID),
+        GeoCrownRole = await interaction.guild.roles.fetch(GeoCrownID),
+        InazumaReputationRole = await interaction.guild.roles.fetch(InazumaReputationID),
+        LiyueReputationRole = await interaction.guild.roles.fetch(LiyueReputationID),
+        MondstadtReputationRole = await interaction.guild.roles.fetch(MondstadtReputationID),
+        NonEleCrownRole = await interaction.guild.roles.fetch(NonEleCrownID),
+        WhaleRole = await interaction.guild.roles.fetch(WhaleID),
+        introEmb = new MessageEmbed()
+          .setColor(EmbedColor)
+          .setTitle('**Select Roles**')
+          .setDescription(`Select Roles to give to ${target}. The amount of EXP will be calculated in end.`),
+        rolesRow = new MessageActionRow().addComponents(new MessageSelectMenu()
+          .setCustomId('roles')
+          .setPlaceholder('Select roles')
+        // eslint-disable-next-line no-magic-numbers
+          .setMinValues(1)
+          .addOptions([
+            {
+              description:
+                  'Completed Spiral Abyss 36/36 & all Spiral abyss achievements',
+              emoji: '🌀',
+              label: AbyssalConquerorRole.name,
+              value: AbyssalConquerorID
+            },
+            {
+              description:
+                  '100% Map + Subregions + Achievements + Max Reputation',
+              emoji: '🕊️',
+              label: MondstadtReputationRole.name,
+              value: MondstadtReputationID
+            },
+            {
+              description:
+                  '100% Map + Subregions + Achievements + Max Reputation',
+              emoji: '⚖️',
+              label: LiyueReputationRole.name,
+              value: LiyueReputationID
+            },
+            {
+              description:
+                  '100% Map + Subregions + Achievements + Max Reputation',
+              emoji: '⛩️',
+              label: InazumaReputationRole.name,
+              value: InazumaReputationID
+            },
+            {
+              description: 'Crowned their Anemo Traveler',
+              emoji: '🌪️',
+              label: AnemoCrownRole.name,
+              value: AnemoCrownID
+            },
+            {
+              description: 'Crowned their Geo Traveler',
+              emoji: '🪨',
+              label: GeoCrownRole.name,
+              value: GeoCrownID
+            },
+            {
+              description: 'Crowned their Electro Traveler',
+              emoji: '⚡',
+              label: ElectroCrownRole.name,
+              value: ElectroCrownID
+            },
+            {
+              description: 'Crowned their Unaligned Traveler',
+              emoji: '👑',
+              label: NonEleCrownRole.name,
+              value: NonEleCrownID
+            },
+            {
+              description:
+                  'Spent $1000, or have c6 5* chars or r5 5* weapons',
+              emoji: '💰',
+              label: WhaleRole.name,
+              value: WhaleID
+            }
+          ])),
+        // eslint-disable-next-line sort-vars
+        roleMsg = await interaction.editReply({
+          components: [rolesRow],
+          embeds: [introEmb],
+          fetchReply: true
+        }),
+        // eslint-disable-next-line sort-vars
+        roleCollector = roleMsg.createMessageComponentCollector({
+          componentType: 'SELECT_MENU',
+          time: 60000
+        });
 
-    if (permcheck.isStaff() || permcheck.canGibRole()) {
-      user.roles.add(role);
-      await interaction.reply({
-        embeds: [
-          {
-            color: EmbedColorHex,
-            description: `<@&${role}> given to ${user}`,
-            title: '**Role Given!**'
+      roleCollector.on('collect', async(interacted) => {
+        console.log('Collecting role options');
+        if (interacted.user.id === interaction.user.id) {
+          let selectedRoles = '';
+          for (const roleID of interacted.values) {
+            selectedRoles = `${roleMention(roleID)}\n${selectedRoles}`;
           }
-        ]
+          introEmb.addFields([
+            {
+              name: '**Selected Roles**',
+              value: selectedRoles
+            }
+          ]);
+          await interaction.editReply({
+            components: [],
+            embeds: introEmb,
+            fetchReply: true
+          });
+        }
+        else {
+          await interacted.reply('These buttons are not for you!');
+        }
+
+        roleCollector.stop();
       });
-      await interaction.followUp({
-        content: `>award ${user.id} 250`,
-        ephemeral: true
+      roleCollector.on('end', (interacted) => {
+        console.log('collected: ');
+        console.log(interacted);
       });
-      await interaction.followUp({
-        content:
-          'Copy paste that command. And a message by <@!485962834782453762> should come up like [this](https://i.imgur.com/yQvOAzZ.png)',
-        ephemeral: true
-      });
+      console.log('Can give roles');
     }
     else {
-      await interaction.reply({
+      await interaction.editReply({
         content: `You can't give roles, not even to yourself ${PepeKekPoint}`,
         ephemeral: true
       });
