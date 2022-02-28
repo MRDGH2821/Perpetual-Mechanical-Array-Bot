@@ -1,6 +1,12 @@
-import { MessageActionRow, MessageButton } from 'discord.js';
+import {
+  // eslint-disable-next-line no-unused-vars
+  CommandInteraction,
+  MessageActionRow,
+  MessageButton,
+  MessageEmbed
+} from 'discord.js';
 import { Command } from '@ruinguard/core';
-import { EmbedColorHex } from '../lib/constants.js';
+import { EmbedColor } from '../lib/constants.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import axios from 'axios';
 
@@ -25,12 +31,18 @@ const baseAPI = 'https://v2.jokeapi.dev/joke/',
 
 export default new Command({
   data: cmd,
-  async run(interaction) {
-    const type = (await interaction.options.getString('type')) || 'Any',
-      apiURL = `${baseAPI + type + blacklist}&safe-mode`;
-    console.log('API URL: ', apiURL);
 
-    const { data } = await axios.get(apiURL);
+  /**
+   * tell a joke
+   * @async
+   * @function run
+   * @param {CommandInteraction} interaction
+   */
+  async run(interaction) {
+    const jokeEmbed = new MessageEmbed(),
+      type = (await interaction.options.getString('type')) || 'Any',
+      urlAPI = `${baseAPI + type + blacklist}&safe-mode`,
+      { data } = await axios.get(urlAPI);
     console.log('Joke: ', data);
 
     let joke = '';
@@ -41,23 +53,21 @@ export default new Command({
       joke = `${data.setup}\n\n${data.delivery}`;
     }
 
-    const jokeEmbed = {
-      color: EmbedColorHex,
-      title: `**${data.category} Joke!**`,
-      description: `${joke}`,
-      footer: {
-        text: `Requested by ${interaction.user.tag}, Joke ID: ${data.id}`,
-        // eslint-disable-next-line camelcase
-        icon_url: await interaction.user.displayAvatarURL({ dynamic: true })
-      }
-    };
+    jokeEmbed
+      .setColor(EmbedColor)
+      .setAuthor({
+        iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
+        name: `Requested by ${interaction.user.tag}`
+      })
+      .setTitle(`**${data.category} Joke! (ID: ${data.id})**`)
+      .setDescription(`${joke}`);
+
     await interaction.reply({
-      content: `Selected type: ${type}`,
-      ephemeral: true
+      content: `Selected type: ${type}`
     });
     await interaction.channel.send({
-      embeds: [jokeEmbed],
-      components: [submitJoke]
+      components: [submitJoke],
+      embeds: [jokeEmbed]
     });
   }
 });
