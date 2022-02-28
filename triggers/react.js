@@ -1,92 +1,152 @@
-import Bonk from '../../lib/bonk-utilities.js';
+import {
+  AetherBonk,
+  AetherBruh,
+  AetherMAD_REEE,
+  AetherNoU,
+  AetherYikes,
+  AntiHornyElixir,
+  BoreasKek,
+  FakeNooz,
+  GoosetherAlert,
+  GoosetherConfuse,
+  HmmMine,
+  HmmTher,
+  Keqing_No,
+  LumineMAD_REEE,
+  LuminePanic,
+  QuackStab,
+  TarouAngy,
+  goose,
+  goose_pizza,
+  goose_stab,
+  gooserun,
+  pepeduck
+} from '../lib/emoteIDs.js';
+import Bonk from '../lib/bonk-utilities.js';
+import { Event } from '@ruinguard/core';
+// eslint-disable-next-line no-unused-vars
+import { Message } from 'discord.js';
+import { pickRandom } from 'mathjs';
 
-const { isHorny } = new Bonk();
+export default new Event({
+  event: 'messageCreate',
 
-export default function react(message) {
-  const msg = message.content;
-  if ((/(c+o+o+k+i+e)|🍪/gimu).test(msg)) {
-    message.react('🍪');
-  }
-  if ((/(r+i+c+e)|🍚|🍙|🍘|🎑|🌾/gimu).test(msg)) {
-    const emoteRices = [
-        '🍚',
-        '🍙',
-        '🍘',
-        '🎑',
-        '🌾'
-      ],
-      randomRice = emoteRices[Math.floor(Math.random() * emoteRices.length)];
-    message.react(randomRice);
-  }
-  if ((/(s+u+s+h+i)|🍣/gimu).test(msg)) {
-    message.react('🍣');
-  }
-  if ((/(b+r+e+a+d)|🍞|🥐|🥖|🥪/gimu).test(msg)) {
-    const breads = [
-        '🍞',
-        '🥐',
-        '🥖',
-        '🥪'
-      ],
-      randomBread = breads[Math.floor(Math.random() * breads.length)];
-    message.react(randomBread).catch(console.error);
-  }
+  /**
+   * message create event
+   * @async
+   * @function run
+   * @param {Message} message - message object
+   */
+  async run(message) {
+    const bonk = new Bonk(message.content),
+      msg = message.content;
+    try {
+      if ((/\b(c+o+o+k+i+e+s*)\b|🍪|🥠/gimu).test(msg)) {
+        const cookies = [
+          '🥠',
+          '🍪'
+        ];
+        await message.react(pickRandom(cookies));
+      }
 
-  if (isHorny(msg)) {
-    const emotes = [
-        '<:AntiHornyElixir:810751842883207168>',
-        '<:HmmTher:830243224105779290>',
-        '<:HmmMine:830243258960838717>',
-        '<:AetherBonk:821169357765345291>',
-        '<:AetherBruh:813355624796520478>',
-        '<:AetherYikes:810278255336489020>',
-        '<:Keqing_No:804883023723233321>',
-        '<:LumineMAD_REEE:814814997196308491>',
-        '<:AetherMAD_REEE:865476945427824690>',
-        '<:LuminePanic:814883112998666241>',
-        '<:TarouAngy:854040153555468329>'
-      ],
-      randomEmote = emotes[Math.floor(Math.random() * emotes.length)];
-    message.react(randomEmote).catch(console.error);
-  }
+      if ((/\b(r+i+c+e{1,})\b|🍚|🍙|🍘|🎑|🌾/gimu).test(msg)) {
+        const rices = [
+          '🍚',
+          '🍙',
+          '🍘',
+          '🎑',
+          '🌾'
+        ];
 
-  if ((/\b(q+u+a+c+k)\b|\b(h+o+n+k)\b|🦆/gimu).test(msg)) {
-    const emotes = [
-        '<:AetherNoU:905099437767024712>',
-        '<:BoreasKek:829620211190595605>',
-        '<:GoosetherConfuse:907307618677178368>',
-        '<:FakeNooz:865259265471152138>',
-        '<a:pepeduck:907293876073680946>',
-        '<a:goose:907301647896690738>',
-        '🦆'
-      ],
-      randomEmote = emotes[Math.floor(Math.random() * emotes.length)],
-      unavailableEmotes = [
-        '<:GoosetherAlert:907305613892145162>',
-        '<:goose:907301800472883230>',
-        '<:QuackStab:859333036851855361>',
-        '<:goose_stab:907301775365767227>',
-        '<:goose_pizza:907301733519196220>'
-      ];
-    console.log(unavailableEmotes[1]);
-    message.react(randomEmote).catch(console.error);
-  }
+        message.react(pickRandom(rices));
+      }
 
-  if ((/(yawning|<@!98966314055405568>|<@98966314055405568>)/gimu).test(msg)) {
-    const emotes = [
-        '👴',
-        '👑'
-      ],
-      randomEmote = emotes[Math.floor(Math.random() * emotes.length)];
-    message.react(randomEmote).catch(console.error);
-  }
+      if ((/\b(s+u+s+h+i{1,})\b|🍣|🍥/gimu).test(msg)) {
+        const sushiEmotes = [
+          '🍥',
+          '🍣'
+        ];
 
-  if ((/(noodle|<@!581430330653671434>|<@581430330653671434>)/gimu).test(msg)) {
-    const emotes = [
-        '🍜',
-        '🍝'
-      ],
-      randomEmote = emotes[Math.floor(Math.random() * emotes.length)];
-    message.react(randomEmote).catch(console.error);
+        await message.react(pickRandom(sushiEmotes));
+      }
+
+      if ((/\b(b+r+e+a+d+s*)\b|🍞|🥐|🥖|🥪/gimu).test(msg)) {
+        const breads = [
+          '🍞',
+          '🥐',
+          '🥖',
+          '🥪'
+        ];
+        await message.react(pickRandom(breads));
+      }
+
+      if ((/\b(q+u+a+c+k{1,})\b|\b(h+o+n+k{1,})\b|🦆/gimu).test(msg)) {
+        const emotes = [
+            AetherNoU,
+            BoreasKek,
+            GoosetherConfuse,
+            FakeNooz,
+            pepeduck,
+            goose,
+            goose_pizza,
+            goose_stab,
+            gooserun,
+            GoosetherConfuse,
+            GoosetherAlert,
+            QuackStab
+          ],
+          // eslint-disable-next-line prefer-destructuring
+          randomEmote = pickRandom(emotes).match(/\d{1,}/gimu)[0];
+
+        // console.log(randomEmote);
+        message.react(randomEmote).catch(console.error);
+      }
+
+      if (bonk.isHorny(msg)) {
+        const emotes = [
+            AntiHornyElixir,
+            HmmMine,
+            HmmTher,
+            AetherBonk,
+            AetherBruh,
+            AetherYikes,
+            Keqing_No,
+            LumineMAD_REEE,
+            AetherMAD_REEE,
+            LuminePanic,
+            TarouAngy
+          ],
+          // eslint-disable-next-line prefer-destructuring
+          randomEmote = pickRandom(emotes).match(/\d{1,}/gimu)[0];
+
+        // console.log(randomEmote);
+        message.react(randomEmote).catch(console.error);
+      }
+
+      if (
+        (/(yawning|<@!98966314055405568>|<@98966314055405568>)/gimu).test(msg)
+      ) {
+        const emotes = [
+          '👴',
+          '👑'
+        ];
+
+        message.react(pickRandom(emotes));
+      }
+
+      if (
+        (/(noodle|<@!581430330653671434>|<@581430330653671434>|ramen|noods)/gimu).test(msg)
+      ) {
+        const emotes = [
+          '🍜',
+          '🍝'
+        ];
+
+        message.react(pickRandom(emotes));
+      }
+    }
+    catch (error) {
+      console.error(error);
+    }
   }
-}
+});
