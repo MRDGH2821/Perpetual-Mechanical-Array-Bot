@@ -31,9 +31,11 @@ export default new Event({
       console.log('ICD: ', timeLeft);
       // eslint-disable-next-line no-magic-numbers
       if (timeLeft < 1 || timeLeft === false) {
-        await message.reply({
-          embeds: [embedReply]
-        });
+        await message
+          .reply({
+            embeds: [embedReply]
+          })
+          .catch(console.error);
         await icd.add('bonkCD', fiveMins);
       }
       else {
