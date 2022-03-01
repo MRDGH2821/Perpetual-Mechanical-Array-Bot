@@ -143,7 +143,7 @@ export default new Command({
           return interacted.user.id === interaction.user.id;
         };
       // eslint-disable-next-line sort-vars
-      roleMsg
+      await roleMsg
         .awaitMessageComponent({
           componentType: 'SELECT_MENU',
           filter: filterCollector,
@@ -220,7 +220,7 @@ export default new Command({
                 embeds: [spiralAbyssEmbed]
               });
 
-            spiralAbyssStat
+            await spiralAbyssStat
               .awaitMessageComponent({
                 componentType: 'BUTTON',
                 filter: filterCollector,
@@ -265,7 +265,8 @@ export default new Command({
                   embeds: [crownRoleEmbed]
                 });
 
-              crownStat
+              // eslint-disable-next-line no-await-in-loop
+              await crownStat
                 .awaitMessageComponent({
                   componentType: 'BUTTON',
                   filter: filterCollector,
