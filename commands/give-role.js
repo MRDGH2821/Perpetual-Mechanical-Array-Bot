@@ -148,7 +148,7 @@ export default new Command({
           ]);
           await interaction.editReply({
             components: [],
-            embeds: introEmb,
+            embeds: [introEmb],
             fetchReply: true
           });
         }
@@ -158,9 +158,14 @@ export default new Command({
 
         roleCollector.stop();
       });
-      roleCollector.on('end', (interacted) => {
+      roleCollector.on('end', async(interacted) => {
         console.log('collected: ');
         console.log(interacted);
+        await interaction.editReply({
+          components: [],
+          embeds: [introEmb],
+          fetchReply: true
+        });
       });
       console.log('Can give roles');
     }
