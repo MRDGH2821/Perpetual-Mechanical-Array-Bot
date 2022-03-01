@@ -17,8 +17,6 @@ export default new Event({
   async run(interaction) {
     // eslint-disable-next-line padded-blocks
     try {
-
-      /*
       if (interaction.isApplicationCommand()) {
         console.log('------');
 
@@ -54,7 +52,7 @@ export default new Event({
           embeds: [logEmbed]
         });
       }
-      */
+
       // eslint-disable-next-line no-underscore-dangle
       await interaction.client._onInteractionCreate(interaction);
     }
