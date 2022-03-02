@@ -18,20 +18,15 @@ export default new Event({
    * @param {string} crownOption.crownRoleID - the element role
    */
   async run(target, { crowns, crownRoleID }) {
-    console.log('Crown ID: ', crownRoleID);
-
     const crownData = {
         crowns,
         userID: target.user.id
       },
       crownname = crownName(crownRoleID);
-    console.log('Crown name before: ', crownname);
 
     if (crownRoleID === NonEleCrownID) {
       crownData.crowns = 1;
     }
-
-    console.log('Crown name after:', crownname);
 
     await db
       .collection(`${crownname}`)
