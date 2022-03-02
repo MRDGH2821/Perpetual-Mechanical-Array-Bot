@@ -1,5 +1,5 @@
-/* eslint-disable no-magic-numbers */
 /* eslint-disable max-lines */
+/* eslint-disable no-magic-numbers */
 import {
   AbyssalConquerorID,
   AnemoCrownID,
@@ -25,7 +25,8 @@ import { SlashCommandBuilder, roleMention } from '@discordjs/builders';
 import {
   crownName,
   crownRoles,
-  explorationRoles
+  explorationRoles,
+  exploreName
 } from '../lib/achievement-roles.js';
 import CheckRolePerms from '../lib/staff-roles.js';
 import { Command } from '@ruinguard/core';
@@ -52,16 +53,7 @@ export default new Command({
     const permCheck = new CheckRolePerms(interaction.member),
       target = interaction.options.getMember('user');
     if (permCheck.isStaff() || permCheck.canGibRole()) {
-      const AbyssalConquerorRole = await interaction.guild.roles.fetch(AbyssalConquerorID),
-        AnemoCrownRole = await interaction.guild.roles.fetch(AnemoCrownID),
-        ElectroCrownRole = await interaction.guild.roles.fetch(ElectroCrownID),
-        GeoCrownRole = await interaction.guild.roles.fetch(GeoCrownID),
-        InazumaReputationRole = await interaction.guild.roles.fetch(InazumaReputationID),
-        LiyueReputationRole = await interaction.guild.roles.fetch(LiyueReputationID),
-        MondstadtReputationRole = await interaction.guild.roles.fetch(MondstadtReputationID),
-        NonEleCrownRole = await interaction.guild.roles.fetch(NonEleCrownID),
-        WhaleRole = await interaction.guild.roles.fetch(WhaleID),
-        introEmb = new MessageEmbed()
+      const introEmb = new MessageEmbed()
           .setColor(EmbedColor)
           .setTitle('**Select Roles**')
           .setDescription(`Select Roles to give to ${target}. The amount of EXP will be calculated in end.`),
@@ -74,7 +66,8 @@ export default new Command({
               description:
                 'Completed Spiral Abyss 36/36 & all Spiral abyss achievements',
               emoji: '🌀',
-              label: AbyssalConquerorRole.name,
+              label: (await interaction.guild.roles.fetch(AbyssalConquerorID))
+                .name,
               value: AbyssalConquerorID
             },
             {
@@ -82,7 +75,9 @@ export default new Command({
               description:
                 '100% Map + Subregions + Achievements + Max Reputation',
               emoji: '🕊️',
-              label: MondstadtReputationRole.name,
+              label: (
+                await interaction.guild.roles.fetch(MondstadtReputationID)
+              ).name,
               value: MondstadtReputationID
             },
             {
@@ -90,7 +85,8 @@ export default new Command({
               description:
                 '100% Map + Subregions + Achievements + Max Reputation',
               emoji: '⚖️',
-              label: LiyueReputationRole.name,
+              label: (await interaction.guild.roles.fetch(LiyueReputationID))
+                .name,
               value: LiyueReputationID
             },
             {
@@ -98,38 +94,39 @@ export default new Command({
               description:
                 '100% Map + Subregions + Achievements + Max Reputation',
               emoji: '⛩️',
-              label: InazumaReputationRole.name,
+              label: (await interaction.guild.roles.fetch(InazumaReputationID))
+                .name,
               value: InazumaReputationID
             },
             {
               description: 'Crowned their Anemo Traveler',
               emoji: '🌪️',
-              label: AnemoCrownRole.name,
+              label: (await interaction.guild.roles.fetch(AnemoCrownID)).name,
               value: AnemoCrownID
             },
             {
               description: 'Crowned their Geo Traveler',
               emoji: '🪨',
-              label: GeoCrownRole.name,
+              label: (await interaction.guild.roles.fetch(GeoCrownID)).name,
               value: GeoCrownID
             },
             {
               description: 'Crowned their Electro Traveler',
               emoji: '⚡',
-              label: ElectroCrownRole.name,
+              label: (await interaction.guild.roles.fetch(ElectroCrownID)).name,
               value: ElectroCrownID
             },
             {
               description: 'Crowned their Unaligned Traveler',
               emoji: '👑',
-              label: NonEleCrownRole.name,
+              label: (await interaction.guild.roles.fetch(NonEleCrownID)).name,
               value: NonEleCrownID
             },
             {
               default: target.roles.cache.has(WhaleID),
               description: 'Spent $1000, or have c6 5* chars or r5 5* weapons',
               emoji: '💰',
-              label: WhaleRole.name,
+              label: (await interaction.guild.roles.fetch(WhaleID)).name,
               value: WhaleID
             }
           ]),
@@ -192,6 +189,7 @@ export default new Command({
             totalExp += exp;
             expText = `${expText} \nAbyss clear (+${exp})`;
             newRolesList = newRolesList.filter((role) => role !== AbyssalConquerorID);
+
             const spiralAbyssEmbed = new MessageEmbed()
                 .setColor(EmbedColor)
                 .setTitle('**Cleared with traveler?**')
@@ -311,9 +309,7 @@ export default new Command({
 
           if (newRolesList.includes(NonEleCrownID)) {
             totalExp += 30000;
-
-            expText = `${expText} \n${crownName(NonEleCrownID)} (+${exp})`;
-
+            expText = `${expText} \n${crownName(NonEleCrownID)} (+30000)`;
             newRolesList = newRolesList.filter((role) => role !== NonEleCrownID);
             interaction.client.emit('travelerCrown', target, {
               crownRoleID: NonEleCrownID,
@@ -323,13 +319,14 @@ export default new Command({
 
           if (newRolesList.includes(WhaleID)) {
             totalExp += exp;
-            newRolesList = newRolesList.filter((role) => role !== WhaleID);
             expText = `${expText} \nWhaled in the game (+${exp})`;
+            newRolesList = newRolesList.filter((role) => role !== WhaleID);
           }
 
           for (const exploreRole of explorationRoles) {
             if (newRolesList.includes(exploreRole)) {
               totalExp += exp;
+              expText = `${expText} \n${exploreName(exploreRole)} (+${exp})`;
               newRolesList = newRolesList.filter((role) => role !== exploreRole);
             }
           }
@@ -338,6 +335,10 @@ export default new Command({
             {
               name: '**Calculated Exp**',
               value: `${totalExp}`
+            },
+            {
+              name: '**Exp Distribution**',
+              value: expText
             }
           ]);
           await interaction.editReply({
