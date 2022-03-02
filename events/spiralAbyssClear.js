@@ -1,7 +1,6 @@
 import { Event } from '@ruinguard/core';
 // eslint-disable-next-line no-unused-vars
 import { GuildMember } from 'discord.js';
-import { Timestamp } from 'firebase-admin/firestore';
 import { db } from '../lib/firebase.cjs';
 
 export default new Event({
@@ -24,7 +23,7 @@ export default new Event({
       };
     if (!memberData.exists) {
       const data = {
-        date: Timestamp.fromDate(new Date()),
+        timestamp: Date.now(),
         userID: target.user.id
       };
       await db
