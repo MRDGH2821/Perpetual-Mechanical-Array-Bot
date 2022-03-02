@@ -1,9 +1,10 @@
 // eslint-disable-next-line no-unused-vars
 import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { SlashCommandBuilder, roleMention } from '@discordjs/builders';
 import { archivesID, confessionID } from '../lib/channelIDs.js';
+import { ArchonsID } from '../lib/roleIDs.js';
 import { Command } from '@ruinguard/core';
 import { EmbedColor } from '../lib/constants.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
 
 const cmd = new SlashCommandBuilder()
   .setName('confession')
@@ -50,14 +51,20 @@ export default new Command({
         });
 
     if (anonymous) {
-      channelConfess.send({ embeds: [embedAnon] });
+      channelConfess.send({
+        content: roleMention(ArchonsID),
+        embeds: [embedAnon]
+      });
       await interaction.reply({
         content: `Confession sent as Anonymous!\nCheck out ${channelConfess}`,
         ephemeral: true
       });
     }
     else {
-      channelConfess.send({ embeds: [embedConfess] });
+      channelConfess.send({
+        content: roleMention(ArchonsID),
+        embeds: [embedConfess]
+      });
       await interaction.reply({
         content: `Confession sent!\nCheck out ${channelConfess}`,
         ephemeral: true
