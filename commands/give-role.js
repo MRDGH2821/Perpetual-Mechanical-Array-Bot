@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 /* eslint-disable max-lines */
 import {
   AbyssalConquerorID,
@@ -21,7 +22,11 @@ import {
   MessageSelectMenu
 } from 'discord.js';
 import { SlashCommandBuilder, roleMention } from '@discordjs/builders';
-import { crownRoles, explorationRoles } from '../lib/achievement-roles.js';
+import {
+  crownName,
+  crownRoles,
+  explorationRoles
+} from '../lib/achievement-roles.js';
 import CheckRolePerms from '../lib/staff-roles.js';
 import { Command } from '@ruinguard/core';
 import { EmbedColor } from '../lib/constants.js';
@@ -63,11 +68,9 @@ export default new Command({
         rolesMenu = new MessageSelectMenu()
           .setCustomId('roles')
           .setPlaceholder('Select roles')
-          // eslint-disable-next-line no-magic-numbers
           .setMinValues(1)
           .addOptions([
             {
-              default: target.roles.cache.has(AbyssalConquerorID),
               description:
                 'Completed Spiral Abyss 36/36 & all Spiral abyss achievements',
               emoji: '🌀',
@@ -147,11 +150,12 @@ export default new Command({
         .awaitMessageComponent({
           componentType: 'SELECT_MENU',
           filter: filterCollector,
-          time: 60000
+          time: 30000
         })
         .then(async(interacted) => {
-          console.log('Interacted:', interacted);
-          let newRolesList = [],
+          // console.log('Interacted:', interacted);
+          let expText = '',
+            newRolesList = [],
             newRolesText = '',
             oldRolesText = '',
             totalExp = 0;
@@ -184,20 +188,9 @@ export default new Command({
             fetchReply: true
           });
 
-          if (newRolesList.includes(WhaleID)) {
-            totalExp += exp;
-            newRolesList = newRolesList.filter((role) => role !== WhaleID);
-          }
-
-          for (const exploreRole of explorationRoles) {
-            if (newRolesList.includes(exploreRole)) {
-              totalExp += exp;
-              newRolesList = newRolesList.filter((role) => role !== exploreRole);
-            }
-          }
-
           if (newRolesList.includes(AbyssalConquerorID)) {
             totalExp += exp;
+            expText = `${expText} \nAbyss clear (+${exp})`;
             newRolesList = newRolesList.filter((role) => role !== AbyssalConquerorID);
             const spiralAbyssEmbed = new MessageEmbed()
                 .setColor(EmbedColor)
@@ -230,35 +223,40 @@ export default new Command({
                 if (button.customId === 'abyssWithTraveler') {
                   totalExp += exp;
                   interaction.client.emit('spiralAbyssClear', target, true);
+                  expText = `${expText} \nAbyss clear with Traveler (+${exp})`;
+                }
+                else {
+                  interaction.client.emit('spiralAbyssClear', target, false);
                 }
               })
               .catch((error) => {
                 console.error(error);
-                interaction.client.emit('spiralAbyssClear', target, true);
+                interaction.client.emit('spiralAbyssClear', target, false);
               });
           }
 
           for (const crownRole of crownRoles) {
             if (newRolesList.includes(crownRole)) {
               newRolesList = newRolesList.filter((role) => role !== crownRole);
+              let crownAmt = 1;
               const crownAmtRow = new MessageActionRow().addComponents([
                   new MessageButton()
                     .setCustomId('1')
                     .setEmoji('1️⃣')
-                    .setStyle('PRIMARY'),
+                    .setStyle('SECONDARY'),
                   new MessageButton()
                     .setCustomId('2')
                     .setEmoji('2️⃣')
-                    .setStyle('PRIMARY'),
+                    .setStyle('SECONDARY'),
                   new MessageButton()
                     .setCustomId('3')
                     .setEmoji('3️⃣')
-                    .setStyle('PRIMARY')
+                    .setStyle('SECONDARY')
                 ]),
                 crownRoleEmbed = new MessageEmbed()
                   .setColor(EmbedColor)
-                  .setTitle('**Cleared with traveler?**')
-                  .setDescription(`Did ${target} clear abyss with traveler?`),
+                  .setTitle('**How many crowns?**')
+                  .setDescription(`How many crowns did ${target} use on traveler for ${roleMention(crownRole)}?`),
                 // eslint-disable-next-line no-await-in-loop
                 crownStat = await interaction.editReply({
                   components: [crownAmtRow],
@@ -270,47 +268,72 @@ export default new Command({
                 .awaitMessageComponent({
                   componentType: 'BUTTON',
                   filter: filterCollector,
-                  time: 20000
+                  time: 10000
                 })
                 // eslint-disable-next-line no-loop-func
                 .then((button) => {
-                  let factor = 1;
+                  let expGain = exp;
                   if (button.customId === '1') {
+                    crownAmt = 1;
                     totalExp += exp;
                   }
                   else if (button.customId === '2') {
-                    // eslint-disable-next-line no-magic-numbers
-                    factor = 2;
-                    totalExp += exp * factor;
+                    crownAmt = 2;
+                    totalExp += exp * crownAmt;
+                    expGain = exp * crownAmt;
                   }
                   else if (button.customId === '3') {
-                    // eslint-disable-next-line no-magic-numbers
-                    factor = 3;
-                    // eslint-disable-next-line no-magic-numbers
-                    totalExp += exp * factor * 2;
+                    crownAmt = 3;
+
+                    totalExp += exp * crownAmt * 2;
+                    expGain = exp * crownAmt * 2;
                   }
-                  interaction.client.emit(
-                    'travelerCrown',
-                    target,
-                    factor,
-                    crownRole
-                  );
+
+                  expText = `${expText} \n${crownName(crownRole)}: ${crownAmt} (+${expGain})`;
+
+                  interaction.client.emit('travelerCrown', target, {
+                    crownRoleID: crownRole,
+                    crowns: crownAmt
+                  });
                 })
                 // eslint-disable-next-line no-loop-func
                 .catch((error) => {
                   totalExp += exp;
                   console.error(error);
-                  // eslint-disable-next-line no-magic-numbers
-                  interaction.client.emit(
-                    'travelerCrown',
-                    target,
-                    // eslint-disable-next-line no-magic-numbers
-                    1,
-                    crownRole
-                  );
+                  expText = `${expText} \n${crownName(crownRole)}: ${crownAmt} (+${exp})`;
+                  interaction.client.emit('travelerCrown', target, {
+                    crownRoleID: crownRole,
+                    crowns: crownAmt
+                  });
                 });
             }
           }
+
+          if (newRolesList.includes(NonEleCrownID)) {
+            totalExp += 30000;
+
+            expText = `${expText} \n${crownName(NonEleCrownID)} (+${exp})`;
+
+            newRolesList = newRolesList.filter((role) => role !== NonEleCrownID);
+            interaction.client.emit('travelerCrown', target, {
+              crownRoleID: NonEleCrownID,
+              crowns: 1
+            });
+          }
+
+          if (newRolesList.includes(WhaleID)) {
+            totalExp += exp;
+            newRolesList = newRolesList.filter((role) => role !== WhaleID);
+            expText = `${expText} \nWhaled in the game (+${exp})`;
+          }
+
+          for (const exploreRole of explorationRoles) {
+            if (newRolesList.includes(exploreRole)) {
+              totalExp += exp;
+              newRolesList = newRolesList.filter((role) => role !== exploreRole);
+            }
+          }
+
           introEmb.addFields([
             {
               name: '**Calculated Exp**',
