@@ -13,7 +13,8 @@ const cmd = new SlashCommandBuilder()
     .setName('confess')
     .setDescription('Enter your confession!')
     .setRequired(true))
-  .addBooleanOption((option) => option.setName('anonymous').setDescription('Want to be Anonymous?'));
+  .addBooleanOption((option) => option.setName('anonymous').setDescription('Want to be Anonymous?'))
+  .addBooleanOption((option) => option.setName('ping_archons').setDescription('Notify Archons?'));
 
 export default new Command({
   data: cmd,
@@ -26,6 +27,8 @@ export default new Command({
    */
   async run(interaction) {
     const anonymous = interaction.options.getBoolean('anonymous') || false,
+      archonNotification =
+        interaction.options.getBoolean('ping_archons') || false,
       channelConfess = await interaction.guild.channels.fetch(confessionID),
       channelLog = await interaction.guild.channels.fetch(archivesID),
       confessionText = interaction.options.getString('confess'),
@@ -49,10 +52,14 @@ export default new Command({
           }),
           name: interaction.user.tag
         });
+    let text = ' ';
+    if (archonNotification) {
+      text = roleMention(ArchonsID);
+    }
 
     if (anonymous) {
       channelConfess.send({
-        content: roleMention(ArchonsID),
+        content: text,
         embeds: [embedAnon]
       });
       await interaction.reply({
@@ -62,7 +69,7 @@ export default new Command({
     }
     else {
       channelConfess.send({
-        content: roleMention(ArchonsID),
+        content: text,
         embeds: [embedConfess]
       });
       await interaction.reply({
