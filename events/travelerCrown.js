@@ -1,51 +1,45 @@
-import {
-  AnemoCrownID,
-  ElectroCrownID,
-  GeoCrownID,
-  NonEleCrownID
-} from '../lib/roleIDs.js';
 import { Event } from '@ruinguard/core';
 // eslint-disable-next-line no-unused-vars
 import { GuildMember } from 'discord.js';
+import { NonEleCrownID } from '../lib/roleIDs.js';
+import { crownName } from '../lib/achievement-roles.js';
 import { db } from '../lib/firebase.cjs';
 
 export default new Event({
-  event: 'spiralAbyssClear',
+  event: 'travelerCrown',
 
   /**
    * save spiral abyss clear entry to database
+   * @async
    * @function run
    * @param {GuildMember} target - the guild member who crowned traveler
-   * @param {number} crowns - number of crowns
-   * @param {string} crownRoleID - the element role
+   * @param {Object} crownOption - crown options
+   * @param {number} crownOption.crowns - number of crowns
+   * @param {string} crownOption.crownRoleID - the element role
    */
-  async run(target, crowns, crownRoleID) {
-    const crownData = {
-      crowns,
-      userID: target.user.id
-    };
-    let crownName = '';
+  async run(target, { crowns, crownRoleID }) {
+    console.log('Crown ID: ', crownRoleID);
 
-    if (crownRoleID === AnemoCrownID) {
-      crownName = 'anemo-crown';
+    const crownData = {
+        crowns,
+        userID: target.user.id
+      },
+      crownname = crownName(crownRoleID);
+    console.log('Crown name before: ', crownname);
+
+    if (crownRoleID === NonEleCrownID) {
+      crownData.crowns = 1;
     }
-    else if (crownRoleID === ElectroCrownID) {
-      crownName = 'electro-crown';
-    }
-    else if (crownRoleID === GeoCrownID) {
-      crownName = 'geo-crown';
-    }
-    else if (crownRoleID === NonEleCrownID) {
-      crownName = 'unaligned-crown';
-    }
+
+    console.log('Crown name after:', crownname);
 
     await db
-      .collection(`${crownName}`)
+      .collection(`${crownname}`)
       .doc(`${target.user.id}`)
       .set(crownData)
-      .then(() => console.log(`${crownName} Crown data added!`))
+      .then(() => console.log(`${crownname} Crown data added!`))
       .catch((error) => {
-        console.log(`An error occurred while adding ${crownName} crown data`);
+        console.log(`An error occurred while adding ${crownname} crown data`);
         console.error(error);
       });
   }
