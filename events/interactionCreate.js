@@ -55,6 +55,16 @@ export default new Event({
       if (interaction.isAutocomplete()) {
         console.log('Loading Auto-complete');
         switch (interaction.options.getSubcommand()) {
+        case 'palm_vortex': {
+          console.log('Loading AMC Skill techs');
+          const focusedVal = interaction.options.getFocused(),
+            values = AMCTechs.skillTechs.filter((choice) => choice.name.startsWith(focusedVal));
+          await interaction.respond(values.map((choice) => ({
+            name: choice.name,
+            value: choice.id
+          })));
+          break;
+        }
         case 'gust_surge': {
           console.log('Loading AMC Burst techs');
           const focusedVal = interaction.options.getFocused(),
@@ -75,7 +85,7 @@ export default new Event({
         case 'wake_of_earth': {
           console.log('Loading GMC burst techs');
           const focusedVal = interaction.options.getFocused(),
-            values = GMCTechs.skillTechs.filter((choice) => choice.name.startsWith(focusedVal));
+            values = GMCTechs.burstTechs.filter((choice) => choice.name.startsWith(focusedVal));
           await interaction.respond(values.map((choice) => ({ name: choice.name, value: choice.id })));
           break;
         }

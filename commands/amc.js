@@ -9,6 +9,14 @@ export default new Command({
     .setName('amc')
     .setDescription('Anemo Main Character')
     .addSubcommand((subcommand) => subcommand
+      .setName('palm_vortex')
+      .setDescription('AMC Skill')
+      .addStringOption((option) => option
+        .setName('techs')
+        .setDescription('Technologies which power skill')
+        .setRequired(true)
+        .setAutocomplete(true)))
+    .addSubcommand((subcommand) => subcommand
       .setName('gust_surge')
       .setDescription('AMC Burst')
       .addStringOption((option) => option
@@ -30,6 +38,15 @@ export default new Command({
     case 'gust_surge': {
       const selectedID = interaction.options.getString('techs'),
         skill = AMCTechs.burstTechs.find((tech) => tech.id === selectedID);
+      console.log(selectedID);
+      await interaction.reply({
+        content: `**${skill.name}**\n\n${skill.gif}`
+      });
+      break;
+    }
+    case 'palm_vortex': {
+      const selectedID = interaction.options.getString('techs'),
+        skill = AMCTechs.skillTechs.find((tech) => tech.id === selectedID);
       console.log(selectedID);
       await interaction.reply({
         content: `**${skill.name}**\n\n${skill.gif}`
