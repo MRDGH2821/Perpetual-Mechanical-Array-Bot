@@ -117,6 +117,7 @@ export default new Command({
               value: ElectroCrownID
             },
             {
+              default: target.roles.cache.has(NonEleCrownID),
               description: 'Crowned their Unaligned Traveler',
               emoji: '👑',
               label: (await interaction.guild.roles.fetch(NonEleCrownID)).name,
@@ -158,8 +159,12 @@ export default new Command({
             totalExp = 0;
           console.log('Role IDs: ', interacted.values);
           for (const roleID of interacted.values) {
+            if (crownRoles.includes(roleID)) {
+              newRolesText = `${roleMention(roleID)} ${newRolesText}`;
+              newRolesList.push(roleID);
+            }
             // eslint-disable-next-line no-negated-condition
-            if (!target.roles.cache.has(roleID)) {
+            else if (!target.roles.cache.has(roleID)) {
               newRolesText = `${roleMention(roleID)} ${newRolesText}`;
               newRolesList.push(roleID);
             }
@@ -170,7 +175,7 @@ export default new Command({
           console.log('New Roles: ', newRolesList);
           introEmb.addFields([
             {
-              name: '**Existing roles (except crowns)**',
+              name: '**Existing roles**',
               value: oldRolesText || 'None'
             },
             {
@@ -359,6 +364,7 @@ export default new Command({
         .catch(async(error) => {
           const errorEmb = new MessageEmbed()
             .setTitle('**ERROR!**')
+            .setColor(EmbedColor)
             .setDescription(`Error dump:\n\n${error}`);
           await interaction.editReply({
             components: [],
