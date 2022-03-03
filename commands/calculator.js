@@ -106,7 +106,7 @@ export default new Command({
             },
             {
               name: '**Result**',
-              value: print('$atk * (1 + ($cr * $cd)) = **$res**', {
+              value: print('$atk * (1 + ($cr% * $cd%)) = **$res**', {
                 atk,
                 cd: cDmg,
                 cr: cRate,
@@ -154,14 +154,14 @@ export default new Command({
       resultEmb.setTitle('**Damage Comparision**').addFields([
         {
           name: '**First Set**',
-          value: `Attack: \`${atk1}\` \nCrit Rate: \`${cRate1}\` \nCrit Damage: \`${cDmg1}\` \n\nResult: ${round(
+          value: `Attack: \`${atk1}\` \nCrit Rate: \`${cRate1}%\` \nCrit Damage: \`${cDmg1}%\` \n\nResult: ${round(
             dmg1,
             2
           )}`
         },
         {
           name: '**Second Set**',
-          value: `Attack: \`${atk2}\` \nCrit Rate: \`${cRate2}\` \nCrit Damage: \`${cDmg2}\` \n\nResult: ${round(
+          value: `Attack: \`${atk2}\` \nCrit Rate: \`${cRate2}%\` \nCrit Damage: \`${cDmg2}%\` \n\nResult: ${round(
             dmg2,
             2
           )}`
