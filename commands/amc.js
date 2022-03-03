@@ -25,24 +25,20 @@ export default new Command({
    * @returns {Promise<void>} - interaction promise object
    */
   // eslint-disable-next-line consistent-return
-  run(interaction) {
-    if (interaction.isAutocomplete()) {
-      const focusedVal = interaction.options.getFocused(),
-        values = AMCTechs.burstTechs.filter((choice) => choice.name.startsWith(focusedVal));
-      return interaction.respond(values.map((choice) => ({ name: choice.name, value: choice.id })));
-    }
-
+  async run(interaction) {
     switch (interaction.options.getSubcommand()) {
     case 'gust_surge': {
       const selectedID = interaction.options.getString('techs'),
         skill = AMCTechs.burstTechs.find((tech) => tech.id === selectedID);
       console.log(selectedID);
-      return interaction.reply({
-        content: `**${skill.name}** \n\n${skill.gif}`
+      await interaction.reply({
+        content: `**${skill.name}**\n\n${skill.gif}`
       });
+      break;
     }
     case 'guide': {
-      return interaction.editReply('https://keqingmains.com/anemo-traveler/');
+      await interaction.editReply('https://keqingmains.com/anemo-traveler/');
+      break;
     }
       // no default
     }

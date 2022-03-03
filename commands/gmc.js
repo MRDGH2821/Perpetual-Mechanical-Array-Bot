@@ -25,13 +25,7 @@ export default new Command({
    * @returns {Promise<void>} - interaction promise object
    */
   // eslint-disable-next-line consistent-return
-  run(interaction) {
-    if (interaction.isAutocomplete()) {
-      const focusedVal = interaction.options.getFocused(),
-        values = GMCTechs.skillTechs.filter((choice) => choice.name.startsWith(focusedVal));
-      return interaction.respond(values.map((choice) => ({ name: choice.name, value: choice.id })));
-    }
-
+  async run(interaction) {
     switch (interaction.options.getSubcommand()) {
     case 'starfell_sword': {
       const selectedID = interaction.options.getString('techs'),

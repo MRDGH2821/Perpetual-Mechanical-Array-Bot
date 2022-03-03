@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+import { AMCTechs, GMCTechs } from '../lib/TravelerTechnologies.js';
 // eslint-disable-next-line no-unused-vars
 import { Interaction, MessageEmbed } from 'discord.js';
 import { EmbedColor } from '../lib/constants.js';
@@ -15,7 +15,6 @@ export default new Event({
    * @param {Interaction} interaction - interaction object
    */
   async run(interaction) {
-    // eslint-disable-next-line padded-blocks
     try {
       if (interaction.isApplicationCommand()) {
         console.log('------');
@@ -51,6 +50,43 @@ export default new Event({
         logchannel.send({
           embeds: [logEmbed]
         });
+      }
+
+      if (interaction.isAutocomplete()) {
+        console.log('Loading Auto-complete');
+        switch (interaction.options.getSubcommand()) {
+        case 'gust_surge': {
+          console.log('Loading AMC Burst techs');
+          const focusedVal = interaction.options.getFocused(),
+            values = AMCTechs.burstTechs.filter((choice) => choice.name.startsWith(focusedVal));
+          await interaction.respond(values.map((choice) => ({
+            name: choice.name,
+            value: choice.id
+          })));
+          break;
+        }
+        case 'starfell_sword': {
+          console.log('Loading GMC skill techs');
+          const focusedVal = interaction.options.getFocused(),
+            values = GMCTechs.skillTechs.filter((choice) => choice.name.startsWith(focusedVal));
+          await interaction.respond(values.map((choice) => ({ name: choice.name, value: choice.id })));
+          break;
+        }
+        case 'wake_of_earth': {
+          console.log('Loading GMC burst techs');
+          const focusedVal = interaction.options.getFocused(),
+            values = GMCTechs.skillTechs.filter((choice) => choice.name.startsWith(focusedVal));
+          await interaction.respond(values.map((choice) => ({ name: choice.name, value: choice.id })));
+          break;
+        }
+
+        default: {
+          console.log('There are no techs');
+          const values = [{ name: 'No techs found.' }];
+          await interaction.respond(values.map((choice) => ({ name: choice.name })));
+          break;
+        }
+        }
       }
 
       // eslint-disable-next-line no-underscore-dangle
