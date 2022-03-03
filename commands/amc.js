@@ -54,7 +54,7 @@ export default new Command({
       break;
     }
     case 'guide': {
-      await interaction.editReply('https://keqingmains.com/anemo-traveler/');
+      await interaction.reply('https://keqingmains.com/anemo-traveler/');
       break;
     }
       // no default
