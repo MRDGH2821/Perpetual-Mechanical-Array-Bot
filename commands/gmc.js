@@ -16,6 +16,14 @@ export default new Command({
         .setDescription('Technologies which power skill')
         .setRequired(true)
         .setAutocomplete(true)))
+    .addSubcommand((subcommand) => subcommand
+      .setName('wake_of_earth')
+      .setDescription('GMC Burst')
+      .addStringOption((option) => option
+        .setName('techs')
+        .setDescription('Technologies which power burst')
+        .setRequired(true)
+        .setAutocomplete(true)))
     .addSubcommand((subcommand) => subcommand.setName('guide').setDescription('Guide on GMC')),
 
   /**
@@ -31,13 +39,23 @@ export default new Command({
       const selectedID = interaction.options.getString('techs'),
         skill = GMCTechs.skillTechs.find((tech) => tech.id === selectedID);
       console.log(selectedID);
-      return interaction.reply({
-        content: `**${skill.name}** \n\n${skill.gif}`
+      await interaction.reply({
+        content: `**${skill.name}**\n\n${skill.gif}`
       });
+      break;
+    }
+    case 'wake_of_earth': {
+      const selectedID = interaction.options.getString('techs'),
+        skill = GMCTechs.burstTechs.find((tech) => tech.id === selectedID);
+      console.log(selectedID);
+      await interaction.reply({
+        content: `**${skill.name}**\n\n${skill.gif}`
+      });
+      break;
     }
 
     case 'guide': {
-      return interaction.reply({
+      await interaction.reply({
         content: 'https://keqingmains.com/gmc'
       });
     }
