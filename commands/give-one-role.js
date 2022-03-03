@@ -41,6 +41,7 @@ export default new Command({
    * @param {CommandInteraction} interaction - interaction object
    */
   async run(interaction) {
+    await interaction.deferReply();
     const exp = 250,
       filterCollector = (interacted) => {
         interacted.deferUpdate();
@@ -165,7 +166,8 @@ export default new Command({
         });
       }
       target.roles.add(role);
-      await interaction.reply({
+      await interaction.editReply({
+        components: [],
         embeds: [
           new MessageEmbed()
             .setColor(EmbedColor)
@@ -174,17 +176,20 @@ export default new Command({
         ]
       });
       await interaction.followUp({
+        components: [],
         content: `>award ${target.id} ${totalExp}`,
         ephemeral: true
       });
       await interaction.followUp({
+        components: [],
         content:
           'Copy paste that command. And a message by <@!485962834782453762> should come up like [this](https://i.imgur.com/yQvOAzZ.png)',
         ephemeral: true
       });
     }
     else {
-      await interaction.reply({
+      await interaction.editReply({
+        components: [],
         content: `You can't give roles, not even to yourself ${PepeKekPoint}`,
         ephemeral: true
       });
