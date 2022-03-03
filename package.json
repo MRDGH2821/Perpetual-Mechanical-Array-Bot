@@ -30,14 +30,14 @@
   "homepage": "https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot#readme",
   "dependencies": {
     "@discordjs/builders": "^0.12.0",
-    "@ruinguard/core": "^1.1.2",
+    "@ruinguard/core": "^2.0.2",
     "@ruinguard/essentials": "^1.0.0",
     "axios": "^0.26.0",
     "custom-env": "^2.0.1",
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
     "firebase-admin": "^10.0.2",
-    "mathjs": "^10.2.0"
+    "mathjs": "^10.3.0"
   },
   "devDependencies": {
     "commitizen": "^4.2.4",
