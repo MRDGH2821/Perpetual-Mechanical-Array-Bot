@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { pathToFileURL } from 'url';
 import { resolve } from 'path';
 
 /**
@@ -11,9 +12,9 @@ export function arrayOfFilesGenerator(folderPath) {
   const arrayOfFiles = [],
     folder = resolve(folderPath);
   return fs.readdir(folder, (err, files) => {
-    files.forEach((file) => {
+    files.forEach(async(file) => {
       // console.log(file);
-      const jsfile = `${folder}\\${file}`;
+      const jsfile = await import(pathToFileURL(`${folder}\\${file}`));
       arrayOfFiles.push(jsfile);
     });
     // console.log(arrayOfFiles);
