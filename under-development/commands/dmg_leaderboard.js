@@ -7,7 +7,7 @@ import {
 } from 'discord.js';
 import { SlashCommandBuilder, hyperlink } from '@discordjs/builders';
 import { Command } from '@ruinguard/core';
-import { staff } from '../lib/staff-roles.js';
+import { staff } from '../../lib/staff-roles.js';
 export default new Command({
   data: new SlashCommandBuilder()
     .setName('dmg_leaderboard')
