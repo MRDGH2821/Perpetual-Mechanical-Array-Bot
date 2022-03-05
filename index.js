@@ -9,3 +9,9 @@ const bot = new Bot({ modules: [
 ] });
 
 await bot.login(configuration.token);
+
+// bot.emit('ready', bot);
+
+bot.once('ready', (client) => {
+  console.log(`Ready from index file! Logged in as ${client.user.tag}`);
+});
