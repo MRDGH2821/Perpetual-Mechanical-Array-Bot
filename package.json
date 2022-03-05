@@ -31,7 +31,6 @@
   "dependencies": {
     "@discordjs/builders": "^0.12.0",
     "@ruinguard/core": "^2.0.3",
-    "@ruinguard/essentials": "^1.0.0",
     "axios": "^0.26.0",
     "custom-env": "^2.0.1",
     "discord.js": "^13.6.0",
