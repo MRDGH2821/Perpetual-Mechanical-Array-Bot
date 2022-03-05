@@ -13,5 +13,5 @@ export default await new Module({
   commands: getDir('./commands').path,
   events: getDir('./events').path,
   intents: cmdIntents.bitfield,
-  name: 'PMA commands, Events & Triggers'
+  name: 'PMA commands & Events'
 });
