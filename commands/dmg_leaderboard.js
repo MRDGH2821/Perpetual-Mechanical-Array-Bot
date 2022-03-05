@@ -7,7 +7,7 @@ import {
 } from 'discord.js';
 import { SlashCommandBuilder, hyperlink } from '@discordjs/builders';
 import { Command } from '@ruinguard/core';
-import { staff } from '../../lib/staff-roles.js';
+import { staff } from '../lib/staff-roles.js';
 export default new Command({
   data: new SlashCommandBuilder()
     .setName('dmg_leaderboard')
@@ -20,38 +20,16 @@ export default new Command({
       .setName('category')
       .setDescription('Damage category')
       .setRequired(true)
-      .addChoices([
-        {
-          name: 'Anemo: Palm Vortex',
-          value: 'anemo-dmg-skill'
-        },
-        {
-          name: 'Geo: Starfell Sword',
-          value: 'geo-dmg-skill'
-        },
-        {
-          name: 'Electro: Lightening Blade',
-          value: 'electro-dmg-skill'
-        },
-        {
-          name: 'Universal: 5th Normal Atk dmg',
-          value: 'uni-dmg-n5'
-        }
-      ]))
+      .addChoice('Anemo: Palm Vortex', 'anemo-dmg-skill')
+      .addChoice('Geo: Starfell Sword', 'geo-dmg-skill')
+      .addChoice('Electro: Lightening Blade', 'electro-dmg-skill')
+      .addChoice('Universal: 5th Normal Atk dmg', 'uni-dmg-n5'))
     .addStringOption((option) => option
       .setName('type')
       .setDescription('Type category')
       .setRequired(true)
-      .addChoices([
-        {
-          name: 'Solo',
-          value: 'solo'
-        },
-        {
-          name: 'Open',
-          value: 'open'
-        }
-      ]))
+      .addChoice('Solo', 'solo')
+      .addChoice('Open', 'open'))
     .addIntegerOption((option) => option
       .setName('score')
       .setDescription('Score i.e. Damage value')
