@@ -8,8 +8,8 @@ const cmdIntents = new Intents([
 ]);
 
 export default await new Module({
-  commands: arrayOfFilesGenerator('./commands'),
-  events: arrayOfFilesGenerator('./events'),
+  commands: await arrayOfFilesGenerator('./commands'),
+  events: await arrayOfFilesGenerator('./events'),
   intents: cmdIntents.bitfield,
   name: 'PMA commands & Events'
 });
