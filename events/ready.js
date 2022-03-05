@@ -8,7 +8,7 @@ export default new Event({
 
   /**
    * event run when ready
-   * @function
+   * @function run
    * @param {Client} client - client object
    */
   run(client) {
