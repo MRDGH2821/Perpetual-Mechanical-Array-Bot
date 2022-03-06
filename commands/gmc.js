@@ -1,98 +1,66 @@
+// eslint-disable-next-line no-unused-vars
+import { AutocompleteInteraction, CommandInteraction } from 'discord.js';
 import { Command } from '@ruinguard/core';
+import { GMCTechs } from '../lib/TravelerTechnologies.js';
+import { SlashCommandBuilder } from '@discordjs/builders';
 
 export default new Command({
-  data: {
-    name: 'gmc',
-    description: 'Geo Main Character',
-    options: [
-      {
-        type: 1,
-        name: 'starfell_sword',
-        description: 'GMC skill',
-        options: [
-          {
-            type: 3,
-            name: 'techs',
-            description: 'Technologies which power skill',
-            required: true,
-            choices: [
-              {
-                value: 'rockstep',
-                name: 'Rock Step'
-              },
-              {
-                value: 'rockstep_noelle',
-                name: 'Rockstep using Noelle'
-              },
-              {
-                value: 'phantom_step',
-                name: 'Phantom step'
-              },
-              {
-                value: 'phantom_step_noelle',
-                name: 'Phantom step using Noelle'
-              },
-              {
-                value: 'phantom_step_diluc',
-                name: 'Phantom step using Diluc'
-              },
-              {
-                value: 'solarstep',
-                name: 'Solar Step'
-              },
-              {
-                value: 'star_wall',
-                name: 'Star Wall'
-              },
-              {
-                value: 'aimrock',
-                name: 'Aim Starfell sword'
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  },
+  data: new SlashCommandBuilder()
+    .setName('gmc')
+    .setDescription('Geo Main Character')
+    .addSubcommand((subcommand) => subcommand
+      .setName('starfell_sword')
+      .setDescription('GMC Skill')
+      .addStringOption((option) => option
+        .setName('techs')
+        .setDescription('Technologies which power skill')
+        .setRequired(true)
+        .setAutocomplete(true)))
+    .addSubcommand((subcommand) => subcommand
+      .setName('wake_of_earth')
+      .setDescription('GMC Burst')
+      .addStringOption((option) => option
+        .setName('techs')
+        .setDescription('Technologies which power burst')
+        .setRequired(true)
+        .setAutocomplete(true)))
+    .addSubcommand((subcommand) => subcommand.setName('guide').setDescription('Guide on GMC')),
+
+  /**
+   * displays GMC techs & guide
+   * @function run
+   * @param {CommandInteraction | AutocompleteInteraction} interaction - interaction object
+   * @returns {Promise<void>} - interaction promise object
+   */
+  // eslint-disable-next-line consistent-return
   async run(interaction) {
-    await interaction.deferReply('gmc');
-    const option = interaction.options.getString('techs');
-    let gif,
-      name;
-    switch (option) {
-    case 'rockstep':
-      gif = 'https://i.imgur.com/Hwqb8ng.mp4';
-      name = 'Rock step';
-      break;
-    case 'rockstep_noelle':
-      gif = 'https://i.imgur.com/mtTFyzo.mp4';
-      name = 'Rockstep using Noelle';
-      break;
-    case 'phantom_step':
-      gif = 'https://i.imgur.com/R1l9a1e.mp4';
-      name = 'Phantom step';
-      break;
-    case 'phantom_step_noelle':
-      gif = 'https://i.imgur.com/kUzqUF1.mp4';
-      name = 'Phantom step using Noelle';
-      break;
-    case 'phantom_step_diluc':
-      gif = 'https://i.imgur.com/1cbBwCr.mp4';
-      name = 'Phantom step using Diluc';
-      break;
-    case 'solarstep':
-      gif = 'https://i.imgur.com/6zhpNF3.mp4';
-      name = 'Solar Step';
-      break;
-    case 'star_wall':
-      gif = 'https://i.imgur.com/bF1lrtI.mp4';
-      name = 'Star Wall';
-      break;
-    case 'aimrock':
-      gif = 'https://i.imgur.com/1xn1Cd9.mp4';
-      name = 'Aim Starfell sword';
+    switch (interaction.options.getSubcommand()) {
+    case 'starfell_sword': {
+      const selectedID = interaction.options.getString('techs'),
+        skill = GMCTechs.skillTechs.find((tech) => tech.id === selectedID);
+      console.log(selectedID);
+      await interaction.reply({
+        content: `**${skill.name}**\n\n${skill.gif}`
+      });
       break;
     }
-    await interaction.editReply({ content: `**${name}**\n\n${gif}` });
+    case 'wake_of_earth': {
+      const selectedID = interaction.options.getString('techs'),
+        skill = GMCTechs.burstTechs.find((tech) => tech.id === selectedID);
+      console.log(selectedID);
+      await interaction.reply({
+        content: `**${skill.name}**\n\n${skill.gif}`
+      });
+      break;
+    }
+
+    case 'guide': {
+      await interaction.reply({
+        content: 'https://keqingmains.com/gmc'
+      });
+    }
+
+      // no default
+    }
   }
 });

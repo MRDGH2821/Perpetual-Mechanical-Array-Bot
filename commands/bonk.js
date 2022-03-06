@@ -13,7 +13,8 @@ export default new Command({
       .setName('target')
       .setDescription('The member to bonk')
       .setRequired(true))
-    .addStringOption((option) => option.setName('reason').setDescription('Reason to bonk')),
+    .addStringOption((option) => option.setName('reason').setDescription('Reason to bonk'))
+    .addBooleanOption((option) => option.setName('is_horny').setDescription('Is the target horny?')),
 
   flags: [CommandFlags.FLAGS.GUILD_ONLY],
 
@@ -32,13 +33,19 @@ export default new Command({
         .setTitle('**Bonked!**')
         .setColor(EmbedColor)
         .setThumbnail(bonkTarget.displayAvatarURL({ dynamic: true })),
-      isSelf = bonkTarget === interaction.user;
+      isSelf = bonkTarget === interaction.user,
+      is_horny = interaction.options.getBoolean('is_horny') || false;
 
     if (reason === 'none') {
-      reason = bonk.bonkReason();
+      if (is_horny) {
+        reason = bonk.bonkHornyReason();
+      }
+      else {
+        reason = bonk.bonkReason();
+      }
     }
 
-    if (bonk.isHorny(reason)) {
+    if (is_horny || bonk.isHorny(reason)) {
       if (isSelf) {
         embedMsg.setImage(bonk.selfHornyBonkGif());
       }

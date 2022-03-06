@@ -1,14 +1,17 @@
 import { Bot } from '@ruinguard/core';
-import essentials from '@ruinguard/essentials';
-import events from './EventsIndex.js';
-import commands from './CommandIndex.js';
-import { config as ENV } from 'dotenv';
-ENV();
+import commands from './PMAIndex.js';
+import { configuration } from './lib/ConfigManager.js';
+import triggers from './TriggerIndex.js';
 
 const bot = new Bot({ modules: [
-  essentials,
-  events,
-  commands
+  commands,
+  triggers
 ] });
 
-await bot.login(process.env.TOKEN);
+await bot.login(configuration.token);
+
+// bot.emit('ready', bot);
+
+bot.once('ready', (client) => {
+  console.log(`Ready from index file! Logged in as ${client.user.tag}`);
+});
