@@ -8,11 +8,9 @@ import {
 import { Command } from '@ruinguard/core';
 import { EmbedColor } from '../lib/constants.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import axios from 'axios';
+import { getJoke } from '../lib/utilityFunctions.js';
 
-const baseAPI = 'https://v2.jokeapi.dev/joke/',
-  blacklist = '?blacklistFlags=nsfw,religious,political,racist,sexist,explicit',
-  cmd = new SlashCommandBuilder()
+const cmd = new SlashCommandBuilder()
     .setName('joke')
     .setDescription('Get a random joke!')
     .addStringOption((option) => option
@@ -40,17 +38,17 @@ export default new Command({
    */
   async run(interaction) {
     const jokeEmbed = new MessageEmbed(),
-      type = (await interaction.options.getString('type')) || 'Any',
-      urlAPI = `${baseAPI + type + blacklist}&safe-mode`,
-      { data } = await axios.get(urlAPI);
-    console.log('Joke: ', data);
+      jokeType = interaction.options.getString('type') || 'Any',
+      // eslint-disable-next-line sort-vars
+      jokeJSON = await getJoke(jokeType);
+    console.log('Joke: ', jokeJSON);
 
     let joke = '';
-    if (data.type === 'single') {
-      joke = `${data.joke}`;
+    if (jokeJSON.type === 'single') {
+      joke = `${jokeJSON.joke}`;
     }
     else {
-      joke = `${data.setup}\n\n${data.delivery}`;
+      joke = `${jokeJSON.setup}\n\n${jokeJSON.delivery}`;
     }
 
     jokeEmbed
@@ -59,11 +57,11 @@ export default new Command({
         iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
         name: `Requested by ${interaction.user.tag}`
       })
-      .setTitle(`**${data.category} Joke! (ID: ${data.id})**`)
+      .setTitle(`**${jokeJSON.category} Joke! (ID: ${jokeJSON.id})**`)
       .setDescription(`${joke}`);
 
     await interaction.reply({
-      content: `Selected type: ${type}`
+      content: `Selected type: ${jokeType}`
     });
     await interaction.channel.send({
       components: [submitJoke],
