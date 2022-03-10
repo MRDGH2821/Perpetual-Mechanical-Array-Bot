@@ -92,7 +92,7 @@ export default new Command({
 
     if (user.bot) {
       return interaction.editReply({
-        content: `Bots cannot register for leaderboard ${HmmTher}`,
+        content: `Bots cannot register for leaderboard ${HmmTher}\n\nUser ID: \`${user.id}\` \nUser: \`${user.tag}\``,
         ephemeral: true
       });
     }
