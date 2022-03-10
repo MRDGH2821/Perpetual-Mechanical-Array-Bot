@@ -1,9 +1,5 @@
 /* eslint-disable no-magic-numbers */
-import {
-  SlashCommandBuilder,
-  hyperlink,
-  userMention
-} from '@discordjs/builders';
+import { SlashCommandBuilder, hyperlink } from '@discordjs/builders';
 import { Command } from '@ruinguard/core';
 import { MessageEmbed } from 'discord.js';
 import { elementIcon } from '../lib/constants.js';
@@ -37,21 +33,27 @@ export default new Command({
     let rank = 1,
       topOpen = '',
       topSolo = '';
-    dmgDataOpen.forEach((data) => {
-      topOpen = `${topOpen}\n${rank}. ${userMention(data.userID)} - ${hyperlink(
+    for (const data of dmgDataOpen) {
+      // dmgDataOpen.forEach(async(data) => {
+      // eslint-disable-next-line no-await-in-loop
+      const userTag = (await interaction.client.users.fetch(data.userID)).tag;
+      topOpen = `${topOpen}\n${rank}. ${userTag} - ${hyperlink(
         `${data.score}`,
         data.proof
       )}`;
       rank += 1;
-    });
+    }
     rank = 1;
-    dmgDataSolo.forEach((data) => {
-      topSolo = `${topSolo}\n${rank}. ${userMention(data.userID)} - ${hyperlink(
+    for (const data of dmgDataSolo) {
+      // await dmgDataSolo.forEach(async(data) => {
+      // eslint-disable-next-line no-await-in-loop
+      const userTag = (await interaction.client.users.fetch(data.userID)).tag;
+      topSolo = `${topSolo}\n${rank}. ${userTag} - ${hyperlink(
         `${data.score}`,
         data.proof
       )}`;
       rank += 1;
-    });
+    }
 
     leaderboardEmbed.addFields([
       {
@@ -65,61 +67,6 @@ export default new Command({
       }
     ]);
 
-    /*
-    let top7open = '',
-      top7solo = '',
-      top8to14open = '',
-      top8to14solo = '';
-    for (let idx = 0; idx < 7; idx++) {
-      console.log('Iteration: ', idx);
-
-      const openDmgData = dmgDataOpen[idx],
-        openDmgData8 = dmgDataOpen[idx + 7],
-        soloDmgData = dmgDataSolo[idx],
-        soloDmgData8 = dmgDataSolo[idx + 7];
-
-      console.log('Open dmg data:', openDmgData);
-      console.log('Solo dmg data:', soloDmgData);
-      console.log('Open dmg8 data:', openDmgData8);
-      console.log('Solo dmg8 data:', soloDmgData8);
-
-      top7open = `${top7open}\n${openDmgData.userID || ' '} -
-          [${openDmgData.score}](${openDmgData.proof})`;
-
-      top8to14open = `${top8to14open}\n${openDmgData8.userID || ' '} - [${
-        openDmgData8.score
-      }](${openDmgData8.proof})`;
-
-      top7solo = `${top7solo}\n${soloDmgData.userID || ' '} - [${
-        soloDmgData.score
-      }](${soloDmgData.proof})`;
-
-      top8to14solo = `${top8to14solo}\n${soloDmgData8.userID || ' '} - [${
-        soloDmgData8.score
-      }](${soloDmgData8.proof})`;
-    }
-
-    leaderboardEmbed.addFields([
-      {
-        name: '**Solo Traveler**',
-        value: top7solo
-      },
-      {
-        inline: true,
-        name: '\u200b',
-        value: top8to14solo
-      },
-      {
-        name: '**Open Traveler**',
-        value: top7open
-      },
-      {
-        inline: true,
-        name: '\u200b',
-        value: top8to14open
-      }
-    ]);
-*/
     await interaction.editReply({
       embeds: [leaderboardEmbed]
     });
