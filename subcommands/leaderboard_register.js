@@ -16,7 +16,7 @@ import { isURLvalid } from '../lib/utilityFunctions.js';
  * @function leaderboard_dmg
  * @param {CommandInteraction} interaction - interaction object
  */
-export async function leaderboard_dmg(interaction) {
+export async function leaderboard_register(interaction) {
   await interaction.deferReply();
   const dmgCategory = interaction.options.getString('category'),
     modCheck = new CheckRolePerms(interaction.member),

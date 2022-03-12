@@ -2,7 +2,7 @@ import { Command } from '@ruinguard/core';
 // eslint-disable-next-line no-unused-vars
 import { CommandInteraction } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { leaderboard_dmg } from '../subcommands/leaderboard_dmg.js';
+import { leaderboard_register } from '../subcommands/leaderboard_register.js';
 import { leaderboard_view } from '../subcommands/leaderboard_view.js';
 
 export default new Command({
@@ -64,7 +64,7 @@ export default new Command({
 
     case 'register': {
       console.log('register subcommand selected');
-      await leaderboard_dmg(interaction);
+      await leaderboard_register(interaction);
       break;
     }
       // no default
