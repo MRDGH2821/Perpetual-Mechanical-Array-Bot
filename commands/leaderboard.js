@@ -48,7 +48,10 @@ export default new Command({
       .addStringOption((option) => option
         .setName('proof_link')
         .setDescription('Upload proof on traveler showcase channel & copy link to message')
-        .setRequired(true))),
+        .setRequired(true)))
+    .addSubcommand((subcommand) => subcommand
+      .setName('refresh_cache')
+      .setDescription('Refresh leaderboard cache')),
 
   /**
    *
@@ -65,6 +68,18 @@ export default new Command({
     case 'register': {
       console.log('register subcommand selected');
       await leaderboard_register(interaction);
+      break;
+    }
+
+    case 'refresh_cache': {
+      console.log('refresh subcommand selected');
+      await interaction.reply({
+        content:
+            'Refresh initiated, please wait for some time before viewing leaderboard',
+        ephemeral: true
+      });
+      interaction.client.emit('leaderboardRefresh', interaction.client);
+
       break;
     }
       // no default
