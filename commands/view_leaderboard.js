@@ -3,7 +3,7 @@ import { SlashCommandBuilder, hyperlink } from '@discordjs/builders';
 import { Command } from '@ruinguard/core';
 import { MessageEmbed } from 'discord.js';
 import { elementIcon } from '../lib/constants.js';
-import { leaderboardData } from '../lib/LeaderboardManager.js';
+// import { leaderboardData } from '../lib/LeaderboardManager.js';
 
 export default new Command({
   data: new SlashCommandBuilder()
@@ -21,8 +21,6 @@ export default new Command({
   async run(interaction) {
     await interaction.deferReply();
     const dmgCategory = interaction.options.getString('category'),
-      dmgDataOpen = await leaderboardData(dmgCategory, 'open', 14),
-      dmgDataSolo = await leaderboardData(dmgCategory, 'solo', 14),
       dmgProps = elementIcon(dmgCategory),
       leaderboardEmbed = new MessageEmbed()
         .setTitle(`${dmgProps.name} Damage Leaderboard`)
@@ -30,27 +28,49 @@ export default new Command({
         .setThumbnail(dmgProps.icon)
         .setDescription(`Highest Damage number of **${dmgProps.skill}**`);
 
-    let rank = 1,
+    let leaderboardCacheData = {},
+      rank = 1,
       topOpen = '',
       topSolo = '';
-    for (const data of dmgDataOpen) {
-      // dmgDataOpen.forEach(async(data) => {
-      // eslint-disable-next-line no-await-in-loop
-      const userTag = (await interaction.client.users.fetch(data.userID)).tag;
-      topOpen = `${topOpen}\n${rank}. ${userTag} - ${hyperlink(
-        `${data.score}`,
-        data.proof
+
+    switch (dmgCategory) {
+    case 'anemo-dmg-skill': {
+      leaderboardCacheData = interaction.client.leaderboards.anemo.skill;
+      break;
+    }
+    case 'geo-dmg-skill': {
+      leaderboardCacheData = interaction.client.leaderboards.geo.skill;
+      break;
+    }
+    case 'electro-dmg-skill': {
+      leaderboardCacheData = interaction.client.leaderboards.electro.skill;
+      break;
+    }
+    case 'uni-dmg-n5': {
+      leaderboardCacheData = interaction.client.leaderboards.universal.n5;
+      break;
+    }
+      // no default
+    }
+
+    for (const [, dataCache] of leaderboardCacheData.open) {
+      if (rank === 14) {
+        break;
+      }
+      topOpen = `${topOpen}\n${rank}. ${dataCache.User.tag} - ${hyperlink(
+        `${dataCache.data.score}`,
+        dataCache.data.proof
       )}`;
       rank += 1;
     }
     rank = 1;
-    for (const data of dmgDataSolo) {
-      // await dmgDataSolo.forEach(async(data) => {
-      // eslint-disable-next-line no-await-in-loop
-      const userTag = (await interaction.client.users.fetch(data.userID)).tag;
-      topSolo = `${topSolo}\n${rank}. ${userTag} - ${hyperlink(
-        `${data.score}`,
-        data.proof
+    for (const [, dataCache] of leaderboardCacheData.solo) {
+      if (rank === 14) {
+        break;
+      }
+      topSolo = `${topSolo}\n${rank}. ${dataCache.User.tag} - ${hyperlink(
+        `${dataCache.data.score}`,
+        dataCache.data.proof
       )}`;
       rank += 1;
     }
