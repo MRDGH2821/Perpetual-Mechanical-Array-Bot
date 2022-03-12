@@ -49,7 +49,7 @@ export async function leaderboard_view(interaction) {
     if (rank === 14) {
       break;
     }
-    topOpen = `${topOpen}\n${rank}. ${dataCache.User.tag} - ${hyperlink(
+    topOpen = `${topOpen}\n${rank}. \`${dataCache.User.tag}\` - ${hyperlink(
       `${dataCache.data.score}`,
       dataCache.data.proof
     )}`;
@@ -60,13 +60,13 @@ export async function leaderboard_view(interaction) {
     if (rank === 14) {
       break;
     }
-    topSolo = `${topSolo}\n${rank}. ${dataCache.User.tag} - ${hyperlink(
+    topSolo = `${topSolo}\n${rank}. \`${dataCache.User.tag}\` - ${hyperlink(
       `${dataCache.data.score}`,
       dataCache.data.proof
     )}`;
     rank += 1;
   }
-
+  console.log(topSolo);
   leaderboardEmbed.addFields([
     {
       name: '**Solo Category**',
