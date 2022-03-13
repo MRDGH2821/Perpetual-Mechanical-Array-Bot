@@ -13,8 +13,6 @@ import {
 } from '../lib/roleIDs.js';
 import {
   // eslint-disable-next-line no-unused-vars
-  ButtonInteraction,
-  // eslint-disable-next-line no-unused-vars
   CommandInteraction,
   MessageActionRow,
   MessageButton,
