@@ -148,7 +148,7 @@ export default new Command({
         .awaitMessageComponent({
           componentType: 'SELECT_MENU',
           filter: filterCollector,
-          time: 30000
+          time: 60000
         })
         .then(async(interacted) => {
           // console.log('Interacted:', interacted);
@@ -220,7 +220,7 @@ export default new Command({
               .awaitMessageComponent({
                 componentType: 'BUTTON',
                 filter: filterCollector,
-                time: 20000
+                time: 60000
               })
               .then((button) => {
                 if (button.customId === 'abyssWithTraveler') {
@@ -271,7 +271,7 @@ export default new Command({
                 .awaitMessageComponent({
                   componentType: 'BUTTON',
                   filter: filterCollector,
-                  time: 10000
+                  time: 60000
                 })
                 // eslint-disable-next-line no-loop-func
                 .then((button) => {
@@ -365,12 +365,15 @@ export default new Command({
           const errorEmb = new MessageEmbed()
             .setTitle('**ERROR!**')
             .setColor(EmbedColor)
-            .setDescription(`Error dump:\n\n${error}`);
-          await interaction.editReply({
-            components: [],
-            content: 'Error!',
-            embeds: [errorEmb]
-          });
+            .setDescription(`There was an error while giving roles.\nError dump:\n\n${error}`);
+          await interaction.user
+            .send({
+              components: [],
+              content: 'Error!',
+              embeds: [errorEmb]
+            })
+            .catch(console.error);
+          await interaction.deleteReply();
         });
     }
     else {
