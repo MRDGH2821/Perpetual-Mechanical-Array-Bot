@@ -218,16 +218,16 @@ export default new Command({
                 if (button.customId === 'abyssWithTraveler') {
                   totalExp += exp;
                   interaction.client.emit('spiralAbyssClear', target, true);
-                  expText = `${expText} \n${roleMention(AbyssalConquerorID)}: Cleared with traveler (+${exp + exp})`;
+                  expText = `${expText} \n✦ ${roleMention(AbyssalConquerorID)}: Cleared with traveler (+${exp + exp})`;
                 }
                 else {
                   interaction.client.emit('spiralAbyssClear', target, false);
-                  expText = `${expText} \n${roleMention(AbyssalConquerorID)} (+${exp})`;
+                  expText = `${expText} \n✦ ${roleMention(AbyssalConquerorID)} (+${exp})`;
                 }
               })
               .catch((error) => {
                 console.error(error);
-                expText = `${expText} \n${roleMention(AbyssalConquerorID)} (+${exp})`;
+                expText = `${expText} \n✦ ${roleMention(AbyssalConquerorID)} (+${exp})`;
                 interaction.client.emit('spiralAbyssClear', target, false);
               });
           }
@@ -285,7 +285,7 @@ export default new Command({
                     expGain = exp * crownAmt * 2;
                   }
 
-                  expText = `${expText} \n${roleMention(crownRole)}: ${crownAmt} (+${expGain})`;
+                  expText = `${expText} \n✦ ${roleMention(crownRole)}: ${crownAmt} (+${expGain})`;
 
                   interaction.client.emit('travelerCrown', target, {
                     crownRoleID: crownRole,
@@ -296,7 +296,7 @@ export default new Command({
                 .catch((error) => {
                   totalExp += exp;
                   console.error(error);
-                  expText = `${expText} \n${roleMention(crownRole)}: ${crownAmt} (+${exp})`;
+                  expText = `${expText} \n✦ ${roleMention(crownRole)}: ${crownAmt} (+${exp})`;
                   interaction.client.emit('travelerCrown', target, {
                     crownRoleID: crownRole,
                     crowns: crownAmt
@@ -307,7 +307,7 @@ export default new Command({
 
           if (newRolesList.includes(NonEleCrownID)) {
             totalExp += 30000;
-            expText = `${expText} \n${roleMention(NonEleCrownID)} (+30000)`;
+            expText = `${expText} \n✦ ${roleMention(NonEleCrownID)} (+30000)`;
             newRolesList = newRolesList.filter((role) => role !== NonEleCrownID);
             interaction.client.emit('travelerCrown', target, {
               crownRoleID: NonEleCrownID,
@@ -317,14 +317,14 @@ export default new Command({
 
           if (newRolesList.includes(WhaleID)) {
             totalExp += exp;
-            expText = `${expText} \n${roleMention(WhaleID)} (+${exp})`;
+            expText = `${expText} \n✦ ${roleMention(WhaleID)} (+${exp})`;
             newRolesList = newRolesList.filter((role) => role !== WhaleID);
           }
 
           for (const exploreRole of explorationRoles) {
             if (newRolesList.includes(exploreRole)) {
               totalExp += exp;
-              expText = `${expText} \n${roleMention(exploreRole)} (+${exp})`;
+              expText = `${expText} \n✦ ${roleMention(exploreRole)} (+${exp})`;
               newRolesList = newRolesList.filter((role) => role !== exploreRole);
             }
           }
@@ -343,7 +343,7 @@ export default new Command({
           const finalEmb = new MessageEmbed()
             .setTitle('**Roles successfully rewarded!**')
             .setColor(EmbedColor)
-            .setDescription(`The following roles have been assigned to ${target}\n${expText}\n\nTotal exp: ${totalExp}`);
+            .setDescription(`The following roles have been assigned to ${target}:\n${expText}\n\n**Total Exp**: ${totalExp}`);
           await interaction.editReply({
             components: [],
             embeds: [finalEmb]
