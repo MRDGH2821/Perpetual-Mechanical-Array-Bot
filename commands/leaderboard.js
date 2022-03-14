@@ -1,3 +1,4 @@
+import CheckRolePerms from '../lib/staff-roles.js';
 import { Command } from '@ruinguard/core';
 // eslint-disable-next-line no-unused-vars
 import { CommandInteraction } from 'discord.js';
@@ -73,13 +74,23 @@ export default new Command({
 
     case 'refresh_cache': {
       console.log('refresh subcommand selected');
-      await interaction.reply({
-        content:
-            'Refresh initiated, please wait for some time before viewing leaderboard',
-        ephemeral: true
-      });
-      interaction.client.emit('leaderboardRefresh', interaction.client);
+      const isMod = new CheckRolePerms(interaction.member);
 
+      if (isMod.isStaff(interaction.member)) {
+        await interaction.reply({
+          content:
+              'Refresh initiated, please wait for some time before viewing leaderboard',
+          ephemeral: true
+        });
+        interaction.client.emit('leaderboardRefresh', interaction.client);
+      }
+      else {
+        await interaction.reply({
+          content:
+              'Only mods can force a refresh, since it is a time consuming operation',
+          ephemeral: true
+        });
+      }
       break;
     }
       // no default
