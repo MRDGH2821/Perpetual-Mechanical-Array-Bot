@@ -1,7 +1,7 @@
+// eslint-disable-next-line no-unused-vars
+import { CommandInteraction, Constants } from 'discord.js';
 import CheckRolePerms from '../lib/staff-roles.js';
 import { Command } from '@ruinguard/core';
-// eslint-disable-next-line no-unused-vars
-import { CommandInteraction } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { leaderboard_register } from '../subcommands/leaderboard_register.js';
 import { leaderboard_view } from '../subcommands/leaderboard_view.js';
@@ -52,10 +52,20 @@ export default new Command({
         .setRequired(true)))
     .addSubcommand((subcommand) => subcommand
       .setName('refresh_cache')
-      .setDescription('Refresh leaderboard cache')),
+      .setDescription('Refresh leaderboard cache'))
+    .addSubcommand((subcommand) => subcommand
+      .setName('setup')
+      .setDescription('Setup Leaderboard channel')
+      .addChannelOption((option) => option
+        .setName('channel')
+        .setRequired(true)
+        .setDescription('Select channel where leaderboard updates will come')
+        .addChannelType(Constants.ChannelTypes.GUILD_TEXT))),
 
   /**
-   *
+   * leaderboard main command
+   * @async
+   * @function run
    * @param {CommandInteraction} interaction
    */
   async run(interaction) {
@@ -88,6 +98,26 @@ export default new Command({
         await interaction.reply({
           content:
               'Only mods can force a refresh, since it is a time consuming operation',
+          ephemeral: true
+        });
+      }
+      break;
+    }
+
+    case 'setup': {
+      console.log('setup subcommand selected');
+      const isMod = new CheckRolePerms(interaction.member),
+        leaderBoardChannel = interaction.options.getChannel('channel');
+      if (isMod.isStaff(interaction.member)) {
+        await interaction.reply({
+          content: `Selected Channel: ${leaderBoardChannel} `,
+          ephemeral: true
+        });
+        interaction.client.emit('leaderboardChannelUpdate', leaderBoardChannel);
+      }
+      else {
+        await interaction.reply({
+          content: 'Only mods can change leaderboard channel',
           ephemeral: true
         });
       }
