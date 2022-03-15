@@ -117,5 +117,9 @@ export default new Event({
       client.leaderboards.universal.n5.solo.set(data.userID, dataToPut);
     }));
     console.log('Leaderboard refresh complete');
+    setTimeout(() => {
+      console.log('Sending leaderboard update request');
+      client.emit('leaderboardUpdate', client);
+    }, 1000 * 60 * 5);
   }
 });
