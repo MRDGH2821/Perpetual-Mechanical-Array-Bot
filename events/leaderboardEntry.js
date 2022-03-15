@@ -35,5 +35,8 @@ export default new Event({
         console.log('An error occurred while submitting leaderboard entry');
         console.error(error);
       });
+
+    target.client.emit('leaderboardRefresh', target.client);
+    console.log('Refresh initiated');
   }
 });

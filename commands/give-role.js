@@ -13,8 +13,6 @@ import {
 } from '../lib/roleIDs.js';
 import {
   // eslint-disable-next-line no-unused-vars
-  ButtonInteraction,
-  // eslint-disable-next-line no-unused-vars
   CommandInteraction,
   MessageActionRow,
   MessageButton,
@@ -22,12 +20,7 @@ import {
   MessageSelectMenu
 } from 'discord.js';
 import { SlashCommandBuilder, roleMention } from '@discordjs/builders';
-import {
-  crownName,
-  crownRoles,
-  explorationRoles,
-  exploreName
-} from '../lib/achievement-roles.js';
+import { crownRoles, explorationRoles } from '../lib/achievement-roles.js';
 import CheckRolePerms from '../lib/staff-roles.js';
 import { Command } from '@ruinguard/core';
 import { EmbedColor } from '../lib/constants.js';
@@ -148,7 +141,7 @@ export default new Command({
         .awaitMessageComponent({
           componentType: 'SELECT_MENU',
           filter: filterCollector,
-          time: 30000
+          time: 60000
         })
         .then(async(interacted) => {
           // console.log('Interacted:', interacted);
@@ -192,7 +185,6 @@ export default new Command({
 
           if (newRolesList.includes(AbyssalConquerorID)) {
             totalExp += exp;
-            expText = `${expText} \nAbyss clear (+${exp})`;
             newRolesList = newRolesList.filter((role) => role !== AbyssalConquerorID);
 
             const spiralAbyssEmbed = new MessageEmbed()
@@ -220,20 +212,22 @@ export default new Command({
               .awaitMessageComponent({
                 componentType: 'BUTTON',
                 filter: filterCollector,
-                time: 20000
+                time: 60000
               })
               .then((button) => {
                 if (button.customId === 'abyssWithTraveler') {
                   totalExp += exp;
                   interaction.client.emit('spiralAbyssClear', target, true);
-                  expText = `${expText} \nAbyss clear with Traveler (+${exp})`;
+                  expText = `${expText} \n✦ ${roleMention(AbyssalConquerorID)}: Cleared with traveler (+${exp + exp})`;
                 }
                 else {
                   interaction.client.emit('spiralAbyssClear', target, false);
+                  expText = `${expText} \n✦ ${roleMention(AbyssalConquerorID)} (+${exp})`;
                 }
               })
               .catch((error) => {
                 console.error(error);
+                expText = `${expText} \n✦ ${roleMention(AbyssalConquerorID)} (+${exp})`;
                 interaction.client.emit('spiralAbyssClear', target, false);
               });
           }
@@ -271,7 +265,7 @@ export default new Command({
                 .awaitMessageComponent({
                   componentType: 'BUTTON',
                   filter: filterCollector,
-                  time: 10000
+                  time: 60000
                 })
                 // eslint-disable-next-line no-loop-func
                 .then((button) => {
@@ -287,12 +281,11 @@ export default new Command({
                   }
                   else if (button.customId === '3') {
                     crownAmt = 3;
-
                     totalExp += exp * crownAmt * 2;
                     expGain = exp * crownAmt * 2;
                   }
 
-                  expText = `${expText} \n${crownName(crownRole)}: ${crownAmt} (+${expGain})`;
+                  expText = `${expText} \n✦ ${roleMention(crownRole)}: ${crownAmt} (+${expGain})`;
 
                   interaction.client.emit('travelerCrown', target, {
                     crownRoleID: crownRole,
@@ -303,7 +296,7 @@ export default new Command({
                 .catch((error) => {
                   totalExp += exp;
                   console.error(error);
-                  expText = `${expText} \n${crownName(crownRole)}: ${crownAmt} (+${exp})`;
+                  expText = `${expText} \n✦ ${roleMention(crownRole)}: ${crownAmt} (+${exp})`;
                   interaction.client.emit('travelerCrown', target, {
                     crownRoleID: crownRole,
                     crowns: crownAmt
@@ -314,7 +307,7 @@ export default new Command({
 
           if (newRolesList.includes(NonEleCrownID)) {
             totalExp += 30000;
-            expText = `${expText} \n${crownName(NonEleCrownID)} (+30000)`;
+            expText = `${expText} \n✦ ${roleMention(NonEleCrownID)} (+30000)`;
             newRolesList = newRolesList.filter((role) => role !== NonEleCrownID);
             interaction.client.emit('travelerCrown', target, {
               crownRoleID: NonEleCrownID,
@@ -324,14 +317,14 @@ export default new Command({
 
           if (newRolesList.includes(WhaleID)) {
             totalExp += exp;
-            expText = `${expText} \nWhaled in the game (+${exp})`;
+            expText = `${expText} \n✦ ${roleMention(WhaleID)} (+${exp})`;
             newRolesList = newRolesList.filter((role) => role !== WhaleID);
           }
 
           for (const exploreRole of explorationRoles) {
             if (newRolesList.includes(exploreRole)) {
               totalExp += exp;
-              expText = `${expText} \n${exploreName(exploreRole)} (+${exp})`;
+              expText = `${expText} \n✦ ${roleMention(exploreRole)} (+${exp})`;
               newRolesList = newRolesList.filter((role) => role !== exploreRole);
             }
           }
@@ -346,9 +339,14 @@ export default new Command({
               value: expText
             }
           ]);
+
+          const finalEmb = new MessageEmbed()
+            .setTitle('**Roles successfully rewarded!**')
+            .setColor(EmbedColor)
+            .setDescription(`The following roles have been assigned to ${target}:\n${expText}\n\n**Total Exp**: ${totalExp}`);
           await interaction.editReply({
             components: [],
-            embeds: [introEmb]
+            embeds: [finalEmb]
           });
           await interaction.followUp({
             content: `>award ${target.user.id} ${totalExp}`,
@@ -365,12 +363,15 @@ export default new Command({
           const errorEmb = new MessageEmbed()
             .setTitle('**ERROR!**')
             .setColor(EmbedColor)
-            .setDescription(`Error dump:\n\n${error}`);
-          await interaction.editReply({
-            components: [],
-            content: 'Error!',
-            embeds: [errorEmb]
-          });
+            .setDescription(`There was an error while giving roles.\nError dump:\n\n${error}`);
+          await interaction.user
+            .send({
+              components: [],
+              content: 'Error!',
+              embeds: [errorEmb]
+            })
+            .catch(console.error);
+          await interaction.deleteReply();
         });
     }
     else {

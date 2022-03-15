@@ -15,3 +15,5 @@ await bot.login(configuration.token);
 bot.once('ready', (client) => {
   console.log(`Ready from index file! Logged in as ${client.user.tag}`);
 });
+
+bot.emit('leaderboardRefresh', bot);

@@ -12,7 +12,8 @@ export default new Event({
    * @function run
    * @param {Client} client
    */
-  async run(client) {
+  run(client) {
+    console.log('Leaderboard Refresh initiated');
     client.leaderboards = {
       anemo: {
         skill: {
@@ -39,69 +40,87 @@ export default new Event({
         }
       }
     };
-    const TVMmains = await client.guilds.fetch('803424731474034709');
+    // const TVMmains = await client.guilds.fetch('803424731474034709');
 
-    leaderboardData('anemo-dmg-skill', 'open').then((leaderBoardData) => leaderBoardData.forEach((data) => {
-      const GuildMember = TVMmains.members.fetch(data.userID),
+    console.log('Anemo refresh');
+    leaderboardData('anemo-dmg-skill', 'open').then((leaderBoardData) => leaderBoardData.forEach(async(data) => {
+      const User = await client.users.fetch(data.userID),
         dataToPut = {
-          GuildMember,
+          User,
           data
         };
-      client.leaderboards.anemo.open.set(data.userID, dataToPut);
+      client.leaderboards.anemo.skill.open.set(data.userID, dataToPut);
     }));
 
-    leaderboardData('geo-dmg-skill', 'open').then((leaderBoardData) => leaderBoardData.forEach((data) => {
-      const GuildMember = TVMmains.members.fetch(data.userID),
+    leaderboardData('anemo-dmg-skill', 'solo').then((leaderBoardData) => leaderBoardData.forEach(async(data) => {
+      const User = await client.users.fetch(data.userID),
         dataToPut = {
-          GuildMember,
+          User,
           data
         };
-      client.leaderboards.geo.open.set(data.userID, dataToPut);
+      client.leaderboards.anemo.skill.solo.set(data.userID, dataToPut);
     }));
 
-    leaderboardData('electro-dmg-skill', 'open').then((leaderBoardData) => leaderBoardData.forEach((data) => {
-      const GuildMember = TVMmains.members.fetch(data.userID),
+    console.log('Geo Refresh');
+    leaderboardData('geo-dmg-skill', 'solo').then((leaderBoardData) => leaderBoardData.forEach(async(data) => {
+      const User = await client.users.fetch(data.userID),
         dataToPut = {
-          GuildMember,
+          User,
           data
         };
-      client.leaderboards.electro.open.set(data.userID, dataToPut);
+      client.leaderboards.geo.skill.solo.set(data.userID, dataToPut);
+    }));
+    leaderboardData('geo-dmg-skill', 'open').then((leaderBoardData) => leaderBoardData.forEach(async(data) => {
+      const User = await client.users.fetch(data.userID),
+        dataToPut = {
+          User,
+          data
+        };
+      client.leaderboards.geo.skill.open.set(data.userID, dataToPut);
     }));
 
-    leaderboardData('anemo-dmg-skill', 'solo').then((leaderBoardData) => leaderBoardData.forEach((data) => {
-      const GuildMember = TVMmains.members.fetch(data.userID),
+    console.log('Electro Refresh');
+    leaderboardData('electro-dmg-skill', 'open').then((leaderBoardData) => leaderBoardData.forEach(async(data) => {
+      const User = await client.users.fetch(data.userID),
         dataToPut = {
-          GuildMember,
+          User,
           data
         };
-      client.leaderboards.anemo.solo.set(data.userID, dataToPut);
+      client.leaderboards.electro.skill.open.set(data.userID, dataToPut);
     }));
 
-    leaderboardData('geo-dmg-skill', 'solo').then((leaderBoardData) => leaderBoardData.forEach((data) => {
-      const GuildMember = TVMmains.members.fetch(data.userID),
+    leaderboardData('electro-dmg-skill', 'solo').then((leaderBoardData) => leaderBoardData.forEach(async(data) => {
+      const User = await client.users.fetch(data.userID),
         dataToPut = {
-          GuildMember,
+          User,
           data
         };
-      client.leaderboards.geo.solo.set(data.userID, dataToPut);
+      client.leaderboards.electro.skill.solo.set(data.userID, dataToPut);
     }));
 
-    leaderboardData('electro-dmg-skill', 'solo').then((leaderBoardData) => leaderBoardData.forEach((data) => {
-      const GuildMember = TVMmains.members.fetch(data.userID),
+    console.log('Universal n5 refresh');
+    leaderboardData('uni-dmg-n5', 'open').then((leaderBoardData) => leaderBoardData.forEach(async(data) => {
+      const User = await client.users.fetch(data.userID),
         dataToPut = {
-          GuildMember,
+          User,
           data
         };
-      client.leaderboards.electro.solo.set(data.userID, dataToPut);
+      client.leaderboards.universal.n5.open.set(data.userID, dataToPut);
     }));
 
-    leaderboardData('uni-dmg-n5', 'open').then((leaderBoardData) => leaderBoardData.forEach((data) => {
-      const GuildMember = TVMmains.members.fetch(data.userID),
+    leaderboardData('uni-dmg-n5', 'solo').then((leaderBoardData) => leaderBoardData.forEach(async(data) => {
+      const User = await client.users.fetch(data.userID),
         dataToPut = {
-          GuildMember,
+          User,
           data
         };
-      client.leaderboards.universal.n5.set(data.userID, dataToPut);
+      client.leaderboards.universal.n5.solo.set(data.userID, dataToPut);
     }));
+    console.log('Leaderboard refresh complete');
+    setTimeout(() => {
+      console.log('Sending leaderboard update request');
+      client.emit('leaderboardUpdate', client);
+    // eslint-disable-next-line no-magic-numbers
+    }, 1000 * 60 * 5);
   }
 });
