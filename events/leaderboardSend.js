@@ -57,12 +57,10 @@ Then, you may choose to submit your entry to the ${hyperlink(
           }
         ]),
       uniN5board = await leaderboardGenerate(webhook.client, 'uni-dmg-n5');
-
-    await db
-      .collection('leaderboards')
-      .doc('webhook')
+    await webhook.send({ embeds: [information] });
+    await db.collection('leaderboards').doc('webhook')
       .set({
-        webhookID: (await webhook.send({ embeds: [information] })).id
+        webhookID: webhook.id
       });
 
     await db
