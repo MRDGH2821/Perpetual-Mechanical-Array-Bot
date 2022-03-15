@@ -120,6 +120,7 @@ export default new Event({
     setTimeout(() => {
       console.log('Sending leaderboard update request');
       client.emit('leaderboardUpdate', client);
+    // eslint-disable-next-line no-magic-numbers
     }, 1000 * 60 * 5);
   }
 });
