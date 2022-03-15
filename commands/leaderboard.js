@@ -113,7 +113,10 @@ export default new Command({
           content: `Selected Channel: ${leaderBoardChannel} `,
           ephemeral: true
         });
-        interaction.client.emit('leaderboardChannelUpdate', leaderBoardChannel);
+        interaction.client.emit(
+          'leaderboardChannelUpdate',
+          leaderBoardChannel
+        );
       }
       else {
         await interaction.reply({
