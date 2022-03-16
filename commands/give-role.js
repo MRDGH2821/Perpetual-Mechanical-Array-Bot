@@ -1,10 +1,20 @@
+import {
+  AbyssalConquerorID,
+  AnemoCrownID,
+  ElectroCrownID,
+  GeoCrownID,
+  InazumaReputationID,
+  LiyueReputationID,
+  MondstadtReputationID,
+  NonEleCrownID,
+  WhaleID
+} from '../lib/roleIDs.js';
 import { Command } from '@ruinguard/core';
 // eslint-disable-next-line no-unused-vars
 import { CommandInteraction } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { giveRoleMulti } from '../subcommands/give-role_multi.js';
 import { giveRoleOne } from '../subcommands/give-role_one.js';
-import roleIDs from '../lib/roleIDs.js';
 
 export default new Command({
   data: new SlashCommandBuilder()
@@ -16,23 +26,23 @@ export default new Command({
       .addUserOption((option) => option.setName('user').setDescription('Select user')
         .setRequired(true)))
     .addSubcommand((subcommand) => subcommand
-      .setName('give-one-role')
+      .setName('one')
       .setDescription('Gives role to a selected user!')
       .addUserOption((option) => option.setName('user').setDescription('Select user')
         .setRequired(true))
       .addStringOption((option) => option
-        .setName('one')
+        .setName('role')
         .setDescription('Give one role')
         .setRequired(true)
-        .addChoice('Abyssal Conqueror 🌀', '804225878685908992')
-        .addChoice('Ten\'nō of Thunder 👑⛈️', '856509454970781696')
-        .addChoice('Jūnzhǔ of Earth 👑🌏', '816210137613205554')
-        .addChoice('Herrscher of Wind 👑🌬️', '815938264875532298')
-        .addChoice('Illustrious in Inazuma 🚶⛈️', '809026481112088596')
-        .addChoice('Legend in Liyue 🚶🌏', '804595502960214026')
-        .addChoice('Megastar in Mondstadt 🚶🌬️', '804595515437613077')
-        .addChoice('Affluent Adventurer 💰', '804010525411246140')
-        .addChoice('Arbitrator of Fate 👑', roleIDs.NonEleCrownID))),
+        .addChoice('Abyssal Conqueror 🌀', AbyssalConquerorID)
+        .addChoice('Ten\'nō of Thunder 👑⛈️', ElectroCrownID)
+        .addChoice('Jūnzhǔ of Earth 👑🌏', GeoCrownID)
+        .addChoice('Herrscher of Wind 👑🌬️', AnemoCrownID)
+        .addChoice('Illustrious in Inazuma 🚶⛈️', InazumaReputationID)
+        .addChoice('Legend in Liyue 🚶🌏', LiyueReputationID)
+        .addChoice('Megastar in Mondstadt 🚶🌬️', MondstadtReputationID)
+        .addChoice('Affluent Adventurer 💰', WhaleID)
+        .addChoice('Arbitrator of Fate 👑', NonEleCrownID))),
 
   /**
    * gives role to selected user
@@ -41,7 +51,7 @@ export default new Command({
    * @param {CommandInteraction} interaction
    */
   async run(interaction) {
-    switch (interaction.options.getSubcommand) {
+    switch (interaction.options.getSubcommand()) {
     case 'multi': {
       await giveRoleMulti(interaction);
       break;
