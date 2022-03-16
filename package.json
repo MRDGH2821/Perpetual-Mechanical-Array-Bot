@@ -1,6 +1,6 @@
 {
   "name": "perpetual-mechanical-array-bot",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Discord Bot for [Traveler Mains Server](https://discord.gg/RsdUnupKpj)",
   "main": "index.js",
   "private": true,

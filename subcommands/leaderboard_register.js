@@ -26,7 +26,7 @@ export async function leaderboard_register(interaction) {
     user = await interaction.options.getUser('contestant'),
     verifyEmb = new MessageEmbed()
       .setTitle('**Entry Verification**')
-      .setDescription(`**Contestant**: ${user} \n**Category**: ${dmgCategory} \n**Type**: ${typeCategory} \n**Score (i.e. Dmg value)**: ${score} \n\n**Proof**: \n${proofLink}`),
+      .setDescription(`**Contestant**: ${user} ${user.tag}\n**Category**: ${dmgCategory} \n**Type**: ${typeCategory} \n**Score (i.e. Dmg value)**: ${score} \n\n**Proof**: \n${proofLink}`),
     // eslint-disable-next-line sort-vars
     approveRow = new MessageActionRow().addComponents([
       new MessageButton()
