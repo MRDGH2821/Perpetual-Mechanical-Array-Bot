@@ -1,9 +1,10 @@
-- repo: https://github.com/pre-commit/mirrors-prettier
-  rev: '' # Use the sha / tag you want to point at
-  hooks:
-    - id: prettier
-- repo: https://github.com/pre-commit/mirrors-eslint
-  rev: '' # Use the sha / tag you want to point at
-  hooks:
-    - id: eslint
-      args: ['. --fix']
+repos:
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: ''
+    hooks:
+      - id: prettier
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: ''
+    hooks:
+      - id: eslint
+        args: ['. --fix']
