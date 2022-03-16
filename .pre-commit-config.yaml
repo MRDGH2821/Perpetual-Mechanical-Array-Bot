@@ -8,3 +8,8 @@ repos:
     hooks:
       - id: eslint
         args: ['--fix']
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v2.21.2
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]
