@@ -3,12 +3,14 @@ repos:
     rev: 'v2.5.1'
     hooks:
       - id: prettier
+        entry: 'git add -u'
         require_serial: true
   - repo: https://github.com/pre-commit/mirrors-eslint
     rev: 'v8.11.0'
     hooks:
       - id: eslint
-        args: ['--fix']
+       
+        args: ['--fix', '&& git add -u']
         require_serial: true
   - repo: https://github.com/commitizen-tools/commitizen
     rev: v2.21.2
