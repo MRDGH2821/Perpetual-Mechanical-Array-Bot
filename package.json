@@ -35,15 +35,13 @@
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
     "firebase-admin": "^10.0.2",
-    "mathjs": "^10.3.0",
+    "mathjs": "^10.4.0",
     "node-fetch": "^2.6.7"
   },
   "devDependencies": {
-    "commitizen": "^4.2.4",
-    "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^8.10.0",
+    "eslint": "^8.11.0",
     "eslint-config-mrdgh2821": "^2.0.0",
-    "prettier": "^2.5.1",
+    "prettier": "^2.6.0",
     "prettier-config-mrdgh2821": "^2.0.1"
   },
   "config": {
