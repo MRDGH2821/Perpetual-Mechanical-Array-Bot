@@ -39,9 +39,9 @@
   },
   "devDependencies": {
     "eslint": "^8.11.0",
-    "eslint-config-mrdgh2821": "^2.0.0",
+    "eslint-config-mrdgh2821": "^2.1.0",
     "prettier": "^2.6.0",
-    "prettier-config-mrdgh2821": "^2.0.1"
+    "prettier-config-mrdgh2821": "^2.1.0"
   },
   "config": {
     "commitizen": {
