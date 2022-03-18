@@ -1,10 +1,10 @@
-import { Event } from '@ruinguard/core';
+import { Event } from "@ruinguard/core";
 // eslint-disable-next-line no-unused-vars
-import { GuildMember } from 'discord.js';
-import { db } from '../lib/firebase.cjs';
+import { GuildMember } from "discord.js";
+import { db } from "../lib/firebase.cjs";
 
 export default new Event({
-  event: 'spiralAbyssClear',
+  event: "spiralAbyssClear",
 
   /**
    * save spiral abyss clear entry to database
@@ -14,7 +14,7 @@ export default new Event({
    */
   async run(target, travelerClear) {
     const memberData = await db
-        .collection('spiral-abyss-once')
+        .collection("spiral-abyss-once")
         .doc(target.user.id)
         .get(),
       spiralCurrentData = {
@@ -27,23 +27,23 @@ export default new Event({
         userID: target.user.id
       };
       await db
-        .collection('spiral-abyss-once')
+        .collection("spiral-abyss-once")
         .doc(`${target.user.id}`)
         .set(data)
-        .then(() => console.log('New Spiral Abyss clear added!'))
+        .then(() => console.log("New Spiral Abyss clear added!"))
         .catch((error) => {
-          console.log('An error occurred while adding spiral abyss one time clear data');
+          console.log("An error occurred while adding spiral abyss one time clear data");
           console.error(error);
         });
     }
 
     await db
-      .collection('current-spiral-abyss')
+      .collection("current-spiral-abyss")
       .doc(`${target.user.id}`)
       .set(spiralCurrentData)
-      .then(() => console.log('Current spiral abyss data added!'))
+      .then(() => console.log("Current spiral abyss data added!"))
       .catch((error) => {
-        console.log('An error occurred while adding current spiral abyss clear data');
+        console.log("An error occurred while adding current spiral abyss clear data");
         console.error(error);
       });
   }

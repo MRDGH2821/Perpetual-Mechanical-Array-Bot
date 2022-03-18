@@ -1,16 +1,16 @@
-import { CooldownManager, Event, MessageEmbed } from '@ruinguard/core';
-import Bonk from '../lib/bonk-utilities.js';
-import { EmbedColor } from '../lib/constants.js';
+import { CooldownManager, Event, MessageEmbed } from "@ruinguard/core";
+import Bonk from "../lib/bonk-utilities.js";
+import { EmbedColor } from "../lib/constants.js";
 // eslint-disable-next-line no-unused-vars
-import { Message } from 'discord.js';
+import { Message } from "discord.js";
 const fiveMins = 300000,
   icd = new CooldownManager();
 
 // eslint-disable-next-line no-magic-numbers
-icd.add('bonkCD', 0);
+icd.add("bonkCD", 0);
 
 export default new Event({
-  event: 'messageCreate',
+  event: "messageCreate",
 
   /**
    * message create event
@@ -24,11 +24,11 @@ export default new Event({
     if (bonk.isHorny(message.content)) {
       const embedReply = new MessageEmbed()
           .setColor(EmbedColor)
-          .setTitle('**Bonked!**')
+          .setTitle("**Bonked!**")
           .setDescription(bonk.bonkHornyReason())
           .setImage(bonk.hornyBonkGif()),
-        timeLeft = await icd.check('bonkCD');
-      console.log('ICD: ', timeLeft);
+        timeLeft = await icd.check("bonkCD");
+      console.log("ICD: ", timeLeft);
       // eslint-disable-next-line no-magic-numbers
       if (timeLeft < 1 || timeLeft === false) {
         await message
@@ -36,10 +36,10 @@ export default new Event({
             embeds: [embedReply]
           })
           .catch(console.error);
-        await icd.add('bonkCD', fiveMins);
+        await icd.add("bonkCD", fiveMins);
       }
       else {
-        console.log('Reached else part, Bonk CD: ', await icd.check('bonkCD'));
+        console.log("Reached else part, Bonk CD: ", await icd.check("bonkCD"));
       }
     }
   }

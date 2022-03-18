@@ -1,10 +1,10 @@
-import { Event } from '@ruinguard/core';
+import { Event } from "@ruinguard/core";
 // eslint-disable-next-line no-unused-vars
-import { User } from 'discord.js';
-import { db } from '../lib/firebase.cjs';
+import { User } from "discord.js";
+import { db } from "../lib/firebase.cjs";
 
 export default new Event({
-  event: 'leaderboardEntry',
+  event: "leaderboardEntry",
 
   /**
    * submits score for leaderboard
@@ -17,7 +17,7 @@ export default new Event({
    * @param {string} submission.typeCategory - solo or open category
    */
   async run(target, { elementCategory, proof, score, typeCategory }) {
-    console.log('Entry received, saving to database');
+    console.log("Entry received, saving to database");
     const collectionName = `${elementCategory}-${typeCategory}`,
       submission = {
         elementCategory,
@@ -30,13 +30,13 @@ export default new Event({
       .collection(collectionName)
       .doc(target.id)
       .set(submission)
-      .then(() => console.log('Leaderboard Entry submitted!'))
+      .then(() => console.log("Leaderboard Entry submitted!"))
       .catch((error) => {
-        console.log('An error occurred while submitting leaderboard entry');
+        console.log("An error occurred while submitting leaderboard entry");
         console.error(error);
       });
 
-    target.client.emit('leaderboardRefresh', target.client);
-    console.log('Refresh initiated');
+    target.client.emit("leaderboardRefresh", target.client);
+    console.log("Refresh initiated");
   }
 });

@@ -1,7 +1,7 @@
 /* eslint-disable no-magic-numbers */
 // eslint-disable-next-line no-unused-vars
-import { CommandInteraction } from 'discord.js';
-import { leaderboardGenerate } from '../lib/LeaderboardManager.js';
+import { CommandInteraction } from "discord.js";
+import { leaderboardGenerate } from "../lib/LeaderboardManager.js";
 
 /**
  * shows leaderboard entry
@@ -11,7 +11,7 @@ import { leaderboardGenerate } from '../lib/LeaderboardManager.js';
  */
 export async function leaderboard_view(interaction) {
   await interaction.deferReply();
-  const dmgCategory = interaction.options.getString('category'),
+  const dmgCategory = interaction.options.getString("category"),
     leaderboardEmbed = await leaderboardGenerate(
       interaction.client,
       dmgCategory

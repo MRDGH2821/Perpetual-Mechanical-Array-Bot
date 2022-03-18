@@ -1,20 +1,20 @@
-import { Command, CommandFlags } from '@ruinguard/core';
+import { Command, CommandFlags } from "@ruinguard/core";
 // eslint-disable-next-line no-unused-vars
-import { CommandInteraction, MessageEmbed } from 'discord.js';
-import Bonk from '../lib/bonk-utilities.js';
-import { EmbedColor } from '../lib/constants.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { CommandInteraction, MessageEmbed } from "discord.js";
+import Bonk from "../lib/bonk-utilities.js";
+import { EmbedColor } from "../lib/constants.js";
+import { SlashCommandBuilder } from "@discordjs/builders";
 
 export default new Command({
   data: new SlashCommandBuilder()
-    .setName('bonk')
-    .setDescription('Select a member to bonk them')
+    .setName("bonk")
+    .setDescription("Select a member to bonk them")
     .addUserOption((option) => option
-      .setName('target')
-      .setDescription('The member to bonk')
+      .setName("target")
+      .setDescription("The member to bonk")
       .setRequired(true))
-    .addStringOption((option) => option.setName('reason').setDescription('Reason to bonk'))
-    .addBooleanOption((option) => option.setName('is_horny').setDescription('Is the target horny?')),
+    .addStringOption((option) => option.setName("reason").setDescription("Reason to bonk"))
+    .addBooleanOption((option) => option.setName("is_horny").setDescription("Is the target horny?")),
 
   flags: [CommandFlags.FLAGS.GUILD_ONLY],
 
@@ -25,18 +25,18 @@ export default new Command({
    * @param {CommandInteraction} interaction - interaction object
    */
   async run(interaction) {
-    let reason = interaction.options.getString('reason') || 'none';
+    let reason = interaction.options.getString("reason") || "none";
 
     const bonk = new Bonk(reason),
-      bonkTarget = interaction.options.getUser('target'),
+      bonkTarget = interaction.options.getUser("target"),
       embedMsg = new MessageEmbed()
-        .setTitle('**Bonked!**')
+        .setTitle("**Bonked!**")
         .setColor(EmbedColor)
         .setThumbnail(bonkTarget.displayAvatarURL({ dynamic: true })),
       isSelf = bonkTarget === interaction.user,
-      is_horny = interaction.options.getBoolean('is_horny') || false;
+      is_horny = interaction.options.getBoolean("is_horny") || false;
 
-    if (reason === 'none') {
+    if (reason === "none") {
       if (is_horny) {
         reason = bonk.bonkHornyReason();
       }

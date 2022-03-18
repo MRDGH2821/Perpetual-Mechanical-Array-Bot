@@ -1,30 +1,30 @@
 // eslint-disable-next-line no-unused-vars
-import { AutocompleteInteraction, CommandInteraction } from 'discord.js';
-import { Command } from '@ruinguard/core';
-import { GMCTechs } from '../lib/TravelerTechnologies.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { AutocompleteInteraction, CommandInteraction } from "discord.js";
+import { Command } from "@ruinguard/core";
+import { GMCTechs } from "../lib/TravelerTechnologies.js";
+import { SlashCommandBuilder } from "@discordjs/builders";
 
 export default new Command({
   data: new SlashCommandBuilder()
-    .setName('gmc')
-    .setDescription('Geo Main Character')
+    .setName("gmc")
+    .setDescription("Geo Main Character")
     .addSubcommand((subcommand) => subcommand
-      .setName('starfell_sword')
-      .setDescription('GMC Skill')
+      .setName("starfell_sword")
+      .setDescription("GMC Skill")
       .addStringOption((option) => option
-        .setName('techs')
-        .setDescription('Technologies which power skill')
+        .setName("techs")
+        .setDescription("Technologies which power skill")
         .setRequired(true)
         .setAutocomplete(true)))
     .addSubcommand((subcommand) => subcommand
-      .setName('wake_of_earth')
-      .setDescription('GMC Burst')
+      .setName("wake_of_earth")
+      .setDescription("GMC Burst")
       .addStringOption((option) => option
-        .setName('techs')
-        .setDescription('Technologies which power burst')
+        .setName("techs")
+        .setDescription("Technologies which power burst")
         .setRequired(true)
         .setAutocomplete(true)))
-    .addSubcommand((subcommand) => subcommand.setName('guide').setDescription('Guide on GMC')),
+    .addSubcommand((subcommand) => subcommand.setName("guide").setDescription("Guide on GMC")),
 
   /**
    * displays GMC techs & guide
@@ -35,8 +35,8 @@ export default new Command({
   // eslint-disable-next-line consistent-return
   async run(interaction) {
     switch (interaction.options.getSubcommand()) {
-    case 'starfell_sword': {
-      const selectedID = interaction.options.getString('techs'),
+    case "starfell_sword": {
+      const selectedID = interaction.options.getString("techs"),
         skill = GMCTechs.skillTechs.find((tech) => tech.id === selectedID);
       console.log(selectedID);
       await interaction.reply({
@@ -44,8 +44,8 @@ export default new Command({
       });
       break;
     }
-    case 'wake_of_earth': {
-      const selectedID = interaction.options.getString('techs'),
+    case "wake_of_earth": {
+      const selectedID = interaction.options.getString("techs"),
         skill = GMCTechs.burstTechs.find((tech) => tech.id === selectedID);
       console.log(selectedID);
       await interaction.reply({
@@ -54,9 +54,9 @@ export default new Command({
       break;
     }
 
-    case 'guide': {
+    case "guide": {
       await interaction.reply({
-        content: 'https://keqingmains.com/gmc'
+        content: "https://keqingmains.com/gmc"
       });
     }
 

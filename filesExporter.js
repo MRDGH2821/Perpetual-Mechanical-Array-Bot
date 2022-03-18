@@ -1,6 +1,6 @@
-import fs from 'fs/promises';
-import { pathToFileURL } from 'url';
-import { resolve } from 'path';
+import fs from "fs/promises";
+import { pathToFileURL } from "url";
+import { resolve } from "path";
 
 /**
  * returns array of file imports in given folder path
