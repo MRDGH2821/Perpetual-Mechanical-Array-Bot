@@ -13,11 +13,16 @@ export default new Event({
    */
   async run(channel) {
     const guildWebhooks = await channel.guild.fetchWebhooks(),
+      hookName = "Damage Leaderboard",
       myBotWebhooks = guildWebhooks.filter((webhook) => webhook.owner.id === channel.client.user.id);
-    myBotWebhooks.forEach((webhook) => webhook.delete());
+    myBotWebhooks.forEach((webhook) => {
+      if (webhook.name === hookName) {
+        webhook.delete();
+      }
+    });
 
     // eslint-disable-next-line one-var
-    const leaderboardHook = await channel.createWebhook("Damage Leaderboard", {
+    const leaderboardHook = await channel.createWebhook(hookName, {
       reason: "Leaderboard channel changed"
     });
     channel.client.emit("leaderboardSend", leaderboardHook);
