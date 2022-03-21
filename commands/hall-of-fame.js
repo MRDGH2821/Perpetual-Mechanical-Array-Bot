@@ -1,6 +1,9 @@
+// eslint-disable-next-line no-unused-vars
+import { CommandInteraction, Constants } from "discord.js";
+import CheckRolePerms from "../lib/staff-roles.js";
 import { Command } from "@ruinguard/core";
-import { Constants } from "discord.js";
 import { SlashCommandBuilder } from "@discordjs/builders";
+import { hof_view } from "../subcommands/hall-of-fame_view.js";
 
 export default new Command({
   data: new SlashCommandBuilder()
@@ -32,5 +35,64 @@ export default new Command({
         .addChannelType(Constants.ChannelTypes.GUILD_TEXT)))
     .addSubcommand((subcommand) => subcommand
       .setName("refresh_cache")
-      .setDescription("Refresh Hall Of Fame Cache"))
+      .setDescription("Refresh Hall Of Fame Cache")),
+
+  /**
+   * hall of fame main command
+   * @async
+   * @function
+   * @param {CommandInteraction} interaction
+   */
+  async run(interaction) {
+    switch (interaction.options.getSubcommand()) {
+    case "view": {
+      console.log("view subcommand selected");
+      await hof_view(interaction);
+      break;
+    }
+
+    case "setup": {
+      console.log("setup subcommand selected");
+      const hofChannel = interaction.options.getChannel("channel"),
+        isMod = new CheckRolePerms(interaction.member);
+      if (isMod.isStaff(interaction.member)) {
+        await interaction.reply({
+          content: `Selected Channel: ${hofChannel} `,
+          ephemeral: true
+        });
+        interaction.client.emit("hofChannelUpdate", hofChannel);
+      }
+      else {
+        await interaction.reply({
+          content: "Only mods can change Hall Of fame channel",
+          ephemeral: true
+        });
+      }
+      break;
+    }
+
+    case "refresh_cache": {
+      console.log("refresh subcommand selected");
+      const isMod = new CheckRolePerms(interaction.member);
+
+      if (isMod.isStaff(interaction.member)) {
+        await interaction.reply({
+          content:
+              "Refresh initiated, please wait for some time before viewing hall of fame",
+          ephemeral: true
+        });
+        interaction.client.emit("hofRefresh", interaction.client);
+      }
+      else {
+        await interaction.reply({
+          content:
+              "Only mods can force a refresh, since it is a time consuming operation",
+          ephemeral: true
+        });
+      }
+      break;
+    }
+      // no default
+    }
+  }
 });
