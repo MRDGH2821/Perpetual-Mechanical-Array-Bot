@@ -23,6 +23,8 @@ export default new Event({
 
     // eslint-disable-next-line one-var
     const leaderboardHook = await channel.createWebhook(hookName, {
+      avatar:
+        "https://static.wikia.nocookie.net/gensin-impact/images/7/74/Guild_symbol.png/revision/latest/scale-to-width-down/250?cb=20210129164048",
       reason: "Hall Of Fame channel changed"
     });
     channel.client.emit("hofSend", leaderboardHook);
