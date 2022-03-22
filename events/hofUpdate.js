@@ -14,6 +14,14 @@ export default new Event({
   async run(client) {
     console.log("Starting leaderboard update.");
 
-    const anemoCrownBoard = await hallOfFameGenerate(client, "anemo-crown");
+    const anemoCrownBoard = await hallOfFameGenerate(client, "anemo-crown"),
+      geoCrownBoard = await hallOfFameGenerate(client, "geo-crown"),
+      electroCrownBoard = await hallOfFameGenerate(client, "electro-crown"),
+      unalignedCrownBoard = await hallOfFameGenerate(client, "unaligned-crown"),
+      currentAbyssBoard = await hallOfFameGenerate(
+        client,
+        "current-spiral-abyss"
+      ),
+      spiralAbyssboard = await hallOfFameGenerate(client, "spiral-abyss-once");
   }
 });
