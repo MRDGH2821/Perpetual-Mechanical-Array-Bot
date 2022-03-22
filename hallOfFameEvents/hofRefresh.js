@@ -3,6 +3,7 @@
 // eslint-disable-next-line no-unused-vars
 import { Client, Collection } from "discord.js";
 import { crownData, spiralData } from "../lib/HallOfFameManager.js";
+import { Event } from "@ruinguard/core";
 
 export default new Event({
   event: "hofRefresh",
@@ -43,20 +44,25 @@ export default new Event({
 
     console.log("Anemo Crown Start");
     for (const data of await crownData("anemo-crown")) {
-      const User = await client.users.fetch(data.userID),
-        dataToPut = {
-          User,
-          data
-        };
-      if (data.crowns === 1) {
-        client.hallOfFame.anemoCrown.one.set(data.userID, dataToPut);
-      }
-      else if (data.crowns === 2) {
-        client.hallOfFame.anemoCrown.two.set(data.userID, dataToPut);
-      }
-      else if (data.crowns === 3) {
-        client.hallOfFame.anemoCrown.three.set(data.userID, dataToPut);
-      }
+      // console.log(data.userID);
+      await client.users
+        .fetch(data.userID)
+        .then((User) => {
+          const dataToPut = {
+            User,
+            data
+          };
+          if (data.crowns === 1) {
+            client.hallOfFame.anemoCrown.one.set(data.userID, dataToPut);
+          }
+          else if (data.crowns === 2) {
+            client.hallOfFame.anemoCrown.two.set(data.userID, dataToPut);
+          }
+          else if (data.crowns === 3) {
+            client.hallOfFame.anemoCrown.three.set(data.userID, dataToPut);
+          }
+        })
+        .catch(console.error);
     }
     console.log("Anemo Crown End");
 
@@ -142,7 +148,7 @@ export default new Event({
     }
     console.log("Spiral Abyss Current end");
 
-    console.log("Leaderboard refresh complete");
+    console.log("Hall Of Fame refresh complete");
     setTimeout(() => {
       console.log("Sending Hall of fame update request");
       client.emit("hofUpdate", client);
