@@ -1,11 +1,13 @@
 import { Bot } from "@ruinguard/core";
+import HallOfFame from "./HallOfFameEventsIndex.js";
 import PMAIndex from "./PMAIndex.js";
 import { configuration } from "./lib/ConfigManager.js";
 import triggers from "./TriggerIndex.js";
 
 const bot = new Bot({ modules: [
   PMAIndex,
-  triggers
+  triggers,
+  HallOfFame
 ] });
 
 await bot.login(configuration.token);
