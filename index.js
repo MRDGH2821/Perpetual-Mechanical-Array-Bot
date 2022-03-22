@@ -1,10 +1,10 @@
 import { Bot } from "@ruinguard/core";
-import commands from "./PMAIndex.js";
+import PMAIndex from "./PMAIndex.js";
 import { configuration } from "./lib/ConfigManager.js";
 import triggers from "./TriggerIndex.js";
 
 const bot = new Bot({ modules: [
-  commands,
+  PMAIndex,
   triggers
 ] });
 
@@ -17,3 +17,4 @@ bot.once("ready", (client) => {
 });
 
 bot.emit("leaderboardRefresh", bot);
+bot.emit("hofRefresh", bot);
