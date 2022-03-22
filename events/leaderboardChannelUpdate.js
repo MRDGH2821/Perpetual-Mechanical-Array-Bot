@@ -24,7 +24,7 @@ export default new Event({
     // eslint-disable-next-line one-var
     const leaderboardHook = await channel.createWebhook(hookName, {
       avatar:
-      "https://cdn.discordapp.com/attachments/825749528275189760/954657244157452348/250.png",
+        "https://cdn.discordapp.com/attachments/825749528275189760/954657244157452348/250.png",
       reason: "Leaderboard channel changed"
     });
     channel.client.emit("leaderboardSend", leaderboardHook);
