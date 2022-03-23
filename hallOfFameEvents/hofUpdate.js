@@ -14,7 +14,7 @@ export default new Event({
    * @param {Client} client - client object
    */
   async run(client) {
-    console.log("Starting leaderboard update.");
+    console.log("Starting Hall Of Fame update");
 
     const anemoCrownBoard = await hallOfFameGenerate(client, "anemo-crown"),
       geoCrownBoard = await hallOfFameGenerate(client, "geo-crown"),
@@ -63,5 +63,6 @@ export default new Event({
     hofHook.editMessage(currentAbyssMsg.messageID, {
       embeds: [currentAbyssBoard]
     });
+    console.log("Hall Of Fame embeds updated!");
   }
 });

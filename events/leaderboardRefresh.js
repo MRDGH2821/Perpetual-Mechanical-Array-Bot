@@ -103,11 +103,8 @@ export default new Event({
     ]).then(() => {
       console.log("Leaderboard refresh complete");
       process.env.LEADERBOARD = true;
-      setTimeout(() => {
-        console.log("Sending leaderboard update request");
-        // client.emit("leaderboardUpdate", client);
-        // eslint-disable-next-line no-magic-numbers
-      }, 1000 * 60 * 5);
+      console.log("Sending leaderboard update request");
+      client.emit("leaderboardUpdate", client);
     });
   }
 });

@@ -78,16 +78,11 @@ export default new Event({
         collection: client.hallOfFame.spiralAbyss.once,
         type: "spiral-abyss-once"
       })
-    ]).then((values) => {
-      console.log(values);
+    ]).then(() => {
       console.log("Hall Of Fame refresh complete");
       console.log("Sending Hall of fame update request");
       process.env.HALL_OF_FAME = true;
       client.emit("hofUpdate", client);
     });
-
-    setTimeout(() => {
-      // eslint-disable-next-line no-magic-numbers
-    }, 1000 * 60 * 5);
   }
 });
