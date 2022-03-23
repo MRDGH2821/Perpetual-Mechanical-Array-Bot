@@ -1,17 +1,17 @@
 /* eslint-disable no-magic-numbers */
-import { AbyssalConquerorID, NonEleCrownID } from '../lib/roleIDs.js';
+import { AbyssalConquerorID, NonEleCrownID } from "../lib/roleIDs.js";
 import {
   // eslint-disable-next-line no-unused-vars
   CommandInteraction,
   MessageActionRow,
   MessageButton,
   MessageEmbed
-} from 'discord.js';
-import { EmbedColor } from '../lib/constants.js';
-import { PepeKekPoint } from '../lib/emoteIDs.js';
-import PermCheck from '../lib/staff-roles.js';
-import { crownRoles } from '../lib/achievement-roles.js';
-import { roleMention } from '@discordjs/builders';
+} from "discord.js";
+import { EmbedColor } from "../lib/constants.js";
+import { PepeKekPoint } from "../lib/emoteIDs.js";
+import PermCheck from "../lib/staff-roles.js";
+import { crownRoles } from "../lib/achievement-roles.js";
+import { roleMention } from "@discordjs/builders";
 
 /**
  * assigns one role
@@ -27,8 +27,8 @@ export async function giveRoleOne(interaction) {
       return interacted.user.id === interaction.user.id;
     },
     permcheck = new PermCheck(interaction.member),
-    role = await interaction.options.getString('role'),
-    target = await interaction.options.getMember('user');
+    role = await interaction.options.getString("role"),
+    target = await interaction.options.getMember("user");
   let totalExp = exp;
 
   if (permcheck.isStaff() || permcheck.canGibRole()) {
@@ -36,19 +36,19 @@ export async function giveRoleOne(interaction) {
       totalExp = exp;
       const spiralAbyssEmbed = new MessageEmbed()
           .setColor(EmbedColor)
-          .setTitle('**Cleared with traveler?**')
+          .setTitle("**Cleared with traveler?**")
           .setDescription(`Did ${target} clear abyss with traveler?`),
         spiralAbyssRow = new MessageActionRow().addComponents([
           new MessageButton()
-            .setCustomId('abyssWithTraveler')
-            .setLabel('Cleared with traveler')
-            .setEmoji('👍')
-            .setStyle('PRIMARY'),
+            .setCustomId("abyssWithTraveler")
+            .setLabel("Cleared with traveler")
+            .setEmoji("👍")
+            .setStyle("PRIMARY"),
           new MessageButton()
-            .setCustomId('abyssNoTraveler')
-            .setLabel('Not cleared with traveler')
-            .setEmoji('👎')
-            .setStyle('SECONDARY')
+            .setCustomId("abyssNoTraveler")
+            .setLabel("Not cleared with traveler")
+            .setEmoji("👎")
+            .setStyle("SECONDARY")
         ]),
         spiralAbyssStat = await interaction.editReply({
           components: [spiralAbyssRow],
@@ -57,22 +57,22 @@ export async function giveRoleOne(interaction) {
 
       await spiralAbyssStat
         .awaitMessageComponent({
-          componentType: 'BUTTON',
+          componentType: "BUTTON",
           filter: filterCollector,
           time: 15000
         })
         .then((button) => {
-          if (button.customId === 'abyssWithTraveler') {
+          if (button.customId === "abyssWithTraveler") {
             totalExp += exp;
-            interaction.client.emit('spiralAbyssClear', target, true);
+            interaction.client.emit("spiralAbyssClear", target, true);
           }
           else {
-            interaction.client.emit('spiralAbyssClear', target, false);
+            interaction.client.emit("spiralAbyssClear", target, false);
           }
         })
         .catch((error) => {
           console.error(error);
-          interaction.client.emit('spiralAbyssClear', target, false);
+          interaction.client.emit("spiralAbyssClear", target, false);
         });
     }
 
@@ -81,21 +81,21 @@ export async function giveRoleOne(interaction) {
       let crownAmt = 1;
       const crownAmtRow = new MessageActionRow().addComponents([
           new MessageButton()
-            .setCustomId('1')
-            .setEmoji('1️⃣')
-            .setStyle('SECONDARY'),
+            .setCustomId("1")
+            .setEmoji("1️⃣")
+            .setStyle("SECONDARY"),
           new MessageButton()
-            .setCustomId('2')
-            .setEmoji('2️⃣')
-            .setStyle('SECONDARY'),
+            .setCustomId("2")
+            .setEmoji("2️⃣")
+            .setStyle("SECONDARY"),
           new MessageButton()
-            .setCustomId('3')
-            .setEmoji('3️⃣')
-            .setStyle('SECONDARY')
+            .setCustomId("3")
+            .setEmoji("3️⃣")
+            .setStyle("SECONDARY")
         ]),
         crownRoleEmbed = new MessageEmbed()
           .setColor(EmbedColor)
-          .setTitle('**How many crowns?**')
+          .setTitle("**How many crowns?**")
           .setDescription(`How many crowns did ${target} use on traveler for ${roleMention(role)}?`),
         crownStat = await interaction.editReply({
           components: [crownAmtRow],
@@ -104,25 +104,25 @@ export async function giveRoleOne(interaction) {
 
       await crownStat
         .awaitMessageComponent({
-          componentType: 'BUTTON',
+          componentType: "BUTTON",
           filter: filterCollector,
           time: 10000
         })
         .then((button) => {
-          if (button.customId === '1') {
+          if (button.customId === "1") {
             crownAmt = 1;
             totalExp += exp;
           }
-          else if (button.customId === '2') {
+          else if (button.customId === "2") {
             crownAmt = 2;
             totalExp += exp * crownAmt;
           }
-          else if (button.customId === '3') {
+          else if (button.customId === "3") {
             crownAmt = 3;
             totalExp += exp * crownAmt * 2;
           }
 
-          interaction.client.emit('travelerCrown', target, {
+          interaction.client.emit("travelerCrown", target, {
             crownRoleID: role,
             crowns: crownAmt
           });
@@ -131,7 +131,7 @@ export async function giveRoleOne(interaction) {
           totalExp += exp;
           console.error(error);
 
-          interaction.client.emit('travelerCrown', target, {
+          interaction.client.emit("travelerCrown", target, {
             crownRoleID: role,
             crowns: crownAmt
           });
@@ -139,7 +139,7 @@ export async function giveRoleOne(interaction) {
     }
     if (role === NonEleCrownID) {
       totalExp = 30000;
-      interaction.client.emit('travelerCrown', target, {
+      interaction.client.emit("travelerCrown", target, {
         crownRoleID: NonEleCrownID,
         crowns: 1
       });
@@ -150,7 +150,7 @@ export async function giveRoleOne(interaction) {
       embeds: [
         new MessageEmbed()
           .setColor(EmbedColor)
-          .setTitle('**Role Given!**')
+          .setTitle("**Role Given!**")
           .setDescription(`${roleMention(role)} given to ${target}`)
       ]
     });
@@ -162,7 +162,7 @@ export async function giveRoleOne(interaction) {
     await interaction.followUp({
       components: [],
       content:
-        'Copy paste that command. And a message by <@!485962834782453762> should come up like [this](https://i.imgur.com/yQvOAzZ.png)',
+        "Copy paste that command. And a message by <@!485962834782453762> should come up like [this](https://i.imgur.com/yQvOAzZ.png)",
       ephemeral: true
     });
   }

@@ -1,9 +1,9 @@
 import { Module } from "@ruinguard/core";
 import { arrayOfFilesGenerator } from "./filesExporter.js";
 
-const events = await arrayOfFilesGenerator("./triggers");
+const events = await arrayOfFilesGenerator("./hallOfFameEvents");
 
 export default await new Module({
   events,
-  name: "PMA Triggers"
+  name: "Hall Of Fame Events"
 });

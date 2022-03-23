@@ -4,11 +4,11 @@ import {
   MessageActionRow,
   MessageButton,
   MessageEmbed
-} from 'discord.js';
-import CheckRolePerms from '../lib/staff-roles.js';
-import { Colors } from '../lib/constants.js';
-import { HmmTher } from '../lib/emoteIDs.js';
-import { isURLvalid } from '../lib/utilityFunctions.js';
+} from "discord.js";
+import CheckRolePerms from "../lib/staff-roles.js";
+import { Colors } from "../lib/constants.js";
+import { HmmTher } from "../lib/emoteIDs.js";
+import { isURLvalid } from "../lib/utilityFunctions.js";
 
 /**
  * submits score for leaderboard
@@ -18,27 +18,27 @@ import { isURLvalid } from '../lib/utilityFunctions.js';
  */
 export async function leaderboard_register(interaction) {
   await interaction.deferReply();
-  const dmgCategory = interaction.options.getString('category'),
+  const dmgCategory = interaction.options.getString("category"),
     modCheck = new CheckRolePerms(interaction.member),
-    proofLink = interaction.options.getString('proof_link'),
-    score = interaction.options.getInteger('score'),
-    typeCategory = interaction.options.getString('group_type'),
-    user = await interaction.options.getUser('contestant'),
+    proofLink = interaction.options.getString("proof_link"),
+    score = interaction.options.getInteger("score"),
+    typeCategory = interaction.options.getString("group_type"),
+    user = await interaction.options.getUser("contestant"),
     verifyEmb = new MessageEmbed()
-      .setTitle('**Entry Verification**')
+      .setTitle("**Entry Verification**")
       .setDescription(`**Contestant**: ${user} ${user.tag}\n**Category**: ${dmgCategory} \n**Type**: ${typeCategory} \n**Score (i.e. Dmg value)**: ${score} \n\n**Proof**: \n${proofLink}`),
     // eslint-disable-next-line sort-vars
     approveRow = new MessageActionRow().addComponents([
       new MessageButton()
-        .setCustomId('accepted')
-        .setLabel('Accept')
-        .setEmoji('👍')
-        .setStyle('SUCCESS'),
+        .setCustomId("accepted")
+        .setLabel("Accept")
+        .setEmoji("👍")
+        .setStyle("SUCCESS"),
       new MessageButton()
-        .setCustomId('rejected')
-        .setLabel('Reject')
-        .setEmoji('👎')
-        .setStyle('DANGER')
+        .setCustomId("rejected")
+        .setLabel("Reject")
+        .setEmoji("👎")
+        .setStyle("DANGER")
     ]);
   console.log(dmgCategory);
   if ((/anemo./gimu).test(dmgCategory)) {
@@ -78,7 +78,7 @@ export async function leaderboard_register(interaction) {
 
   return staffApproval
     .awaitMessageComponent({
-      componentType: 'BUTTON',
+      componentType: "BUTTON",
       // filter: staffFilter,
       time: 300000
     })
@@ -86,27 +86,27 @@ export async function leaderboard_register(interaction) {
       // console.log(interacted);
       if (modCheck.isStaff(interacted.member)) {
         console.log(interacted.customId);
-        if (interacted.customId === 'accepted') {
+        if (interacted.customId === "accepted") {
           verifyEmb
-            .setThumbnail('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/282/check-mark-button_2705.png')
-            .setTitle('**Submission Accepted!**')
+            .setThumbnail("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/282/check-mark-button_2705.png")
+            .setTitle("**Submission Accepted!**")
             .setColor(Colors.Success);
           await interaction.editReply({
             components: [],
             embeds: [verifyEmb]
           });
 
-          interaction.client.emit('leaderboardEntry', user, {
+          interaction.client.emit("leaderboardEntry", user, {
             elementCategory: dmgCategory,
             proof: proofLink,
             score,
             typeCategory
           });
         }
-        else if (interacted.customId === 'rejected') {
+        else if (interacted.customId === "rejected") {
           verifyEmb
-            .setThumbnail('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/282/cross-mark_274c.png')
-            .setTitle('**Submission Rejected!**')
+            .setThumbnail("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/282/cross-mark_274c.png")
+            .setTitle("**Submission Rejected!**")
             .setColor(Colors.Error);
           await interaction.editReply({
             components: [],
@@ -114,12 +114,12 @@ export async function leaderboard_register(interaction) {
           });
         }
         else {
-          throw new Error('Unknown Button received');
+          throw new Error("Unknown Button received");
         }
       }
       else {
         interacted.reply({
-          content: 'Ping a mod to get approval!',
+          content: "Ping a mod to get approval!",
           ephemeral: true
         });
       }
@@ -128,12 +128,12 @@ export async function leaderboard_register(interaction) {
       verifyEmb
         .addFields([
           {
-            name: '**Time out!**',
+            name: "**Time out!**",
             value:
-              'Please run the command again & ping a mod to review the submission!'
+              "Please run the command again & ping a mod to review the submission!"
           },
           {
-            name: '**Internal Errors if any**',
+            name: "**Internal Errors if any**",
             value: `${error}\n\n(If the reason is time, then it is because submission approval message is set to expire after 30 seconds)`
           }
         ])

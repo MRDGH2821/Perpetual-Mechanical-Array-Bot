@@ -1,20 +1,20 @@
 // eslint-disable-next-line no-unused-vars
-import { CommandInteraction, MessageEmbed } from 'discord.js';
-import { SlashCommandBuilder, roleMention } from '@discordjs/builders';
-import { archivesID, confessionID } from '../lib/channelIDs.js';
-import { ArchonsID } from '../lib/roleIDs.js';
-import { Command } from '@ruinguard/core';
-import { EmbedColor } from '../lib/constants.js';
+import { CommandInteraction, MessageEmbed } from "discord.js";
+import { SlashCommandBuilder, roleMention } from "@discordjs/builders";
+import { archivesID, confessionID } from "../lib/channelIDs.js";
+import { ArchonsID } from "../lib/roleIDs.js";
+import { Command } from "@ruinguard/core";
+import { EmbedColor } from "../lib/constants.js";
 
 const cmd = new SlashCommandBuilder()
-  .setName('confession')
-  .setDescription('Wanna confess something?')
+  .setName("confession")
+  .setDescription("Wanna confess something?")
   .addStringOption((option) => option
-    .setName('confess')
-    .setDescription('Enter your confession!')
+    .setName("confess")
+    .setDescription("Enter your confession!")
     .setRequired(true))
-  .addBooleanOption((option) => option.setName('anonymous').setDescription('Want to be Anonymous?'))
-  .addBooleanOption((option) => option.setName('ping_archons').setDescription('Notify Archons?'));
+  .addBooleanOption((option) => option.setName("anonymous").setDescription("Want to be Anonymous?"))
+  .addBooleanOption((option) => option.setName("ping_archons").setDescription("Notify Archons?"));
 
 export default new Command({
   data: cmd,
@@ -26,18 +26,18 @@ export default new Command({
    * @param {CommandInteraction} interaction - interaction object
    */
   async run(interaction) {
-    const anonymous = interaction.options.getBoolean('anonymous') || false,
+    const anonymous = interaction.options.getBoolean("anonymous") || false,
       archonNotification =
-        interaction.options.getBoolean('ping_archons') || false,
+        interaction.options.getBoolean("ping_archons") || false,
       channelConfess = await interaction.guild.channels.fetch(confessionID),
       channelLog = await interaction.guild.channels.fetch(archivesID),
-      confessionText = interaction.options.getString('confess'),
+      confessionText = interaction.options.getString("confess"),
       embedAnon = new MessageEmbed()
         .setColor(EmbedColor)
         .setDescription(`${confessionText}`)
         .setTimestamp()
-        .setTitle('**A New Confession!**')
-        .setAuthor({ name: 'Anonymous' }),
+        .setTitle("**A New Confession!**")
+        .setAuthor({ name: "Anonymous" }),
       embedConfess = new MessageEmbed()
         .setColor(EmbedColor)
         .setDescription(`${confessionText}`)
@@ -45,14 +45,14 @@ export default new Command({
           dynamic: true
         }))
         .setTimestamp()
-        .setTitle('**A New Confession!**')
+        .setTitle("**A New Confession!**")
         .setAuthor({
           iconURL: interaction.user.displayAvatarURL({
             dynamic: true
           }),
           name: interaction.user.tag
         });
-    let text = ' ';
+    let text = " ";
     if (archonNotification) {
       text = roleMention(ArchonsID);
     }

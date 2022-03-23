@@ -1,7 +1,7 @@
-import { Event } from '@ruinguard/core';
+import { Event } from "@ruinguard/core";
 
 export default new Event({
-  event: 'error',
+  event: "error",
 
   /**
    * logs errors
@@ -9,7 +9,7 @@ export default new Event({
    * @param {Error} err - error object
    */
   run(err) {
-    console.log('Error: ');
+    console.log("Error: ");
     console.error(err);
   }
 });

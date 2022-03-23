@@ -1,12 +1,12 @@
-import { Event } from '@ruinguard/core';
+import { Event } from "@ruinguard/core";
 // eslint-disable-next-line no-unused-vars
-import { GuildMember } from 'discord.js';
-import { NonEleCrownID } from '../lib/roleIDs.js';
-import { crownName } from '../lib/achievement-roles.js';
-import { db } from '../lib/firebase.cjs';
+import { GuildMember } from "discord.js";
+import { NonEleCrownID } from "../lib/roleIDs.js";
+import { crownName } from "../lib/achievement-roles.js";
+import { db } from "../lib/firebase.cjs";
 
 export default new Event({
-  event: 'travelerCrown',
+  event: "travelerCrown",
 
   /**
    * save spiral abyss clear entry to database

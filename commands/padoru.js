@@ -2,18 +2,18 @@ import {
   SlashCommandBuilder,
   channelMention,
   roleMention
-} from '@discordjs/builders';
-import { botSpamID, commandCenterID } from '../lib/channelIDs.js';
-import { ArchonsID } from '../lib/roleIDs.js';
-import { Command } from '@ruinguard/core';
+} from "@discordjs/builders";
+import { botSpamID, commandCenterID } from "../lib/channelIDs.js";
+import { ArchonsID } from "../lib/roleIDs.js";
+import { Command } from "@ruinguard/core";
 // eslint-disable-next-line no-unused-vars
-import { CommandInteraction } from 'discord.js';
-import { LuminePadoru } from '../lib/emoteIDs.js';
+import { CommandInteraction } from "discord.js";
+import { LuminePadoru } from "../lib/emoteIDs.js";
 
 export default new Command({
   data: new SlashCommandBuilder()
-    .setName('padoru')
-    .setDescription('Will sing Padoru (as text)'),
+    .setName("padoru")
+    .setDescription("Will sing Padoru (as text)"),
 
   /**
    * will sing padoru as text
@@ -32,7 +32,7 @@ export default new Command({
       await channel.send(`${roleMention(ArchonsID)} Tsukkimihara wo`);
       await channel.send(`${roleMention(ArchonsID)} PADORU PADORU`);
       await channel.send(`${LuminePadoru}${LuminePadoru}${LuminePadoru}${LuminePadoru}`);
-      await channel.send({ stickers: ['912034014112649276'] });
+      await channel.send({ stickers: ["912034014112649276"] });
     }
     else {
       await interaction.reply({

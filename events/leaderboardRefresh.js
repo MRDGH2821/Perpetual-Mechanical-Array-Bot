@@ -1,20 +1,22 @@
+/* eslint-disable one-var */
 /* eslint-disable no-await-in-loop */
 // eslint-disable-next-line no-unused-vars
-import { Client, Collection } from 'discord.js';
-import { Event } from '@ruinguard/core';
-import { leaderboardData } from '../lib/LeaderboardManager.js';
+import { Client, Collection } from "discord.js";
+import { Event } from "@ruinguard/core";
+import { leaderboardSetData } from "../lib/utilityFunctions.js";
 
 export default new Event({
-  event: 'leaderboardRefresh',
+  event: "leaderboardRefresh",
 
   /**
    * refreshes leaderboard cache data
    * @async
    * @function run
-   * @param {Client} client
+   * @param {Client} client - client object
    */
   async run(client) {
-    console.log('Leaderboard Refresh initiated');
+    process.env.LEADERBOARD = false;
+    console.log("Leaderboard Refresh initiated");
     client.leaderboards = {
       anemo: {
         skill: {
@@ -42,107 +44,67 @@ export default new Event({
       }
     };
 
-    console.log('Anemo refresh');
+    await Promise.all([
+      leaderboardSetData({
+        client,
+        collection: client.leaderboards.anemo.skill.open,
+        dmgCategory: "anemo-dmg-skill",
+        type: "open"
+      }),
 
-    console.log('Anemo Open Start');
-    for (const data of await leaderboardData('anemo-dmg-skill', 'open')) {
-      const User = await client.users.fetch(data.userID),
-        dataToPut = {
-          User,
-          data
-        };
-      client.leaderboards.anemo.skill.open.set(data.userID, dataToPut);
-    }
-    console.log('Anemo Open Done');
+      leaderboardSetData({
+        client,
+        collection: client.leaderboards.anemo.skill.solo,
+        dmgCategory: "anemo-dmg-skill",
+        type: "solo"
+      }),
 
-    console.log('Anemo Solo Start');
-    for (const data of await leaderboardData('anemo-dmg-skill', 'solo')) {
-      const User = await client.users.fetch(data.userID),
-        dataToPut = {
-          User,
-          data
-        };
-      client.leaderboards.anemo.skill.solo.set(data.userID, dataToPut);
-    }
-    console.log('Anemo Solo Done');
+      leaderboardSetData({
+        client,
+        collection: client.leaderboards.geo.skill.open,
+        dmgCategory: "geo-dmg-skill",
+        type: "open"
+      }),
 
-    console.log('Geo Refresh');
+      leaderboardSetData({
+        client,
+        collection: client.leaderboards.geo.skill.solo,
+        dmgCategory: "geo-dmg-skill",
+        type: "solo"
+      }),
 
-    console.log('Geo Solo Start');
-    for (const data of await leaderboardData('geo-dmg-skill', 'solo')) {
-      const User = await client.users.fetch(data.userID),
-        dataToPut = {
-          User,
-          data
-        };
-      client.leaderboards.geo.skill.solo.set(data.userID, dataToPut);
-    }
-    console.log('Geo Solo End');
+      leaderboardSetData({
+        client,
+        collection: client.leaderboards.electro.skill.solo,
+        dmgCategory: "electro-dmg-skill",
+        type: "solo"
+      }),
 
-    console.log('Geo Open Start');
-    for (const data of await leaderboardData('geo-dmg-skill', 'open')) {
-      const User = await client.users.fetch(data.userID),
-        dataToPut = {
-          User,
-          data
-        };
-      client.leaderboards.geo.skill.open.set(data.userID, dataToPut);
-    }
-    console.log('Geo Solo End');
+      leaderboardSetData({
+        client,
+        collection: client.leaderboards.electro.skill.open,
+        dmgCategory: "electro-dmg-skill",
+        type: "open"
+      }),
 
-    console.log('Electro Refresh');
+      leaderboardSetData({
+        client,
+        collection: client.leaderboards.universal.n5.solo,
+        dmgCategory: "uni-dmg-n5",
+        type: "solo"
+      }),
 
-    console.log('Electro Open Start');
-    for (const data of await leaderboardData('electro-dmg-skill', 'open')) {
-      const User = await client.users.fetch(data.userID),
-        dataToPut = {
-          User,
-          data
-        };
-      client.leaderboards.electro.skill.open.set(data.userID, dataToPut);
-    }
-    console.log('Electro Open End');
-
-    console.log('Electro Solo Start');
-    for (const data of await leaderboardData('electro-dmg-skill', 'solo')) {
-      const User = await client.users.fetch(data.userID),
-        dataToPut = {
-          User,
-          data
-        };
-      client.leaderboards.electro.skill.solo.set(data.userID, dataToPut);
-    }
-    console.log('Electro Solo end');
-
-    console.log('Universal n5 refresh');
-
-    console.log('Universal Open Start');
-    for (const data of await leaderboardData('uni-dmg-n5', 'open')) {
-      const User = await client.users.fetch(data.userID),
-        dataToPut = {
-          User,
-          data
-        };
-      client.leaderboards.universal.n5.open.set(data.userID, dataToPut);
-    }
-    console.log('Universal Open End');
-
-    console.log('Universal Solo Start');
-    for (const data of await leaderboardData('uni-dmg-n5', 'solo')) {
-      const User = await client.users.fetch(data.userID),
-        dataToPut = {
-          User,
-          data
-        };
-      client.leaderboards.universal.n5.solo.set(data.userID, dataToPut);
-    }
-    console.log('Universal Solo End');
-
-    console.log('Leaderboard refresh complete');
-    setTimeout(() => {
-      console.log('Sending leaderboard update request');
-      client.emit('leaderboardUpdate', client);
-      // eslint-disable-next-line no-magic-numbers
-    }, 1000 * 60 * 5);
+      leaderboardSetData({
+        client,
+        collection: client.leaderboards.universal.n5.open,
+        dmgCategory: "uni-dmg-n5",
+        type: "open"
+      })
+    ]).then(() => {
+      console.log("Leaderboard refresh complete");
+      process.env.LEADERBOARD = true;
+      console.log("Sending leaderboard update request");
+      client.emit("leaderboardUpdate", client);
+    });
   }
 });

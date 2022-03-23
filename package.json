@@ -35,13 +35,14 @@
     "dotenv": "^16.0.0",
     "firebase-admin": "^10.0.2",
     "mathjs": "^10.4.0",
-    "node-fetch": "^2.6.7"
+    "node-fetch": "^2.6.7",
+    "progress": "^2.0.3"
   },
   "devDependencies": {
     "eslint": "^8.11.0",
-    "eslint-config-mrdgh2821": "^2.0.0",
+    "eslint-config-mrdgh2821": "^2.1.0",
     "prettier": "^2.6.0",
-    "prettier-config-mrdgh2821": "^2.0.1"
+    "prettier-config-mrdgh2821": "^2.1.0"
   },
   "config": {
     "commitizen": {
