@@ -41,47 +41,50 @@ export default new Event({
         one: new Collection()
       }
     };
+    await Promise.all([
+      crownSetData({
+        client,
+        collectionObj: client.hallOfFame.anemoCrown,
+        element: "anemo-crown"
+      }),
 
-    await crownSetData({
-      client,
-      collectionObj: client.hallOfFame.anemoCrown,
-      element: "anemo-crown"
-    });
+      crownSetData({
+        client,
+        collectionObj: client.hallOfFame.geoCrown,
+        element: "geo-crown"
+      }),
 
-    await crownSetData({
-      client,
-      collectionObj: client.hallOfFame.geoCrown,
-      element: "geo-crown"
-    });
+      crownSetData({
+        client,
+        collectionObj: client.hallOfFame.electroCrown,
+        element: "electro-crown"
+      }),
 
-    await crownSetData({
-      client,
-      collectionObj: client.hallOfFame.electroCrown,
-      element: "electro-crown"
-    });
+      crownSetData({
+        client,
+        collectionObj: client.hallOfFame.unalignedCrown,
+        element: "unaligned-crown"
+      }),
 
-    await crownSetData({
-      client,
-      collectionObj: client.hallOfFame.unalignedCrown,
-      element: "unaligned-crown"
-    });
+      spiralSetData({
+        client,
+        collection: client.hallOfFame.spiralAbyss.current,
+        type: "current-spiral-abyss"
+      }),
 
-    await spiralSetData({
-      client,
-      collection: client.hallOfFame.spiralAbyss.current,
-      type: "current-spiral-abyss"
-    });
-
-    await spiralSetData({
-      client,
-      collection: client.hallOfFame.spiralAbyss.once,
-      type: "spiral-abyss-once"
-    });
-
-    console.log("Hall Of Fame refresh complete");
-    setTimeout(() => {
+      spiralSetData({
+        client,
+        collection: client.hallOfFame.spiralAbyss.once,
+        type: "spiral-abyss-once"
+      })
+    ]).then((values) => {
+      console.log(values);
+      console.log("Hall Of Fame refresh complete");
       console.log("Sending Hall of fame update request");
       client.emit("hofUpdate", client);
+    });
+
+    setTimeout(() => {
       // eslint-disable-next-line no-magic-numbers
     }, 1000 * 60 * 5);
   }

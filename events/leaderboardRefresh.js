@@ -44,56 +44,56 @@ export default new Event({
     };
 
     await Promise.all([
-      await leaderboardSetData({
+      leaderboardSetData({
         client,
         collection: client.leaderboards.anemo.skill.open,
         dmgCategory: "anemo-dmg-skill",
         type: "open"
       }),
 
-      await leaderboardSetData({
+      leaderboardSetData({
         client,
         collection: client.leaderboards.anemo.skill.solo,
         dmgCategory: "anemo-dmg-skill",
         type: "solo"
       }),
 
-      await leaderboardSetData({
+      leaderboardSetData({
         client,
         collection: client.leaderboards.geo.skill.open,
         dmgCategory: "geo-dmg-skill",
         type: "open"
       }),
 
-      await leaderboardSetData({
+      leaderboardSetData({
         client,
         collection: client.leaderboards.geo.skill.solo,
         dmgCategory: "geo-dmg-skill",
         type: "solo"
       }),
 
-      await leaderboardSetData({
+      leaderboardSetData({
         client,
         collection: client.leaderboards.electro.skill.solo,
         dmgCategory: "electro-dmg-skill",
         type: "solo"
       }),
 
-      await leaderboardSetData({
+      leaderboardSetData({
         client,
         collection: client.leaderboards.electro.skill.open,
         dmgCategory: "electro-dmg-skill",
         type: "open"
       }),
 
-      await leaderboardSetData({
+      leaderboardSetData({
         client,
         collection: client.leaderboards.universal.n5.solo,
         dmgCategory: "uni-dmg-n5",
         type: "solo"
       }),
 
-      await leaderboardSetData({
+      leaderboardSetData({
         client,
         collection: client.leaderboards.universal.n5.open,
         dmgCategory: "uni-dmg-n5",
