@@ -35,7 +35,10 @@ export default new Command({
         .addChannelType(Constants.ChannelTypes.GUILD_TEXT)))
     .addSubcommand((subcommand) => subcommand
       .setName("refresh_cache")
-      .setDescription("Refresh Hall Of Fame Cache")),
+      .setDescription("Refresh Hall Of Fame Cache"))
+    .addSubcommand((subcommand) => subcommand
+      .setName("reset_abyss")
+      .setDescription("Reset current spiral abyss data")),
 
   /**
    * hall of fame main command
@@ -99,6 +102,12 @@ export default new Command({
         });
       }
       break;
+    }
+    case "reset_abyss": {
+      await interaction.reply({
+        content: "This feature is work in progress",
+        ephemeral: true
+      });
     }
       // no default
     }
