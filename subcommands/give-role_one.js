@@ -29,7 +29,8 @@ export async function giveRoleOne(interaction) {
     permcheck = new PermCheck(interaction.member),
     role = await interaction.options.getString("role"),
     target = await interaction.options.getMember("user");
-  let totalExp = exp;
+  let additionalNotes = "None",
+    totalExp = exp;
 
   if (permcheck.isStaff() || permcheck.canGibRole()) {
     if (role === AbyssalConquerorID) {
@@ -65,6 +66,7 @@ export async function giveRoleOne(interaction) {
           if (button.customId === "abyssWithTraveler") {
             totalExp += exp;
             interaction.client.emit("spiralAbyssClear", target, true);
+            additionalNotes = "Cleared with traveler!";
           }
           else {
             interaction.client.emit("spiralAbyssClear", target, false);
@@ -121,7 +123,7 @@ export async function giveRoleOne(interaction) {
             crownAmt = 3;
             totalExp += exp * crownAmt * 2;
           }
-
+          additionalNotes = `Crowns used: ${crownAmt}`;
           interaction.client.emit("travelerCrown", target, {
             crownRoleID: role,
             crowns: crownAmt
@@ -145,14 +147,18 @@ export async function giveRoleOne(interaction) {
       });
     }
     target.roles.add(role);
+
+    const finalEmbed = new MessageEmbed()
+      .setColor(EmbedColor)
+      .setTitle("**Role Given!**")
+      .setDescription(`${roleMention(role)} given to ${target}`);
+
+    if (additionalNotes !== "None") {
+      finalEmbed.addField("**Additional notes**", additionalNotes);
+    }
     await interaction.editReply({
       components: [],
-      embeds: [
-        new MessageEmbed()
-          .setColor(EmbedColor)
-          .setTitle("**Role Given!**")
-          .setDescription(`${roleMention(role)} given to ${target}`)
-      ]
+      embeds: [finalEmbed]
     });
     await interaction.followUp({
       components: [],
