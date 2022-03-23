@@ -2,15 +2,17 @@
 /* eslint-disable no-magic-numbers */
 // eslint-disable-next-line no-unused-vars
 import { Client, Collection } from "discord.js";
-import { crownData, spiralData } from "../lib/HallOfFameManager.js";
+import { crownSetData, spiralSetData } from "../lib/utilityFunctions.js";
 import { Event } from "@ruinguard/core";
 
 export default new Event({
   event: "hofRefresh",
 
   /**
-   *
-   * @param {Client} client
+   * refreshes hall of fame cache
+   * @async
+   * @function run
+   * @param {Client} client - client object
    */
   async run(client) {
     console.log("Hall of fame Refresh initiated");
@@ -40,113 +42,41 @@ export default new Event({
       }
     };
 
-    console.log("Anemo Refresh");
+    await crownSetData({
+      client,
+      collectionObj: client.hallOfFame.anemoCrown,
+      element: "anemo-crown"
+    });
 
-    console.log("Anemo Crown Start");
-    for (const data of await crownData("anemo-crown")) {
-      // console.log(data.userID);
-      await client.users
-        .fetch(data.userID)
-        .then((User) => {
-          const dataToPut = {
-            User,
-            data
-          };
-          if (data.crowns === 1) {
-            client.hallOfFame.anemoCrown.one.set(data.userID, dataToPut);
-          }
-          else if (data.crowns === 2) {
-            client.hallOfFame.anemoCrown.two.set(data.userID, dataToPut);
-          }
-          else if (data.crowns === 3) {
-            client.hallOfFame.anemoCrown.three.set(data.userID, dataToPut);
-          }
-        })
-        .catch(console.error);
-    }
-    console.log("Anemo Crown End");
+    await crownSetData({
+      client,
+      collectionObj: client.hallOfFame.geoCrown,
+      element: "geo-crown"
+    });
 
-    console.log("Geo Refresh");
+    await crownSetData({
+      client,
+      collectionObj: client.hallOfFame.electroCrown,
+      element: "electro-crown"
+    });
 
-    console.log("Geo Crown Start");
-    for (const data of await crownData("geo-crown")) {
-      const User = await client.users.fetch(data.userID),
-        dataToPut = {
-          User,
-          data
-        };
-      if (data.crowns === 1) {
-        client.hallOfFame.geoCrown.one.set(data.userID, dataToPut);
-      }
-      else if (data.crowns === 2) {
-        client.hallOfFame.geoCrown.two.set(data.userID, dataToPut);
-      }
-      else if (data.crowns === 3) {
-        client.hallOfFame.geoCrown.three.set(data.userID, dataToPut);
-      }
-    }
-    console.log("Geo Crown End");
+    await crownSetData({
+      client,
+      collectionObj: client.hallOfFame.unalignedCrown,
+      element: "unaligned-crown"
+    });
 
-    console.log("Electro Refresh");
+    await spiralSetData({
+      client,
+      collection: client.hallOfFame.spiralAbyss.current,
+      type: "current-spiral-abyss"
+    });
 
-    console.log("Electro Crown Start");
-    for (const data of await crownData("electro-crown")) {
-      const User = await client.users.fetch(data.userID),
-        dataToPut = {
-          User,
-          data
-        };
-      if (data.crowns === 1) {
-        client.hallOfFame.electroCrown.one.set(data.userID, dataToPut);
-      }
-      else if (data.crowns === 2) {
-        client.hallOfFame.electroCrown.two.set(data.userID, dataToPut);
-      }
-      else if (data.crowns === 3) {
-        client.hallOfFame.electroCrown.three.set(data.userID, dataToPut);
-      }
-    }
-    console.log("Electro Crown End");
-
-    console.log("Unaligned Refresh");
-
-    console.log("Unaligned Crown Start");
-    for (const data of await crownData("unaligned-crown")) {
-      const User = await client.users.fetch(data.userID),
-        dataToPut = {
-          User,
-          data
-        };
-
-      client.hallOfFame.unalignedCrown.one.set(data.userID, dataToPut);
-    }
-    console.log("Unaligned Crown End");
-
-    console.log("Spiral Abyss Refresh");
-
-    console.log("Spiral Abyss Once start");
-    for (const data of await spiralData("spiral-abyss-once")) {
-      const User = await client.users.fetch(data.userID),
-        dataToPut = {
-          User,
-          data
-        };
-
-      client.hallOfFame.spiralAbyss.once.set(data.userID, dataToPut);
-    }
-    console.log("Spiral Abyss Once end");
-
-    console.log("Spiral Abyss Current start");
-    for (const data of await spiralData("current-spiral-abyss")) {
-      const User = await client.users.fetch(data.userID),
-        dataToPut = {
-          User,
-          data
-        };
-
-      client.hallOfFame.spiralAbyss.current.set(data.userID, dataToPut);
-    }
-    console.log("Spiral Abyss Current end");
+    await spiralSetData({
+      client,
+      collection: client.hallOfFame.spiralAbyss.once,
+      type: "spiral-abyss-once"
+    });
 
     console.log("Hall Of Fame refresh complete");
     setTimeout(() => {
