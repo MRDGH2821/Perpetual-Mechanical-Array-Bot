@@ -15,6 +15,7 @@ export default new Event({
    * @param {Client} client - client object
    */
   async run(client) {
+    process.env.HALL_OF_FAME = false;
     console.log("Hall of fame Refresh initiated");
 
     client.hallOfFame = {

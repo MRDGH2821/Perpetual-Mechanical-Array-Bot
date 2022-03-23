@@ -15,6 +15,7 @@ export default new Event({
    * @param {Client} client - client object
    */
   async run(client) {
+    process.env.LEADERBOARD = false;
     console.log("Leaderboard Refresh initiated");
     client.leaderboards = {
       anemo: {
