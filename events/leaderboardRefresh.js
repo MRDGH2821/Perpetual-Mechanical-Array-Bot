@@ -12,7 +12,7 @@ export default new Event({
    * refreshes leaderboard cache data
    * @async
    * @function run
-   * @param {Client} client
+   * @param {Client} client - client object
    */
   async run(client) {
     console.log("Leaderboard Refresh initiated");

@@ -41,7 +41,7 @@ export default new Command({
    * hall of fame main command
    * @async
    * @function
-   * @param {CommandInteraction} interaction
+   * @param {CommandInteraction} interaction - interaction object
    */
   async run(interaction) {
     switch (interaction.options.getSubcommand()) {

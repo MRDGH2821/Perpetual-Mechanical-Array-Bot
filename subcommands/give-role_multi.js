@@ -30,7 +30,7 @@ const exp = 250;
  * gives role to selected user
  * @async
  * @function run
- * @param {CommandInteraction} interaction
+ * @param {CommandInteraction} interaction - interaction object
  */
 export async function giveRoleMulti(interaction) {
   await interaction.deferReply();

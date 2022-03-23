@@ -8,6 +8,7 @@ export default new Event({
 
   /**
    * submits score for leaderboard
+   * @async
    * @function run
    * @param {User} target - user whose score is registered
    * @param {object} submission - properties of submission

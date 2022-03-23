@@ -9,7 +9,7 @@ export default new Event({
    * changes leaderboard channel
    * @async
    * @function run
-   * @param {TextChannel} channel
+   * @param {TextChannel} channel - the new channel's object
    */
   async run(channel) {
     const guildWebhooks = await channel.guild.fetchWebhooks(),

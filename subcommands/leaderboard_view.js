@@ -7,7 +7,7 @@ import { leaderboardGenerate } from "../lib/LeaderboardManager.js";
  * shows leaderboard entry
  * @async
  * @function leaderboard_view
- * @param {CommandInteraction} interaction
+ * @param {CommandInteraction} interaction - interaction object
  */
 export async function leaderboard_view(interaction) {
   await interaction.deferReply();

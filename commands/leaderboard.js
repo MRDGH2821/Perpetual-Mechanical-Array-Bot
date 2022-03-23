@@ -66,7 +66,7 @@ export default new Command({
    * leaderboard main command
    * @async
    * @function run
-   * @param {CommandInteraction} interaction
+   * @param {CommandInteraction} interaction - interaction object
    */
   async run(interaction) {
     switch (interaction.options.getSubcommand()) {

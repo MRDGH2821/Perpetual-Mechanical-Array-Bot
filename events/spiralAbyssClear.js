@@ -8,6 +8,7 @@ export default new Event({
 
   /**
    * save spiral abyss clear entry to database
+   * @async
    * @function run
    * @param {GuildMember} target - the guild member who cleared abyss
    * @param {boolean} travelerClear - whether cleared with traveler or not

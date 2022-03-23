@@ -10,9 +10,10 @@ export default new Event({
   event: "leaderboardSend",
 
   /**
+   * sends initial leaderboard messages
    * @async
    * @function run
-   * @param {Webhook} webhook
+   * @param {Webhook} webhook - webhook object
    */
   async run(webhook) {
     const anemoSkillBoard = await leaderboardGenerate(

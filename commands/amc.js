@@ -1,7 +1,7 @@
-// eslint-disable-next-line no-unused-vars
-import { AutocompleteInteraction, CommandInteraction } from "discord.js";
 import { AMCTechs } from "../lib/TravelerTechnologies.js";
 import { Command } from "@ruinguard/core";
+// eslint-disable-next-line no-unused-vars
+import { CommandInteraction } from "discord.js";
 import { SlashCommandBuilder } from "@discordjs/builders";
 
 export default new Command({
@@ -28,11 +28,10 @@ export default new Command({
 
   /**
    * show amc techs & guide
+   * @async
    * @function run
-   * @param {CommandInteraction | AutocompleteInteraction} interaction - interaction object
-   * @returns {Promise<void>} - interaction promise object
+   * @param {CommandInteraction} interaction - interaction object
    */
-  // eslint-disable-next-line consistent-return
   async run(interaction) {
     switch (interaction.options.getSubcommand()) {
     case "gust_surge": {

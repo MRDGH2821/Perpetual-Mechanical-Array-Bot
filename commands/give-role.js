@@ -48,7 +48,7 @@ export default new Command({
    * gives role to selected user
    * @async
    * @function run
-   * @param {CommandInteraction} interaction
+   * @param {CommandInteraction} interaction - interaction object
    */
   async run(interaction) {
     switch (interaction.options.getSubcommand()) {
