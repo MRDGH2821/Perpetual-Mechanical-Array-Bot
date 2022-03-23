@@ -101,6 +101,7 @@ export default new Event({
       })
     ]).then(() => {
       console.log("Leaderboard refresh complete");
+      process.env.LEADERBOARD = true;
       setTimeout(() => {
         console.log("Sending leaderboard update request");
         // client.emit("leaderboardUpdate", client);

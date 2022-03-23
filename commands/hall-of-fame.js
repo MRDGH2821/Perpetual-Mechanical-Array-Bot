@@ -47,7 +47,15 @@ export default new Command({
     switch (interaction.options.getSubcommand()) {
     case "view": {
       console.log("view subcommand selected");
-      await hof_view(interaction);
+      if (process.env.HALL_OF_FAME === "true") {
+        await hof_view(interaction);
+      }
+      else {
+        await interaction.reply({
+          content: "Please wait for hall of fame to refresh!",
+          ephemeral: true
+        });
+      }
       break;
     }
 

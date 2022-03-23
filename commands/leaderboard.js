@@ -72,7 +72,16 @@ export default new Command({
     switch (interaction.options.getSubcommand()) {
     case "view": {
       console.log("view subcommand selected");
-      await leaderboard_view(interaction);
+      console.log(typeof process.env.LEADERBOARD);
+      if (process.env.LEADERBOARD === "true") {
+        await leaderboard_view(interaction);
+      }
+      else {
+        await interaction.reply({
+          content: "Please wait for leaderboard to refresh!",
+          ephemeral: true
+        });
+      }
       break;
     }
 

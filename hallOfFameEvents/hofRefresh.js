@@ -81,6 +81,7 @@ export default new Event({
       console.log(values);
       console.log("Hall Of Fame refresh complete");
       console.log("Sending Hall of fame update request");
+      process.env.HALL_OF_FAME = true;
       client.emit("hofUpdate", client);
     });
 

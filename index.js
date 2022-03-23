@@ -20,3 +20,5 @@ bot.once("ready", (client) => {
 
 bot.emit("leaderboardRefresh", bot);
 bot.emit("hofRefresh", bot);
+process.env.LEADERBOARD = false;
+process.env.HALL_OF_FAME = false;
