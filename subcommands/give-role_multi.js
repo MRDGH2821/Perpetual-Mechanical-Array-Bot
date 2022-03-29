@@ -1,6 +1,7 @@
-/* eslint-disable max-lines */
-/* eslint-disable no-magic-numbers */
 /* eslint-disable no-await-in-loop */
+/* eslint-disable no-loop-func */
+/* eslint-disable no-magic-numbers */
+/* eslint-disable max-lines */
 import {
   AbyssalConquerorID,
   AnemoCrownID,
@@ -14,6 +15,8 @@ import {
 } from "../lib/roleIDs.js";
 
 import {
+  // eslint-disable-next-line no-unused-vars
+  CommandInteraction,
   MessageActionRow,
   MessageButton,
   MessageEmbed,
@@ -37,7 +40,11 @@ export async function giveRoleMulti(interaction) {
   const permCheck = new CheckRolePerms(interaction.member),
     target = interaction.options.getMember("user");
   if (permCheck.isStaff() || permCheck.canGibRole()) {
-    const introEmb = new MessageEmbed()
+    const filterCollector = (interacted) => {
+        interacted.deferUpdate();
+        return interacted.user.id === interaction.user.id;
+      },
+      introEmb = new MessageEmbed()
         .setColor(EmbedColor)
         .setTitle("**Select Roles**")
         .setDescription(`Select Roles to give to ${target}. The amount of EXP will be calculated in end.`),
@@ -114,252 +121,251 @@ export async function giveRoleMulti(interaction) {
             value: WhaleID
           }
         ]),
-      rolesRow = new MessageActionRow().addComponents(rolesMenu),
-      // eslint-disable-next-line sort-vars
-      roleMsg = await interaction.editReply({
+      rolesRow = new MessageActionRow().addComponents(rolesMenu);
+    await interaction
+      .editReply({
         components: [rolesRow],
         embeds: [introEmb],
         fetchReply: true
-      }),
-      // eslint-disable-next-line sort-vars
-      filterCollector = (interacted) => {
-        interacted.deferUpdate();
-        return interacted.user.id === interaction.user.id;
-      };
-
-    await roleMsg
-      .awaitMessageComponent({
-        componentType: "SELECT_MENU",
-        filter: filterCollector,
-        time: 60000
       })
-      .then(async(interacted) => {
-        let expText = "",
-          newRolesList = [],
-          newRolesText = "",
-          oldRolesText = "",
-          totalExp = 0;
-        console.log("Role IDs: ", interacted.values);
-        for (const roleID of interacted.values) {
-          if (crownRoles.includes(roleID)) {
-            newRolesText = `${roleMention(roleID)} ${newRolesText}`;
-            newRolesList.push(roleID);
-          }
-          else if (target.roles.cache.has(roleID)) {
-            oldRolesText = `${roleMention(roleID)} ${oldRolesText}`;
-          }
-          else {
-            newRolesText = `${roleMention(roleID)} ${newRolesText}`;
-            newRolesList.push(roleID);
-          }
-        }
-        console.log("New Roles: ", newRolesList);
-        introEmb.addFields([
-          {
-            name: "**Existing roles**",
-            value: oldRolesText || "None"
-          },
-          {
-            name: "**New Roles to assign**",
-            value: newRolesText || "None selected"
-          }
-        ]);
-
-        await interaction.editReply({
-          components: [],
-          embeds: [introEmb],
-          fetchReply: true
-        });
-
-        if (newRolesList.includes(AbyssalConquerorID)) {
-          totalExp += exp;
-          newRolesList = newRolesList.filter((role) => role !== AbyssalConquerorID);
-
-          const spiralAbyssEmbed = new MessageEmbed()
-              .setColor(EmbedColor)
-              .setTitle("**Cleared with traveler?**")
-              .setDescription(`Did ${target} clear abyss with traveler?`),
-            spiralAbyssRow = new MessageActionRow().addComponents([
-              new MessageButton()
-                .setCustomId("abyssWithTraveler")
-                .setLabel("Cleared with traveler")
-                .setEmoji("👍")
-                .setStyle("PRIMARY"),
-              new MessageButton()
-                .setCustomId("abyssNoTraveler")
-                .setLabel("Not cleared with traveler")
-                .setEmoji("👎")
-                .setStyle("SECONDARY")
-            ]),
-            spiralAbyssStat = await interaction.editReply({
-              components: [spiralAbyssRow],
-              embeds: [spiralAbyssEmbed]
-            });
-
-          await spiralAbyssStat
-            .awaitMessageComponent({
-              componentType: "BUTTON",
-              filter: filterCollector,
-              time: 60000
-            })
-            .then((button) => {
-              if (button.customId === "abyssWithTraveler") {
-                totalExp += exp;
-                interaction.client.emit("spiralAbyssClear", target, true);
-                expText = `${expText} \n✦ ${roleMention(AbyssalConquerorID)}: Cleared with traveler (+${exp + exp})`;
+      .then(async(msg) => {
+        await msg
+          .awaitMessageComponent({
+            componentType: "SELECT_MENU",
+            filter: filterCollector,
+            time: 60000
+          })
+          .then(async(interacted) => {
+            let expText = "",
+              newRolesList = [],
+              newRolesText = "",
+              oldRolesText = "",
+              refreshCache = false,
+              totalExp = 0;
+            console.log("Role IDs: ", interacted.values);
+            for (const roleID of interacted.values) {
+              if (crownRoles.includes(roleID)) {
+                newRolesText = `${roleMention(roleID)} ${newRolesText}`;
+                newRolesList.push(roleID);
+                refreshCache = true;
+              }
+              else if (target.roles.cache.has(roleID)) {
+                oldRolesText = `${roleMention(roleID)} ${oldRolesText}`;
               }
               else {
-                interaction.client.emit("spiralAbyssClear", target, false);
-                expText = `${expText} \n✦ ${roleMention(AbyssalConquerorID)} (+${exp})`;
+                newRolesText = `${roleMention(roleID)} ${newRolesText}`;
+                newRolesList.push(roleID);
               }
-            })
-            .catch((error) => {
-              console.error(error);
-              expText = `${expText} \n✦ ${roleMention(AbyssalConquerorID)} (+${exp})`;
-              interaction.client.emit("spiralAbyssClear", target, false);
+            }
+            console.log("New Roles: ", newRolesList);
+            introEmb.addFields([
+              {
+                name: "**Existing roles**",
+                value: oldRolesText || "None"
+              },
+              {
+                name: "**New Roles to assign**",
+                value: newRolesText || "None selected"
+              }
+            ]);
+
+            await interaction.editReply({
+              components: [],
+              embeds: [introEmb],
+              fetchReply: true
             });
-        }
 
-        for (const crownRole of crownRoles) {
-          if (newRolesList.includes(crownRole)) {
-            newRolesList = newRolesList.filter((role) => role !== crownRole);
-            let crownAmt = 1;
-            const crownAmtRow = new MessageActionRow().addComponents([
-                new MessageButton()
-                  .setCustomId("1")
-                  .setEmoji("1️⃣")
-                  .setStyle("SECONDARY"),
-                new MessageButton()
-                  .setCustomId("2")
-                  .setEmoji("2️⃣")
-                  .setStyle("SECONDARY"),
-                new MessageButton()
-                  .setCustomId("3")
-                  .setEmoji("3️⃣")
-                  .setStyle("SECONDARY")
-              ]),
-              crownRoleEmbed = new MessageEmbed()
-                .setColor(EmbedColor)
-                .setTitle("**How many crowns?**")
-                .setDescription(`How many crowns did ${target} use on traveler for ${roleMention(crownRole)}?`),
-              crownStat = await interaction.editReply({
-                components: [crownAmtRow],
-                embeds: [crownRoleEmbed]
-              });
-
-            await crownStat
-              .awaitMessageComponent({
-                componentType: "BUTTON",
-                filter: filterCollector,
-                time: 60000
-              })
-
-              // eslint-disable-next-line no-loop-func
-              .then((button) => {
-                let expGain = exp;
-                if (button.customId === "1") {
-                  crownAmt = 1;
-                  totalExp += exp;
-                }
-                else if (button.customId === "2") {
-                  crownAmt = 2;
-                  totalExp += exp * crownAmt;
-                  expGain = exp * crownAmt;
-                }
-                else if (button.customId === "3") {
-                  crownAmt = 3;
-                  totalExp += exp * crownAmt * 2;
-                  expGain = exp * crownAmt * 2;
-                }
-
-                expText = `${expText} \n✦ ${roleMention(crownRole)}: ${crownAmt} (+${expGain})`;
-
-                interaction.client.emit("travelerCrown", target, {
-                  crownRoleID: crownRole,
-                  crowns: crownAmt
+            if (newRolesList.includes(AbyssalConquerorID)) {
+              totalExp += exp;
+              newRolesList = newRolesList.filter((role) => role !== AbyssalConquerorID);
+              refreshCache = true;
+              const spiralAbyssEmbed = new MessageEmbed()
+                  .setColor(EmbedColor)
+                  .setTitle("**Cleared with traveler?**")
+                  .setDescription(`Did ${target} clear abyss with traveler?`),
+                spiralAbyssRow = new MessageActionRow().addComponents([
+                  new MessageButton()
+                    .setCustomId("abyssWithTraveler")
+                    .setLabel("Cleared with traveler")
+                    .setEmoji("👍")
+                    .setStyle("PRIMARY"),
+                  new MessageButton()
+                    .setCustomId("abyssNoTraveler")
+                    .setLabel("Not cleared with traveler")
+                    .setEmoji("👎")
+                    .setStyle("SECONDARY")
+                ]),
+                spiralAbyssStat = await interaction.editReply({
+                  components: [spiralAbyssRow],
+                  embeds: [spiralAbyssEmbed]
                 });
-              })
 
-              // eslint-disable-next-line no-loop-func
-              .catch((error) => {
+              await spiralAbyssStat
+                .awaitMessageComponent({
+                  componentType: "BUTTON",
+                  filter: filterCollector,
+                  time: 60000
+                })
+                .then((button) => {
+                  if (button.customId === "abyssWithTraveler") {
+                    totalExp += exp;
+                    interaction.client.emit("spiralAbyssClear", target, true);
+                    expText = `${expText} \n✦ ${roleMention(AbyssalConquerorID)}: Cleared with traveler (+${exp + exp})`;
+                  }
+                  else {
+                    interaction.client.emit("spiralAbyssClear", target, false);
+                    expText = `${expText} \n✦ ${roleMention(AbyssalConquerorID)} (+${exp})`;
+                  }
+                })
+                .catch((error) => {
+                  console.error(error);
+                  expText = `${expText} \n✦ ${roleMention(AbyssalConquerorID)} (+${exp})`;
+                  interaction.client.emit("spiralAbyssClear", target, false);
+                });
+            }
+
+            for (const crownRole of crownRoles) {
+              if (newRolesList.includes(crownRole)) {
+                newRolesList = newRolesList.filter((role) => role !== crownRole);
+                let crownAmt = 1;
+                const crownAmtRow = new MessageActionRow().addComponents([
+                    new MessageButton()
+                      .setCustomId("1")
+                      .setEmoji("1️⃣")
+                      .setStyle("SECONDARY"),
+                    new MessageButton()
+                      .setCustomId("2")
+                      .setEmoji("2️⃣")
+                      .setStyle("SECONDARY"),
+                    new MessageButton()
+                      .setCustomId("3")
+                      .setEmoji("3️⃣")
+                      .setStyle("SECONDARY")
+                  ]),
+                  crownRoleEmbed = new MessageEmbed()
+                    .setColor(EmbedColor)
+                    .setTitle("**How many crowns?**")
+                    .setDescription(`How many crowns did ${target} use on traveler for ${roleMention(crownRole)}?`),
+                  crownStat = await interaction.editReply({
+                    components: [crownAmtRow],
+                    embeds: [crownRoleEmbed]
+                  });
+
+                await crownStat
+                  .awaitMessageComponent({
+                    componentType: "BUTTON",
+                    filter: filterCollector,
+                    time: 60000
+                  })
+                  .then((button) => {
+                    let expGain = exp;
+                    if (button.customId === "1") {
+                      crownAmt = 1;
+                      totalExp += exp;
+                    }
+                    else if (button.customId === "2") {
+                      crownAmt = 2;
+                      totalExp += exp * crownAmt;
+                      expGain = exp * crownAmt;
+                    }
+                    else if (button.customId === "3") {
+                      crownAmt = 3;
+                      totalExp += exp * crownAmt * 2;
+                      expGain = exp * crownAmt * 2;
+                    }
+
+                    expText = `${expText} \n✦ ${roleMention(crownRole)}: ${crownAmt} (+${expGain})`;
+
+                    interaction.client.emit("travelerCrown", target, {
+                      crownRoleID: crownRole,
+                      crowns: crownAmt
+                    });
+                  })
+                  .catch((error) => {
+                    totalExp += exp;
+                    console.error(error);
+                    expText = `${expText} \n✦ ${roleMention(crownRole)}: ${crownAmt} (+${exp})`;
+                    interaction.client.emit("travelerCrown", target, {
+                      crownRoleID: crownRole,
+                      crowns: crownAmt
+                    });
+                  });
+              }
+            }
+
+            if (newRolesList.includes(NonEleCrownID)) {
+              refreshCache = true;
+              totalExp += 30000;
+              expText = `${expText} \n✦ ${roleMention(NonEleCrownID)} (+30000)`;
+              newRolesList = newRolesList.filter((role) => role !== NonEleCrownID);
+              interaction.client.emit("travelerCrown", target, {
+                crownRoleID: NonEleCrownID,
+                crowns: 1
+              });
+            }
+
+            if (newRolesList.includes(WhaleID)) {
+              totalExp += exp;
+              expText = `${expText} \n✦ ${roleMention(WhaleID)} (+${exp})`;
+              newRolesList = newRolesList.filter((role) => role !== WhaleID);
+            }
+
+            for (const exploreRole of explorationRoles) {
+              if (newRolesList.includes(exploreRole)) {
                 totalExp += exp;
-                console.error(error);
-                expText = `${expText} \n✦ ${roleMention(crownRole)}: ${crownAmt} (+${exp})`;
-                interaction.client.emit("travelerCrown", target, {
-                  crownRoleID: crownRole,
-                  crowns: crownAmt
-                });
-              });
-          }
-        }
+                expText = `${expText} \n✦ ${roleMention(exploreRole)} (+${exp})`;
+                newRolesList = newRolesList.filter((role) => role !== exploreRole);
+              }
+            }
 
-        if (newRolesList.includes(NonEleCrownID)) {
-          totalExp += 30000;
-          expText = `${expText} \n✦ ${roleMention(NonEleCrownID)} (+30000)`;
-          newRolesList = newRolesList.filter((role) => role !== NonEleCrownID);
-          interaction.client.emit("travelerCrown", target, {
-            crownRoleID: NonEleCrownID,
-            crowns: 1
-          });
-        }
+            introEmb.addFields([
+              {
+                name: "**Calculated Exp**",
+                value: `${totalExp}`
+              },
+              {
+                name: "**Exp Distribution**",
+                value: expText
+              }
+            ]);
 
-        if (newRolesList.includes(WhaleID)) {
-          totalExp += exp;
-          expText = `${expText} \n✦ ${roleMention(WhaleID)} (+${exp})`;
-          newRolesList = newRolesList.filter((role) => role !== WhaleID);
-        }
+            const finalEmb = new MessageEmbed()
+              .setTitle("**Roles successfully rewarded!**")
+              .setColor(EmbedColor)
+              .setDescription(`The following roles have been assigned to ${target}:\n${expText}\n\n**Total Exp**: ${totalExp}`);
+            await interaction.editReply({
+              components: [],
+              embeds: [finalEmb]
+            });
+            await interaction.followUp({
+              content: `>award ${target.user.id} ${totalExp}`,
+              ephemeral: true
+            });
+            await interaction.followUp({
+              content:
+                "Copy paste that command. And a message by <@!485962834782453762> should come up like [this](https://i.imgur.com/yQvOAzZ.png)",
+              ephemeral: true
+            });
+            await target.roles.add(interacted.values);
 
-        for (const exploreRole of explorationRoles) {
-          if (newRolesList.includes(exploreRole)) {
-            totalExp += exp;
-            expText = `${expText} \n✦ ${roleMention(exploreRole)} (+${exp})`;
-            newRolesList = newRolesList.filter((role) => role !== exploreRole);
-          }
-        }
-
-        introEmb.addFields([
-          {
-            name: "**Calculated Exp**",
-            value: `${totalExp}`
-          },
-          {
-            name: "**Exp Distribution**",
-            value: expText
-          }
-        ]);
-
-        const finalEmb = new MessageEmbed()
-          .setTitle("**Roles successfully rewarded!**")
-          .setColor(EmbedColor)
-          .setDescription(`The following roles have been assigned to ${target}:\n${expText}\n\n**Total Exp**: ${totalExp}`);
-        await interaction.editReply({
-          components: [],
-          embeds: [finalEmb]
-        });
-        await interaction.followUp({
-          content: `>award ${target.user.id} ${totalExp}`,
-          ephemeral: true
-        });
-        await interaction.followUp({
-          content:
-            "Copy paste that command. And a message by <@!485962834782453762> should come up like [this](https://i.imgur.com/yQvOAzZ.png)",
-          ephemeral: true
-        });
-        await target.roles.add(interacted.values);
-      })
-      .catch(async(error) => {
-        const errorEmb = new MessageEmbed()
-          .setTitle("**ERROR!**")
-          .setColor(EmbedColor)
-          .setDescription(`There was an error while giving roles.\nError dump:\n\n${error}`);
-        await interaction.user
-          .send({
-            components: [],
-            content: "Error!",
-            embeds: [errorEmb]
+            if (refreshCache) {
+              interaction.client.emit("hofRefresh", interaction.client);
+            }
           })
-          .catch(console.error);
-        await interaction.deleteReply();
+          .catch(async(error) => {
+            const errorEmb = new MessageEmbed()
+              .setTitle("**ERROR!**")
+              .setColor(EmbedColor)
+              .setDescription(`There was an error while giving roles.\nError dump:\n\n${error}`);
+            await interaction.user
+              .send({
+                components: [],
+                content: "Error!",
+                embeds: [errorEmb]
+              })
+              .catch(console.error);
+            await interaction.deleteReply();
+          });
       });
   }
   else {
