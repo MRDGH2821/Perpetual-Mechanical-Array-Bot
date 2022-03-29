@@ -103,8 +103,10 @@ export default new Event({
     ]).then(() => {
       console.log("Leaderboard refresh complete");
       process.env.LEADERBOARD = true;
-      console.log("Sending leaderboard update request");
-      client.emit("leaderboardUpdate", client);
+      if (process.env.NODE_ENV !== "dev") {
+        console.log("Sending leaderboard update request");
+        client.emit("leaderboardUpdate", client);
+      }
     });
   }
 });

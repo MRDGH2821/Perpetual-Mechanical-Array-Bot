@@ -80,9 +80,11 @@ export default new Event({
       })
     ]).then(() => {
       console.log("Hall Of Fame refresh complete");
-      console.log("Sending Hall of fame update request");
       process.env.HALL_OF_FAME = true;
-      client.emit("hofUpdate", client);
+      if (process.env.NODE_ENV !== "dev") {
+        console.log("Sending Hall of fame update request");
+        client.emit("hofUpdate", client);
+      }
     });
   }
 });
