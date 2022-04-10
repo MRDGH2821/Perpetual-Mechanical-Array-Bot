@@ -108,6 +108,9 @@ export default new Command({
         content: "This feature is work in progress",
         ephemeral: true
       });
+      interaction.client.emit("hofAbyssReset", interaction.client, {
+        cycleStartDate: 1
+      });
     }
       // no default
     }
