@@ -1,16 +1,12 @@
 import { Bot } from '@ruinguard/core';
-import HallOfFame from './HallOfFameEventsIndex.js';
-import PMAIndex from './PMAIndex.js';
-import { configuration } from './lib/ConfigManager.js';
-import triggers from './TriggerIndex.js';
+import EnvConfig from './lib/EnvConfig.js';
+import pmaBaseModule from './pmaBaseModule/pmaBaseModule.js';
 
 const bot = new Bot({
-  modules: [PMAIndex, triggers, HallOfFame],
+  modules: [pmaBaseModule],
 });
 
-await bot.login(configuration.token);
-
-// bot.emit('ready', bot);
+await bot.login(EnvConfig.token);
 
 bot.once('ready', (client) => {
   console.log(`Ready from index file! Logged in as ${client.user.tag}`);

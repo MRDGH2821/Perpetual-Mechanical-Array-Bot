@@ -1,9 +1,9 @@
 import { Module } from '@ruinguard/core';
-import commands from './PMAIndex.js';
-import { configuration } from './lib/ConfigManager.js';
+import EnvConfig from './lib/EnvConfig.js';
+import pmaBaseModule from './pmaBaseModule/pmaBaseModule.js';
 
-await Module.registerGuildCommands([commands], {
-  app: configuration.clientId,
-  guild: configuration.guildId,
-  token: configuration.token,
+await Module.registerGuildCommands([pmaBaseModule], {
+  app: EnvConfig.clientId,
+  guild: EnvConfig.guildId,
+  token: EnvConfig.token,
 }).then(console.log);
