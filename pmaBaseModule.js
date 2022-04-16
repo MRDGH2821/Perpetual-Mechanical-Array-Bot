@@ -1,5 +1,5 @@
 import { Module } from '@ruinguard/core';
-import esmImporter from '../lib/esmImporter.js';
+import esmImporter from './lib/esmImporter.js';
 
 export default new Module({
   commands: await esmImporter('./pmaBaseModule/commands'),

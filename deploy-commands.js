@@ -1,6 +1,6 @@
 import { Module } from '@ruinguard/core';
 import EnvConfig from './lib/EnvConfig.js';
-import pmaBaseModule from './pmaBaseModule/pmaBaseModule.js';
+import pmaBaseModule from './pmaBaseModule.js';
 
 await Module.registerGuildCommands([pmaBaseModule], {
   app: EnvConfig.clientId,
