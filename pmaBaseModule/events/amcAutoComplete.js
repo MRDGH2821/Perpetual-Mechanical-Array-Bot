@@ -48,5 +48,8 @@ export default new Event({
         }
       }
     }
+
+    // eslint-disable-next-line no-underscore-dangle
+    await interaction.client._onInteractionCreate(interaction);
   },
 });
