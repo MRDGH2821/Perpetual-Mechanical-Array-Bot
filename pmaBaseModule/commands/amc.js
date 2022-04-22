@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 // eslint-disable-next-line no-unused-vars
 import { Command, CommandInteraction } from '@ruinguard/core';
-import { AMCTechs } from '../../lib/TravelerTechnologies.js';
+import { AMC_TECHS } from '../../lib/TravelerTechnologies.js';
 
 export default new Command({
   data: new SlashCommandBuilder()
@@ -35,7 +35,7 @@ export default new Command({
     console.log(selectedTechId);
     switch (interaction.options.getSubcommand()) {
       case 'gust_surge': {
-        const choice = AMCTechs.burstTechs.find(
+        const choice = AMC_TECHS.burstTechs.find(
           (tech) => tech.id === selectedTechId,
         );
         await interaction.reply({
@@ -44,7 +44,7 @@ export default new Command({
         break;
       }
       case 'palm_vortex': {
-        const choice = AMCTechs.skillTechs.find(
+        const choice = AMC_TECHS.skillTechs.find(
           (tech) => tech.id === selectedTechId,
         );
         await interaction.reply({

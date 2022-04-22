@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { AutocompleteInteraction, Event } from '@ruinguard/core';
-import { AMCTechs } from '../../lib/TravelerTechnologies.js';
+import { AMC_TECHS } from '../../lib/TravelerTechnologies.js';
 
 export default new Event({
   event: 'interactionCreate',
@@ -17,7 +17,7 @@ export default new Event({
         case 'palm_vortex': {
           console.log('Loading palm vortex');
           const focused = interaction.options.getFocused();
-          const values = AMCTechs.skillTechs.filter((choice) => choice.name.startsWith(focused));
+          const values = AMC_TECHS.skillTechs.filter((choice) => choice.name.startsWith(focused));
           await interaction.respond(
             values.map((choice) => ({
               name: choice.name,
@@ -29,7 +29,7 @@ export default new Event({
         case 'gust_surge': {
           console.log('Loading gust surge');
           const focusedVal = interaction.options.getFocused();
-          const values = AMCTechs.burstTechs.filter((choice) => choice.name.startsWith(focusedVal));
+          const values = AMC_TECHS.burstTechs.filter((choice) => choice.name.startsWith(focusedVal));
           await interaction.respond(
             values.map((choice) => ({
               name: choice.name,
