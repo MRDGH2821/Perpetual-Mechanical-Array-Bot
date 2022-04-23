@@ -1,10 +1,10 @@
 repos:
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: 'latest'
+    rev: 'v2.24.0'
     hooks:
       - id: commitizen
         stages: [commit-msg]
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: 'latest' # Use the sha / tag you want to point at
+    rev: 'v8.14.0' # Use the sha / tag you want to point at
     hooks:
       - id: eslint
