@@ -32,7 +32,7 @@ export default new Command({
    */
   async run(interaction) {
     const selectedTechId = interaction.options.getString('techs');
-    console.log(selectedTechId);
+    // console.log(selectedTechId);
     switch (interaction.options.getSubcommand()) {
       case 'gust_surge': {
         const choice = AMC_TECHS.burstTechs.find(
