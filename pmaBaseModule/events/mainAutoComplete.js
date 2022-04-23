@@ -2,7 +2,8 @@
 import { AutocompleteInteraction, Event } from '@ruinguard/core';
 import {
   amcAutoComplete,
-  gmcAutoComplete
+  emcAutoComplete,
+  gmcAutoComplete,
 } from '../../lib/TravelerTechnologies.js';
 
 export default new Event({
@@ -22,6 +23,9 @@ export default new Event({
       }
       if (interaction.commandName === 'gmc') {
         responses = await gmcAutoComplete(interaction);
+      }
+      if (interaction.commandName === 'emc') {
+        responses = await emcAutoComplete(interaction);
       }
 
       await interaction.respond(responses);
