@@ -1,5 +1,6 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { Command, MessageEmbed } from '@ruinguard/core';
+import { EMBED_COLOR } from '../../lib/Constants.js';
 
 export default new Command({
   data: new SlashCommandBuilder()
@@ -9,6 +10,7 @@ export default new Command({
   async run(interaction) {
     const pingEmb = new MessageEmbed()
       .setTitle('**Pinging**')
+      .setColor(EMBED_COLOR)
       .setDescription('Please wait...');
     const sent = await interaction.reply({
       embeds: [pingEmb],
