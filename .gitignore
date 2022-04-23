@@ -80,7 +80,6 @@ config.js
 package-lock.json
 deploy-stats.txt
 
-.vscode/
 already-old/
 .env.prod
 .env.dev
