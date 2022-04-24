@@ -42,9 +42,8 @@
     "prettier": "^2.6.2",
     "prettier-config-mrdgh2821": "^2.2.0"
   },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
+  "engineStrict": true,
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
