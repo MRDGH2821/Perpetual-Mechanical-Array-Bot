@@ -23,10 +23,7 @@ export default new Command({
   async run(interaction) {
     let reason = interaction.options.getString('reason') || 'none';
 
-    const bonk = new BonkUtilities({
-      message: reason,
-      client: interaction.client,
-    });
+    const bonk = new BonkUtilities(reason);
     const bonkTarget = interaction.options.getUser('target');
     const embedMsg = new MessageEmbed()
       .setTitle('**Bonked!**')
