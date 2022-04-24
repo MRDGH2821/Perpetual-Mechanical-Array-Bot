@@ -20,8 +20,8 @@ export default new Command({
    * @param {CommandInteraction} interaction
    */
   async run(interaction) {
-    const isAnon = interaction.options.getBoolean('anonymous');
-    const shouldPingArchons = interaction.options.getBoolean('ping_archons');
+    const isAnon = interaction.options.getBoolean('anonymous') || false;
+    const shouldPingArchons = interaction.options.getBoolean('ping_archons') || false;
     const confessionText = interaction.options.getString('confess');
     const confessChannel = await interaction.guild.channels.fetch(
       CHANNEL_IDS.confessions,
