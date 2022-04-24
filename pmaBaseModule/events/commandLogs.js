@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { CommandInteraction, Event, MessageEmbed } from '@ruinguard/core';
-import { EMBED_COLOR } from '../../lib/Constants.js';
+import { CHANNEL_IDS, EMBED_COLOR } from '../../lib/Constants.js';
 
 export default new Event({
   event: 'interactionCreate',
@@ -54,7 +54,7 @@ export default new Event({
         .setTimestamp()
         .setFooter({ text: `ID: ${interaction.user.id}` });
       const logchannel = await interaction.guild.channels.fetch(
-        '806110144110919730',
+        CHANNEL_IDS.archives,
       );
 
       logchannel.send({
