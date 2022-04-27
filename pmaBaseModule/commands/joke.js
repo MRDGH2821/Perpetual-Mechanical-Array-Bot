@@ -44,6 +44,7 @@ export default new Command({
 
     const jokeType = interaction.options.getString('type') || 'Any';
 
+    // eslint-disable-next-line no-undef
     const jokeJSON = await fetch(
       `https://v2.jokeapi.dev/joke/${jokeType}?blacklistFlags=nsfw,religious,political,racist,sexist,explicit&safe-mode`,
     ).then((res) => res.json());
