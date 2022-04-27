@@ -1,0 +1,16 @@
+{
+    "recommendations": [
+        "streetsidesoftware.code-spell-checker",
+        "mikestead.dotenv",
+        "cschlosser.doxdocgen",
+        "editorconfig.editorconfig",
+        "irongeek.vscode-env",
+        "dbaeumer.vscode-eslint",
+        "eg2.vscode-npm-script",
+        "howardzuo.vscode-npm-dependency",
+        "christian-kohler.path-intellisense",
+        "esbenp.prettier-vscode",
+        "ryanlaws.toggle-case",
+        "Glavin001.unibeautify-vscode"
+    ]
+}
