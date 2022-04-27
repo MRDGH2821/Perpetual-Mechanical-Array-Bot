@@ -54,7 +54,7 @@ export default new Event({
         .setTimestamp()
         .setFooter({ text: `ID: ${interaction.user.id}` });
       const logchannel = await interaction.guild.channels.fetch(
-        CHANNEL_IDS.archives,
+        CHANNEL_IDS.ARCHIVES,
       );
 
       logchannel.send({

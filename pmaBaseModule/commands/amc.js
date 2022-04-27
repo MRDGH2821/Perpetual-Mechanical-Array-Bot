@@ -35,7 +35,7 @@ export default new Command({
     // console.log(selectedTechId);
     switch (interaction.options.getSubcommand()) {
       case 'gust_surge': {
-        const choice = AMC_TECHS.burstTechs.find(
+        const choice = AMC_TECHS.BURST_TECHS.find(
           (tech) => tech.id === selectedTechId,
         );
         await interaction.reply({
@@ -44,7 +44,7 @@ export default new Command({
         break;
       }
       case 'palm_vortex': {
-        const choice = AMC_TECHS.skillTechs.find(
+        const choice = AMC_TECHS.SKILL_TECHS.find(
           (tech) => tech.id === selectedTechId,
         );
         await interaction.reply({

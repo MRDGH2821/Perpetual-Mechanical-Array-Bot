@@ -35,7 +35,7 @@ export default new Command({
     // console.log(selectedTechId);
     switch (interaction.options.getSubcommand()) {
       case 'wake_of_earth': {
-        const choice = GMC_TECHS.burstTechs.find(
+        const choice = GMC_TECHS.BURST_TECHS.find(
           (tech) => tech.id === selectedTechId,
         );
         await interaction.reply({
@@ -44,7 +44,7 @@ export default new Command({
         break;
       }
       case 'starfell_sword': {
-        const choice = GMC_TECHS.skillTechs.find(
+        const choice = GMC_TECHS.SKILL_TECHS.find(
           (tech) => tech.id === selectedTechId,
         );
         await interaction.reply({

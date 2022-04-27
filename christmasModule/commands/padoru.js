@@ -1,7 +1,7 @@
 import {
   channelMention,
   roleMention,
-  SlashCommandBuilder
+  SlashCommandBuilder,
 } from '@discordjs/builders';
 import { Command } from '@ruinguard/core';
 import { CHANNEL_IDS, EMOJIS, ROLE_IDS } from '../../lib/Constants.js';
@@ -13,10 +13,10 @@ export default new Command({
 
   async run(interaction) {
     const allowedChannels = [
-      CHANNEL_IDS.botSpam,
-      CHANNEL_IDS.commandCenter,
-      CHANNEL_IDS.musicBotSpam,
-      CHANNEL_IDS.pingCelestia,
+      CHANNEL_IDS.BOT_SPAM,
+      CHANNEL_IDS.COMMAND_CENTER,
+      CHANNEL_IDS.MUSIC_BOT_SPAM,
+      CHANNEL_IDS.PING_CELESTIA,
     ];
     const { channel } = interaction;
     if (allowedChannels.includes(channel.id)) {
@@ -24,10 +24,10 @@ export default new Command({
         content: `Merry Christmas ${interaction.user.tag}!`,
       });
 
-      await channel.send(`${roleMention(ROLE_IDS.archons)} Hashire sori yo`);
-      await channel.send(`${roleMention(ROLE_IDS.archons)} Kazeno yuu ni`);
-      await channel.send(`${roleMention(ROLE_IDS.archons)} Tsukkimihara wo`);
-      await channel.send(`${roleMention(ROLE_IDS.archons)} PADORU PADORU`);
+      await channel.send(`${roleMention(ROLE_IDS.ARCHONS)} Hashire sori yo`);
+      await channel.send(`${roleMention(ROLE_IDS.ARCHONS)} Kazeno yuu ni`);
+      await channel.send(`${roleMention(ROLE_IDS.ARCHONS)} Tsukkimihara wo`);
+      await channel.send(`${roleMention(ROLE_IDS.ARCHONS)} PADORU PADORU`);
       await channel.send(
         `${EMOJIS.LuminePadoru}${EMOJIS.LuminePadoru}${EMOJIS.LuminePadoru}${EMOJIS.LuminePadoru}`,
       );

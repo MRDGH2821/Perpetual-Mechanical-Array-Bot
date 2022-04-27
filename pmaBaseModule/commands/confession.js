@@ -24,10 +24,10 @@ export default new Command({
     const shouldPingArchons = interaction.options.getBoolean('ping_archons') || false;
     const confessionText = interaction.options.getString('confess');
     const confessChannel = await interaction.guild.channels.fetch(
-      CHANNEL_IDS.confessions,
+      CHANNEL_IDS.CONFESSIONS,
     );
     const logsChannel = await interaction.guild.channels.fetch(
-      CHANNEL_IDS.archives,
+      CHANNEL_IDS.ARCHIVES,
     );
 
     const anonEmbed = new MessageEmbed()
@@ -48,7 +48,7 @@ export default new Command({
         name: interaction.user.tag,
       });
 
-    const text = shouldPingArchons ? roleMention(ROLE_IDS.archons) : ' ';
+    const text = shouldPingArchons ? roleMention(ROLE_IDS.ARCHONS) : ' ';
 
     if (isAnon) {
       confessChannel.send({

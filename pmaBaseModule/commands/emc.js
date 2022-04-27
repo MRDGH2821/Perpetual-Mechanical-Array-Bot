@@ -26,7 +26,7 @@ export default new Command({
     const selectedTechId = interaction.options.getString('techs');
     switch (interaction.options.getSubcommand()) {
       case 'bellowing_thunder': {
-        const choice = EMC_TECHS.burstTechs.find(
+        const choice = EMC_TECHS.BURST_TECHS.find(
           (tech) => tech.id === selectedTechId,
         );
         await interaction.reply({
