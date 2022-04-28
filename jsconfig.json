@@ -2,30 +2,6 @@
   "compilerOptions": {
     "target": "ESNext"
   },
-  "files": [
-    "typings/node/node.d.ts",
-    "christmasModule\\commands\\padoru.js",
-    "christmasModule.js",
-    "deploy-commands.js",
-    "index.js",
-    "lib\\BonkUtilities.js",
-    "lib\\Constants.js",
-    "lib\\EnvConfig.js",
-    "lib\\esmImporter.js",
-    "lib\\TravelerTechnologies.js",
-    "lib\\utilityFunctions.js",
-    "pmaBaseModule\\commands\\amc.js",
-    "pmaBaseModule\\commands\\bonk.js",
-    "pmaBaseModule\\commands\\calculator.js",
-    "pmaBaseModule\\commands\\confession.js",
-    "pmaBaseModule\\commands\\emc.js",
-    "pmaBaseModule\\commands\\give-role.js",
-    "pmaBaseModule\\commands\\gmc.js",
-    "pmaBaseModule\\commands\\joke.js",
-    "pmaBaseModule\\commands\\ping.js",
-    "pmaBaseModule\\events\\commandLogs.js",
-    "pmaBaseModule\\events\\mainAutoComplete.js",
-    "pmaBaseModule\\subcommands\\giveRoleMulti.js",
-    "pmaBaseModule.js"
-  ]
+  "include": ["src/**/**"],
+  "exclude": ["node_modules"]
 }
