@@ -1,24 +1,27 @@
 repos:
-  - repo: https://github.com/commitizen-tools/commitizen
-    rev: 'v2.24.0'
-    hooks:
-      - id: commitizen
-        stages: [commit-msg]
-  - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: 'v8.14.0' # Use the sha / tag you want to point at
-    hooks:
-      - id: eslint
-        args:
-          - "--fix"
-  - repo: https://github.com/gitguardian/ggshield
-    rev: v1.11.0
-    hooks:
-      - id: ggshield
-        language_version: python3
-        stages: [commit]
-  - repo: https://github.com/gitguardian/ggshield
-    rev: v1.11.0
-    hooks:
-      - id: ggshield-push
-        language_version: python3
-        stages: [push]
+- hooks:
+  - id: commitizen
+    stages:
+    - commit-msg
+  repo: https://github.com/commitizen-tools/commitizen
+  rev: v2.24.0
+- hooks:
+  - args:
+    - --fix
+    id: eslint
+  repo: https://github.com/pre-commit/mirrors-eslint
+  rev: v8.14.0
+- hooks:
+  - id: ggshield
+    language_version: python3
+    stages:
+    - commit
+  repo: https://github.com/gitguardian/ggshield
+  rev: v1.11.0
+- hooks:
+  - id: ggshield-push
+    language_version: python3
+    stages:
+    - push
+  repo: https://github.com/gitguardian/ggshield
+  rev: v1.11.0
