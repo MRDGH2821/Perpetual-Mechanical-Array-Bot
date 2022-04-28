@@ -2,9 +2,10 @@
   "compilerOptions": {
     "target": "ESNext",
     "baseUrl": "src/",
+    "module": "esnext",
     "moduleResolution": "Node",
     "checkJs": true
   },
-  "include": ["src/*"],
+  "include": ["src/*", "src/AllModules/christmasModule.js", "src/AllModules/pmaBaseModule.js"],
   "exclude": ["node_modules"]
 }
