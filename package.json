@@ -31,6 +31,7 @@
     "@discordjs/builders": "^0.13.0",
     "@ruinguard/core": "^2.0.4",
     "custom-env": "^2.0.1",
+    "detritus-client": "^0.16.3",
     "dotenv": "^16.0.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "firebase-admin": "^10.1.0",
