@@ -1,13 +1,12 @@
 {
-  "extends": ["eslint-config-airbnb-base"],
+  "extends": [
+    "eslint-config-airbnb-base",
+    "eslint-config-airbnb-typescript/base"
+  ],
   "parserOptions": {
-    "ecmaVersion": "latest",
-    "sourceType": "module"
+    "project": "./tsconfig.json"
   },
   "rules": {
-    "max-lines": "warn",
-    "import/extensions": ["error", "always", { "ignorePackages": "always" }],
-    "no-console": "off",
-    "import/no-unresolved": "warn"
+    "no-console": "off"
   }
 }
