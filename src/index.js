@@ -1,6 +1,6 @@
 import { Bot } from '@ruinguard/core';
-import EnvConfig from './lib/EnvConfig.js';
 import pmaBaseModule from './AllModules/pmaBaseModule.js';
+import EnvConfig from './lib/EnvConfig.js';
 
 const bot = new Bot({
   modules: [pmaBaseModule],
