@@ -24,7 +24,6 @@
       "~/*": ["src/*"]
     }
   },
-  "files": ["src/types/detritusOverrides.d.ts"],
-  "include": ["src/**/*.ts", "src/types/detritusOverrides.d.ts"],
-  "exclude": ["node_modules", ".vscode", "emotes"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", ".vscode", "./old-src"]
 }
