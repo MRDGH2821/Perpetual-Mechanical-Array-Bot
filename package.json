@@ -4,17 +4,17 @@
   "description": "Discord Bot for [Traveler Mains Server](https://discord.gg/RsdUnupKpj)",
   "main": "index.js",
   "private": true,
-  "type": "module",
   "scripts": {
     "deploy": "node src/deploy-commands.js",
     "prestart": "npm run deploy",
-    "predev": "npm run deploy",
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
+    
+    "start": "node src/index.ts",
+    "dev": "nodemon src/index.ts",
     "lint": "eslint . --fix --ignore-path .gitignore ",
     "pretty": "prettier . --write",
     "postpretty": "npm run lint",
-    "pm2:prod": "pm2 startOrRestart pma-bot.config.cjs --env prod"
+    "pm2:prod": "pm2 startOrRestart pma-bot.config.cjs --env prod",
+    "test": "nodemon src/lib/EnvConfig.ts"
   },
   "repository": {
     "type": "git",
@@ -28,17 +28,14 @@
   },
   "homepage": "https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot#readme",
   "dependencies": {
-    "@discordjs/builders": "^0.13.0",
-    "@ruinguard/core": "^2.0.4",
-    "custom-env": "^2.0.1",
     "detritus-client": "^0.16.3",
-    "dotenv": "^16.0.0",
     "firebase-admin": "^10.1.0",
     "mathjs": "^10.5.0",
     "progress": "^2.0.3",
     "ts-node": "^10.7.0",
     "tslib": "^2.4.0",
-    "typescript": "^4.6.4"
+    "typescript": "^4.6.4",
+    "use-custom-env": "^0.1.2"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.21.0",
