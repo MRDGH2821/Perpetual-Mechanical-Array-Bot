@@ -7,7 +7,6 @@
   "scripts": {
     "deploy": "node src/deploy-commands.js",
     "prestart": "npm run deploy",
-    
     "start": "node src/index.ts",
     "dev": "nodemon src/index.ts",
     "lint": "eslint . --fix --ignore-path .gitignore ",
@@ -29,6 +28,7 @@
   "homepage": "https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot#readme",
   "dependencies": {
     "detritus-client": "^0.16.3",
+    "detritus-client-socket": "^0.8.3",
     "firebase-admin": "^10.1.0",
     "mathjs": "^10.5.0",
     "progress": "^2.0.3",
