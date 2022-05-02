@@ -13,7 +13,8 @@
     "pretty": "prettier . --write",
     "postpretty": "npm run lint",
     "pm2:prod": "pm2 startOrRestart pma-bot.config.cjs --env prod",
-    "test": "nodemon src/lib/EnvConfig.ts"
+    "test": "nodemon src/lib/EnvConfig.ts",
+    "build":"tsc"
   },
   "repository": {
     "type": "git",
