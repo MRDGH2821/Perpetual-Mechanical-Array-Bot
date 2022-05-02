@@ -25,5 +25,5 @@
     }
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", ".vscode", "./old-src"]
+  "exclude": ["node_modules", ".vscode", "./old-src", "./out/*"]
 }
