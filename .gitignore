@@ -86,3 +86,5 @@ already-old/
 .env.*
 ./lib/firebase-service-acc/*.json
 lib/firebase-service-acc/*.json
+out/*
+old-src/*
