@@ -11,11 +11,17 @@ export default new Command({
     .addSubcommand((subcommand) => subcommand
       .setName('multi')
       .setDescription('Give multiple roles')
-      .addUserOption((option) => option.setName('user').setDescription('Select User')))
+      .addUserOption((option) => option
+        .setName('user')
+        .setRequired(true)
+        .setDescription('Select User')))
     .addSubcommand((subcommand) => subcommand
       .setName('one')
       .setDescription('Give one role')
-      .addUserOption((option) => option.setName('user').setDescription('Select user'))
+      .addUserOption((option) => option
+        .setName('user')
+        .setDescription('Select user')
+        .setRequired(true))
       .addStringOption((option) => option
         .setName('role')
         .setDescription('Give one role')
