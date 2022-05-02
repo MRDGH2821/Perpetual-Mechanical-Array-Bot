@@ -5,9 +5,6 @@ import { COLORS } from '../lib/Constants';
 export default new InteractionCommand({
   name: 'test',
   description: 'Sends test msg',
-  type: ApplicationCommandTypes.CHAT_INPUT,
-  global: false,
-  guildIds: [process.env.GUILD_ID as string],
   async run(ctx) {
     const txtEmb = {
       title: '**Test**',
