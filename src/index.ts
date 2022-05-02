@@ -11,16 +11,13 @@ const bot = new InteractionCommandClient(EnvConfig.token as string, {
 });
 
 (async () => {
-  await bot.add(test);
-  await bot.add(ping);
-  await bot.run().then(async () => {
-    console.log('bot on');
-    await bot.client.rest
-      .bulkOverwriteApplicationGuildCommands(
-        process.env.CLIENT_ID as string,
-        process.env.GUILD_ID as string,
-        [test, ping],
-      )
-      .then(() => console.log('commands overwritten'));
-  });
+  try {
+    await bot.add(test); // added await even if not required
+    await bot.add(ping);
+    await bot.run().then(async () => {
+      console.log('bot on');
+    });
+  } catch (err) {
+    console.log(err);
+  }
 })();
