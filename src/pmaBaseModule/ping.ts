@@ -1,10 +1,12 @@
 import { InteractionCommand } from 'detritus-client/lib/interaction';
-import { COLORS } from '../lib/Constants';
 
 export default new InteractionCommand({
   name: 'ping',
   description: 'Shows bot ping',
-  async run(ctx) {
+  async run(context) {
+    const { gateway, rest } = await context.client.ping();
+    return context.editOrRespond(`pong! (gateway: ${gateway}ms) (rest: ${rest}ms)`);
+    /*
     const before = performance.now();
     const pingEmb = {
       title: '**Pinging**',
@@ -19,5 +21,6 @@ export default new InteractionCommand({
     }ms`;
 
     await ctx.editOrRespond({ embeds: [pingEmb] });
+    */
   },
 });
