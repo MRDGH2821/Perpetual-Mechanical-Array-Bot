@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "allowJs": false,
-    "baseUrl": "src/",
+    "baseUrl": "./src",
     "declaration": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
