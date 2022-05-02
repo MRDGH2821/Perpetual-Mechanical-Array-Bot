@@ -4,23 +4,16 @@ export default new InteractionCommand({
   name: 'ping',
   description: 'Shows bot ping',
   async run(context) {
-    const { gateway, rest } = await context.client.ping();
-    return context.editOrRespond(`pong! (gateway: ${gateway}ms) (rest: ${rest}ms)`);
-    /*
-    const before = performance.now();
-    const pingEmb = {
-      title: '**Pinging**',
-      description: 'Please wait...',
-      color: COLORS.EMBED_COLOR,
-    };
-
-    await ctx.editOrRespond({ embeds: [pingEmb] });
-
-    pingEmb.description = `Websocket ping: ${ctx.client.gateway.ping}ms\nBot Ping: ${
-      performance.now() - before
-    }ms`;
-
-    await ctx.editOrRespond({ embeds: [pingEmb] });
-    */
+    try {
+      const { gateway, rest } = await context.client.ping();
+      console.log('code reached');
+      return await context.editOrRespond(`pong! (gateway: ${gateway}ms) (rest: ${rest}ms)`);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  onRunError(ctw) {
+    console.log(ctw);
+    console.log('run error');
   },
 });
