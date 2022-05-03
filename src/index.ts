@@ -7,6 +7,9 @@ import EnvConfig from './lib/EnvConfig';
     gateway: {
       intents: [GatewayIntents.GUILDS, GatewayIntents.GUILD_MEMBERS, GatewayIntents.GUILD_MESSAGES],
     },
+    cache: {
+      members: { enabled: true, limit: 500 },
+    },
   });
 
   await clusterBot.run();
