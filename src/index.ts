@@ -3,24 +3,32 @@ import { GatewayIntents } from 'detritus-client-socket/lib/constants';
 import EnvConfig from './lib/EnvConfig';
 
 (async () => {
-  const cluster = new ClusterClient(EnvConfig.token as string, {
+  const clusterBot = new ClusterClient(EnvConfig.token as string, {
     gateway: {
       intents: [GatewayIntents.GUILDS, GatewayIntents.GUILD_MEMBERS, GatewayIntents.GUILD_MESSAGES],
     },
   });
 
-  await cluster.run();
+  await clusterBot.run();
 
-  const shard = cluster.shards.first()!;
+  const clusterShard1 = clusterBot.shards.first()!;
 
-  const bot = new InteractionCommandClient(cluster);
-  try {
-    await bot.addMultipleIn('./pmaBaseModule');
-    await bot.run().then(async () => {
-      console.log('bot on');
-    });
-  } catch (err) {
-    console.log(err);
-  }
-  console.log(await shard.rest.fetchApplicationCommands(shard.applicationId));
+  const interactionBot = new InteractionCommandClient(clusterBot);
+
+  await interactionBot.addMultipleIn('./pmaBaseModule');
+  await interactionBot.run().then(async () => {
+    console.log('Bot On');
+  });
+  console.log(`Logged in as ${clusterShard1.user?.toString()}`);
+  console.log(
+    'Guild cmds: ',
+    await clusterShard1.rest.fetchApplicationGuildCommands(
+      clusterShard1.applicationId,
+      EnvConfig.guildId as string,
+    ),
+  );
+  console.log(
+    'Global cmds: ',
+    await clusterShard1.rest.fetchApplicationCommands(clusterShard1.applicationId),
+  );
 })();
