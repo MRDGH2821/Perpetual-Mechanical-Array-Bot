@@ -1,14 +1,17 @@
 import { ApplicationCommandOptionTypes } from 'detritus-client/lib/constants';
-import { InteractionCommand } from 'detritus-client/lib/interaction';
-import EnvConfig from 'lib/EnvConfig';
+import { InteractionCommand, ParsedArgs } from 'detritus-client/lib/interaction';
+import EnvConfig from '../lib/EnvConfig';
 import { AMC_TECHS } from '../lib/TravelerTechnologies';
+
+interface CommandArgs extends ParsedArgs {
+  techs?: string;
+}
 
 export default new InteractionCommand({
   name: 'amc',
   description: 'Anemo Main Character',
   global: false,
   guildIds: [EnvConfig.guildId as string],
-
   options: [
     {
       name: 'palm_vortex',
@@ -19,29 +22,70 @@ export default new InteractionCommand({
           name: 'techs',
           description: 'Technologies which power skill',
           type: ApplicationCommandOptionTypes.STRING,
+          required: true,
+          onAutoComplete(ctx) {
+            const inputVal = ctx.value.toLowerCase();
+            const choiceArr = AMC_TECHS.SKILL_TECHS;
+            const values = choiceArr.filter((tech) => tech.name.toLowerCase().includes(inputVal));
 
-          async onAutoComplete(ctx) {
-            const choices: { name: string; value: string }[] = [];
-            AMC_TECHS.SKILL_TECHS.forEach((skill) => {
-              const dat = {
-                name: skill.name,
-                value: skill.id,
-              };
-              choices.push(dat);
-            });
-            await ctx.respond({ choices });
-          },
+            const choices = values.map((tech) => ({
+              name: tech.name,
+              value: tech.id,
+            }));
 
-          async run(ctx) {
-            const techId = ctx.options?.get('tech');
-            const skillTech = AMC_TECHS.SKILL_TECHS.find((skill) => skill.id === techId?.value)
-              || AMC_TECHS.SKILL_TECHS[0];
-            ctx.editOrRespond({
-              content: `**${skillTech.name || 'possibly undefined'}**\n\n${skillTech?.gif}`,
-            });
+            ctx.respond({ choices });
           },
         },
       ],
+      async run(ctx, args: CommandArgs) {
+        const techId = args.techs;
+        const selectedTech = AMC_TECHS.SKILL_TECHS.find((tech) => tech.id === techId);
+        ctx.editOrRespond({
+          content: `**${selectedTech?.name}**\n\n${selectedTech?.gif}`,
+        });
+      },
+    },
+    {
+      name: 'gust_surge',
+      description: 'AMC Burst',
+      type: ApplicationCommandOptionTypes.SUB_COMMAND,
+      options: [
+        {
+          name: 'techs',
+          description: 'Technologies which power burst',
+          type: ApplicationCommandOptionTypes.STRING,
+          required: true,
+          onAutoComplete(ctx) {
+            const inputVal = ctx.value.toLowerCase();
+            const choiceArr = AMC_TECHS.BURST_TECHS;
+            const values = choiceArr.filter((tech) => tech.name.toLowerCase().includes(inputVal));
+
+            const choices = values.map((tech) => ({
+              name: tech.name,
+              value: tech.id,
+            }));
+
+            ctx.respond({ choices });
+          },
+        },
+      ],
+      async run(ctx, args:CommandArgs) {
+        const techId = args.techs;
+        const selectedTech = AMC_TECHS.BURST_TECHS.find((tech) => tech.id === techId);
+        ctx.editOrRespond({
+          content: `**${selectedTech?.name}**\n\n${selectedTech?.gif}`,
+        });
+      },
+    },
+    {
+      name: 'guide',
+      description: 'Guide on AMC',
+      type: ApplicationCommandOptionTypes.SUB_COMMAND,
+      async run(ctx) {
+        await ctx.editOrRespond({
+          content: 'https://keqingmains.com/anemo-traveler/',
+        });
+      },
     },
   ],
 });
