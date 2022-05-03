@@ -1,10 +1,12 @@
-import { ApplicationCommandTypes } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
+import EnvConfig from '../lib/EnvConfig';
 import { COLORS } from '../lib/Constants';
 
 export default new InteractionCommand({
   name: 'test',
   description: 'Sends test msg',
+  global: false,
+  guildIds: [EnvConfig.guildId as string],
   async run(ctx) {
     const txtEmb = {
       title: '**Test**',
@@ -12,6 +14,6 @@ export default new InteractionCommand({
       color: COLORS.EMBED_COLOR,
     };
 
-    await ctx.respond(ApplicationCommandTypes.CHAT_INPUT, { embeds: [txtEmb] });
+    await ctx.editOrRespond({ embeds: [txtEmb] });
   },
 });
