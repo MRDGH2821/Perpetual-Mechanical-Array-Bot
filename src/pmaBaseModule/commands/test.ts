@@ -1,6 +1,6 @@
 import { InteractionCommand } from 'detritus-client/lib/interaction';
-import EnvConfig from '../lib/EnvConfig';
-import { COLORS } from '../lib/Constants';
+import EnvConfig from '../../lib/EnvConfig';
+import { COLORS } from '../../lib/Constants';
 
 export default new InteractionCommand({
   name: 'test',

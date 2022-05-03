@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionTypes } from 'detritus-client/lib/constants';
 import { InteractionCommand, ParsedArgs } from 'detritus-client/lib/interaction';
-import EnvConfig from '../lib/EnvConfig';
-import { EMC_TECHS } from '../lib/TravelerTechnologies';
+import EnvConfig from '../../lib/EnvConfig';
+import { EMC_TECHS } from '../../lib/TravelerTechnologies';
 
 interface CommandArgs extends ParsedArgs {
   techs?: string;
