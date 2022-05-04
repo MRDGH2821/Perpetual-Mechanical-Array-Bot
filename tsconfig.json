@@ -21,7 +21,8 @@
     "watch": true,
     "paths": {
       "@/*": ["src/types/*"],
-      "~/*": ["src/*"]
+      "~/*": ["src/*"],
+      "@pma-lib/*": ["lib/*"]
     }
   },
   "include": ["src/**/*.ts"],
