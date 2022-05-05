@@ -3,8 +3,9 @@ import { ClientEvents } from 'detritus-client/lib/constants';
 import { IEvent } from '../../types/interfaces';
 
 const gatewayReady: IEvent = {
-  name: ClientEvents.READY,
-  async run(args: GatewayClientEvents.GatewayReady) {
+  event: ClientEvents.READY,
+  once: true,
+  async listener(args: GatewayClientEvents.GatewayReady) {
     console.log(`Logged in as ${args.raw.user.username}`);
   },
 };
