@@ -13,7 +13,6 @@ export default new InteractionCommand({
   global: false,
   guildIds: [EnvConfig.guildId as string],
   options: [
-
     {
       name: 'bellowing_thunder',
       description: 'EMC Burst',

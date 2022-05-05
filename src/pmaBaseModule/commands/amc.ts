@@ -69,7 +69,7 @@ export default new InteractionCommand({
           },
         },
       ],
-      async run(ctx, args:CommandArgs) {
+      async run(ctx, args: CommandArgs) {
         const techId = args.techs;
         const selectedTech = AMC_TECHS.BURST_TECHS.find((tech) => tech.id === techId);
         ctx.editOrRespond({
