@@ -1,6 +1,5 @@
 import fs from 'fs';
 import { resolve } from 'path';
-import { pathToFileURL } from 'url';
 
 /**
  * imports esm modules of given folder and returns an array of default imports
@@ -15,7 +14,7 @@ export default async function esmImporter(folderPath: fs.PathLike) {
 
   files.forEach((file) => {
     const filePromise = new Promise((res, rej) => {
-      import(pathToFileURL(resolve(folder, file)) as unknown as string)
+      import(resolve(folder, file))
         .then((imported) => res(imported.default))
         .catch((err) => {
           const error = new Error(`Cannot import given file: ${file}\nError: ${err}`);
