@@ -16,35 +16,19 @@ import { IEvent } from './types/interfaces';
     },
   });
 
-  await clusterBot.run();
+  pmaEvents.forEach((pmaEvent) => {
+    if (pmaEvent.once) {
+      clusterBot.once(pmaEvent.event, (...args) => pmaEvent.listener(...args));
+    } else {
+      clusterBot.on(pmaEvent.event, (...args) => pmaEvent.listener(...args));
+    }
+  });
 
-  const clusterShard1 = clusterBot.shards.first()!;
+  await clusterBot.run();
 
   const interactionBot = new InteractionCommandClient(clusterBot);
 
   await interactionBot.addMultipleIn('./pmaBaseModule');
 
-  pmaEvents.forEach((pmaEvent) => {
-    if (pmaEvent.once) {
-      interactionBot.once(pmaEvent.event, (...args) => pmaEvent.listener(...args));
-    } else {
-      interactionBot.on(pmaEvent.event, (...args) => pmaEvent.listener(...args));
-    }
-  });
-
-  await interactionBot.run().then(async () => {
-    console.log('Bot On');
-  });
-  console.log(`Logged in as ${clusterShard1.user?.toString()}`);
-  console.log(
-    'Guild cmds: ',
-    await clusterShard1.rest.fetchApplicationGuildCommands(
-      clusterShard1.applicationId,
-      EnvConfig.guildId as string,
-    ),
-  );
-  console.log(
-    'Global cmds: ',
-    await clusterShard1.rest.fetchApplicationCommands(clusterShard1.applicationId),
-  );
+  await interactionBot.run();
 })();
