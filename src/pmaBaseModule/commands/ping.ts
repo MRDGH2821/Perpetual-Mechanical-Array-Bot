@@ -1,4 +1,6 @@
+import { GatewayRawEvents } from 'detritus-client';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
+import { COLORS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 
 export default new InteractionCommand({
@@ -8,8 +10,18 @@ export default new InteractionCommand({
   guildIds: [EnvConfig.guildId as string],
   async run(context) {
     const { gateway, rest } = await context.client.ping();
-    console.log('code reached');
-    await context.editOrRespond(`pong! (gateway: ${gateway}ms) (rest: ${rest}ms)`);
+
+    await context.editOrRespond('Pinging...');
+
+    const pingEmb: GatewayRawEvents.RawMessageEmbed = {
+      title: '**Pong!**',
+      color: COLORS.EMBED_COLOR,
+      description: `Gateway Ping: ${gateway}ms\nREST Ping: ${rest}ms`,
+    };
+
+    await context.editOrRespond({
+      embeds: [pingEmb],
+    });
   },
   onRunError(ctw) {
     console.log(ctw);
