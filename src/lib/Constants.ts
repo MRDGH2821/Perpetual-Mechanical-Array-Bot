@@ -41,6 +41,7 @@ export const STAFF = {
     KNIGHT_RECRUIT: '825108492582649877',
   },
 };
+
 export const ROLE_IDS = {
   ARCHONS: '813613841488936971',
   REPUTATION: {
@@ -58,13 +59,3 @@ export const ROLE_IDS = {
   WHALE: '804010525411246140',
   STAFF,
 };
-
-const Constants = {
-  EMOJIS,
-  CHANNEL_IDS,
-  COLORS,
-  ROLE_IDS,
-  STAFF,
-};
-
-export default Constants;
