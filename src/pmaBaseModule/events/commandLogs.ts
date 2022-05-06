@@ -39,7 +39,7 @@ const commandLogs: IEvent = {
       description: `${interaction.user} in ${
         interaction.channel
       } triggered an interaction.\nCommand: ${interaction.data?.toString()}`,
-      //  timestamp: new Date().toString(),
+      timestamp: new Date().toISOString(),
       footer: {
         text: `ID: ${interaction.user.id}`,
       },
