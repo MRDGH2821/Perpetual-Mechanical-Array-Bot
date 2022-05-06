@@ -44,7 +44,7 @@ const commandLogs: IEvent = {
         text: `ID: ${interaction.user.id}`,
       },
     };
-    console.log(logEmbed);
+
     const logChannel = interaction.guild?.channels.get(CHANNEL_IDS.ARCHIVES);
 
     await logChannel?.createMessage({
