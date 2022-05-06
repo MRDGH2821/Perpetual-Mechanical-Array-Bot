@@ -1,4 +1,4 @@
-import { GatewayRawEvents } from 'detritus-client';
+import { RequestTypes } from 'detritus-client-rest';
 import { ApplicationCommandOptionTypes } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import {
@@ -28,7 +28,7 @@ export default new InteractionCommand({
         },
       ],
       async run(ctx, args) {
-        const resultEmb: GatewayRawEvents.RawMessageEmbed = {
+        const resultEmb: RequestTypes.CreateChannelMessageEmbed = {
           title: '**Result**',
           color: COLORS.EMBED_COLOR,
         };
@@ -84,7 +84,7 @@ export default new InteractionCommand({
           cr: cRate,
           res: round(dmgOutput, 2),
         });
-        const resultEmb: GatewayRawEvents.RawMessageEmbed = {
+        const resultEmb: RequestTypes.CreateChannelMessageEmbed = {
           title: '**Damage Calculator**',
           color: COLORS.EMBED_COLOR,
           fields: [
@@ -180,7 +180,7 @@ export default new InteractionCommand({
           preferred = 'Any set should do';
         }
 
-        const resultEmb: GatewayRawEvents.RawMessageEmbed = {
+        const resultEmb: RequestTypes.CreateChannelMessageEmbed = {
           title: '**Damage Comparision**',
           color: COLORS.EMBED_COLOR,
           fields: [

@@ -1,4 +1,4 @@
-import { GatewayRawEvents } from 'detritus-client';
+import { RequestTypes } from 'detritus-client-rest';
 import { ApplicationCommandOptionTypes, MessageFlags } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { CHANNEL_IDS, COLORS, ROLE_IDS } from '../../lib/Constants';
@@ -37,7 +37,7 @@ export default new InteractionCommand({
 
     const logsChannel = ctx.guild?.channels.get(CHANNEL_IDS.ARCHIVES);
 
-    const anonEmbed: GatewayRawEvents.RawMessageEmbed = {
+    const anonEmbed: RequestTypes.CreateChannelMessageEmbed = {
       title: '**A New confession!**',
       author: {
         name: 'Anonymous',
@@ -47,11 +47,11 @@ export default new InteractionCommand({
       timestamp: new Date().toISOString(),
     };
 
-    const confessEmbed: GatewayRawEvents.RawMessageEmbed = {
+    const confessEmbed: RequestTypes.CreateChannelMessageEmbed = {
       title: '**A New confession!**',
       author: {
         name: ctx.user.tag,
-        icon_url: ctx.user.avatarUrlFormat(),
+        iconUrl: ctx.user.avatarUrl,
         url: ctx.user.jumpLink,
       },
       color: COLORS.EMBED_COLOR,

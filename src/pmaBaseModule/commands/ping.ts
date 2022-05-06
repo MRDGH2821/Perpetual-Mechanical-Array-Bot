@@ -1,4 +1,4 @@
-import { GatewayRawEvents } from 'detritus-client';
+import { RequestTypes } from 'detritus-client-rest';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { COLORS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
@@ -13,7 +13,7 @@ export default new InteractionCommand({
 
     await context.editOrRespond('Pinging...');
 
-    const pingEmb: GatewayRawEvents.RawMessageEmbed = {
+    const pingEmb: RequestTypes.CreateChannelMessageEmbed = {
       title: '**Pong!**',
       color: COLORS.EMBED_COLOR,
       description: `Gateway Ping: ${gateway}ms\nREST Ping: ${rest}ms`,

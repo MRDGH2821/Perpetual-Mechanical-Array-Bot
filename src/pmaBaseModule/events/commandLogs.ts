@@ -1,4 +1,5 @@
-import { GatewayClientEvents, GatewayRawEvents } from 'detritus-client';
+import { GatewayClientEvents } from 'detritus-client';
+import { RequestTypes } from 'detritus-client-rest';
 import { ClientEvents } from 'detritus-client/lib/constants';
 import { CHANNEL_IDS, COLORS } from '../../lib/Constants';
 import { IEvent } from '../../types/interfaces';
@@ -23,18 +24,16 @@ const commandLogs: IEvent = {
     );
     console.log('---\nCommand Logs:');
 
-    const logEmbed: GatewayRawEvents.RawMessageEmbed = {
+    const logEmbed: RequestTypes.CreateChannelMessageEmbed = {
       title: '**Interaction Log**',
       author: {
         name: interaction.user.tag,
-        icon_url: `${interaction.user.avatarUrl}`,
-        proxy_icon_url: interaction.user.avatarUrl,
+        iconUrl: `${interaction.user.avatarUrl}`,
         url: interaction.user.jumpLink,
       },
       color: COLORS.EMBED_COLOR,
       thumbnail: {
         url: interaction.user.avatarUrl,
-        proxy_url: interaction.user.avatarUrl,
       },
       description: `${interaction.user} in ${
         interaction.channel
