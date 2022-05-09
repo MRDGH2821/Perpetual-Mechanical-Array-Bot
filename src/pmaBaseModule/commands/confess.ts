@@ -1,8 +1,8 @@
+import { CHANNEL_IDS, COLORS, ROLE_IDS } from '@pma-lib/Constants';
+import EnvConfig from '@pma-lib/EnvConfig';
 import { RequestTypes } from 'detritus-client-rest';
 import { ApplicationCommandOptionTypes, MessageFlags } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
-import { CHANNEL_IDS, COLORS, ROLE_IDS } from '../../lib/Constants';
-import EnvConfig from '../../lib/EnvConfig';
 
 export default new InteractionCommand({
   name: 'confess',

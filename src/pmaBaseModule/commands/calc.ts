@@ -1,13 +1,11 @@
+import { COLORS } from '@pma-lib/Constants';
+import EnvConfig from '@pma-lib/EnvConfig';
 import { RequestTypes } from 'detritus-client-rest';
 import { ApplicationCommandOptionTypes } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
-import {
-  abs, parse, print, round,
-} from 'mathjs';
-import { COLORS } from '../../lib/Constants';
-import EnvConfig from '../../lib/EnvConfig';
+import mathjs from 'mathjs';
 
-const dmgExp = parse('atk * (1 + ( (cRate/100)*(cDmg/100) ) )');
+const dmgExp = mathjs.parse('atk * (1 + ( (cRate/100)*(cDmg/100) ) )');
 const dmgFormula = dmgExp.compile();
 export default new InteractionCommand({
   name: 'calc',
@@ -38,7 +36,7 @@ export default new InteractionCommand({
         if (expr.includes('\\')) {
           resultEmb.description = `Please check your expression. \nDo not put back slash or unrecognisable symbols\n\nInput: \`${expr}\``;
         } else {
-          const output = parse(expr).evaluate();
+          const output = mathjs.parse(expr).evaluate();
           resultEmb.description = `**\`${expr}\`** = **\`${output}\`**`;
         }
 
@@ -78,11 +76,11 @@ export default new InteractionCommand({
           cDmg,
           cRate,
         });
-        const result = print('$atk * (1 + ($cr% * $cd%)) = **$res**', {
+        const result = mathjs.print('$atk * (1 + ($cr% * $cd%)) = **$res**', {
           atk,
           cd: cDmg,
           cr: cRate,
-          res: round(dmgOutput, 2),
+          res: mathjs.round(dmgOutput, 2),
         });
         const resultEmb: RequestTypes.CreateChannelMessageEmbed = {
           title: '**Damage Calculator**',
@@ -166,27 +164,27 @@ export default new InteractionCommand({
           cRate: cRate2,
         });
 
-        const preferredCent = parse(' ( top / bot ) * 100').evaluate({
+        const preferredCent = mathjs.parse(' ( top / bot ) * 100').evaluate({
           bot: (dmg1 + dmg2) / 2,
-          top: abs(dmg1 - dmg2),
+          top: mathjs.abs(dmg1 - dmg2),
         });
 
         let preferred = 'Any set should do';
         if (dmg1 > dmg2) {
-          preferred = `First Set preferred (+${round(preferredCent, 2)}%)`;
+          preferred = `First Set preferred (+${mathjs.round(preferredCent, 2)}%)`;
         } else if (dmg1 < dmg2) {
-          preferred = `Second Set preferred (+${round(preferredCent, 2)}%)`;
+          preferred = `Second Set preferred (+${mathjs.round(preferredCent, 2)}%)`;
         } else {
           preferred = 'Any set should do';
         }
 
         const resultEmb: RequestTypes.CreateChannelMessageEmbed = {
-          title: '**Damage Comparision**',
+          title: '**Damage Comparison**',
           color: COLORS.EMBED_COLOR,
           fields: [
             {
               name: '**First Set**',
-              value: `Attack: \`${atk1}\` \nCrit Rate: \`${cRate1}%\` \nCrit Damage: \`${cDmg1}%\` \n\nResult: ${round(
+              value: `Attack: \`${atk1}\` \nCrit Rate: \`${cRate1}%\` \nCrit Damage: \`${cDmg1}%\` \n\nResult: ${mathjs.round(
                 dmg1,
                 2,
               )}`,
@@ -194,7 +192,7 @@ export default new InteractionCommand({
             },
             {
               name: '**Second Set**',
-              value: `Attack: \`${atk2}\` \nCrit Rate: \`${cRate2}%\` \nCrit Damage: \`${cDmg2}%\` \n\nResult: ${round(
+              value: `Attack: \`${atk2}\` \nCrit Rate: \`${cRate2}%\` \nCrit Damage: \`${cDmg2}%\` \n\nResult: ${mathjs.round(
                 dmg2,
                 2,
               )}`,

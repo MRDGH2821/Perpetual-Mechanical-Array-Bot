@@ -1,7 +1,7 @@
+import EnvConfig from '@pma-lib/EnvConfig';
+import { AMC_TECHS } from '@pma-lib/TravelerTechnologies';
 import { ApplicationCommandOptionTypes } from 'detritus-client/lib/constants';
 import { InteractionCommand, ParsedArgs } from 'detritus-client/lib/interaction';
-import EnvConfig from '../../lib/EnvConfig';
-import { AMC_TECHS } from '../../lib/TravelerTechnologies';
 
 interface CommandArgs extends ParsedArgs {
   techs?: string;

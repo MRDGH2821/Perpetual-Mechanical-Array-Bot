@@ -1,8 +1,8 @@
+import EnvConfig from '@pma-lib/EnvConfig';
+import esmImporter from '@pma-lib/esmImporter';
+import { IEvent } from '@pma-types/interfaces';
 import { ClusterClient, InteractionCommandClient } from 'detritus-client';
 import { GatewayIntents } from 'detritus-client-socket/lib/constants';
-import EnvConfig from './lib/EnvConfig';
-import esmImporter from './lib/esmImporter';
-import { IEvent } from './types/interfaces';
 
 (async () => {
   const pmaEvents: Array<IEvent> = await esmImporter('./src/pmaBaseModule/events');
