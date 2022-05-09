@@ -84,7 +84,7 @@ already-old/
 .env.prod
 .env.dev
 .env.*
-./lib/firebase-service-acc/*.json
-lib/firebase-service-acc/*.json
+./src/lib/firebase-service-acc/*.json
+src/lib/firebase-service-acc/*.json
 old-src/*
 out/*
