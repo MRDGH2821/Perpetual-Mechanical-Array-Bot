@@ -25,6 +25,9 @@
       "@pma-lib/*": ["lib/*"]
     }
   },
+  "ts-node": {
+    "swc": true
+  },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", ".vscode", "./old-src", "./out/*"]
 }
