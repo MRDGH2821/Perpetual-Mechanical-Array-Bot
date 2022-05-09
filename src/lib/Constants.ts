@@ -1,4 +1,4 @@
-import { Snowflake } from 'detritus-client/lib/constants';
+import { Colors, Snowflake } from 'detritus-client/lib/constants';
 
 function formatEmoji(EmojiSnowflake: Snowflake) {
   return `<:_:${EmojiSnowflake}>`;
@@ -7,6 +7,7 @@ function formatEmoji(EmojiSnowflake: Snowflake) {
 export const COLORS = {
   EMBED_COLOR: 0xe0d1bd,
   INVISIBLE: 0x2f3136,
+  BLURPLE: Colors.BLURPLE,
 };
 
 export const EMOJIS = {
