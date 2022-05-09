@@ -21,6 +21,7 @@
     "watch": true,
     "paths": {
       "@/*": ["src/types/*"],
+      "@pma-types/*": ["types/*"],
       "~/*": ["src/*"],
       "@pma-lib/*": ["lib/*"]
     }

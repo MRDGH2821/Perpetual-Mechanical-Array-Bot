@@ -1,11 +1,14 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "baseUrl": "src/",
+    "baseUrl": "src",
     "module": "esnext",
     "moduleResolution": "Node",
-    "checkJs": true
+    "checkJs": true,
+    "paths": {
+      "@pma-lib/*": ["lib/*"]
+    }
   },
-  "include": ["src/*", "src/AllModules/christmasModule.js", "src/AllModules/pmaBaseModule.js"],
+  "include": ["src/*"],
   "exclude": ["node_modules"]
 }
