@@ -16,6 +16,7 @@ export const EMOJIS = {
   BoreasKek: formatEmoji('829620211190595605'),
   AetherBonk: formatEmoji('821169357765345291'),
   LuminePadoru: formatEmoji('912033737280192562'),
+  PepeKekPoint: formatEmoji('849624262625198131'),
 };
 
 export const CHANNEL_IDS = {
@@ -42,6 +43,12 @@ export const STAFF = {
     KNIGHT_RECRUIT: '825108492582649877',
   },
 };
+
+export const STAFF_ARRAY = [
+  ...Object.values(STAFF.ADMIN),
+  ...Object.values(STAFF.HELPERS),
+  ...Object.values(STAFF.MODS),
+];
 
 export const ROLE_IDS = {
   ARCHONS: '813613841488936971',
