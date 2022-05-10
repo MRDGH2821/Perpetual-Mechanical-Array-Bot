@@ -31,7 +31,7 @@
     "detritus-client": "^0.17.0-beta.10",
     "detritus-client-rest": "^0.11.0-beta.3",
     "detritus-client-socket": "^0.8.4-beta.2",
-    "firebase-admin": "^10.1.0",
+    "firebase-admin": "^10.2.0",
     "mathjs": "^10.5.1",
     "progress": "^2.0.3",
     "ts-node": "^10.7.0",
