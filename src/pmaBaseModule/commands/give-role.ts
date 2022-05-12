@@ -1,14 +1,21 @@
-import { EMOJIS, ROLE_IDS } from '@pma-lib/Constants';
+import { COLORS, EMOJIS, ROLE_IDS } from '@pma-lib/Constants';
 import EnvConfig from '@pma-lib/EnvConfig';
+import {
+  abyssRoleCheck, crownRoleCheck, repRoleCheck, whaleRoleCheck,
+} from '@pma-lib/RoleCheck';
 import { canGibRole } from '@pma-lib/StaffCheck';
+import { GiveRoleArgs } from '@pma-types/interfaces';
+import { RequestTypes } from 'detritus-client-rest';
 import { ApplicationCommandOptionTypes } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { Member } from 'detritus-client/lib/structures';
 
 export default new InteractionCommand({
   name: 'give-role',
+  description: 'Gives role to selected user',
   global: false,
   guildIds: [EnvConfig.guildId as string],
+
   options: [
     {
       name: 'one',
@@ -95,11 +102,53 @@ export default new InteractionCommand({
           await ctx.editOrRespond({
             content: `You cannot give roles to anyone, not even to yourself ${EMOJIS.PepeKekPoint}`,
           });
+          return false;
         }
+        return true;
       },
 
-      async run(ctx) {
-        const exp = 250;
+      async run(ctx, args: GiveRoleArgs) {
+        let exp = 0;
+        let additionalNotes = 'none';
+        const selectedRoles = [args.role!];
+
+        exp += repRoleCheck(selectedRoles, args.user!).exp;
+
+        await crownRoleCheck(ctx, selectedRoles, args.user!).then((dataArr) => {
+          dataArr.forEach((data) => {
+            exp += data.exp;
+            additionalNotes = data.notes;
+          });
+        });
+
+        await abyssRoleCheck(ctx, selectedRoles, args.user!).then((data) => {
+          exp += data.exp;
+          additionalNotes = data.notes;
+        });
+
+        exp += whaleRoleCheck(selectedRoles, args.user!).exp;
+
+        const finalEmb: RequestTypes.CreateChannelMessageEmbed = {
+          title: '**Role Given!**',
+          color: COLORS.EMBED_COLOR,
+          description: `<@&${args.role}> given to <@${args.user?.id}>\nTotal Exp: ${exp}`,
+        };
+
+        if (additionalNotes !== 'none') {
+          finalEmb.fields?.push({
+            name: '**Additional Notes**',
+            value: additionalNotes,
+          });
+        }
+
+        await ctx.editOrRespond({
+          embeds: [finalEmb],
+        });
+        const finalMsg = await ctx.fetchResponse();
+
+        await finalMsg.reply({
+          content: `>award <@${args.user}> ${exp}`,
+        });
       },
     },
   ],
