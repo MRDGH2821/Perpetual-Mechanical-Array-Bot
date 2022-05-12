@@ -19,3 +19,7 @@ export interface GiveRoleArgs extends ParsedArgs {
   user?: Member;
   role?: Snowflake;
 }
+
+export interface TechArgs extends ParsedArgs {
+  techs?: string;
+}

@@ -1,11 +1,8 @@
 import EnvConfig from '@pma-lib/EnvConfig';
 import { GMC_TECHS } from '@pma-lib/TravelerTechnologies';
+import { TechArgs } from '@pma-types/interfaces';
 import { ApplicationCommandOptionTypes } from 'detritus-client/lib/constants';
-import { InteractionCommand, ParsedArgs } from 'detritus-client/lib/interaction';
-
-interface CommandArgs extends ParsedArgs {
-  techs?: string;
-}
+import { InteractionCommand } from 'detritus-client/lib/interaction';
 
 export default new InteractionCommand({
   name: 'gmc',
@@ -37,7 +34,7 @@ export default new InteractionCommand({
           },
         },
       ],
-      async run(ctx, args: CommandArgs) {
+      async run(ctx, args: TechArgs) {
         const techId = args.techs;
         const selectedTech = GMC_TECHS.SKILL_TECHS.find((tech) => tech.id === techId);
         ctx.editOrRespond({
@@ -69,7 +66,7 @@ export default new InteractionCommand({
           },
         },
       ],
-      async run(ctx, args: CommandArgs) {
+      async run(ctx, args: TechArgs) {
         const techId = args.techs;
         const selectedTech = GMC_TECHS.BURST_TECHS.find((tech) => tech.id === techId);
         ctx.editOrRespond({
