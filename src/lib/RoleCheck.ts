@@ -1,5 +1,5 @@
 import { COLORS, ROLE_IDS } from '@pma-lib/Constants';
-import { AfterCrownRoleCheck, AfterRoleCheck } from '@pma-types/interfaces';
+import { AfterRoleCheck } from '@pma-types/interfaces';
 import { RequestTypes } from 'detritus-client-rest';
 import { MessageComponentButtonStyles, Snowflake } from 'detritus-client/lib/constants';
 import { InteractionContext } from 'detritus-client/lib/interaction';
@@ -8,33 +8,33 @@ import { ComponentActionRow } from 'detritus-client/lib/utils';
 
 const exp = 250;
 
-export function repRoleCheck(roles: Array<Snowflake>, target: Member): AfterRoleCheck {
-  let expGrant = 0;
+export function repRoleCheck(roles: Array<Snowflake>, target: Member): AfterRoleCheck[] {
+  const results: AfterRoleCheck[] = [];
   Object.values(ROLE_IDS.REPUTATION).forEach((repRole) => {
     if (roles.includes(repRole)) {
-      expGrant += exp;
       target.addRole(repRole);
+      results.push({
+        exp,
+        notes: 'none',
+        role: repRole,
+      });
     }
   });
-
-  return {
-    exp: expGrant,
-    notes: 'none',
-  };
+  return results;
 }
 
 export async function crownRoleCheck(
   ctx: InteractionContext,
   roles: Array<Snowflake>,
   target: Member,
-): Promise<AfterCrownRoleCheck[]> {
-  const finalResult: AfterCrownRoleCheck[] = [];
+): Promise<AfterRoleCheck[]> {
+  const finalResult: AfterRoleCheck[] = [];
   const elementalRoles = Object.values(ROLE_IDS.CROWN).filter(
     (role) => role !== ROLE_IDS.CROWN.NON_ELE,
   );
   if (roles.includes(ROLE_IDS.CROWN.NON_ELE)) {
     finalResult.push({
-      crownRole: ROLE_IDS.CROWN.NON_ELE,
+      role: ROLE_IDS.CROWN.NON_ELE,
       exp: 30000,
       notes: 'Paid Close Attention!',
     });
@@ -50,9 +50,9 @@ export async function crownRoleCheck(
           async run() {
             target.addRole(eleRole);
             finalResult.push({
-              crownRole: eleRole,
+              role: eleRole,
               exp,
-              notes: 'Crowns Used: 1',
+              notes: '1',
             });
           },
         })
@@ -63,9 +63,9 @@ export async function crownRoleCheck(
           async run() {
             target.addRole(eleRole);
             finalResult.push({
-              crownRole: eleRole,
+              role: eleRole,
               exp: exp * 2,
-              notes: 'Crowns Used: 2',
+              notes: '2',
             });
           },
         })
@@ -74,11 +74,11 @@ export async function crownRoleCheck(
           emoji: '3️⃣',
           style: MessageComponentButtonStyles.SECONDARY,
           async run() {
-            target.addRole(eleRole);
+            await target.addRole(eleRole);
             finalResult.push({
-              crownRole: eleRole,
+              role: eleRole,
               exp: exp * 2 * 3,
-              notes: 'Crowns Used: 3',
+              notes: '3',
             });
           },
         });
@@ -101,14 +101,11 @@ export async function crownRoleCheck(
 
 export async function abyssRoleCheck(
   ctx: InteractionContext,
-  roles: Array<Snowflake>,
+  roles: Array<Snowflake | string>,
   target: Member,
 ): Promise<AfterRoleCheck> {
-  const result: AfterRoleCheck = {
-    exp: 0,
-    notes: 'none',
-  };
-
+  let expGrant = 0;
+  let notes = 'none';
   const abyssRole = ROLE_IDS.ABYSSAL_CONQUEROR;
   if (roles.includes(abyssRole)) {
     const abyssClearRow = new ComponentActionRow()
@@ -117,8 +114,7 @@ export async function abyssRoleCheck(
         label: 'Cleared without traveler? 👎',
         style: MessageComponentButtonStyles.SECONDARY,
         async run() {
-          result.exp = exp;
-          result.notes = 'none';
+          expGrant = exp;
           target.addRole(abyssRole);
         },
       })
@@ -127,8 +123,8 @@ export async function abyssRoleCheck(
         label: 'Cleared with traveler? 👍',
         style: MessageComponentButtonStyles.SECONDARY,
         async run() {
-          result.exp = exp * 2;
-          result.notes = 'Cleared with Traveler!';
+          expGrant = exp * 2;
+          notes = 'Cleared with Traveler!';
           target.addRole(abyssRole);
         },
       });
@@ -145,7 +141,11 @@ export async function abyssRoleCheck(
     });
   }
 
-  return result;
+  return {
+    exp: expGrant,
+    notes,
+    role: abyssRole,
+  };
 }
 
 export function whaleRoleCheck(roles: Array<Snowflake>, target: Member): AfterRoleCheck {
@@ -157,5 +157,6 @@ export function whaleRoleCheck(roles: Array<Snowflake>, target: Member): AfterRo
   return {
     exp: expGrant,
     notes: 'none',
+    role: ROLE_IDS.WHALE,
   };
 }
