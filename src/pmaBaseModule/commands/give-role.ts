@@ -2,6 +2,7 @@ import * as Constants from '@pma-lib/Constants';
 import EnvConfig from '@pma-lib/EnvConfig';
 import * as RoleCheck from '@pma-lib/RoleCheck';
 import { canGibRole } from '@pma-lib/StaffCheck';
+import { leafDebug } from '@pma-lib/UtilityFunctions';
 import { GiveRoleArgs } from '@pma-types/interfaces';
 import { RequestTypes } from 'detritus-client-rest';
 import { ApplicationCommandOptionTypes, MessageFlags } from 'detritus-client/lib/constants';
@@ -106,6 +107,11 @@ export default new InteractionCommand({
           content:
             'Copy paste that command. And a message by <@485962834782453762> should come up like [this](https://i.imgur.com/yQvOAzZ.png)',
         });
+      },
+
+      async onRunError(ctx, args) {
+        leafDebug({ ctx });
+        leafDebug({ args });
       },
     },
     {
@@ -271,30 +277,32 @@ export default new InteractionCommand({
                 lastPage.description = `${lastPage.description}${finalNotes}`;
               });
             });
+
+            await menuCtx.editOrRespond({
+              embeds: [lastPage],
+              components: [],
+            });
+
+            await menuCtx.createMessage({
+              flags: MessageFlags.EPHEMERAL,
+              content: `>award ${args.user?.id} ${totalExp}`,
+            });
+
+            await menuCtx.createMessage({
+              flags: MessageFlags.EPHEMERAL,
+              content:
+                'Copy paste that command. And a message by <@485962834782453762> should come up like [this](https://i.imgur.com/yQvOAzZ.png)',
+            });
           },
         });
         lastPage.description = `${lastPage.description}\n**Total exp:** ${totalExp}`;
 
-        await ctx.editOrRespond({
-          embeds: [firstPage],
-          components: [rolesSelectMenu],
-        });
-
-        await ctx.editOrRespond({
-          embeds: [lastPage],
-          components: [],
-        });
-
-        await ctx.createMessage({
-          flags: MessageFlags.EPHEMERAL,
-          content: `>award ${args.user?.id} ${totalExp}`,
-        });
-
-        await ctx.createMessage({
-          flags: MessageFlags.EPHEMERAL,
-          content:
-            'Copy paste that command. And a message by <@485962834782453762> should come up like [this](https://i.imgur.com/yQvOAzZ.png)',
-        });
+        await ctx
+          .editOrRespond({
+            embeds: [firstPage],
+            components: [rolesSelectMenu],
+          })
+          .then(async () => {});
       },
     },
   ],

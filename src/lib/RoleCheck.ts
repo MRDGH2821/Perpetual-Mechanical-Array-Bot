@@ -1,4 +1,5 @@
 import { COLORS, ROLE_IDS } from '@pma-lib/Constants';
+import { leafDebug } from '@pma-lib/UtilityFunctions';
 import { AfterRoleCheck } from '@pma-types/interfaces';
 import { RequestTypes } from 'detritus-client-rest';
 import { MessageComponentButtonStyles, Snowflake } from 'detritus-client/lib/constants';
@@ -47,6 +48,9 @@ export async function crownRoleCheck(
           customId: '1',
           emoji: '1️⃣',
           style: MessageComponentButtonStyles.SECONDARY,
+          onError(errCtx) {
+            leafDebug(errCtx);
+          },
           async run() {
             target.addRole(eleRole);
             finalResult.push({
@@ -60,6 +64,9 @@ export async function crownRoleCheck(
           customId: '2',
           emoji: '2️⃣',
           style: MessageComponentButtonStyles.SECONDARY,
+          onError(errCtx) {
+            leafDebug(errCtx);
+          },
           async run() {
             target.addRole(eleRole);
             finalResult.push({
@@ -73,6 +80,9 @@ export async function crownRoleCheck(
           customId: '3',
           emoji: '3️⃣',
           style: MessageComponentButtonStyles.SECONDARY,
+          onError(errCtx) {
+            leafDebug(errCtx);
+          },
           async run() {
             await target.addRole(eleRole);
             finalResult.push({
