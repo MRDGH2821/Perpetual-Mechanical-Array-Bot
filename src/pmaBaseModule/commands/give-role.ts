@@ -96,10 +96,15 @@ export default new InteractionCommand({
         await ctx.editOrRespond({
           embeds: [finalEmb],
         });
-        const finalMsg = await ctx.fetchResponse();
-
-        await finalMsg.reply({
+        await ctx.createMessage({
+          flags: MessageFlags.EPHEMERAL,
           content: `>award ${args.user?.id} ${exp}`,
+        });
+
+        await ctx.createMessage({
+          flags: MessageFlags.EPHEMERAL,
+          content:
+            'Copy paste that command. And a message by <@485962834782453762> should come up like [this](https://i.imgur.com/yQvOAzZ.png)',
         });
       },
     },
