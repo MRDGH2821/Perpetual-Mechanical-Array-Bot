@@ -3,9 +3,9 @@ import EnvConfig from '@pma-lib/EnvConfig';
 import { RequestTypes } from 'detritus-client-rest';
 import { ApplicationCommandOptionTypes } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
-import mathjs from 'mathjs';
+import math, { parse } from 'mathjs';
 
-const dmgExp = mathjs.parse('atk * (1 + ( (cRate/100)*(cDmg/100) ) )');
+const dmgExp = parse('atk * (1 + ( (cRate/100)*(cDmg/100) ) )');
 const dmgFormula = dmgExp.compile();
 export default new InteractionCommand({
   name: 'calc',
@@ -36,7 +36,7 @@ export default new InteractionCommand({
         if (expr.includes('\\')) {
           resultEmb.description = `Please check your expression. \nDo not put back slash or unrecognisable symbols\n\nInput: \`${expr}\``;
         } else {
-          const output = mathjs.parse(expr).evaluate();
+          const output = math.parse(expr).evaluate();
           resultEmb.description = `**\`${expr}\`** = **\`${output}\`**`;
         }
 
@@ -76,11 +76,11 @@ export default new InteractionCommand({
           cDmg,
           cRate,
         });
-        const result = mathjs.print('$atk * (1 + ($cr% * $cd%)) = **$res**', {
+        const result = math.print('$atk * (1 + ($cr% * $cd%)) = **$res**', {
           atk,
           cd: cDmg,
           cr: cRate,
-          res: mathjs.round(dmgOutput, 2),
+          res: math.round(dmgOutput, 2),
         });
         const resultEmb: RequestTypes.CreateChannelMessageEmbed = {
           title: '**Damage Calculator**',
@@ -164,16 +164,16 @@ export default new InteractionCommand({
           cRate: cRate2,
         });
 
-        const preferredCent = mathjs.parse(' ( top / bot ) * 100').evaluate({
+        const preferredCent = math.parse(' ( top / bot ) * 100').evaluate({
           bot: (dmg1 + dmg2) / 2,
-          top: mathjs.abs(dmg1 - dmg2),
+          top: math.abs(dmg1 - dmg2),
         });
 
         let preferred = 'Any set should do';
         if (dmg1 > dmg2) {
-          preferred = `First Set preferred (+${mathjs.round(preferredCent, 2)}%)`;
+          preferred = `First Set preferred (+${math.round(preferredCent, 2)}%)`;
         } else if (dmg1 < dmg2) {
-          preferred = `Second Set preferred (+${mathjs.round(preferredCent, 2)}%)`;
+          preferred = `Second Set preferred (+${math.round(preferredCent, 2)}%)`;
         } else {
           preferred = 'Any set should do';
         }
@@ -184,7 +184,7 @@ export default new InteractionCommand({
           fields: [
             {
               name: '**First Set**',
-              value: `Attack: \`${atk1}\` \nCrit Rate: \`${cRate1}%\` \nCrit Damage: \`${cDmg1}%\` \n\nResult: ${mathjs.round(
+              value: `Attack: \`${atk1}\` \nCrit Rate: \`${cRate1}%\` \nCrit Damage: \`${cDmg1}%\` \n\nResult: ${math.round(
                 dmg1,
                 2,
               )}`,
@@ -192,7 +192,7 @@ export default new InteractionCommand({
             },
             {
               name: '**Second Set**',
-              value: `Attack: \`${atk2}\` \nCrit Rate: \`${cRate2}%\` \nCrit Damage: \`${cDmg2}%\` \n\nResult: ${mathjs.round(
+              value: `Attack: \`${atk2}\` \nCrit Rate: \`${cRate2}%\` \nCrit Damage: \`${cDmg2}%\` \n\nResult: ${math.round(
                 dmg2,
                 2,
               )}`,
