@@ -136,82 +136,88 @@ export default new InteractionCommand({
       async run(ctx, args: GiveRoleArgs) {
         const firstPage: RequestTypes.CreateChannelMessageEmbed = {
           title: '**Select Roles**',
-          description: `Select Roles to give to @${args.user}. The amount of EXP will be calculated in end.`,
+          description: `Select Roles to give to <@${args.user?.id}>. The amount of EXP will be calculated in end.`,
+          color: Constants.COLORS.EMBED_COLOR,
         };
         const target = args.user;
+        const options = [
+          {
+            description: 'Completed Spiral Abyss 36/36 & all Spiral abyss achievements',
+            emoji: '🌀',
+            label: ctx.guild?.roles.get(Constants.ROLE_IDS.ABYSSAL_CONQUEROR)?.name,
+            value: Constants.ROLE_IDS.ABYSSAL_CONQUEROR,
+          },
+          {
+            default: target?.roles.has(Constants.ROLE_IDS.REPUTATION.MONDSTADT),
+            description: '100% Map + Subregions + Achievements + Max Reputation',
+            emoji: '🕊️',
+            label: ctx.guild?.roles.get(Constants.ROLE_IDS.REPUTATION.MONDSTADT)?.name,
+            value: Constants.ROLE_IDS.REPUTATION.MONDSTADT,
+          },
+          {
+            default: target?.roles.has(Constants.ROLE_IDS.REPUTATION.LIYUE),
+            description: '100% Map + Subregions + Achievements + Max Reputation',
+            emoji: '⚖️',
+            label: ctx.guild?.roles.get(Constants.ROLE_IDS.REPUTATION.LIYUE)?.name,
+            value: Constants.ROLE_IDS.REPUTATION.LIYUE,
+          },
+          {
+            default: target?.roles.has(Constants.ROLE_IDS.REPUTATION.INAZUMA),
+            description: '100% Map + Subregions + Achievements + Max Reputation',
+            emoji: '⛩️',
+            label: ctx.guild?.roles.get(Constants.ROLE_IDS.REPUTATION.INAZUMA)?.name,
+            value: Constants.ROLE_IDS.REPUTATION.INAZUMA,
+          },
+          {
+            description: 'Crowned their Anemo Traveler',
+            emoji: '🌪️',
+            label: ctx.guild?.roles.get(Constants.ROLE_IDS.CROWN.ANEMO)?.name,
+            value: Constants.ROLE_IDS.CROWN.ANEMO,
+          },
+          {
+            description: 'Crowned their Geo Traveler',
+            emoji: '🪨',
+            label: ctx.guild?.roles.get(Constants.ROLE_IDS.CROWN.GEO)?.name,
+            value: Constants.ROLE_IDS.CROWN.GEO,
+          },
+          {
+            description: 'Crowned their Electro Traveler',
+            emoji: '⚡',
+            label: ctx.guild?.roles.get(Constants.ROLE_IDS.CROWN.ELECTRO)?.name,
+            value: Constants.ROLE_IDS.CROWN.ELECTRO,
+          },
+          {
+            default: target?.roles.has(Constants.ROLE_IDS.CROWN.NON_ELE),
+            description: 'Crowned their Unaligned Traveler',
+            emoji: '👑',
+            label: ctx.guild?.roles.get(Constants.ROLE_IDS.CROWN.NON_ELE)?.name,
+            value: Constants.ROLE_IDS.CROWN.NON_ELE,
+          },
+          {
+            default: target?.roles.has(Constants.ROLE_IDS.WHALE),
+            description: 'Spent $1500, or have c6 5* chars or r5 5* weapons',
+            emoji: '💰',
+            label: ctx.guild?.roles.get(Constants.ROLE_IDS.WHALE)?.name,
+            value: Constants.ROLE_IDS.WHALE,
+          },
+        ].filter((option) => {
+          if (Object.values(Constants.ROLE_IDS.CROWN).includes(option.value)) {
+            if (option.value === Constants.ROLE_IDS.CROWN.NON_ELE && option.default === true) {
+              return false;
+            }
+            return true;
+          }
+          if (option.value === Constants.ROLE_IDS.ABYSSAL_CONQUEROR) {
+            return true;
+          }
+          return !target?.roles.has(option.value);
+        });
+
         const rolesSelectMenu = new ComponentActionRow().addSelectMenu({
           customId: 'role_select_menu',
-          minValues: 2,
-          options: [
-            {
-              description: 'Completed Spiral Abyss 36/36 & all Spiral abyss achievements',
-              emoji: '🌀',
-              label: ctx.guild?.roles.get(Constants.ROLE_IDS.ABYSSAL_CONQUEROR)?.name,
-              value: Constants.ROLE_IDS.ABYSSAL_CONQUEROR,
-            },
-            {
-              default: target?.roles.has(Constants.ROLE_IDS.REPUTATION.MONDSTADT),
-              description: '100% Map + Subregions + Achievements + Max Reputation',
-              emoji: '🕊️',
-              label: ctx.guild?.roles.get(Constants.ROLE_IDS.REPUTATION.MONDSTADT)?.name,
-              value: Constants.ROLE_IDS.REPUTATION.MONDSTADT,
-            },
-            {
-              default: target?.roles.has(Constants.ROLE_IDS.REPUTATION.LIYUE),
-              description: '100% Map + Subregions + Achievements + Max Reputation',
-              emoji: '⚖️',
-              label: ctx.guild?.roles.get(Constants.ROLE_IDS.REPUTATION.LIYUE)?.name,
-              value: Constants.ROLE_IDS.REPUTATION.LIYUE,
-            },
-            {
-              default: target?.roles.has(Constants.ROLE_IDS.REPUTATION.INAZUMA),
-              description: '100% Map + Subregions + Achievements + Max Reputation',
-              emoji: '⛩️',
-              label: ctx.guild?.roles.get(Constants.ROLE_IDS.REPUTATION.INAZUMA)?.name,
-              value: Constants.ROLE_IDS.REPUTATION.INAZUMA,
-            },
-            {
-              description: 'Crowned their Anemo Traveler',
-              emoji: '🌪️',
-              label: ctx.guild?.roles.get(Constants.ROLE_IDS.CROWN.ANEMO)?.name,
-              value: Constants.ROLE_IDS.CROWN.ANEMO,
-            },
-            {
-              description: 'Crowned their Geo Traveler',
-              emoji: '🪨',
-              label: ctx.guild?.roles.get(Constants.ROLE_IDS.CROWN.GEO)?.name,
-              value: Constants.ROLE_IDS.CROWN.GEO,
-            },
-            {
-              description: 'Crowned their Electro Traveler',
-              emoji: '⚡',
-              label: ctx.guild?.roles.get(Constants.ROLE_IDS.CROWN.ELECTRO)?.name,
-              value: Constants.ROLE_IDS.CROWN.ELECTRO,
-            },
-            {
-              default: target?.roles.has(Constants.ROLE_IDS.CROWN.NON_ELE),
-              description: 'Crowned their Unaligned Traveler',
-              emoji: '👑',
-              label: ctx.guild?.roles.get(Constants.ROLE_IDS.CROWN.NON_ELE)?.name,
-              value: Constants.ROLE_IDS.CROWN.NON_ELE,
-            },
-            {
-              default: target?.roles.has(Constants.ROLE_IDS.WHALE),
-              description: 'Spent $1500, or have c6 5* chars or r5 5* weapons',
-              emoji: '💰',
-              label: ctx.guild?.roles.get(Constants.ROLE_IDS.WHALE)?.name,
-              value: Constants.ROLE_IDS.WHALE,
-            },
-          ].filter((option) => {
-            if (Object.values(Constants.ROLE_IDS.CROWN).includes(option.value)) {
-              return true;
-            }
-            if (option.value === Constants.ROLE_IDS.ABYSSAL_CONQUEROR) {
-              return true;
-            }
-            return !target?.roles.has(option.value);
-          }),
-
+          minValues: 1,
+          options,
+          maxValues: options.length,
           async run(menuCtx) {
             console.log(menuCtx);
           },
