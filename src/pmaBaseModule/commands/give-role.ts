@@ -98,7 +98,7 @@ export default new InteractionCommand({
         const finalMsg = await ctx.fetchResponse();
 
         await finalMsg.reply({
-          content: `>award <@${args.user}> ${exp}`,
+          content: `>award ${args.user?.id} ${exp}`,
         });
       },
     },
