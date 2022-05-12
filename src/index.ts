@@ -29,6 +29,7 @@ import { GatewayIntents } from 'detritus-client-socket/lib/constants';
   const interactionBot = new InteractionCommandClient(clusterBot);
 
   await interactionBot.addMultipleIn('./pmaBaseModule');
+  await interactionBot.addMultipleIn('./leaderboardModule/commands/');
 
   await interactionBot.run().catch((error) => console.log(JSON.stringify(error, null, 2)));
 })();
