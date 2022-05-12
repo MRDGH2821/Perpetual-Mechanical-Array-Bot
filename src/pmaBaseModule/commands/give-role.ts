@@ -1,8 +1,6 @@
-import { COLORS, EMOJIS, ROLE_IDS } from '@pma-lib/Constants';
+import * as Constants from '@pma-lib/Constants';
 import EnvConfig from '@pma-lib/EnvConfig';
-import {
-  abyssRoleCheck, crownRoleCheck, repRoleCheck, whaleRoleCheck,
-} from '@pma-lib/RoleCheck';
+import * as RoleCheck from '@pma-lib/RoleCheck';
 import { canGibRole } from '@pma-lib/StaffCheck';
 import { GiveRoleArgs } from '@pma-types/interfaces';
 import { RequestTypes } from 'detritus-client-rest';
@@ -34,56 +32,8 @@ export default new InteractionCommand({
           type: ApplicationCommandOptionTypes.STRING,
           required: true,
           async onAutoComplete(ctx) {
-            const repRoles = [
-              {
-                name: 'Megastar in Mondstadt 🚶🌬️',
-                value: ROLE_IDS.REPUTATION.MONDSTADT,
-              },
-              {
-                name: 'Illustrious in Inazuma 🚶⛈️',
-                value: ROLE_IDS.REPUTATION.INAZUMA,
-              },
-              {
-                name: 'Legend in Liyue 🚶🌏',
-                value: ROLE_IDS.REPUTATION.LIYUE,
-              },
-            ];
-
-            const crownRoles = [
-              {
-                name: "Ten'nō of Thunder 👑⛈️",
-                value: ROLE_IDS.CROWN.ELECTRO,
-              },
-              {
-                name: 'Jūnzhǔ of Earth 👑🌏',
-                value: ROLE_IDS.CROWN.GEO,
-              },
-              {
-                name: 'Herrscher of Wind 👑🌬️',
-                value: ROLE_IDS.CROWN.ANEMO,
-              },
-              {
-                name: 'Arbitrator of Fate 👑',
-                value: ROLE_IDS.CROWN.NON_ELE,
-              },
-            ];
-
-            const otherRoles = [
-              {
-                name: 'Affluent Adventurer 💰',
-                value: ROLE_IDS.WHALE,
-              },
-              {
-                name: 'Abyssal Conqueror 🌀',
-                value: ROLE_IDS.ABYSSAL_CONQUEROR,
-              },
-            ];
-
-            const allRoles = repRoles.concat(otherRoles, crownRoles);
-
-            const inputVal = ctx.value.toLowerCase();
-
-            const values = allRoles.filter((role) => role.name.toLowerCase().includes(inputVal));
+            const input = ctx.value.toLowerCase();
+            const values = Constants.ACH_ROLES.filter((r) => r.name.toLowerCase().includes(input));
 
             const choices = values.map((role) => ({
               name: role.name,
@@ -112,25 +62,25 @@ export default new InteractionCommand({
         let additionalNotes = 'none';
         const selectedRoles = [args.role!];
 
-        exp += repRoleCheck(selectedRoles, args.user!).exp;
+        exp += RoleCheck.repRoleCheck(selectedRoles, args.user!).exp;
 
-        await crownRoleCheck(ctx, selectedRoles, args.user!).then((dataArr) => {
+        await RoleCheck.crownRoleCheck(ctx, selectedRoles, args.user!).then((dataArr) => {
           dataArr.forEach((data) => {
             exp += data.exp;
             additionalNotes = data.notes;
           });
         });
 
-        await abyssRoleCheck(ctx, selectedRoles, args.user!).then((data) => {
+        await RoleCheck.abyssRoleCheck(ctx, selectedRoles, args.user!).then((data) => {
           exp += data.exp;
           additionalNotes = data.notes;
         });
 
-        exp += whaleRoleCheck(selectedRoles, args.user!).exp;
+        exp += RoleCheck.whaleRoleCheck(selectedRoles, args.user!).exp;
 
         const finalEmb: RequestTypes.CreateChannelMessageEmbed = {
           title: '**Role Given!**',
-          color: COLORS.EMBED_COLOR,
+          color: Constants.COLORS.EMBED_COLOR,
           description: `<@&${args.role}> given to <@${args.user?.id}>\nTotal Exp: ${exp}`,
         };
 

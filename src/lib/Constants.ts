@@ -67,3 +67,50 @@ export const ROLE_IDS = {
   WHALE: '804010525411246140',
   STAFF,
 };
+
+const REP_ROLES = [
+  {
+    name: 'Megastar in Mondstadt 🚶🌬️',
+    value: ROLE_IDS.REPUTATION.MONDSTADT,
+  },
+  {
+    name: 'Illustrious in Inazuma 🚶⛈️',
+    value: ROLE_IDS.REPUTATION.INAZUMA,
+  },
+  {
+    name: 'Legend in Liyue 🚶🌏',
+    value: ROLE_IDS.REPUTATION.LIYUE,
+  },
+];
+
+const CROWN_ROLES = [
+  {
+    name: "Ten'nō of Thunder 👑⛈️",
+    value: ROLE_IDS.CROWN.ELECTRO,
+  },
+  {
+    name: 'Jūnzhǔ of Earth 👑🌏',
+    value: ROLE_IDS.CROWN.GEO,
+  },
+  {
+    name: 'Herrscher of Wind 👑🌬️',
+    value: ROLE_IDS.CROWN.ANEMO,
+  },
+  {
+    name: 'Arbitrator of Fate 👑',
+    value: ROLE_IDS.CROWN.NON_ELE,
+  },
+];
+
+const OTHER_ROLES = [
+  {
+    name: 'Affluent Adventurer 💰',
+    value: ROLE_IDS.WHALE,
+  },
+  {
+    name: 'Abyssal Conqueror 🌀',
+    value: ROLE_IDS.ABYSSAL_CONQUEROR,
+  },
+];
+
+export const ACH_ROLES = REP_ROLES.concat(OTHER_ROLES, CROWN_ROLES);
