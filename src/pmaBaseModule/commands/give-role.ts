@@ -50,7 +50,8 @@ export default new InteractionCommand({
 
         if (!canGib) {
           await ctx.editOrRespond({
-            content: `You cannot give roles to anyone, not even to yourself ${EMOJIS.PepeKekPoint}`,
+            content: `You cannot give roles to anyone, not even to yourself ${Constants.EMOJIS.PepeKekPoint}`,
+            flags: MessageFlags.EPHEMERAL,
           });
           return false;
         }
