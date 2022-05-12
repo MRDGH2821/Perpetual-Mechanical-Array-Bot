@@ -64,12 +64,12 @@ export default new InteractionCommand({
         let additionalNotes = 'none';
         const selectedRoles = [args.role!];
 
-        exp += RoleCheck.repRoleCheck(selectedRoles, args.user!).exp;
+        exp += RoleCheck.repRoleCheck(selectedRoles, args.user!)[0].exp;
 
         await RoleCheck.crownRoleCheck(ctx, selectedRoles, args.user!).then((dataArr) => {
           dataArr.forEach((data) => {
             exp += data.exp;
-            additionalNotes = data.notes;
+            additionalNotes = `Crowns Used: ${data.notes}`;
           });
         });
 
@@ -139,7 +139,12 @@ export default new InteractionCommand({
           description: `Select Roles to give to <@${args.user?.id}>. The amount of EXP will be calculated in end.`,
           color: Constants.COLORS.EMBED_COLOR,
         };
-        const target = args.user;
+        const lastPage: RequestTypes.CreateChannelMessageEmbed = {
+          title: '**Roles successfully rewarded!**',
+          description: `The following roles have been assigned to <@${args.user?.id}>:\n\n`,
+          color: Constants.COLORS.EMBED_COLOR,
+        };
+        const target = args.user!;
         const options = [
           {
             description: 'Completed Spiral Abyss 36/36 & all Spiral abyss achievements',
@@ -212,20 +217,83 @@ export default new InteractionCommand({
           }
           return !target?.roles.has(option.value);
         });
-
+        let totalExp = 0;
         const rolesSelectMenu = new ComponentActionRow().addSelectMenu({
           customId: 'role_select_menu',
           minValues: 1,
           options,
           maxValues: options.length,
           async run(menuCtx) {
-            console.log(menuCtx);
+            const selectedRoles = menuCtx.data.values!;
+
+            let finalNotes = ' ';
+
+            const whaleCheck = RoleCheck.whaleRoleCheck(selectedRoles, target);
+
+            if (whaleCheck.exp !== 0) {
+              totalExp += whaleCheck.exp;
+              finalNotes = `✦ <@&${whaleCheck.role}>: (+${whaleCheck.exp})\n`;
+            }
+
+            RoleCheck.repRoleCheck(selectedRoles, target).forEach((data) => {
+              if (data.exp === 0 || data.exp === null || data.exp === undefined || !data.exp) {
+                // skip
+              }
+              totalExp += data.exp;
+              finalNotes = `✦ <@&${data.role}>: (+${data.exp})\n`;
+              lastPage.description = `${lastPage.description}${finalNotes}`;
+            });
+
+            await RoleCheck.abyssRoleCheck(ctx, selectedRoles, target).then((data) => {
+              if (data.exp === 0 || data.exp === null || data.exp === undefined || !data.exp) {
+                // skip
+              }
+              totalExp += data.exp;
+              if (data.notes === 'none') {
+                finalNotes = `✦ <@&${data.role}>: (+${data.exp})\n`;
+              } else {
+                finalNotes = `✦ <@&${data.role}>: ${data.notes} (+${data.exp})\n`;
+              }
+              lastPage.description = `${lastPage.description}${finalNotes}`;
+            });
+
+            await RoleCheck.crownRoleCheck(ctx, selectedRoles, target).then((dataArr) => {
+              dataArr.forEach((data) => {
+                if (data.exp === 0 || data.exp === null || data.exp === undefined || !data.exp) {
+                  // skip
+                }
+                totalExp += data.exp;
+                if (data.notes === 'none') {
+                  finalNotes = `✦ <@&${data.role}>: (+${data.exp})\n`;
+                } else {
+                  finalNotes = `✦ <@&${data.role}>: ${data.notes} (+${data.exp})\n`;
+                }
+                lastPage.description = `${lastPage.description}${finalNotes}`;
+              });
+            });
           },
         });
+        lastPage.description = `${lastPage.description}\n**Total exp:** ${totalExp}`;
 
         await ctx.editOrRespond({
           embeds: [firstPage],
           components: [rolesSelectMenu],
+        });
+
+        await ctx.editOrRespond({
+          embeds: [lastPage],
+          components: [],
+        });
+
+        await ctx.createMessage({
+          flags: MessageFlags.EPHEMERAL,
+          content: `>award ${args.user?.id} ${totalExp}`,
+        });
+
+        await ctx.createMessage({
+          flags: MessageFlags.EPHEMERAL,
+          content:
+            'Copy paste that command. And a message by <@485962834782453762> should come up like [this](https://i.imgur.com/yQvOAzZ.png)',
         });
       },
     },
