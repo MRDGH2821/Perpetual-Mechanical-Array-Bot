@@ -13,12 +13,8 @@ export interface IEvent {
 export interface AfterRoleCheck {
   exp: number;
   notes: string;
+  role: Snowflake | string;
 }
-
-export interface AfterCrownRoleCheck extends AfterRoleCheck {
-  crownRole: Snowflake;
-}
-
 export interface GiveRoleArgs extends ParsedArgs {
   user?: Member;
   role?: Snowflake;
