@@ -30,5 +30,5 @@ import { GatewayIntents } from 'detritus-client-socket/lib/constants';
 
   await interactionBot.addMultipleIn('./pmaBaseModule');
 
-  await interactionBot.run();
+  await interactionBot.run().catch((error) => console.log(JSON.stringify(error, null, 2)));
 })();
