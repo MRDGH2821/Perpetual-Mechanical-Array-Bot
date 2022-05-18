@@ -109,9 +109,14 @@ export default new InteractionCommand({
         });
       },
 
-      async onRunError(ctx, args) {
-        leafDebug({ ctx });
-        leafDebug({ args });
+      onValueError(ctx, args, error) {
+        console.log(error);
+      },
+
+      onRunError(ctx, args) {
+        leafDebug({
+          args,
+        });
       },
     },
     {
