@@ -1,4 +1,5 @@
 import { Constants } from 'detritus-client';
+import { RequestTypes } from 'detritus-client-rest';
 import { Snowflake } from 'detritus-client/lib/constants';
 import { ParsedArgs } from 'detritus-client/lib/interaction';
 import { Member } from 'detritus-client/lib/structures';
@@ -22,4 +23,8 @@ export interface GiveRoleArgs extends ParsedArgs {
 
 export interface TechArgs extends ParsedArgs {
   techs?: string;
+}
+
+export interface SimpleEmbed extends RequestTypes.CreateChannelMessageEmbed {
+
 }
