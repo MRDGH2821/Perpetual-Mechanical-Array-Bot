@@ -1,6 +1,6 @@
 import * as Constants from '@pma-lib/Constants';
 import EnvConfig from '@pma-lib/EnvConfig';
-import * as RoleCheck from '@pma-lib/RoleCheck';
+import * as RoleCheck from '@pma-lib/RoleCheckOld';
 import { canGibRole } from '@pma-lib/StaffCheck';
 import { leafDebug } from '@pma-lib/UtilityFunctions';
 import { GiveRoleArgs } from '@pma-types/interfaces';
