@@ -18,7 +18,7 @@ export interface AfterRoleCheck {
 }
 export interface GiveRoleArgs extends ParsedArgs {
   user?: Member;
-  role?: Snowflake;
+  role?: Snowflake | string;
 }
 
 export interface TechArgs extends ParsedArgs {
