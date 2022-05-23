@@ -1,6 +1,7 @@
 import { COLORS, ICONS } from '@pma-lib/Constants';
 import EnvConfig from '@pma-lib/EnvConfig';
 import { isStaff } from '@pma-lib/StaffCheck';
+import { leafDebug } from '@pma-lib/UtilityFunctions';
 import { LeaderBoardArgs, SimpleEmbed } from '@pma-types/interfaces';
 import {
   ApplicationCommandOptionTypes,
@@ -117,15 +118,20 @@ export default new InteractionCommand({
               verifyEmb.color = COLORS.SUCCESS;
               if (!isStaff(btnCtx.member!)) {
                 console.log(`${btnCtx.member?.tag} Is not a staff`);
-                await btnCtx.createMessage({
-                  content: 'Ping a mod to get approval!',
-                  flags: MessageFlags.EPHEMERAL,
-                });
+                await btnCtx
+                  .createMessage({
+                    content: 'Ping a mod to get approval!',
+                    flags: MessageFlags.EPHEMERAL,
+                  })
+                  .then(() => console.log('button replied'));
               } else {
                 await btnCtx.editOrRespond({
                   embeds: [verifyEmb],
                 });
               }
+            },
+            onError(errCtx, err) {
+              leafDebug(err);
             },
           })
           .addButton({
@@ -139,15 +145,20 @@ export default new InteractionCommand({
               verifyEmb.color = COLORS.ERROR;
               if (!isStaff(btnCtx.member!)) {
                 console.log(`${btnCtx.member?.tag} Is not a staff`);
-                await btnCtx.createMessage({
-                  content: 'Ping a mod to get approval!',
-                  flags: MessageFlags.EPHEMERAL,
-                });
+                await btnCtx
+                  .createMessage({
+                    content: 'Ping a mod to get approval!',
+                    flags: MessageFlags.EPHEMERAL,
+                  })
+                  .then(() => console.log('button replied'));
               } else {
                 await btnCtx.editOrRespond({
                   embeds: [verifyEmb],
                 });
               }
+            },
+            onError(errCtx, err) {
+              leafDebug(err);
             },
           });
 
