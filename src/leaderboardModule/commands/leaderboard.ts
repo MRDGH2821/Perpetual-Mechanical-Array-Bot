@@ -1,12 +1,13 @@
-import { COLORS, ICONS } from '@pma-lib/Constants';
+import { CHANNEL_IDS, COLORS, ICONS } from '@pma-lib/Constants';
 import EnvConfig from '@pma-lib/EnvConfig';
 import { isStaff } from '@pma-lib/StaffCheck';
-import { leafDebug } from '@pma-lib/UtilityFunctions';
+import { leaderboardLinkCheck } from '@pma-lib/UtilityFunctions';
 import { LeaderBoardArgs, SimpleEmbed } from '@pma-types/interfaces';
 import {
   ApplicationCommandOptionTypes,
+  InteractionCallbackTypes,
   MessageComponentButtonStyles,
-  MessageFlags
+  MessageFlags,
 } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { Channel } from 'detritus-client/lib/structures';
@@ -85,87 +86,92 @@ export default new InteractionCommand({
       async run(ctx, args: LeaderBoardArgs) {
         const dmgCategory = args.category!;
 
-        const verifyEmb: SimpleEmbed = {
-          title: '**Entry Verification**',
-          description: `**Contestant**: ${args.contestant?.mention} ${args.contestant?.tag} \n**Category**: ${dmgCategory} \n**Group**: ${args.group_type} \n**Score (i.e. Dmg value)**: ${args.score} \n\n**Proof**: \n${args.proof_link}`,
-        };
-
-        if (/anemo./gimu.test(dmgCategory)) {
-          verifyEmb.color = COLORS.ANEMO;
-          verifyEmb.thumbnail = { url: ICONS.PALM_VORTEX };
-        } else if (/geo./gimu.test(dmgCategory)) {
-          verifyEmb.color = COLORS.GEO;
-          verifyEmb.thumbnail = { url: ICONS.STARFELL_SWORD };
-        } else if (/electro./gimu.test(dmgCategory)) {
-          verifyEmb.color = COLORS.ELECTRO;
-          verifyEmb.thumbnail = { url: ICONS.LIGHTENING_BLADE };
-        } else if (/uni./gimu.test(dmgCategory)) {
-          verifyEmb.color = COLORS.UNIVERSAL;
-          verifyEmb.thumbnail = { url: ICONS.COPIUM };
-        } else {
-          verifyEmb.color = COLORS.EMBED_COLOR;
-          verifyEmb.thumbnail = { url: ICONS.VOID };
-        }
-        const approveRow = new ComponentActionRow()
-          .addButton({
-            customId: 'accepted',
-            label: 'Accept',
-            emoji: '👍',
-            style: MessageComponentButtonStyles.SUCCESS,
-            async run(btnCtx) {
-              verifyEmb.thumbnail = { url: ICONS.CHECK_MARK };
-              verifyEmb.title = '**Submission Accepted!**';
-              verifyEmb.color = COLORS.SUCCESS;
-              if (!isStaff(btnCtx.member!)) {
-                console.log(`${btnCtx.member?.tag} Is not a staff`);
-                await btnCtx
-                  .createMessage({
-                    content: 'Ping a mod to get approval!',
-                    flags: MessageFlags.EPHEMERAL,
-                  })
-                  .then(() => console.log('button replied'));
-              } else {
-                await btnCtx.editOrRespond({
-                  embeds: [verifyEmb],
-                });
-              }
-            },
-            onError(errCtx, err) {
-              leafDebug(err);
-            },
-          })
-          .addButton({
-            customId: 'declined',
-            label: 'Decline',
-            emoji: '👎',
-            style: MessageComponentButtonStyles.DANGER,
-            async run(btnCtx) {
-              verifyEmb.thumbnail = { url: ICONS.CROSS_MARK };
-              verifyEmb.title = '**Submission Rejected!**';
-              verifyEmb.color = COLORS.ERROR;
-              if (!isStaff(btnCtx.member!)) {
-                console.log(`${btnCtx.member?.tag} Is not a staff`);
-                await btnCtx
-                  .createMessage({
-                    content: 'Ping a mod to get approval!',
-                    flags: MessageFlags.EPHEMERAL,
-                  })
-                  .then(() => console.log('button replied'));
-              } else {
-                await btnCtx.editOrRespond({
-                  embeds: [verifyEmb],
-                });
-              }
-            },
-            onError(errCtx, err) {
-              leafDebug(err);
+        if (args.contestant?.bot || leaderboardLinkCheck(args.proof_link!)) {
+          await ctx.editOrRespond({
+            embed: {
+              color: COLORS.ERROR,
+              title: '**ERROR!**',
+              thumbnail: { url: ICONS.CROSS_MARK },
+              description: `Make sure the contestant is not a bot. \nAnd the proof link is from <#${CHANNEL_IDS.SHOWCASE}>\n\n**Contestant**: ${args.contestant?.mention} ${args.contestant?.tag} \n**Category**: ${dmgCategory} \n**Group**: ${args.group_type} \n**Score (i.e. Dmg value)**: ${args.score} \n\n**Proof**: \n${args.proof_link}`,
             },
           });
+        } else {
+          const verifyEmb: SimpleEmbed = {
+            title: '**Entry Verification**',
+            description: `**Contestant**: ${args.contestant?.mention} ${args.contestant?.tag} \n**Category**: ${dmgCategory} \n**Group**: ${args.group_type} \n**Score (i.e. Dmg value)**: ${args.score} \n\n**Proof**: \n${args.proof_link}`,
+          };
 
-        await ctx.editOrRespond({
-          embeds: [verifyEmb],
-          components: [approveRow],
-        });
+          if (/anemo./gimu.test(dmgCategory)) {
+            verifyEmb.color = COLORS.ANEMO;
+            verifyEmb.thumbnail = { url: ICONS.PALM_VORTEX };
+          } else if (/geo./gimu.test(dmgCategory)) {
+            verifyEmb.color = COLORS.GEO;
+            verifyEmb.thumbnail = { url: ICONS.STARFELL_SWORD };
+          } else if (/electro./gimu.test(dmgCategory)) {
+            verifyEmb.color = COLORS.ELECTRO;
+            verifyEmb.thumbnail = { url: ICONS.LIGHTENING_BLADE };
+          } else if (/uni./gimu.test(dmgCategory)) {
+            verifyEmb.color = COLORS.UNIVERSAL;
+            verifyEmb.thumbnail = { url: ICONS.COPIUM };
+          } else {
+            verifyEmb.color = COLORS.EMBED_COLOR;
+            verifyEmb.thumbnail = { url: ICONS.VOID };
+          }
+          const approveRow = new ComponentActionRow()
+            .addButton({
+              customId: 'accepted',
+              label: 'Accept',
+              emoji: '👍',
+              style: MessageComponentButtonStyles.SUCCESS,
+              async run(btnCtx) {
+                verifyEmb.thumbnail = { url: ICONS.CHECK_MARK };
+                verifyEmb.title = '**Submission Accepted!**';
+                verifyEmb.color = COLORS.SUCCESS;
+                if (!isStaff(btnCtx.member!)) {
+                  await btnCtx.createResponse(
+                    InteractionCallbackTypes.CHANNEL_MESSAGE_WITH_SOURCE,
+                    {
+                      content: 'Ping a mod to get approval!',
+                      flags: MessageFlags.EPHEMERAL,
+                    },
+                  );
+                } else {
+                  await btnCtx.editOrRespond({
+                    embeds: [verifyEmb],
+                  });
+                }
+              },
+            })
+            .addButton({
+              customId: 'declined',
+              label: 'Decline',
+              emoji: '👎',
+              style: MessageComponentButtonStyles.DANGER,
+              async run(btnCtx) {
+                verifyEmb.thumbnail = { url: ICONS.CROSS_MARK };
+                verifyEmb.title = '**Submission Rejected!**';
+                verifyEmb.color = COLORS.ERROR;
+                if (!isStaff(btnCtx.member!)) {
+                  await btnCtx.createResponse(
+                    InteractionCallbackTypes.CHANNEL_MESSAGE_WITH_SOURCE,
+                    {
+                      content: 'Ping a mod to get approval!',
+                      flags: MessageFlags.EPHEMERAL,
+                    },
+                  );
+                } else {
+                  await btnCtx.editOrRespond({
+                    embeds: [verifyEmb],
+                  });
+                }
+              },
+            });
+
+          await ctx.editOrRespond({
+            embeds: [verifyEmb],
+            components: [approveRow],
+          });
+        }
       },
     },
     {
