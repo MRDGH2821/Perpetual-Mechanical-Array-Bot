@@ -2,7 +2,7 @@ import { Constants } from 'detritus-client';
 import { RequestTypes } from 'detritus-client-rest';
 import { Snowflake } from 'detritus-client/lib/constants';
 import { ParsedArgs } from 'detritus-client/lib/interaction';
-import { Member } from 'detritus-client/lib/structures';
+import { Member, User } from 'detritus-client/lib/structures';
 
 export interface IEvent {
   event: Constants.ClientEvents;
@@ -25,6 +25,12 @@ export interface TechArgs extends ParsedArgs {
   techs?: string;
 }
 
-export interface SimpleEmbed extends RequestTypes.CreateChannelMessageEmbed {
+export interface SimpleEmbed extends RequestTypes.CreateChannelMessageEmbed {}
 
+export interface LeaderBoardArgs extends ParsedArgs {
+  contestant?: User;
+  category?: 'anemo-dmg-skill' | 'geo-dmg-skill' | 'electro-dmg-skill' | 'uni-dmg-n5';
+  group_type?: 'solo' | 'open';
+  score?: number;
+  proof_link?: string;
 }
