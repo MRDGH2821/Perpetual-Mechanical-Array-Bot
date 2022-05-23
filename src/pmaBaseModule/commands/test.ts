@@ -3,7 +3,7 @@ import EnvConfig from '@pma-lib/EnvConfig';
 import { GiveRoleArgs, SimpleEmbed } from '@pma-types/interfaces';
 import {
   ApplicationCommandOptionTypes,
-  MessageComponentButtonStyles
+  MessageComponentButtonStyles,
 } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { ComponentActionRow } from 'detritus-client/lib/utils';
