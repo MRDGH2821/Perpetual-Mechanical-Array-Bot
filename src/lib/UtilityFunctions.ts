@@ -5,3 +5,7 @@ export function debug(obj: any) {
 export function leafDebug(obj: any) {
   console.log(debug(obj));
 }
+
+export function leaderboardLinkCheck(link: string) {
+  return link.startsWith('https://discord.com/channels/803424731474034709/876121506680287263/');
+}
