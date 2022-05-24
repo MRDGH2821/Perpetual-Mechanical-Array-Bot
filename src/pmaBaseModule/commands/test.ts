@@ -80,11 +80,11 @@ export default new InteractionCommand({
         value: Constants.ROLE_IDS.CROWN.ELECTRO,
       },
       {
-        default: target?.roles.has(Constants.ROLE_IDS.CROWN.NON_ELE),
+        default: target?.roles.has(Constants.ROLE_IDS.CROWN.UNALIGNED),
         description: 'Crowned their Unaligned Traveler',
         emoji: '👑',
-        label: ctx.guild?.roles.get(Constants.ROLE_IDS.CROWN.NON_ELE)?.name,
-        value: Constants.ROLE_IDS.CROWN.NON_ELE,
+        label: ctx.guild?.roles.get(Constants.ROLE_IDS.CROWN.UNALIGNED)?.name,
+        value: Constants.ROLE_IDS.CROWN.UNALIGNED,
       },
       {
         default: target?.roles.has(Constants.ROLE_IDS.WHALE),
@@ -95,7 +95,7 @@ export default new InteractionCommand({
       },
     ].filter((option) => {
       if (Object.values(Constants.ROLE_IDS.CROWN).includes(option.value)) {
-        if (option.value === Constants.ROLE_IDS.CROWN.NON_ELE && option.default === true) {
+        if (option.value === Constants.ROLE_IDS.CROWN.UNALIGNED && option.default === true) {
           return false;
         }
         return true;

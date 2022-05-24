@@ -58,10 +58,14 @@ function whaleRoleCheck(ctx: InteractionContext, target: Member, role?: typeof R
 function nonEleCrownCheck(
   ctx: InteractionContext,
   target: Member,
-  role?: typeof ROLE_IDS.CROWN.NON_ELE,
+  role?: typeof ROLE_IDS.CROWN.UNALIGNED,
 ) {
-  target.addRole(ROLE_IDS.CROWN.NON_ELE || (role as string));
-  const result = { exp: 30000, notes: 'Paid attention to the game!', role: ROLE_IDS.CROWN.NON_ELE };
+  target.addRole(ROLE_IDS.CROWN.UNALIGNED || (role as string));
+  const result = {
+    exp: 30000,
+    notes: 'Paid attention to the game!',
+    role: ROLE_IDS.CROWN.UNALIGNED,
+  };
   roleCheckSwitcher(ctx, result);
 }
 
@@ -181,7 +185,7 @@ const roleFunctions = new BaseCollection<string, Function>()
   .set(ROLE_IDS.CROWN.ANEMO, crownCheck)
   .set(ROLE_IDS.CROWN.GEO, crownCheck)
   .set(ROLE_IDS.CROWN.ELECTRO, crownCheck)
-  .set(ROLE_IDS.CROWN.NON_ELE, nonEleCrownCheck);
+  .set(ROLE_IDS.CROWN.UNALIGNED, nonEleCrownCheck);
 
 export function roleCheckSwitcher(
   ctx: InteractionContext | ComponentContext,

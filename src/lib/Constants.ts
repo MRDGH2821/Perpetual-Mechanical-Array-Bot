@@ -88,7 +88,7 @@ export const ROLE_IDS = {
     ANEMO: '815938264875532298',
     GEO: '816210137613205554',
     ELECTRO: '856509454970781696',
-    NON_ELE: '859430358419243038',
+    UNALIGNED: '859430358419243038',
   },
   WHALE: '804010525411246140',
   STAFF,
@@ -124,7 +124,7 @@ const CROWN_ROLES = [
   },
   {
     name: 'Arbitrator of Fate 👑',
-    value: ROLE_IDS.CROWN.NON_ELE,
+    value: ROLE_IDS.CROWN.UNALIGNED,
   },
 ];
 
