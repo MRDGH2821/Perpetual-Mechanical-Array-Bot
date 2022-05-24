@@ -20,7 +20,7 @@ const gatewayReady: IEvent = {
     );
 
     console.log(
-      'Global cmds: ',
+      'Global commands: ',
       await clusterShard.rest.fetchApplicationCommands(clusterShard.applicationId),
     );
   },
