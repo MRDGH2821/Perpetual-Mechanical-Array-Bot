@@ -9,7 +9,14 @@ import { GatewayIntents } from 'detritus-client-socket/lib/constants';
 
   const clusterBot = new ClusterClient(EnvConfig.token as string, {
     gateway: {
-      intents: [GatewayIntents.GUILDS, GatewayIntents.GUILD_MEMBERS, GatewayIntents.GUILD_MESSAGES],
+      intents: [
+        GatewayIntents.GUILDS,
+        GatewayIntents.GUILD_MEMBERS,
+        GatewayIntents.GUILD_MESSAGES,
+        GatewayIntents.GUILD_EMOJIS,
+        GatewayIntents.GUILD_MESSAGE_REACTIONS,
+        GatewayIntents.GUILD_MESSAGE_TYPING,
+      ],
     },
     cache: {
       members: { enabled: true, limit: 500 },
