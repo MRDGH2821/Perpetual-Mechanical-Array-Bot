@@ -10,9 +10,9 @@ export const ICONS = {
   ANEMO: 'https://cdn.discordapp.com/emojis/803516622772895764.webp?&quality=lossless',
   ELECTRO: 'https://cdn.discordapp.com/emojis/803516644923146260.webp?&quality=lossless',
   GEO: 'https://cdn.discordapp.com/emojis/803516612430135326.webp?&quality=lossless',
-  PALM_VORTEX: 'https://cdn.discordapp.com/emojis/840965851199832087.png?v=1',
-  STARFELL_SWORD: 'https://cdn.discordapp.com/emojis/840965876370112532.png?v=1',
-  LIGHTENING_BLADE:
+  PALM_VORTEX_AETHER: 'https://cdn.discordapp.com/emojis/840965851199832087.png?v=1',
+  STARFELL_SWORD_LUMINE: 'https://cdn.discordapp.com/emojis/840965876370112532.png?v=1',
+  LIGHTENING_BLADE_AETHER:
     'https://cdn.discordapp.com/attachments/817208583988051999/886635086362071040/ElectroAether3.png',
   SPIRAL_ABYSS: 'https://cdn.discordapp.com/emojis/806999511096361031.png?v=1',
   CHECK_MARK:
@@ -41,6 +41,18 @@ export const EMOJIS = {
   AetherBonk: formatEmoji('821169357765345291'),
   LuminePadoru: formatEmoji('912033737280192562'),
   PepeKekPoint: formatEmoji('849624262625198131'),
+  AetherNoU: formatEmoji('905099437767024712'),
+  GoosetherConfuse: formatEmoji('907307618677178368'),
+  FakeNooz: formatEmoji('865259265471152138'),
+  pepeduck: formatEmoji('907293876073680946'),
+  AntiHornyElixir: formatEmoji('810751842883207168'),
+  AetherBruh: formatEmoji('813355624796520478'),
+  AetherYikes: formatEmoji('810278255336489020'),
+  Keqing_No: formatEmoji('804883023723233321'),
+  AetherMAD_REEE: formatEmoji('865476945427824690'),
+  LumineMAD_REEE: formatEmoji('814814997196308491'),
+  LuminePanic: formatEmoji('814883112998666241'),
+  TarouAngy: formatEmoji('854040153555468329'),
 };
 
 export const CHANNEL_IDS = {
