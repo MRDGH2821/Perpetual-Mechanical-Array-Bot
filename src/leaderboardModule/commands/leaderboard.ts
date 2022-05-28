@@ -2,7 +2,7 @@ import { CHANNEL_IDS, COLORS, ICONS } from '@pma-lib/Constants';
 import EnvConfig from '@pma-lib/EnvConfig';
 import { isStaff } from '@pma-lib/StaffCheck';
 import { isLeaderboardLink, leafDebug, randomSkillIcon } from '@pma-lib/UtilityFunctions';
-import { LeaderBoardArgs, SimpleEmbed } from '@pma-types/interfaces';
+import { LeaderBoardArgs, LeaderboardEntryOptions, SimpleEmbed } from '@pma-types/interfaces';
 import {
   ApplicationCommandOptionTypes,
   InteractionCallbackTypes,
@@ -160,6 +160,16 @@ export default new InteractionCommand({
                     await btnCtx.editOrRespond({
                       embeds: [verifyEmb],
                     });
+
+                    const registration: LeaderboardEntryOptions = {
+                      elementCategory: dmgCategory,
+                      proof: args.proof_link!,
+                      score: args.score!,
+                      typeCategory: args.group_type!,
+                      userID: args.contestant!.id!,
+                    };
+
+                    ctx.client.emit('leaderboardRegister', registration);
                   }
                 },
               })
