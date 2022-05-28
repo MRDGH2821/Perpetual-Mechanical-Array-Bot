@@ -5,9 +5,9 @@ import { resolve } from 'path';
  * imports esm modules of given folder and returns an array of default imports
  * @function esmImporter
  * @param {import('fs').PathLike} folderPath - folder path
- * @returns {Promise<Array<object>>} - array of esm default imports
+ * @returns {Promise<any[]>} - array of esm default imports
  */
-export default async function esmImporter(folderPath: fs.PathLike) {
+export default function esmImporter(folderPath: fs.PathLike): Promise<any[]> {
   const filePromises: any = [];
   const folder = resolve(folderPath as string);
   const files = fs.readdirSync(folder);
