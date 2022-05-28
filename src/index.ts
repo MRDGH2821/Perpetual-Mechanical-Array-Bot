@@ -6,6 +6,9 @@ import { GatewayIntents } from 'detritus-client-socket/lib/constants';
 
 (async () => {
   const pmaEvents: Array<IEvent> = await esmImporter('./src/pmaBaseModule/events');
+  const leaderboardEvents: Array<IEvent> = await esmImporter('./src/leaderboardModule/events/');
+
+  const botEvents = [pmaEvents, leaderboardEvents].flat();
 
   const clusterBot = new ClusterClient(EnvConfig.token as string, {
     gateway: {
@@ -23,7 +26,7 @@ import { GatewayIntents } from 'detritus-client-socket/lib/constants';
     },
   });
 
-  pmaEvents.forEach((pmaEvent) => {
+  botEvents.forEach((pmaEvent) => {
     if (pmaEvent.once) {
       clusterBot.once(pmaEvent.event, (...args) => pmaEvent.listener(...args));
     } else {
