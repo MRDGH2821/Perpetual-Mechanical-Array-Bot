@@ -5,7 +5,7 @@ import { ParsedArgs } from 'detritus-client/lib/interaction';
 import { Member, User } from 'detritus-client/lib/structures';
 
 export interface IEvent {
-  event: Constants.ClientEvents;
+  event: Constants.ClientEvents | string;
   on?: boolean;
   once?: boolean;
   listener(payload?: any): any;
@@ -33,4 +33,12 @@ export interface LeaderBoardArgs extends ParsedArgs {
   group_type?: 'solo' | 'open';
   score?: number;
   proof_link?: string;
+}
+
+export interface LeaderboardEntryOptions {
+  elementCategory: 'anemo-dmg-skill' | 'geo-dmg-skill' | 'electro-dmg-skill' | 'uni-dmg-n5';
+  proof: string;
+  score: number;
+  typeCategory: 'solo' | 'open';
+  userID: User['id'];
 }
