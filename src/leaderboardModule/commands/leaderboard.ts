@@ -5,14 +5,14 @@ import {
   isLeaderboardLink,
   leafDebug,
   PMAEventHandler,
-  randomSkillIcon
+  randomSkillIcon,
 } from '@pma-lib/UtilityFunctions';
 import { LeaderBoardArgs, LeaderboardEntryOptions, SimpleEmbed } from '@pma-types/interfaces';
 import {
   ApplicationCommandOptionTypes,
   InteractionCallbackTypes,
   MessageComponentButtonStyles,
-  MessageFlags
+  MessageFlags,
 } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { Channel } from 'detritus-client/lib/structures';
