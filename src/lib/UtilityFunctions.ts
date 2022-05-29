@@ -1,4 +1,5 @@
 import { CHANNEL_IDS, ICONS } from '@pma-lib/Constants';
+import EventEmitter from 'events';
 
 export function debug(obj: any) {
   return JSON.stringify(obj, null, 2);
@@ -41,3 +42,5 @@ export function randomSkillIcon(
     }
   }
 }
+
+export const PMAEventHandler = new EventEmitter();
