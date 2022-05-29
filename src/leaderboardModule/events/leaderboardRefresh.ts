@@ -1,5 +1,5 @@
 import { IEvent } from '@pma-types/interfaces';
-import leaderboardCache from 'leaderboardModule/lib/leaderboardCache';
+import leaderboardCache from 'lib/leaderboardCache';
 
 const leaderboardRefresh: IEvent = {
   event: 'leaderboardRefresh',

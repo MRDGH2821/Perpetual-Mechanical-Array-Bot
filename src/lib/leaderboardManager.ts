@@ -1,7 +1,7 @@
 import db from '@pma-lib/Firestore';
 import { ElementCategories } from '@pma-types/enums';
 import { LeaderboardEntryOptions } from '@pma-types/interfaces';
-import leaderboardCache from 'leaderboardModule/lib/leaderboardCache';
+import leaderboardCache from 'lib/leaderboardCache';
 
 export async function getLeaderboardData(
   dmgCategory: ElementCategories,
