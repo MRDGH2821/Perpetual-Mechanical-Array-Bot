@@ -1,13 +1,18 @@
 import { CHANNEL_IDS, COLORS, ICONS } from '@pma-lib/Constants';
 import EnvConfig from '@pma-lib/EnvConfig';
 import { isStaff } from '@pma-lib/StaffCheck';
-import { isLeaderboardLink, leafDebug, randomSkillIcon } from '@pma-lib/UtilityFunctions';
+import {
+  isLeaderboardLink,
+  leafDebug,
+  PMAEventHandler,
+  randomSkillIcon
+} from '@pma-lib/UtilityFunctions';
 import { LeaderBoardArgs, LeaderboardEntryOptions, SimpleEmbed } from '@pma-types/interfaces';
 import {
   ApplicationCommandOptionTypes,
   InteractionCallbackTypes,
   MessageComponentButtonStyles,
-  MessageFlags,
+  MessageFlags
 } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { Channel } from 'detritus-client/lib/structures';
@@ -98,28 +103,37 @@ export default new InteractionCommand({
             });
           } else {
             const msgIds = args.proof_link?.match(/\d+/gm)!;
-            console.log('msg id', msgIds[msgIds.length - 1]);
-            const leaderBoardChannel = ctx.guild?.channels.get(CHANNEL_IDS.SHOWCASE);
-
-            const { author, content } = await leaderBoardChannel!.fetchMessage(
-              msgIds[msgIds.length - 1],
-            );
+            // console.log('msg id', msgIds[msgIds.length - 1]);
 
             const verifyEmb: SimpleEmbed = {
               title: '**Entry Verification**',
-              description: `**Contestant**: ${args.contestant?.mention} ${args.contestant?.tag} \n**Category**: ${dmgCategory} \n**Group**: ${args.group_type} \n**Score (i.e. Dmg value)**: ${args.score} \n\n**Proof**: \n${args.proof_link}`,
+              description: `**Contestant**: ${args.contestant?.mention} \`${args.contestant?.tag}\` \n**Category**: ${dmgCategory} \n**Group**: ${args.group_type} \n**Score (i.e. Dmg value)**: ${args.score} \n\n**Proof**: \n${args.proof_link}`,
               fields: [],
             };
 
-            verifyEmb.fields?.push({
-              name: '**Auto verification**',
-              value: `Contestant: Message Author & Contestant is ${
-                author.id === args.contestant!.id ? 'same' : 'not same (or cannot verify)'
-              }\nScore: Message score & input score is ${
-                content.match(`${args.score}`)!.length > 0 ? 'same' : 'not same (or cannot verify)'
-              }`,
-            });
+            try {
+              const leaderBoardChannel = ctx.guild?.channels.get(CHANNEL_IDS.SHOWCASE);
 
+              const { author, content } = await leaderBoardChannel!.fetchMessage(
+                msgIds[msgIds.length - 1],
+              );
+
+              verifyEmb.fields?.push({
+                name: '**Auto verification**',
+                value: `**Contestant**: ${
+                  author.id === args.contestant!.id
+                    ? 'Verified'
+                    : `Cannot Verify (most likely submission done on behalf of ${args.contestant?.tag} by ${author.tag})`
+                }\n**Score**: ${
+                  content.match(`${args.score}`)?.length
+                    ? 'Verified'
+                    : "Cannot Verify (most likely because contestant didn't put score as text while uploading proof"
+                }`,
+              });
+            } catch (err) {
+              console.error(err);
+              leafDebug(err);
+            }
             // Add elemental colour
             if (/anemo./gimu.test(dmgCategory)) {
               verifyEmb.color = COLORS.ANEMO;
@@ -169,7 +183,7 @@ export default new InteractionCommand({
                       userID: args.contestant!.id!,
                     };
 
-                    ctx.client.emit('leaderboardRegister', registration);
+                    PMAEventHandler.emit('leaderboardEntry', registration);
                   }
                 },
               })
