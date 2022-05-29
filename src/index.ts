@@ -1,5 +1,6 @@
 import EnvConfig from '@pma-lib/EnvConfig';
 import esmImporter from '@pma-lib/esmImporter';
+import { leafDebug, PMAEventHandler } from '@pma-lib/UtilityFunctions';
 import { IEvent } from '@pma-types/interfaces';
 import { ClusterClient, InteractionCommandClient } from 'detritus-client';
 import { GatewayIntents } from 'detritus-client-socket/lib/constants';
@@ -28,9 +29,10 @@ import { GatewayIntents } from 'detritus-client-socket/lib/constants';
 
   botEvents.forEach((pmaEvent) => {
     if (pmaEvent.once) {
-      clusterBot.once(pmaEvent.event, (...args) => pmaEvent.listener(...args));
+      clusterBot.once(pmaEvent.event, pmaEvent.listener);
     } else {
-      clusterBot.on(pmaEvent.event, (...args) => pmaEvent.listener(...args));
+      clusterBot.subscribe(pmaEvent.event, pmaEvent.listener);
+      PMAEventHandler.on(pmaEvent.event, pmaEvent.listener);
     }
   });
 
@@ -41,5 +43,8 @@ import { GatewayIntents } from 'detritus-client-socket/lib/constants';
   await interactionBot.addMultipleIn('./pmaBaseModule');
   await interactionBot.addMultipleIn('./leaderboardModule/commands/');
 
-  await interactionBot.run().catch((error) => console.log(JSON.stringify(error, null, 2)));
+  await interactionBot.run().catch((err) => {
+    console.error(err);
+    leafDebug(err);
+  });
 })();
