@@ -1,3 +1,4 @@
+import { ElementCategories } from '@bot-types/types';
 import { Constants } from 'detritus-client';
 import { RequestTypes } from 'detritus-client-rest';
 import { Snowflake } from 'detritus-client/lib/constants';
@@ -8,7 +9,7 @@ export interface IEvent {
   event: Constants.ClientEvents | string;
   on?: boolean;
   once?: boolean;
-  listener(payload?: any): any;
+  listener(...payload: any): any;
 }
 
 export interface AfterRoleCheck {
@@ -29,16 +30,8 @@ export interface SimpleEmbed extends RequestTypes.CreateChannelMessageEmbed {}
 
 export interface LeaderBoardArgs extends ParsedArgs {
   contestant?: User;
-  category?: 'anemo-dmg-skill' | 'geo-dmg-skill' | 'electro-dmg-skill' | 'uni-dmg-n5';
+  category?: ElementCategories;
   group_type?: 'solo' | 'open';
   score?: number;
   proof_link?: string;
-}
-
-export interface LeaderboardEntryOptions {
-  elementCategory: 'anemo-dmg-skill' | 'geo-dmg-skill' | 'electro-dmg-skill' | 'uni-dmg-n5';
-  proof: string;
-  score: number;
-  typeCategory: 'solo' | 'open';
-  userID: User['id'];
 }
