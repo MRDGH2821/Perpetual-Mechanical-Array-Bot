@@ -1,4 +1,5 @@
-import { IEvent, LeaderboardEntryOptions } from '@bot-types/interfaces';
+import { IEvent } from '@bot-types/interfaces';
+import { LeaderboardEntryOptions } from '@bot-types/types';
 import db from '@lib/Firestore';
 
 const leaderboardEntry: IEvent = {
