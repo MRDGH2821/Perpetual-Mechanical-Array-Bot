@@ -1,5 +1,5 @@
-import { CHANNEL_IDS, COLORS, ROLE_IDS } from '@pma-lib/Constants';
-import EnvConfig from '@pma-lib/EnvConfig';
+import { ChannelIds, COLORS, ROLE_IDS } from '@lib/Constants';
+import EnvConfig from '@lib/EnvConfig';
 import { RequestTypes } from 'detritus-client-rest';
 import { ApplicationCommandOptionTypes, MessageFlags } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
@@ -33,9 +33,9 @@ export default new InteractionCommand({
     const isAnon = args.anonymous;
     const shouldPingArchons = args.ping_archons;
 
-    const confessChannel = ctx.guild?.channels.get(CHANNEL_IDS.CONFESSIONS);
+    const confessChannel = ctx.guild?.channels.get(ChannelIds.CONFESSIONS);
 
-    const logsChannel = ctx.guild?.channels.get(CHANNEL_IDS.ARCHIVES);
+    const logsChannel = ctx.guild?.channels.get(ChannelIds.ARCHIVES);
 
     const anonEmbed: RequestTypes.CreateChannelMessageEmbed = {
       title: '**A New confession!**',
@@ -62,7 +62,7 @@ export default new InteractionCommand({
       },
     };
 
-    const pingText = shouldPingArchons ? `<@&${ROLE_IDS.ARCHONS}>` : ' ';
+    const pingText = shouldPingArchons ? `<@&${ROLE_IDS.OTHERS.ARCHONS}>` : ' ';
 
     if (isAnon) {
       await confessChannel?.createMessage({

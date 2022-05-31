@@ -1,6 +1,6 @@
-import EnvConfig from '@pma-lib/EnvConfig';
-import { GMC_TECHS } from '@pma-lib/TravelerTechnologies';
-import { TechArgs } from '@pma-types/interfaces';
+import { TechArgs } from '@bot-types/interfaces';
+import EnvConfig from '@lib/EnvConfig';
+import { GMC_TECHS } from '@lib/TravelerTechnologies';
 import { ApplicationCommandOptionTypes } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 

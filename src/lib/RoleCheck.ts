@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import { COLORS, ROLE_IDS } from '@pma-lib/Constants';
-import { AfterRoleCheck, GiveRoleArgs, SimpleEmbed } from '@pma-types/interfaces';
+import { AfterRoleCheck, GiveRoleArgs, SimpleEmbed } from '@bot-types/interfaces';
+import { COLORS, ROLE_IDS } from '@lib/Constants';
 import { BaseCollection } from 'detritus-client/lib/collections';
 import { MessageComponentButtonStyles, MessageFlags } from 'detritus-client/lib/constants';
 import { InteractionContext } from 'detritus-client/lib/interaction';
@@ -35,11 +35,7 @@ export function initialiseSwitcher(selectedRoles: string[], originalCtxArgs: Giv
   resultEmbed.description += `The following roles have been assigned to <@${userTarget.id}>:\n`;
 }
 
-function reputationCheck(
-  ctx: InteractionContext,
-  target: Member,
-  repRole: typeof ROLE_IDS.REPUTATION[keyof typeof ROLE_IDS.REPUTATION],
-) {
+function reputationCheck(ctx: InteractionContext, target: Member, repRole: ROLE_IDS.REPUTATION) {
   target.addRole(repRole);
   const result: AfterRoleCheck = {
     exp: 250,
@@ -49,16 +45,16 @@ function reputationCheck(
   roleCheckSwitcher(ctx, result);
 }
 
-function whaleRoleCheck(ctx: InteractionContext, target: Member, role?: typeof ROLE_IDS.WHALE) {
-  target.addRole(ROLE_IDS.WHALE || (role as string));
-  const result = { exp: 250, notes: 'none', role: ROLE_IDS.WHALE };
+function whaleRoleCheck(ctx: InteractionContext, target: Member, role?: ROLE_IDS.OTHERS.WHALE) {
+  target.addRole(ROLE_IDS.OTHERS.WHALE || (role as string));
+  const result = { exp: 250, notes: 'none', role: ROLE_IDS.OTHERS.WHALE };
   roleCheckSwitcher(ctx, result);
 }
 
 function nonEleCrownCheck(
   ctx: InteractionContext,
   target: Member,
-  role?: typeof ROLE_IDS.CROWN.UNALIGNED,
+  role?: ROLE_IDS.CROWN.UNALIGNED,
 ) {
   target.addRole(ROLE_IDS.CROWN.UNALIGNED || (role as string));
   const result = {
@@ -72,9 +68,9 @@ function nonEleCrownCheck(
 async function abyssRoleCheck(
   ctx: InteractionContext,
   target: Member,
-  roleC?: typeof ROLE_IDS.ABYSSAL_CONQUEROR,
+  roleC?: ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR,
 ) {
-  const abyssRole = ROLE_IDS.ABYSSAL_CONQUEROR || roleC!;
+  const abyssRole = ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR || roleC!;
   const result: AfterRoleCheck = {
     exp: 0,
     notes: 'none',
@@ -118,11 +114,7 @@ async function abyssRoleCheck(
   });
 }
 
-async function crownCheck(
-  ctx: InteractionContext,
-  target: Member,
-  crownRole: typeof ROLE_IDS.CROWN[keyof typeof ROLE_IDS.CROWN],
-) {
+async function crownCheck(ctx: InteractionContext, target: Member, crownRole: ROLE_IDS.CROWN) {
   const result: AfterRoleCheck = {
     exp: 0,
     notes: 'none',
@@ -177,8 +169,8 @@ async function crownCheck(
 }
 
 const roleFunctions = new BaseCollection<string, Function>()
-  .set(ROLE_IDS.WHALE, whaleRoleCheck)
-  .set(ROLE_IDS.ABYSSAL_CONQUEROR, abyssRoleCheck)
+  .set(ROLE_IDS.OTHERS.WHALE, whaleRoleCheck)
+  .set(ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR, abyssRoleCheck)
   .set(ROLE_IDS.REPUTATION.MONDSTADT, reputationCheck)
   .set(ROLE_IDS.REPUTATION.LIYUE, reputationCheck)
   .set(ROLE_IDS.REPUTATION.INAZUMA, reputationCheck)

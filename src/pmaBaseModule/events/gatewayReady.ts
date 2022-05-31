@@ -1,7 +1,7 @@
+import { IEvent } from '@bot-types/interfaces';
+import EnvConfig from '@lib/EnvConfig';
 import { GatewayClientEvents } from 'detritus-client';
 import { ClientEvents } from 'detritus-client/lib/constants';
-import EnvConfig from '../../lib/EnvConfig';
-import { IEvent } from '../../types/interfaces';
 
 const gatewayReady: IEvent = {
   event: ClientEvents.GATEWAY_READY,

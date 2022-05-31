@@ -1,5 +1,5 @@
-import { COLORS } from '@pma-lib/Constants';
-import EnvConfig from '@pma-lib/EnvConfig';
+import { COLORS } from '@lib/Constants';
+import EnvConfig from '@lib/EnvConfig';
 import { RequestTypes } from 'detritus-client-rest';
 import { ApplicationCommandOptionTypes } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';

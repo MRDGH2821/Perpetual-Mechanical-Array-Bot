@@ -1,8 +1,8 @@
-import BonkUtilities from '@pma-lib/BonkUtilities';
-import { EMOJIS } from '@pma-lib/Constants';
-import EnvConfig from '@pma-lib/EnvConfig';
-import { leafDebug, randomArrPick } from '@pma-lib/UtilityFunctions';
-import { IEvent } from '@pma-types/interfaces';
+import { IEvent } from '@bot-types/interfaces';
+import BonkUtilities from '@lib/BonkUtilities';
+import { EMOJIS } from '@lib/Constants';
+import EnvConfig from '@lib/EnvConfig';
+import { Debugging, randomArrPick } from '@lib/Utilities';
 import { GatewayClientEvents } from 'detritus-client';
 import { ClientEvents } from 'detritus-client/lib/constants';
 
@@ -26,7 +26,7 @@ const reactions: IEvent = {
           message.react(emoji);
         }
       } catch (err) {
-        leafDebug(err);
+        Debugging.leafDebug(err);
       }
     }
 
