@@ -1,13 +1,10 @@
-import { CHANNEL_IDS, COLORS, ICONS } from '@pma-lib/Constants';
-import EnvConfig from '@pma-lib/EnvConfig';
-import { isStaff } from '@pma-lib/StaffCheck';
+import { LeaderBoardArgs, SimpleEmbed } from '@bot-types/interfaces';
+import { LeaderboardEntryOptions } from '@bot-types/types';
+import { ChannelIds, COLORS, ICONS } from '@lib/Constants';
+import EnvConfig from '@lib/EnvConfig';
 import {
-  isLeaderboardLink,
-  leafDebug,
-  PMAEventHandler,
-  randomSkillIcon,
-} from '@pma-lib/UtilityFunctions';
-import { LeaderBoardArgs, LeaderboardEntryOptions, SimpleEmbed } from '@pma-types/interfaces';
+  Debugging, PMAEventHandler, randomSkillIcon, StaffCheck,
+} from '@lib/Utilities';
 import {
   ApplicationCommandOptionTypes,
   InteractionCallbackTypes,
@@ -92,13 +89,13 @@ export default new InteractionCommand({
         try {
           const dmgCategory = args.category!;
 
-          if (args.contestant?.bot === true || !isLeaderboardLink(args.proof_link!)) {
+          if (args.contestant?.bot === true || !args.proof_link?.includes(ChannelIds.SHOWCASE)) {
             await ctx.editOrRespond({
               embed: {
                 color: COLORS.ERROR,
                 title: '**ERROR!**',
                 thumbnail: { url: ICONS.CROSS_MARK },
-                description: `Make sure the contestant is not a bot. \nAnd the proof link is from <#${CHANNEL_IDS.SHOWCASE}>\n\n**Contestant**: ${args.contestant?.mention} ${args.contestant?.tag} \n**Category**: ${dmgCategory} \n**Group**: ${args.group_type} \n**Score (i.e. Dmg value)**: ${args.score} \n\n**Proof**: \n${args.proof_link}`,
+                description: `Make sure the contestant is not a bot. \nAnd the proof link is from <#${ChannelIds.SHOWCASE}>\n\n**Contestant**: ${args.contestant?.mention} ${args.contestant?.tag} \n**Category**: ${dmgCategory} \n**Group**: ${args.group_type} \n**Score (i.e. Dmg value)**: ${args.score} \n\n**Proof**: \n${args.proof_link}`,
               },
             });
           } else {
@@ -112,7 +109,7 @@ export default new InteractionCommand({
             };
 
             try {
-              const leaderBoardChannel = ctx.guild?.channels.get(CHANNEL_IDS.SHOWCASE);
+              const leaderBoardChannel = ctx.guild?.channels.get(ChannelIds.SHOWCASE);
 
               const { author, content } = await leaderBoardChannel!.fetchMessage(
                 msgIds[msgIds.length - 1],
@@ -132,7 +129,7 @@ export default new InteractionCommand({
               });
             } catch (err) {
               console.error(err);
-              leafDebug(err);
+              Debugging.leafDebug(err);
             }
             // Add elemental colour
             if (/anemo./gimu.test(dmgCategory)) {
@@ -162,7 +159,7 @@ export default new InteractionCommand({
                   verifyEmb.thumbnail = { url: ICONS.CHECK_MARK };
                   verifyEmb.title = '**Submission Accepted!**';
                   verifyEmb.color = COLORS.SUCCESS;
-                  if (!isStaff(btnCtx.member!)) {
+                  if (!StaffCheck.isStaff(btnCtx.member!)) {
                     await btnCtx.createResponse(
                       InteractionCallbackTypes.CHANNEL_MESSAGE_WITH_SOURCE,
                       {
@@ -196,7 +193,7 @@ export default new InteractionCommand({
                   verifyEmb.thumbnail = { url: ICONS.CROSS_MARK };
                   verifyEmb.title = '**Submission Rejected!**';
                   verifyEmb.color = COLORS.ERROR;
-                  if (!isStaff(btnCtx.member!)) {
+                  if (!StaffCheck.isStaff(btnCtx.member!)) {
                     await btnCtx.createResponse(
                       InteractionCallbackTypes.CHANNEL_MESSAGE_WITH_SOURCE,
                       {
@@ -218,12 +215,12 @@ export default new InteractionCommand({
             });
           }
         } catch (err) {
-          leafDebug(err);
+          Debugging.leafDebug(err);
         }
       },
 
       onValueError(ctx, args, errs) {
-        leafDebug(errs);
+        Debugging.leafDebug(errs);
       },
     },
     {
@@ -238,12 +235,46 @@ export default new InteractionCommand({
           required: true,
         },
       ],
+      onBeforeRun(ctx) {
+        if (!StaffCheck.isStaff(ctx.member!)) {
+          ctx.editOrRespond({
+            content: 'Only  mods can change leaderboard channel',
+            flags: MessageFlags.EPHEMERAL,
+          });
+        }
+        return !StaffCheck.isStaff(ctx.member!);
+      },
       async run(ctx, args) {
         const setupChannel = args.channel as Channel;
 
         await ctx.editOrRespond({
           content: `Selected channel: ${setupChannel.mention} `,
         });
+
+        PMAEventHandler.emit('leaderboardChannelUpdate', setupChannel);
+      },
+    },
+
+    {
+      name: 'refresh',
+      description: 'Refresh Leaderboards',
+      type: ApplicationCommandOptionTypes.SUB_COMMAND,
+      onBeforeRun(ctx) {
+        if (!StaffCheck.isStaff(ctx.member!)) {
+          ctx.editOrRespond({
+            content: 'Only mods can refresh leaderboard',
+            flags: MessageFlags.EPHEMERAL,
+          });
+        }
+        return !StaffCheck.isStaff(ctx.member!);
+      },
+      async run(ctx) {
+        await ctx.editOrRespond({
+          content: 'Refresh initiated, please wait for some time before viewing leaderboard',
+          flags: MessageFlags.EPHEMERAL,
+        });
+
+        PMAEventHandler.emit('leaderboardRefresh', ctx.rest);
       },
     },
   ],

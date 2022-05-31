@@ -1,5 +1,5 @@
-import db from '@pma-lib/Firestore';
-import { IEvent, LeaderboardEntryOptions } from '@pma-types/interfaces';
+import { IEvent, LeaderboardEntryOptions } from '@bot-types/interfaces';
+import db from '@lib/Firestore';
 
 const leaderboardEntry: IEvent = {
   event: 'leaderboardEntry',

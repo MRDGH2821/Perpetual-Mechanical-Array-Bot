@@ -1,30 +1,59 @@
-import { LeaderboardEntryOptions } from '@pma-types/interfaces';
-import { User } from 'detritus-client/lib/structures';
+import { LeaderboardCacheType } from '@bot-types/types';
 import { BaseCollection } from 'detritus-utils';
 
 const leaderboardCache = {
   anemo: {
     skill: {
-      open: new BaseCollection<User['id'], { user: User; data: LeaderboardEntryOptions }>(),
-      solo: new BaseCollection<User['id'], { user: User; data: LeaderboardEntryOptions }>(),
+      open: <LeaderboardCacheType> new BaseCollection(),
+      solo: <LeaderboardCacheType> new BaseCollection(),
     },
   },
   geo: {
     skill: {
-      open: new BaseCollection<User['id'], { user: User; data: LeaderboardEntryOptions }>(),
-      solo: new BaseCollection<User['id'], { user: User; data: LeaderboardEntryOptions }>(),
+      open: <LeaderboardCacheType> new BaseCollection(),
+      solo: <LeaderboardCacheType> new BaseCollection(),
     },
   },
   electro: {
     skill: {
-      open: new BaseCollection<User['id'], { user: User; data: LeaderboardEntryOptions }>(),
-      solo: new BaseCollection<User['id'], { user: User; data: LeaderboardEntryOptions }>(),
+      open: <LeaderboardCacheType> new BaseCollection(),
+      solo: <LeaderboardCacheType> new BaseCollection(),
+    },
+  },
+  dendro: {
+    skill: {
+      open: <LeaderboardCacheType> new BaseCollection(),
+      solo: <LeaderboardCacheType> new BaseCollection(),
+    },
+  },
+  hydro: {
+    skill: {
+      open: <LeaderboardCacheType> new BaseCollection(),
+      solo: <LeaderboardCacheType> new BaseCollection(),
+    },
+  },
+  pyro: {
+    skill: {
+      open: <LeaderboardCacheType> new BaseCollection(),
+      solo: <LeaderboardCacheType> new BaseCollection(),
+    },
+  },
+  cryo: {
+    skill: {
+      open: <LeaderboardCacheType> new BaseCollection(),
+      solo: <LeaderboardCacheType> new BaseCollection(),
+    },
+  },
+  unaligned: {
+    n5: {
+      open: <LeaderboardCacheType> new BaseCollection(),
+      solo: <LeaderboardCacheType> new BaseCollection(),
     },
   },
   universal: {
     n5: {
-      open: new BaseCollection<User['id'], { user: User; data: LeaderboardEntryOptions }>(),
-      solo: new BaseCollection<User['id'], { user: User; data: LeaderboardEntryOptions }>(),
+      open: <LeaderboardCacheType> new BaseCollection(),
+      solo: <LeaderboardCacheType> new BaseCollection(),
     },
   },
 };
