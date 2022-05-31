@@ -2,19 +2,19 @@
   "name": "perpetual-mechanical-array-bot",
   "version": "2.4.2",
   "description": "Discord Bot for [Traveler Mains Server](https://discord.gg/RsdUnupKpj)",
-  "main": "index.js",
+  "main": "out/index.js",
   "private": true,
   "scripts": {
-    "deploy": "node src/deploy-commands.js",
-    "prestart": "npm run deploy",
-    "start": "node src/index.ts",
+    "prestart": "npm run build",
+    "start": "node out/index.js --trace-warnings",
     "dev": "nodemon src/index.ts --trace-warnings",
     "lint": "eslint . --fix --ignore-path .gitignore ",
     "pretty": "prettier . --write",
     "postpretty": "npm run lint",
     "pm2:prod": "pm2 startOrRestart pma-bot.config.cjs --env prod",
     "test": "nodemon src/lib/EnvConfig.ts",
-    "build": "tsc"
+    "build": "tsc && tsc-alias"
+    
   },
   "repository": {
     "type": "git",
@@ -51,6 +51,7 @@
     "prettier": "^2.6.2",
     "prettier-config-mrdgh2821": "^3.0.0",
     "regenerator-runtime": "^0.13.9",
+    "tsc-alias": "^1.6.7",
     "tsconfig-paths": "^4.0.0"
   },
   "engineStrict": true,
