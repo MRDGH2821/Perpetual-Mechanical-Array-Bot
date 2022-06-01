@@ -21,6 +21,7 @@
     "watch": false
   },
   "ts-node": {
+    "require": ["tsconfig-paths/register"],
     "swc": true
   },
   "include": ["src/**/*.ts"],
