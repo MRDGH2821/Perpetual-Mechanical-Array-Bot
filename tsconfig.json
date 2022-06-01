@@ -18,16 +18,9 @@
     "strictNullChecks": true,
     "target": "ESNext",
     "resolveJsonModule": true,
-    "watch": true,
-    "paths": {
-      "@/*": ["src/types/*"],
-      "@pma-types/*": ["types/*"],
-      "~/*": ["src/*"],
-      "@pma-lib/*": ["lib/*"]
-    }
+    "watch": false
   },
   "ts-node": {
-    "require": ["tsconfig-paths/register"],
     "swc": true
   },
   "include": ["src/**/*.ts"],
