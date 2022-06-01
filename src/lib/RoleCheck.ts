@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import { COLORS, ROLE_IDS } from '@pma-lib/Constants';
-import { AfterRoleCheck, GiveRoleArgs, SimpleEmbed } from '@pma-types/interfaces';
+import { AfterRoleCheck, GiveRoleArgs, SimpleEmbed } from 'botTypes/interfaces';
 import { BaseCollection } from 'detritus-client/lib/collections';
 import { MessageComponentButtonStyles, MessageFlags } from 'detritus-client/lib/constants';
 import { InteractionContext } from 'detritus-client/lib/interaction';
 import { Member } from 'detritus-client/lib/structures';
 import { ComponentActionRow, ComponentContext } from 'detritus-client/lib/utils';
+import { COLORS, ROLE_IDS } from 'lib/Constants';
 
 const toGiveRoles: string[] = [];
 const awardedRoles: string[] = [];
@@ -49,9 +49,13 @@ function reputationCheck(
   roleCheckSwitcher(ctx, result);
 }
 
-function whaleRoleCheck(ctx: InteractionContext, target: Member, role?: typeof ROLE_IDS.WHALE) {
-  target.addRole(ROLE_IDS.WHALE || (role as string));
-  const result = { exp: 250, notes: 'none', role: ROLE_IDS.WHALE };
+function whaleRoleCheck(
+  ctx: InteractionContext,
+  target: Member,
+  role?: typeof ROLE_IDS.OTHERS.WHALE,
+) {
+  target.addRole(ROLE_IDS.OTHERS.WHALE || (role as string));
+  const result = { exp: 250, notes: 'none', role: ROLE_IDS.OTHERS.WHALE };
   roleCheckSwitcher(ctx, result);
 }
 
@@ -72,9 +76,9 @@ function nonEleCrownCheck(
 async function abyssRoleCheck(
   ctx: InteractionContext,
   target: Member,
-  roleC?: typeof ROLE_IDS.ABYSSAL_CONQUEROR,
+  roleC?: typeof ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR,
 ) {
-  const abyssRole = ROLE_IDS.ABYSSAL_CONQUEROR || roleC!;
+  const abyssRole = ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR || roleC!;
   const result: AfterRoleCheck = {
     exp: 0,
     notes: 'none',
@@ -177,8 +181,8 @@ async function crownCheck(
 }
 
 const roleFunctions = new BaseCollection<string, Function>()
-  .set(ROLE_IDS.WHALE, whaleRoleCheck)
-  .set(ROLE_IDS.ABYSSAL_CONQUEROR, abyssRoleCheck)
+  .set(ROLE_IDS.OTHERS.WHALE, whaleRoleCheck)
+  .set(ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR, abyssRoleCheck)
   .set(ROLE_IDS.REPUTATION.MONDSTADT, reputationCheck)
   .set(ROLE_IDS.REPUTATION.LIYUE, reputationCheck)
   .set(ROLE_IDS.REPUTATION.INAZUMA, reputationCheck)

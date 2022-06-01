@@ -1,11 +1,9 @@
-import { CategoryProp, ElementCategories, ELEMENTS } from '@bot-types/types';
-import {
-  COLORS, ICONS, STAFF_ARRAY, TravelerTypes,
-} from '@lib/Constants';
+import { CategoryProp, ElementCategories, ELEMENTS } from 'botTypes/types';
 import { Permissions } from 'detritus-client/lib/constants';
 import { Member } from 'detritus-client/lib/structures';
 import { PermissionTools } from 'detritus-client/lib/utils';
 import EventEmitter from 'events';
+import * as Constants from './Constants';
 
 export const PMAEventHandler = new EventEmitter();
 
@@ -29,19 +27,19 @@ export function randomArrPick(array: any[]) {
 export function randomSkillIcon(element: ELEMENTS) {
   switch (element) {
     case 'anemo': {
-      const icons = [ICONS.ANEMO, ICONS.PALM_VORTEX_AETHER];
+      const icons = [Constants.ICONS.ANEMO, Constants.ICONS.PALM_VORTEX_AETHER];
       return randomArrPick(icons);
     }
     case 'geo': {
-      const icons = [ICONS.GEO, ICONS.STARFELL_SWORD_LUMINE];
+      const icons = [Constants.ICONS.GEO, Constants.ICONS.STARFELL_SWORD_LUMINE];
       return randomArrPick(icons);
     }
     case 'electro': {
-      const icons = [ICONS.ELECTRO, ICONS.LIGHTENING_BLADE_AETHER];
+      const icons = [Constants.ICONS.ELECTRO, Constants.ICONS.LIGHTENING_BLADE_AETHER];
       return randomArrPick(icons);
     }
     default: {
-      const icons = [ICONS.VOID, ICONS.COPIUM];
+      const icons = [Constants.ICONS.VOID, Constants.ICONS.COPIUM];
       return randomArrPick(icons);
     }
   }
@@ -51,42 +49,42 @@ export function categoryProps(dmgCategory: ElementCategories): CategoryProp {
   switch (dmgCategory) {
     case 'anemo-dmg-skill': {
       return {
-        icon: ICONS.PALM_VORTEX_AETHER,
-        name: TravelerTypes.ANEMO,
+        icon: Constants.ICONS.PALM_VORTEX_AETHER,
+        name: Constants.TravelerTypes.ANEMO,
         skill: 'Palm Vortex - Max storm damage',
-        color: COLORS.ANEMO,
+        color: Constants.COLORS.ANEMO,
       };
     }
     case 'geo-dmg-skill': {
       return {
-        icon: ICONS.STARFELL_SWORD_LUMINE,
-        name: TravelerTypes.GEO,
+        icon: Constants.ICONS.STARFELL_SWORD_LUMINE,
+        name: Constants.TravelerTypes.GEO,
         skill: 'Starfell Sword',
-        color: COLORS.GEO,
+        color: Constants.COLORS.GEO,
       };
     }
     case 'electro-dmg-skill': {
       return {
-        icon: ICONS.LIGHTENING_BLADE_AETHER,
-        name: TravelerTypes.ELECTRO,
+        icon: Constants.ICONS.LIGHTENING_BLADE_AETHER,
+        name: Constants.TravelerTypes.ELECTRO,
         skill: 'Lightening Blade',
-        color: COLORS.ELECTRO,
+        color: Constants.COLORS.ELECTRO,
       };
     }
     case 'uni-dmg-n5': {
       return {
-        icon: ICONS.COPIUM,
-        name: TravelerTypes.UNIVERSAL,
+        icon: Constants.ICONS.COPIUM,
+        name: Constants.TravelerTypes.UNIVERSAL,
         skill: "Traveler's Normal Attack 5th Hit",
-        color: COLORS.UNIVERSAL,
+        color: Constants.COLORS.UNIVERSAL,
       };
     }
     default: {
       return {
-        icon: ICONS.VOID,
-        name: TravelerTypes.UNALIGNED,
+        icon: Constants.ICONS.VOID,
+        name: Constants.TravelerTypes.UNALIGNED,
         skill: "Unaligned Traveler's damage",
-        color: COLORS.UNALIGNED,
+        color: Constants.COLORS.UNALIGNED,
       };
     }
   }
@@ -95,7 +93,7 @@ export function categoryProps(dmgCategory: ElementCategories): CategoryProp {
 export namespace StaffCheck {
   export function isStaff(member: Member) {
     const roles = member.roles.map((role) => role?.id);
-    return roles.some((role) => STAFF_ARRAY.includes(role));
+    return roles.some((role) => Constants.STAFF_ARRAY.includes(role));
   }
 
   export function canGibRole(member: Member) {

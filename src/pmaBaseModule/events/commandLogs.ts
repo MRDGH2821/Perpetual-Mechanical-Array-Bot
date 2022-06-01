@@ -1,8 +1,8 @@
+import { IEvent } from 'botTypes/interfaces';
 import { GatewayClientEvents } from 'detritus-client';
 import { RequestTypes } from 'detritus-client-rest';
 import { ClientEvents } from 'detritus-client/lib/constants';
-import { CHANNEL_IDS, COLORS } from '../../lib/Constants';
-import { IEvent } from '../../types/interfaces';
+import { ChannelIds, COLORS } from 'lib/Constants';
 
 const commandLogs: IEvent = {
   event: ClientEvents.INTERACTION_CREATE,
@@ -44,7 +44,7 @@ const commandLogs: IEvent = {
       },
     };
 
-    const logChannel = interaction.guild?.channels.get(CHANNEL_IDS.ARCHIVES);
+    const logChannel = interaction.guild?.channels.get(ChannelIds.ARCHIVES);
 
     await logChannel?.createMessage({
       embeds: [logEmbed],

@@ -1,9 +1,9 @@
-import EnvConfig from '@pma-lib/EnvConfig';
-import esmImporter from '@pma-lib/esmImporter';
-import { leafDebug, PMAEventHandler } from '@pma-lib/UtilityFunctions';
-import { IEvent } from '@pma-types/interfaces';
+import { IEvent } from 'botTypes/interfaces';
 import { ClusterClient, InteractionCommandClient } from 'detritus-client';
 import { GatewayIntents } from 'detritus-client-socket/lib/constants';
+import EnvConfig from 'lib/EnvConfig';
+import esmImporter from 'lib/esmImporter';
+import { Debugging, PMAEventHandler } from 'lib/Utilities';
 
 (async () => {
   const pmaEvents: Array<IEvent> = await esmImporter('./src/pmaBaseModule/events');
@@ -45,6 +45,6 @@ import { GatewayIntents } from 'detritus-client-socket/lib/constants';
 
   await interactionBot.run().catch((err) => {
     console.error(err);
-    leafDebug(err);
+    Debugging.leafDebug(err);
   });
 })();

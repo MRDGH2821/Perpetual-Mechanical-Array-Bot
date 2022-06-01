@@ -1,4 +1,4 @@
-import { ElementCategories } from '@bot-types/types';
+import { ElementCategories } from 'botTypes/types';
 import { Colors, Snowflake } from 'detritus-client/lib/constants';
 
 function formatEmoji(EmojiSnowflake: Snowflake) {

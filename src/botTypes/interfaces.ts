@@ -1,4 +1,4 @@
-import { ElementCategories } from '@bot-types/types';
+import { ElementCategories } from 'botTypes/types';
 import { Constants } from 'detritus-client';
 import { RequestTypes } from 'detritus-client-rest';
 import { Snowflake } from 'detritus-client/lib/constants';

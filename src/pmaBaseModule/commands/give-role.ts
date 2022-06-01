@@ -1,13 +1,13 @@
-import * as Constants from '@pma-lib/Constants';
-import EnvConfig from '@pma-lib/EnvConfig';
-import { initialiseSwitcher, roleCheckSwitcher } from '@pma-lib/RoleCheck';
-import { canGibRole } from '@pma-lib/StaffCheck';
-import { GiveRoleArgs } from '@pma-types/interfaces';
+import { GiveRoleArgs } from 'botTypes/interfaces';
 import { RequestTypes } from 'detritus-client-rest';
 import { ApplicationCommandOptionTypes, MessageFlags } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { Member } from 'detritus-client/lib/structures';
 import { ComponentActionRow } from 'detritus-client/lib/utils';
+import * as Constants from 'lib/Constants';
+import EnvConfig from 'lib/EnvConfig';
+import { initialiseSwitcher, roleCheckSwitcher } from 'lib/RoleCheck';
+import { StaffCheck } from 'lib/Utilities';
 
 export default new InteractionCommand({
   name: 'give-role',
@@ -47,7 +47,7 @@ export default new InteractionCommand({
       ],
 
       async onBefore(ctx) {
-        const canGib = canGibRole(ctx.member as Member);
+        const canGib = StaffCheck.canGibRole(ctx.member as Member);
 
         if (!canGib) {
           await ctx.editOrRespond({
@@ -66,7 +66,7 @@ export default new InteractionCommand({
         roleCheckSwitcher(ctx, {
           exp: -1,
           notes: 'none',
-          role: Constants.ROLE_IDS.ARCHONS,
+          role: Constants.ROLE_IDS.OTHERS.ARCHONS,
         });
       },
     },
@@ -83,7 +83,7 @@ export default new InteractionCommand({
         },
       ],
       async onBefore(ctx) {
-        const canGib = canGibRole(ctx.member as Member);
+        const canGib = StaffCheck.canGibRole(ctx.member as Member);
 
         if (!canGib) {
           await ctx.editOrRespond({
@@ -107,8 +107,8 @@ export default new InteractionCommand({
           {
             description: 'Completed Spiral Abyss 36/36 & all Spiral abyss achievements',
             emoji: '🌀',
-            label: ctx.guild?.roles.get(Constants.ROLE_IDS.ABYSSAL_CONQUEROR)?.name,
-            value: Constants.ROLE_IDS.ABYSSAL_CONQUEROR,
+            label: ctx.guild?.roles.get(Constants.ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR)?.name,
+            value: Constants.ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR,
           },
           {
             default: target?.roles.has(Constants.ROLE_IDS.REPUTATION.MONDSTADT),
@@ -157,20 +157,24 @@ export default new InteractionCommand({
             value: Constants.ROLE_IDS.CROWN.UNALIGNED,
           },
           {
-            default: target?.roles.has(Constants.ROLE_IDS.WHALE),
+            default: target?.roles.has(Constants.ROLE_IDS.OTHERS.WHALE),
             description: 'Spent $1500, or have c6 5* chars or r5 5* weapons',
             emoji: '💰',
-            label: ctx.guild?.roles.get(Constants.ROLE_IDS.WHALE)?.name,
-            value: Constants.ROLE_IDS.WHALE,
+            label: ctx.guild?.roles.get(Constants.ROLE_IDS.OTHERS.WHALE)?.name,
+            value: Constants.ROLE_IDS.OTHERS.WHALE,
           },
         ].filter((option) => {
-          if (Object.values(Constants.ROLE_IDS.CROWN).includes(option.value)) {
+          if (
+            Object.values(Constants.ROLE_IDS.CROWN).includes(
+              option.value as Constants.ROLE_IDS.CROWN,
+            )
+          ) {
             if (option.value === Constants.ROLE_IDS.CROWN.UNALIGNED && option.default === true) {
               return false;
             }
             return true;
           }
-          if (option.value === Constants.ROLE_IDS.ABYSSAL_CONQUEROR) {
+          if (option.value === Constants.ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR) {
             return true;
           }
           return !target?.roles.has(option.value);
@@ -188,7 +192,7 @@ export default new InteractionCommand({
             roleCheckSwitcher(menuCtx, {
               exp: -1,
               notes: 'none',
-              role: Constants.ROLE_IDS.ARCHONS,
+              role: Constants.ROLE_IDS.OTHERS.ARCHONS,
             });
           },
         });

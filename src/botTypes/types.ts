@@ -1,4 +1,4 @@
-import { COLORS, ICONS, TravelerTypes } from '@lib/Constants';
+import { COLORS, ICONS, TravelerTypes } from 'lib/Constants';
 import { User } from 'detritus-client/lib/structures';
 import { BaseCollection } from 'detritus-utils';
 

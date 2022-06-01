@@ -1,7 +1,7 @@
-import { COLORS } from '@pma-lib/Constants';
-import EnvConfig from '@pma-lib/EnvConfig';
 import { RequestTypes } from 'detritus-client-rest';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
+import { COLORS } from 'lib/Constants';
+import EnvConfig from 'lib/EnvConfig';
 
 export default new InteractionCommand({
   name: 'ping',
