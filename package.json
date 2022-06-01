@@ -5,9 +5,8 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "deploy": "node src/deploy-commands.js",
-    "prestart": "npm run deploy",
-    "start": "node src/index.ts",
+    "prestart": "npm run build",
+    "start": "node out/index.js",
     "dev": "nodemon src/index.ts --trace-warnings",
     "lint": "eslint . --fix --ignore-path .gitignore ",
     "pretty": "prettier . --write",
