@@ -3,6 +3,9 @@ import { Permissions } from 'detritus-client/lib/constants';
 import { Member } from 'detritus-client/lib/structures';
 import { PermissionTools } from 'detritus-client/lib/utils';
 import EventEmitter from 'events';
+import {
+  NadekoContent, NadekoEmbed, NadekoParseResult, SimpleEmbed,
+} from '../botTypes/interfaces';
 import * as Constants from './Constants';
 
 export const PMAEventHandler = new EventEmitter();
@@ -102,4 +105,55 @@ export namespace StaffCheck {
       || isStaff(member)
     );
   }
+}
+
+function nadekoFieldParse(fields: NadekoEmbed['fields']): SimpleEmbed['fields'] {
+  const finalFields: SimpleEmbed['fields'] = [];
+
+  fields?.forEach((field) => {
+    if (field.name !== '') {
+      finalFields.push(field);
+    }
+  });
+
+  return finalFields;
+}
+
+function nadekoEmbedParse(embeds: NadekoContent['embeds']): NadekoParseResult['embeds'] {
+  const finalEmbeds: NadekoParseResult['embeds'] = [];
+
+  embeds?.forEach((embed) => {
+    const parsedEmbed: SimpleEmbed = {
+      author: {
+        name: embed.author?.name,
+        iconUrl: embed.author?.icon_url,
+      },
+      color: embed.color ? parseInt(embed.color.replace('#', '0x'), 16) : undefined,
+      description: embed.description,
+      footer: {
+        text: embed.footer?.text || '\u200b',
+        iconUrl: embed.footer?.icon_url,
+      },
+      image: {
+        url: embed.image,
+      },
+      url: embed.url,
+      thumbnail: {
+        url: embed.thumbnail,
+      },
+      title: embed.title,
+      fields: nadekoFieldParse(embed.fields),
+    };
+    finalEmbeds.push(parsedEmbed);
+  });
+
+  return finalEmbeds;
+}
+export function nadekoParse(embedString: string): NadekoParseResult {
+  const parsed = JSON.parse(embedString) as NadekoContent;
+
+  return {
+    content: parsed.content || ' ',
+    embeds: nadekoEmbedParse(parsed.embeds),
+  };
 }
