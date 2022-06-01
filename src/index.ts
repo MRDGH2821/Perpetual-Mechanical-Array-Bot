@@ -7,9 +7,9 @@ import { Debugging, PMAEventHandler } from 'lib/Utilities';
 
 (async () => {
   const pmaEvents: Array<IEvent> = await esmImporter('./src/pmaBaseModule/events');
-  const leaderboardEvents: Array<IEvent> = await esmImporter('./src/leaderboardModule/events/');
+  // const leaderboardEvents: Array<IEvent> = await esmImporter('./src/leaderboardModule/events/');
 
-  const botEvents = [pmaEvents, leaderboardEvents].flat();
+  const botEvents = [pmaEvents].flat();
 
   const clusterBot = new ClusterClient(EnvConfig.token as string, {
     gateway: {
@@ -41,7 +41,7 @@ import { Debugging, PMAEventHandler } from 'lib/Utilities';
   const interactionBot = new InteractionCommandClient(clusterBot);
 
   await interactionBot.addMultipleIn('./pmaBaseModule');
-  await interactionBot.addMultipleIn('./leaderboardModule/commands/');
+  // await interactionBot.addMultipleIn('./leaderboardModule/commands/');
 
   await interactionBot.run().catch((err) => {
     console.error(err);
