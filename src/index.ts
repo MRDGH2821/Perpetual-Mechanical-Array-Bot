@@ -4,10 +4,13 @@ import { GatewayIntents } from 'detritus-client-socket/lib/constants';
 import EnvConfig from 'lib/EnvConfig';
 import esmImporter from 'lib/esmImporter';
 import { Debugging, PMAEventHandler } from 'lib/Utilities';
+import path from 'path';
 
 (async () => {
-  const pmaEvents: Array<IEvent> = await esmImporter('./src/pmaBaseModule/events');
-  // const leaderboardEvents: Array<IEvent> = await esmImporter('./src/leaderboardModule/events/');
+  const pmaEvents: Array<IEvent> = await esmImporter(
+    path.resolve(__dirname, './pmaBaseModule/events/'),
+  );
+  // const leaderboardEvents: Array<IEvent> = await esmImporter('./leaderboardModule/events/');
 
   const botEvents = [pmaEvents].flat();
 
@@ -47,4 +50,6 @@ import { Debugging, PMAEventHandler } from 'lib/Utilities';
     console.error(err);
     Debugging.leafDebug(err);
   });
-})();
+})().catch((err) => {
+  Debugging.leafDebug(err, true);
+});
