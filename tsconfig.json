@@ -8,7 +8,7 @@
     "importHelpers": true,
     "inlineSources": true,
     "lib": ["ES2019", "DOM", "ESNext"],
-    "module": "commonjs",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "noImplicitAny": true,
     "noImplicitReturns": true,
@@ -23,6 +23,9 @@
   "ts-node": {
     "require": ["tsconfig-paths/register"],
     "swc": true
+  },
+  "tsc-alias": {
+    "resolveFullPaths": true
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", ".vscode", "./old-src", "./out/*"]
