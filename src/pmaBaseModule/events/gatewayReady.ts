@@ -2,6 +2,7 @@ import { IEvent } from 'botTypes/interfaces';
 import { GatewayClientEvents } from 'detritus-client';
 import { ClientEvents } from 'detritus-client/lib/constants';
 import EnvConfig from 'lib/EnvConfig';
+import { setRestClient } from 'lib/RestClientExtracted';
 
 const gatewayReady: IEvent = {
   event: ClientEvents.GATEWAY_READY,
@@ -23,6 +24,8 @@ const gatewayReady: IEvent = {
       'Global commands: ',
       await clusterShard.rest.fetchApplicationCommands(clusterShard.applicationId),
     );
+
+    setRestClient(clusterShard.rest);
   },
 };
 
