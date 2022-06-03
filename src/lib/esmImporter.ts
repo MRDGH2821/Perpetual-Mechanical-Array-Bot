@@ -10,7 +10,7 @@ import { resolve } from 'path';
 export default function esmImporter(folderPath: fs.PathLike): Promise<any[]> {
   const filePromises: any = [];
   const folder = resolve(folderPath as string);
-  const files = fs.readdirSync(folder);
+  const files = fs.readdirSync(folder).filter((file) => /((?<!\.d)\.ts|\.js)$/.test(file));
 
   files.forEach((file) => {
     const filePromise = new Promise((res, rej) => {
