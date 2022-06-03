@@ -15,7 +15,6 @@
     "test": "nodemon src/lib/EnvConfig.ts",
     "build": "tsc && tsc-alias"
   },
-  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot.git"
