@@ -11,6 +11,8 @@ export type CategoryProp = {
 
 export type DamageType = 'skill' | 'n5';
 
+export type GroupCategoryType = 'open' | 'solo';
+
 export type ELEMENTS =
   | 'anemo'
   | 'geo'
@@ -19,7 +21,8 @@ export type ELEMENTS =
   | 'hydro'
   | 'pyro'
   | 'cryo'
-  | 'unaligned';
+  | 'unaligned'
+  | 'uni';
 
 export type ElementDamageCategories =
   | 'anemo-dmg-skill'
@@ -31,17 +34,22 @@ export type LeaderboardDBOptions = {
   elementCategory: ElementDamageCategories;
   proof: string;
   score: number;
-  typeCategory: 'solo' | 'open';
+  typeCategory: GroupCategoryType;
   userID: User['id'];
 };
 
 export type SetLeaderboardOptions = {
-  collection: LeaderboardCacheType;
+  collection: LeaderboardElementGroupCacheType;
   dmgCategory: ElementDamageCategories;
-  typeCategory: 'solo' | 'open';
+  typeCategory: GroupCategoryType;
 };
 
-export type LeaderboardCacheType = BaseCollection<
+export type LeaderboardElementGroupCacheType = BaseCollection<
 User['id'],
 { user: User; data: LeaderboardDBOptions }
 >;
+
+export type LeaderboardElementCacheType = {
+  open: LeaderboardElementGroupCacheType;
+  solo: LeaderboardElementGroupCacheType;
+};
