@@ -3,9 +3,12 @@ import { RestClient } from 'detritus-client/lib/rest';
 import { SimpleEmbed } from '../botTypes/interfaces';
 import {
   ElementDamageCategories,
-  LeaderboardCacheType,
+  ELEMENTS,
+  LeaderboardElementGroupCacheType,
   LeaderboardDBOptions,
   SetLeaderboardOptions,
+  GroupCategoryType,
+  LeaderboardElementCacheType,
 } from '../botTypes/types';
 import db from './Firestore';
 import { categoryProps } from './Utilities';
@@ -15,63 +18,63 @@ import { getRestClient } from './RestClientExtracted';
 export const leaderboardCache = {
   anemo: {
     skill: {
-      open: <LeaderboardCacheType> new BaseCollection(),
-      solo: <LeaderboardCacheType> new BaseCollection(),
+      open: <LeaderboardElementGroupCacheType> new BaseCollection(),
+      solo: <LeaderboardElementGroupCacheType> new BaseCollection(),
     },
   },
   geo: {
     skill: {
-      open: <LeaderboardCacheType> new BaseCollection(),
-      solo: <LeaderboardCacheType> new BaseCollection(),
+      open: <LeaderboardElementGroupCacheType> new BaseCollection(),
+      solo: <LeaderboardElementGroupCacheType> new BaseCollection(),
     },
   },
   electro: {
     skill: {
-      open: <LeaderboardCacheType> new BaseCollection(),
-      solo: <LeaderboardCacheType> new BaseCollection(),
+      open: <LeaderboardElementGroupCacheType> new BaseCollection(),
+      solo: <LeaderboardElementGroupCacheType> new BaseCollection(),
     },
   },
   dendro: {
     skill: {
-      open: <LeaderboardCacheType> new BaseCollection(),
-      solo: <LeaderboardCacheType> new BaseCollection(),
+      open: <LeaderboardElementGroupCacheType> new BaseCollection(),
+      solo: <LeaderboardElementGroupCacheType> new BaseCollection(),
     },
   },
   hydro: {
     skill: {
-      open: <LeaderboardCacheType> new BaseCollection(),
-      solo: <LeaderboardCacheType> new BaseCollection(),
+      open: <LeaderboardElementGroupCacheType> new BaseCollection(),
+      solo: <LeaderboardElementGroupCacheType> new BaseCollection(),
     },
   },
   pyro: {
     skill: {
-      open: <LeaderboardCacheType> new BaseCollection(),
-      solo: <LeaderboardCacheType> new BaseCollection(),
+      open: <LeaderboardElementGroupCacheType> new BaseCollection(),
+      solo: <LeaderboardElementGroupCacheType> new BaseCollection(),
     },
   },
   cryo: {
     skill: {
-      open: <LeaderboardCacheType> new BaseCollection(),
-      solo: <LeaderboardCacheType> new BaseCollection(),
+      open: <LeaderboardElementGroupCacheType> new BaseCollection(),
+      solo: <LeaderboardElementGroupCacheType> new BaseCollection(),
     },
   },
   unaligned: {
     n5: {
-      open: <LeaderboardCacheType> new BaseCollection(),
-      solo: <LeaderboardCacheType> new BaseCollection(),
+      open: <LeaderboardElementGroupCacheType> new BaseCollection(),
+      solo: <LeaderboardElementGroupCacheType> new BaseCollection(),
     },
   },
-  universal: {
+  uni: {
     n5: {
-      open: <LeaderboardCacheType> new BaseCollection(),
-      solo: <LeaderboardCacheType> new BaseCollection(),
+      open: <LeaderboardElementGroupCacheType> new BaseCollection(),
+      solo: <LeaderboardElementGroupCacheType> new BaseCollection(),
     },
   },
 };
 
 export async function getLeaderboardData(
   dmgCategory: ElementDamageCategories,
-  groupType: 'solo' | 'open',
+  groupType: GroupCategoryType,
   topEntries = 0,
 ): Promise<LeaderboardDBOptions[]> {
   return new Promise((res, rej) => {
@@ -115,10 +118,37 @@ export function setLeaderboardData(
   });
 }
 
-export async function showcaseLeaderboardGenerate(dmgCategory: ElementDamageCategories) {
-  const LCache = leaderboardCache;
-  const categorySplit = dmgCategory.split('-');
+function accessElementCache(
+  dmgCategory: ElementDamageCategories,
+): Promise<LeaderboardElementCacheType> {
+  const [element, ,] = dmgCategory.split('-');
+  return new Promise<LeaderboardElementCacheType>((resolve, reject) => {
+    switch (element as ELEMENTS) {
+      case 'anemo': {
+        resolve(leaderboardCache.anemo.skill);
+        break;
+      }
+      case 'geo': {
+        resolve(leaderboardCache.geo.skill);
+        break;
+      }
+      case 'electro': {
+        resolve(leaderboardCache.electro.skill);
+        break;
+      }
+      case 'uni': {
+        resolve(leaderboardCache.uni.n5);
+        break;
+      }
+      default: {
+        reject(new Error(`${dmgCategory} does not exist`));
+        break;
+      }
+    }
+  });
+}
 
+export async function showcaseLeaderboardGenerate(dmgCategory: ElementDamageCategories) {
   const props = categoryProps(dmgCategory);
   const fields: SimpleEmbed['fields'] = [];
   const leaderboardEmbed: SimpleEmbed = {
@@ -129,11 +159,7 @@ export async function showcaseLeaderboardGenerate(dmgCategory: ElementDamageCate
     timestamp: `${Date.now()}`,
   };
 
-  const elementalCache = Object.entries(LCache).find((entry) => entry[0] === categorySplit[0]);
-
-  const soloOpenData = elementalCache![1];
-
-  const cacheData = Object.values(soloOpenData)[0];
+  const cacheData = await accessElementCache(dmgCategory);
 
   let topOpen = '';
   let topSolo = '';
