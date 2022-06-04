@@ -6,10 +6,13 @@ import {
   MessageComponentButtonStyles,
   MessageFlags,
 } from 'detritus-client/lib/constants';
+import { Channel } from 'detritus-client/lib/structures';
 import EnvConfig from '../../lib/EnvConfig';
 import db from '../../lib/Firestore';
 import { COLORS, ChannelIds, ICONS } from '../../lib/Constants';
-import { Debugging, StaffCheck, randomSkillIcon } from '../../lib/Utilities';
+import {
+  Debugging, StaffCheck, randomSkillIcon, PMAEventHandler,
+} from '../../lib/Utilities';
 import { ElementDamageCategories, LeaderboardDBOptions } from '../../botTypes/types';
 import { LeaderBoardArgs, SimpleEmbed } from '../../botTypes/interfaces';
 
@@ -208,6 +211,37 @@ export default new InteractionCommand({
           embeds: [verifyEmb],
           components: [approveRow],
         });
+      },
+    },
+    {
+      name: 'setup',
+      description: 'Select channel where leaderboard updates will come',
+      type: ApplicationCommandOptionTypes.SUB_COMMAND,
+      options: [
+        {
+          name: 'channel',
+          description: 'Select channel where leaderboard updates will come',
+          type: ApplicationCommandOptionTypes.CHANNEL,
+          required: true,
+        },
+      ],
+      onBeforeRun(ctx) {
+        if (!StaffCheck.isStaff(ctx.member!)) {
+          ctx.editOrRespond({
+            content: 'Only mods can change leaderboard channel',
+            flags: MessageFlags.EPHEMERAL,
+          });
+        }
+        return !StaffCheck.isStaff(ctx.member!);
+      },
+      async run(ctx, args) {
+        const setupChannel = args.channel as Channel;
+
+        await ctx.editOrRespond({
+          content: `Selected channel: ${setupChannel.mention} `,
+        });
+
+        PMAEventHandler.emit('leaderboardChannelUpdate', setupChannel);
       },
     },
   ],
