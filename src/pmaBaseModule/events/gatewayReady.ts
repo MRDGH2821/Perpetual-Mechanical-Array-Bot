@@ -3,6 +3,7 @@ import { ClientEvents } from 'detritus-client/lib/constants';
 import EnvConfig from 'lib/EnvConfig';
 import { setRestClient, setShardClient } from 'lib/BotClientExtracted';
 import BotEvent from '../../lib/BotEvent';
+import { PMAEventHandler } from '../../lib/Utilities';
 
 export default new BotEvent({
   event: ClientEvents.GATEWAY_READY,
@@ -27,5 +28,9 @@ export default new BotEvent({
 
     setRestClient(clusterShard.rest);
     setShardClient(clusterShard);
+
+    setTimeout(() => {
+      PMAEventHandler.emit('leaderboardRefresh', clusterShard.rest);
+    }, 1000 * 5);
   },
 });

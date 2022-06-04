@@ -53,8 +53,6 @@ import { Debugging, PMAEventHandler } from './lib/Utilities';
     console.error(err);
     Debugging.leafDebug(err);
   });
-
-  PMAEventHandler.emit('leaderboardRefresh', interactionBot.client.rest);
 })().catch((err) => {
   Debugging.leafDebug(err, true);
 });
