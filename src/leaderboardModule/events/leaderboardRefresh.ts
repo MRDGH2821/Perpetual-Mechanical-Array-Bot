@@ -70,11 +70,11 @@ export default new BotEvent({
     // Universal n5 Refresh
     promises.push(
       setLeaderboardData(
-        { collection: LCache.universal.n5.open, dmgCategory: 'uni-dmg-n5', typeCategory: 'open' },
+        { collection: LCache.uni.n5.open, dmgCategory: 'uni-dmg-n5', typeCategory: 'open' },
         RClient,
       ),
       setLeaderboardData(
-        { collection: LCache.universal.n5.solo, dmgCategory: 'uni-dmg-n5', typeCategory: 'solo' },
+        { collection: LCache.uni.n5.solo, dmgCategory: 'uni-dmg-n5', typeCategory: 'solo' },
         RClient,
       ),
     );
