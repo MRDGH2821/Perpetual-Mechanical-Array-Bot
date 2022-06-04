@@ -3,6 +3,8 @@ import BotEvent from '../../lib/BotEvent';
 import { ICONS } from '../../lib/Constants';
 import { Debugging, PMAEventHandler } from '../../lib/Utilities';
 
+const log = Debugging.leafDebug;
+
 export default new BotEvent({
   event: 'leaderboardChannelUpdate',
   on: true,
@@ -10,13 +12,18 @@ export default new BotEvent({
     let finalWebhook: Webhook;
     try {
       const guildHooks = await newChannel.guild?.fetchWebhooks();
-      const pmaHooks = guildHooks?.filter((webhook) => webhook.user?.id === webhook.applicationId);
+      const pmaHooks = guildHooks?.filter((webhook) => !!webhook.token);
       const selectedWebhook = pmaHooks?.find((webhook) => webhook.name === 'Damage Leaderboard');
 
       selectedWebhook?.edit({ channelId: newChannel.id, reason: 'Leaderboard Channel Changed' });
-      finalWebhook = selectedWebhook!;
+
+      if (selectedWebhook === undefined) {
+        throw new Error('No webhooks found');
+      }
+
+      finalWebhook = selectedWebhook;
     } catch (error) {
-      Debugging.leafDebug(error);
+      log(error);
 
       finalWebhook = await newChannel.createWebhook({
         name: 'Damage Leaderboard',
