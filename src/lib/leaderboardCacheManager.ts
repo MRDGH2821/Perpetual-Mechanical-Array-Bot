@@ -156,7 +156,7 @@ export async function showcaseLeaderboardGenerate(dmgCategory: ElementDamageCate
     color: props.color,
     thumbnail: { url: props.icon },
     description: `Highest Damage of **${props.skill}**`,
-    timestamp: `${Date.now()}`,
+    timestamp: new Date().toISOString(),
   };
 
   const cacheData = await accessElementCache(dmgCategory);
