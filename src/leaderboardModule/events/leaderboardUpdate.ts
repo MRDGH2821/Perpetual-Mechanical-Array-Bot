@@ -1,16 +1,24 @@
-import { RestClient } from 'detritus-client/lib/rest';
-import { Webhook } from 'detritus-client/lib/structures';
 import BotEvent from '../../lib/BotEvent';
 import db from '../../lib/Firestore';
 import { showcaseLeaderboardGenerate } from '../../lib/leaderboardCacheManager';
 import { LeaderboardUpdateEventArgs } from '../../botTypes/types';
-import EnvConfig from '../../lib/EnvConfig';
+import { getRestClient, getShardClient } from '../../lib/BotClientExtracted';
 import { Debugging } from '../../lib/Utilities';
 
 export default new BotEvent({
   event: 'leaderboardUpdate',
   on: true,
   async listener(args: LeaderboardUpdateEventArgs) {
+    let { RClient, SClient } = args;
+
+    if (RClient === undefined) {
+      RClient = getRestClient();
+    }
+
+    if (SClient === undefined) {
+      SClient = getShardClient();
+    }
+
     const anemoSkillBoard = await showcaseLeaderboardGenerate('anemo-dmg-skill');
     const geoSkillBoard = await showcaseLeaderboardGenerate('geo-dmg-skill');
     const electroSkillBoard = await showcaseLeaderboardGenerate('electro-dmg-skill');
@@ -21,33 +29,32 @@ export default new BotEvent({
     const anemoMsg = (await leaderboardDB.doc('anemo-dmg-skill').get()).data();
     const geoMsg = (await leaderboardDB.doc('geo-dmg-skill').get()).data();
     const electroMsg = (await leaderboardDB.doc('electro-dmg-skill').get()).data();
-    const uniMsg = (await leaderboardDB.doc('uni-dmg-skill').get()).data();
-    const webhookMsg = (await leaderboardDB.doc('webhook').get()).data();
+    const uniMsg = (await leaderboardDB.doc('uni-dmg-n5').get()).data();
+    const webhookMsg = (await leaderboardDB.doc('webhook').get()).data() as {
+      webhookID: string;
+      channelID: string;
+    };
 
-    let leaderboardHook: Webhook;
-    if (args.webhook !== undefined) {
-      leaderboardHook = args.webhook;
-    } else if (args.SClient !== undefined) {
-      const guild = await args.SClient.guilds.find((guild) => guild.id === EnvConfig.guildId);
-      try {
-        const channel = await guild?.textChannels.find(
-          (channel) => channel.id === webhookMsg.channelID,
-        );
-        leaderboardHook = await (
-          await channel?.fetchWebhooks()
-        ).find((webhook) => webhook.id === webhookMsg.webhookID);
-      } catch (error) {
-        Debugging.leafDebug(error, true);
-      }
-    }
-
-    leaderboardHook.editMessage(anemoMsg?.messageID, {
-      embed: anemoSkillBoard,
+    const leaderboardHook = await RClient.fetchWebhook(webhookMsg.webhookID);
+    await Promise.all([
+      leaderboardHook
+        .editMessage(anemoMsg?.messageID, { embeds: [anemoSkillBoard] })
+        .catch((err) => {
+          Debugging.leafDebug(err, true);
+        }),
+      leaderboardHook.editMessage(geoMsg?.messageID, { embeds: [geoSkillBoard] }).catch((err) => {
+        Debugging.leafDebug(err, true);
+      }),
+      leaderboardHook
+        .editMessage(electroMsg?.messageID, { embeds: [electroSkillBoard] })
+        .catch((err) => {
+          Debugging.leafDebug(err, true);
+        }),
+      leaderboardHook.editMessage(uniMsg?.messageID, { embeds: [uniSkillBoard] }).catch((err) => {
+        Debugging.leafDebug(err, true);
+      }),
+    ]).then(() => {
+      console.log('Leaderboard updated!');
     });
-    leaderboardHook.editMessage(geoMsg?.messageID, { embed: geoSkillBoard });
-    leaderboardHook.editMessage(electroMsg?.messageID, { embed: electroSkillBoard });
-    leaderboardHook.editMessage(uniMsg?.messageID, { embed: uniSkillBoard });
-
-    console.log('Leaderboard updated!');
   },
 });
