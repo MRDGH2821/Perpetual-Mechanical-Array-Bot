@@ -9,7 +9,7 @@ export function setRestClient(RClient: RestClient) {
 }
 
 export function getRestClient(): RestClient {
-  if (typeof restClients[0] !== typeof RestClient) {
+  if (!restClients.length) {
     throw new Error('Rest client not initialised, use setRestClient first.');
   } else {
     return restClients[0];
@@ -24,7 +24,7 @@ export function setShardClient(SClient: ShardClient) {
 }
 
 export function getShardClient(): ShardClient {
-  if (typeof shardClients[0] !== typeof ShardClient) {
+  if (!shardClients.length) {
     throw new Error('Shard client not initialised, use setShardClient first.');
   } else {
     return shardClients[0];
