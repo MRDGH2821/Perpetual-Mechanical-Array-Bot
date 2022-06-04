@@ -54,33 +54,29 @@ export default new BotEvent({
 
     await webhook.createMessage({ embed: information });
 
-    await db
-      .collection('leaderboards')
-      .doc('anemo-dmg-skill')
-      .set({
-        messageID: (await webhook.createMessage({ embed: anemoSkillBoard }))?.id,
+    await webhook.createMessage({ embed: anemoSkillBoard, wait: true }).then((message) => {
+      db.collection('leaderboards').doc('anemo-dmg-skill').set({
+        messageID: message?.id,
       });
+    });
 
-    await db
-      .collection('leaderboards')
-      .doc('geo-dmg-skill')
-      .set({
-        messageID: (await webhook.createMessage({ embed: geoSkillBoard }))?.id,
+    await webhook.createMessage({ embed: geoSkillBoard, wait: true }).then((message) => {
+      db.collection('leaderboards').doc('geo-dmg-skill').set({
+        messageID: message?.id,
       });
+    });
 
-    await db
-      .collection('leaderboards')
-      .doc('electro-dmg-skill')
-      .set({
-        messageID: (await webhook.createMessage({ embed: electroSkillBoard }))?.id,
+    await webhook.createMessage({ embed: electroSkillBoard, wait: true }).then((message) => {
+      db.collection('leaderboards').doc('electro-dmg-skill').set({
+        messageID: message?.id,
       });
+    });
 
-    await db
-      .collection('leaderboards')
-      .doc('uni-dmg-n5')
-      .set({
-        messageID: (await webhook.createMessage({ embed: uniSkillBoard }))?.id,
+    await webhook.createMessage({ embed: uniSkillBoard, wait: true }).then((message) => {
+      db.collection('leaderboards').doc('uni-dmg-n5').set({
+        messageID: message?.id,
       });
+    });
 
     PMAEventHandler.emit('leaderboardUpdate', webhook.client.rest);
   },
