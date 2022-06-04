@@ -1,10 +1,10 @@
-import { IEvent } from 'botTypes/interfaces';
 import { ClusterClient, InteractionCommandClient } from 'detritus-client';
 import { GatewayIntents } from 'detritus-client-socket/lib/constants';
-import EnvConfig from 'lib/EnvConfig';
-import esmImporter from 'lib/esmImporter';
-import { Debugging, PMAEventHandler } from 'lib/Utilities';
 import path from 'path';
+import type { IEvent } from './botTypes/interfaces';
+import EnvConfig from './lib/EnvConfig';
+import esmImporter from './lib/esmImporter';
+import { Debugging, PMAEventHandler } from './lib/Utilities';
 
 (async () => {
   const pmaEvents: Array<IEvent> = await esmImporter(
@@ -43,8 +43,8 @@ import path from 'path';
 
   const interactionBot = new InteractionCommandClient(clusterBot);
 
-  await interactionBot.addMultipleIn('./pmaBaseModule');
-  // await interactionBot.addMultipleIn('./leaderboardModule/commands/');
+  await interactionBot.addMultipleIn('./pmaBaseModule/commands/');
+  await interactionBot.addMultipleIn('./leaderboardModule/commands/');
 
   await interactionBot.run().catch((err) => {
     console.error(err);
