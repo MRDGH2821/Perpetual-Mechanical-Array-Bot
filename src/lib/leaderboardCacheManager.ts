@@ -13,7 +13,7 @@ import {
 import db from './Firestore';
 import { categoryProps } from './Utilities';
 import { EleDmgCategoriesArr } from './Constants';
-import { getRestClient } from './RestClientExtracted';
+import { getRestClient } from './BotClientExtracted';
 
 export const leaderboardCache = {
   anemo: {

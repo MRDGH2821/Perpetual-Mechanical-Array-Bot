@@ -1,7 +1,7 @@
 import { RestClient } from 'detritus-client/lib/rest';
 import BotEvent from '../../lib/BotEvent';
 import { leaderboardCache, setLeaderboardData } from '../../lib/leaderboardCacheManager';
-import { getRestClient } from '../../lib/RestClientExtracted';
+import { getRestClient } from '../../lib/BotClientExtracted';
 import { PMAEventHandler } from '../../lib/Utilities';
 
 export default new BotEvent({
