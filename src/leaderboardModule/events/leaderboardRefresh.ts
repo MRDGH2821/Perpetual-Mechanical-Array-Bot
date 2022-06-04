@@ -3,6 +3,7 @@ import BotEvent from '../../lib/BotEvent';
 import { leaderboardCache, setLeaderboardData } from '../../lib/leaderboardCacheManager';
 import { getRestClient } from '../../lib/BotClientExtracted';
 import { PMAEventHandler } from '../../lib/Utilities';
+import { LeaderboardUpdateEventArgs } from '../../botTypes/types';
 
 export default new BotEvent({
   event: 'leaderboardRefresh',
@@ -83,7 +84,9 @@ export default new BotEvent({
       process.env.LEADERBOARD = 'true';
       console.log('Leaderboard Refresh Complete');
       console.log('Sending leaderboard update request');
-      PMAEventHandler.emit('leaderboardUpdate', RClient);
+      PMAEventHandler.emit('leaderboardUpdate', <LeaderboardUpdateEventArgs>{
+        RClient,
+      });
     });
   },
 });

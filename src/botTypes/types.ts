@@ -1,6 +1,8 @@
 import { BaseCollection } from 'detritus-utils';
-import { User } from 'detritus-client/lib/structures';
+import { User, Webhook } from 'detritus-client/lib/structures';
 import { COLORS, ICONS, TravelerTypes } from 'lib/Constants';
+import { RestClient } from 'detritus-client/lib/rest';
+import { ShardClient } from 'detritus-client';
 
 export type CategoryProp = {
   icon: ICONS;
@@ -52,4 +54,10 @@ User['id'],
 export type LeaderboardElementCacheType = {
   open: LeaderboardElementGroupCacheType;
   solo: LeaderboardElementGroupCacheType;
+};
+
+export type LeaderboardUpdateEventArgs = {
+  webhook?: Webhook;
+  RClient?: RestClient;
+  SClient?: ShardClient;
 };
