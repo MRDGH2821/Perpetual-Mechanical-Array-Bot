@@ -10,9 +10,11 @@ import { Debugging, PMAEventHandler } from './lib/Utilities';
   const pmaEvents: Array<BotEvent> = await esmImporter(
     path.resolve(__dirname, './pmaBaseModule/events/'),
   );
-  // const leaderboardEvents: Array<IEvent> = await esmImporter('./leaderboardModule/events/');
+  const leaderboardEvents: Array<BotEvent> = await esmImporter(
+    path.resolve(__dirname, './leaderboardModule/events/'),
+  );
 
-  const botEvents = [pmaEvents].flat();
+  const botEvents = [pmaEvents, leaderboardEvents].flat();
 
   const clusterBot = new ClusterClient(EnvConfig.token as string, {
     gateway: {
