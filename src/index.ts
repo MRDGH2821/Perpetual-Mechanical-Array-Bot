@@ -25,6 +25,7 @@ import { Debugging, PMAEventHandler } from './lib/Utilities';
         GatewayIntents.GUILD_EMOJIS,
         GatewayIntents.GUILD_MESSAGE_REACTIONS,
         GatewayIntents.GUILD_MESSAGE_TYPING,
+        GatewayIntents.GUILD_WEBHOOKS,
       ],
     },
     cache: {
