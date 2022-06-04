@@ -1,9 +1,9 @@
 import { Channel, Webhook } from 'detritus-client/lib/structures';
-import { IEvent } from '../../botTypes/interfaces';
+import BotEvent from '../../lib/BotEvent';
 import { ICONS } from '../../lib/Constants';
 import { Debugging, PMAEventHandler } from '../../lib/Utilities';
 
-const leaderboardChannelUpdate: IEvent = {
+export default new BotEvent({
   event: 'leaderboardChannelUpdate',
   on: true,
   async listener(newChannel: Channel) {
@@ -26,6 +26,4 @@ const leaderboardChannelUpdate: IEvent = {
 
     PMAEventHandler.emit('leaderboardSend', finalWebhook);
   },
-};
-
-export default leaderboardChannelUpdate;
+});

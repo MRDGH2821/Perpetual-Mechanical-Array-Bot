@@ -1,10 +1,10 @@
-import { IEvent } from 'botTypes/interfaces';
 import { GatewayClientEvents } from 'detritus-client';
 import { ClientEvents } from 'detritus-client/lib/constants';
 import EnvConfig from 'lib/EnvConfig';
 import { setRestClient } from 'lib/RestClientExtracted';
+import BotEvent from '../../lib/BotEvent';
 
-const gatewayReady: IEvent = {
+export default new BotEvent({
   event: ClientEvents.GATEWAY_READY,
   once: true,
   async listener(args) {
@@ -27,6 +27,4 @@ const gatewayReady: IEvent = {
 
     setRestClient(clusterShard.rest);
   },
-};
-
-export default gatewayReady;
+});

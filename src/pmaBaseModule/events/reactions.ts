@@ -1,12 +1,12 @@
-import { IEvent } from 'botTypes/interfaces';
 import { GatewayClientEvents } from 'detritus-client';
 import { ClientEvents } from 'detritus-client/lib/constants';
 import BonkUtilities from 'lib/BonkUtilities';
 import { EMOJIS } from 'lib/Constants';
 import EnvConfig from 'lib/EnvConfig';
 import { Debugging, randomArrPick } from 'lib/Utilities';
+import BotEvent from '../../lib/BotEvent';
 
-const reactions: IEvent = {
+export default new BotEvent({
   event: ClientEvents.MESSAGE_CREATE,
   async listener(payload: GatewayClientEvents.MessageCreate) {
     const { message } = payload;
@@ -102,6 +102,4 @@ const reactions: IEvent = {
       reactEmoji(randomArrPick(emotes));
     }
   },
-};
-
-export default reactions;
+});

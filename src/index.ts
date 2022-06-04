@@ -1,13 +1,13 @@
 import { ClusterClient, InteractionCommandClient } from 'detritus-client';
 import { GatewayIntents } from 'detritus-client-socket/lib/constants';
 import path from 'path';
-import type { IEvent } from './botTypes/interfaces';
+import BotEvent from './lib/BotEvent';
 import EnvConfig from './lib/EnvConfig';
 import esmImporter from './lib/esmImporter';
 import { Debugging, PMAEventHandler } from './lib/Utilities';
 
 (async () => {
-  const pmaEvents: Array<IEvent> = await esmImporter(
+  const pmaEvents: Array<BotEvent> = await esmImporter(
     path.resolve(__dirname, './pmaBaseModule/events/'),
   );
   // const leaderboardEvents: Array<IEvent> = await esmImporter('./leaderboardModule/events/');

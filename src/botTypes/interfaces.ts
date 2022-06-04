@@ -7,7 +7,7 @@ import {
   Channel, InteractionEditOrRespond, Member, User,
 } from 'detritus-client/lib/structures';
 
-export interface IEvent {
+export interface BotEventOptions {
   event: Constants.ClientEvents | string;
   on?: boolean;
   once?: boolean;

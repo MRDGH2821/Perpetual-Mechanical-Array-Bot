@@ -1,10 +1,10 @@
-import { IEvent } from 'botTypes/interfaces';
 import { GatewayClientEvents } from 'detritus-client';
 import { RequestTypes } from 'detritus-client-rest';
 import { ClientEvents } from 'detritus-client/lib/constants';
 import { ChannelIds, COLORS } from 'lib/Constants';
+import BotEvent from '../../lib/BotEvent';
 
-const commandLogs: IEvent = {
+export default new BotEvent({
   event: ClientEvents.INTERACTION_CREATE,
   on: true,
   async listener(args: GatewayClientEvents.InteractionCreate) {
@@ -50,6 +50,4 @@ const commandLogs: IEvent = {
       embeds: [logEmbed],
     });
   },
-};
-
-export default commandLogs;
+});
