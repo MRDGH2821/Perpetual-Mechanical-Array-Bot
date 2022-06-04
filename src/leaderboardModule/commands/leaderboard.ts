@@ -2,6 +2,7 @@ import { ComponentActionRow } from 'detritus-client/lib/utils';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import {
   ApplicationCommandOptionTypes,
+  ChannelTypes,
   InteractionCallbackTypes,
   MessageComponentButtonStyles,
   MessageFlags,
@@ -223,6 +224,7 @@ export default new InteractionCommand({
           description: 'Select channel where leaderboard updates will come',
           type: ApplicationCommandOptionTypes.CHANNEL,
           required: true,
+          channelTypes: [ChannelTypes.GUILD_TEXT],
         },
       ],
       onBeforeRun(ctx) {
@@ -232,13 +234,14 @@ export default new InteractionCommand({
             flags: MessageFlags.EPHEMERAL,
           });
         }
-        return !StaffCheck.isStaff(ctx.member!);
+        return StaffCheck.isStaff(ctx.member!);
       },
       async run(ctx, args) {
         const setupChannel = args.channel as Channel;
 
         await ctx.editOrRespond({
           content: `Selected channel: ${setupChannel.mention} `,
+          flags: MessageFlags.EPHEMERAL,
         });
 
         PMAEventHandler.emit('leaderboardChannelUpdate', setupChannel);
