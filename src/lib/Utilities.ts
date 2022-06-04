@@ -1,4 +1,4 @@
-import { CategoryProp, ElementCategories, ELEMENTS } from 'botTypes/types';
+import { CategoryProp, ELEMENTS, ElementDamageCategories } from 'botTypes/types';
 import { Permissions } from 'detritus-client/lib/constants';
 import { Member } from 'detritus-client/lib/structures';
 import { PermissionTools } from 'detritus-client/lib/utils';
@@ -48,7 +48,7 @@ export function randomSkillIcon(element: ELEMENTS) {
   }
 }
 
-export function categoryProps(dmgCategory: ElementCategories): CategoryProp {
+export function categoryProps(dmgCategory: ElementDamageCategories): CategoryProp {
   switch (dmgCategory) {
     case 'anemo-dmg-skill': {
       return {

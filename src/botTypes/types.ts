@@ -1,5 +1,5 @@
-import { User } from 'detritus-client/lib/structures';
 import { BaseCollection } from 'detritus-utils';
+import { User } from 'detritus-client/lib/structures';
 import { COLORS, ICONS, TravelerTypes } from 'lib/Constants';
 
 export type CategoryProp = {
@@ -21,14 +21,14 @@ export type ELEMENTS =
   | 'cryo'
   | 'unaligned';
 
-export type ElementCategories =
+export type ElementDamageCategories =
   | 'anemo-dmg-skill'
   | 'geo-dmg-skill'
   | 'electro-dmg-skill'
   | 'uni-dmg-n5';
 
-export type LeaderboardEntryOptions = {
-  elementCategory: ElementCategories;
+export type LeaderboardDBOptions = {
+  elementCategory: ElementDamageCategories;
   proof: string;
   score: number;
   typeCategory: 'solo' | 'open';
@@ -37,11 +37,11 @@ export type LeaderboardEntryOptions = {
 
 export type SetLeaderboardOptions = {
   collection: LeaderboardCacheType;
-  dmgCategory: ElementCategories;
+  dmgCategory: ElementDamageCategories;
   typeCategory: 'solo' | 'open';
 };
 
 export type LeaderboardCacheType = BaseCollection<
 User['id'],
-{ user: User; data: LeaderboardEntryOptions }
+{ user: User; data: LeaderboardDBOptions }
 >;

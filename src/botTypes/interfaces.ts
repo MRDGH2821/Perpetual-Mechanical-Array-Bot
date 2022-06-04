@@ -1,4 +1,4 @@
-import { ElementCategories } from 'botTypes/types';
+import { ElementDamageCategories } from 'botTypes/types';
 import { Constants } from 'detritus-client';
 import { RequestTypes } from 'detritus-client-rest';
 import { Snowflake } from 'detritus-client/lib/constants';
@@ -32,8 +32,8 @@ export interface SimpleEmbed extends RequestTypes.CreateChannelMessageEmbed {}
 
 export interface LeaderBoardArgs extends ParsedArgs {
   contestant?: User;
-  category?: ElementCategories;
-  group_type?: 'solo' | 'open';
+  element_category?: ElementDamageCategories;
+  type_category?: 'solo' | 'open';
   score?: number;
   proof_link?: string;
 }

@@ -1,4 +1,4 @@
-import { ElementCategories } from 'botTypes/types';
+import { ElementDamageCategories } from 'botTypes/types';
 import { Colors, Snowflake } from 'detritus-client/lib/constants';
 
 function formatEmoji(EmojiSnowflake: Snowflake) {
@@ -17,7 +17,7 @@ export enum TravelerTypes {
   UNALIGNED = 'Unaligned Traveler',
 }
 
-export const DmgCategoryTypes: ElementCategories[] = [
+export const EleDmgCategoriesArr: ElementDamageCategories[] = [
   'anemo-dmg-skill',
   'geo-dmg-skill',
   'electro-dmg-skill',
