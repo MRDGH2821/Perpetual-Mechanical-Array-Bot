@@ -1,7 +1,7 @@
 import { GatewayClientEvents } from 'detritus-client';
 import { ClientEvents } from 'detritus-client/lib/constants';
 import EnvConfig from 'lib/EnvConfig';
-import { setRestClient } from 'lib/BotClientExtracted';
+import { setRestClient, setShardClient } from 'lib/BotClientExtracted';
 import BotEvent from '../../lib/BotEvent';
 
 export default new BotEvent({
@@ -26,5 +26,6 @@ export default new BotEvent({
     );
 
     setRestClient(clusterShard.rest);
+    setShardClient(clusterShard);
   },
 });
