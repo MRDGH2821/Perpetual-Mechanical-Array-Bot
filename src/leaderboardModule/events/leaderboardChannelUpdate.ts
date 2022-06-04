@@ -1,6 +1,7 @@
 import { Channel, Webhook } from 'detritus-client/lib/structures';
 import BotEvent from '../../lib/BotEvent';
 import { ICONS } from '../../lib/Constants';
+import db from '../../lib/Firestore';
 import { Debugging, PMAEventHandler } from '../../lib/Utilities';
 
 const log = Debugging.leafDebug;
@@ -30,7 +31,14 @@ export default new BotEvent({
         avatar: ICONS.MASANORI,
       });
     }
-
+    await db
+      .collection('leaderboards')
+      .doc('webhook')
+      .set({
+        webhookID: finalWebhook.id,
+        channelID: finalWebhook.channelId,
+      })
+      .then(() => console.log('Webhook details saved in database'));
     PMAEventHandler.emit('leaderboardSend', finalWebhook);
   },
 });
