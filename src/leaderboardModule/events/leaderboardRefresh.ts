@@ -1,14 +1,11 @@
-import { RestClient } from 'detritus-client/lib/rest';
 import BotEvent from '../../lib/BotEvent';
 import { getLBCacheObject, setLeaderboardData } from '../../lib/leaderboardCacheManager';
-import { getRestClient, getShardClient } from '../../lib/BotClientExtracted';
 import { PMAEventHandler } from '../../lib/Utilities';
-import { LeaderboardUpdateEventArgs } from '../../botTypes/types';
 
 export default new BotEvent({
   event: 'leaderboardRefresh',
   on: true,
-  async listener(RClient: RestClient = getRestClient()) {
+  async listener(updateLeaderboard: boolean = false) {
     const LCache = getLBCacheObject();
     process.env.LEADERBOARD_READY = 'false';
     console.log('Leaderboard Refresh Initiated');
@@ -31,6 +28,7 @@ export default new BotEvent({
     );
 
     // Geo Refresh
+
     promises.push(
       setLeaderboardData({
         collection: LCache.geo.skill.open,
@@ -45,6 +43,7 @@ export default new BotEvent({
     );
 
     // Electro Refresh
+
     promises.push(
       setLeaderboardData({
         collection: LCache.electro.skill.open,
@@ -59,6 +58,7 @@ export default new BotEvent({
     );
 
     // Universal n5 Refresh
+
     promises.push(
       setLeaderboardData({
         collection: LCache.uni.n5.open,
@@ -77,12 +77,10 @@ export default new BotEvent({
       console.log('Leaderboard Refresh Complete');
       // Debugging.leafDebug(LCache, true);
 
-      console.log('Sending leaderboard update request');
-
-      PMAEventHandler.emit('leaderboardUpdate', <LeaderboardUpdateEventArgs>{
-        RClient,
-        SClient: getShardClient(),
-      });
+      if (updateLeaderboard) {
+        console.log('Sending leaderboard update request');
+        PMAEventHandler.emit('leaderboardUpdate');
+      }
     });
   },
 });
