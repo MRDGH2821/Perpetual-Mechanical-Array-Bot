@@ -15,6 +15,8 @@ import { categoryProps } from './Utilities';
 import { EleDmgCategoriesArr } from './Constants';
 import { getShardClient } from './BotClientExtracted';
 
+const totalRanks = 7;
+
 export const leaderboardCache = {
   anemo: {
     skill: {
@@ -97,7 +99,7 @@ export async function setLeaderboardData(
       // eslint-disable-next-line no-await-in-loop
       const userC = SClient.users.get(entry.userID) || (await SClient.rest.fetchUser(entry.userID));
       SClient.users.set(userC.id, userC);
-      console.log('User: ', userC);
+      // console.log('User: ', userC);
       collection.set(entry.userID, { user: userC, data: entry });
     }
   });
@@ -135,7 +137,7 @@ function accessElementCache(
 
 export async function showcaseLeaderboardGenerate(dmgCategory: ElementDamageCategories) {
   const props = categoryProps(dmgCategory);
-  const fields: SimpleEmbed['fields'] = [];
+
   const leaderboardEmbed: SimpleEmbed = {
     title: `**${props.name} Damage Leaderboard**`,
     color: props.color,
@@ -145,76 +147,90 @@ export async function showcaseLeaderboardGenerate(dmgCategory: ElementDamageCate
     fields: [],
   };
 
+  const fields = leaderboardEmbed.fields!;
+
   const cacheData = await accessElementCache(dmgCategory);
 
   let topOpen = '';
   let topSolo = '';
   let rank = 1;
-  cacheData.open.forEach((dataCache) => {
-    topOpen = `${topOpen}\n${rank}. \`${dataCache.user.tag}\` - [${dataCache.data.score}](${dataCache.data.proof})}`;
-    if (cacheData.open.size > 7) {
-      if (rank === 7) {
+  cacheData.open.every((dataCache) => {
+    topOpen = `${topOpen}\n${rank}. \`${dataCache.user.tag}\` - [${dataCache.data.score}](${dataCache.data.proof})`;
+    if (cacheData.open.size > totalRanks) {
+      if (rank === totalRanks) {
         const field = {
           inline: true,
-          name: '**Open Category Top 1-7**',
+          name: `**Open Category Top 1-${totalRanks}**`,
           value: `${topOpen} \n-`,
         };
         fields.push(field);
         topOpen = '';
-      } else if (rank === 14 || rank === cacheData.open.size) {
+      } else if (rank === totalRanks * 2 || rank === cacheData.open.size) {
         const field = {
           inline: true,
-          name: '**Open Category Top 8-14**',
+          name: `**Open Category Top ${totalRanks + 1}-${totalRanks * 2}**`,
           value: `${topOpen} \n-`,
         };
         fields.push(field);
         fields.push({ name: '\u200b', value: '\u200b' });
         topOpen = '';
+        return false;
       }
-    } else if (rank === cacheData.open.size) {
+    }
+    if (rank === cacheData.open.size) {
       const field = {
-        name: '**Open Category Top 1-7**',
+        name: `**Open Category Top 1-${totalRanks}**`,
         value: `${topOpen} \n-`,
       };
       fields.push(field);
       fields.push({ name: '\u200b', value: '\u200b' });
       topOpen = '';
+
+      return false;
     }
+
     rank += 1;
+    return true;
   });
-  cacheData.solo.forEach((dataCache) => {
-    topSolo = `${topSolo}\n${rank}. \`${dataCache.user.tag}\` - [${dataCache.data.score}](${dataCache.data.proof})}`;
-    if (cacheData.solo.size > 7) {
-      if (rank === 7) {
+  rank = 1;
+  cacheData.solo.every((dataCache) => {
+    topSolo = `${topSolo}\n${rank}. \`${dataCache.user.tag}\` - [${dataCache.data.score}](${dataCache.data.proof})`;
+    if (cacheData.solo.size > totalRanks) {
+      if (rank === totalRanks) {
         const field = {
           inline: true,
-          name: '**Solo Category Top 1-7**',
+          name: `**Solo Category Top 1-${totalRanks}**`,
           value: `${topSolo} \n-`,
         };
         fields.push(field);
-        topOpen = '';
-      } else if (rank === 14 || rank === cacheData.solo.size) {
+        topSolo = '';
+      } else if (rank === totalRanks * 2 || rank === cacheData.solo.size) {
         const field = {
           inline: true,
-          name: '**Solo Category Top 8-14**',
+          name: `**Solo Category Top ${totalRanks + 1}-${totalRanks * 2}**`,
           value: `${topSolo} \n-`,
         };
         fields.push(field);
-        fields.push({ name: '\u200b', value: '\u200b' });
-        topOpen = '';
+        topSolo = '';
+        return false;
       }
-    } else if (rank === cacheData.solo.size) {
+    }
+    if (rank === cacheData.solo.size) {
       const field = {
-        name: '**Solo Category Top 1-7**',
+        name: `**Solo Category Top 1-${totalRanks}**`,
         value: `${topSolo} \n-`,
       };
       fields.push(field);
       fields.push({ name: '\u200b', value: '\u200b' });
       topSolo = '';
+
+      return false;
     }
     rank += 1;
+    return true;
   });
 
   leaderboardEmbed.fields?.concat(fields);
+  // Debugging.leafDebug(leaderboardEmbed, true);
   return leaderboardEmbed;
 }
