@@ -16,6 +16,7 @@ import {
 } from '../../lib/Utilities';
 import { ElementDamageCategories, LeaderboardDBOptions } from '../../botTypes/types';
 import { LeaderBoardArgs, SimpleEmbed } from '../../botTypes/interfaces';
+import { showcaseLeaderboardGenerate } from '../../lib/leaderboardCacheManager';
 
 export default new InteractionCommand({
   name: 'leaderboard',
@@ -263,6 +264,62 @@ export default new InteractionCommand({
             flags: MessageFlags.EPHEMERAL,
           });
         }
+      },
+    },
+    {
+      name: 'view_mini',
+      description: 'View individual leaderboard embed',
+      type: ApplicationCommandOptionTypes.SUB_COMMAND,
+      options: [
+        {
+          name: 'element_category',
+          description: 'Select category to view',
+          type: ApplicationCommandOptionTypes.STRING,
+          required: true,
+          choices: <{ name: string; value: ElementDamageCategories }[]>[
+            {
+              name: 'Anemo: Palm Vortex',
+              value: 'anemo-dmg-skill',
+            },
+            {
+              name: 'Geo: Starfell Sword',
+              value: 'geo-dmg-skill',
+            },
+            {
+              name: 'Electro: Lightening Blade',
+              value: 'electro-dmg-skill',
+            },
+            {
+              name: 'Universal: 5th normal Atk dmg',
+              value: 'uni-dmg-n5',
+            },
+          ],
+        },
+      ],
+      async run(ctx, args) {
+        const emb = await showcaseLeaderboardGenerate(
+          args.element_category as ElementDamageCategories,
+        );
+
+        ctx.editOrRespond({
+          embed: emb,
+        });
+      },
+
+      onRunError(ctx, args, error) {
+        ctx.editOrRespond({
+          embed: {
+            title: 'An error occurred',
+            color: COLORS.ERROR,
+            description: `${args.element_category} embed could not be fetched`,
+            fields: [
+              {
+                name: '**Error message**',
+                value: `${error || 'Check console'}`,
+              },
+            ],
+          },
+        });
       },
     },
   ],
