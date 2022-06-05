@@ -9,6 +9,7 @@ import {
   SetLeaderboardOptions,
   GroupCategoryType,
   LeaderboardElementCacheType,
+  LeaderboardCacheObject,
 } from '../botTypes/types';
 import db from './Firestore';
 import { categoryProps } from './Utilities';
@@ -233,6 +234,52 @@ export async function showcaseLeaderboardGenerate(dmgCategory: ElementDamageCate
   leaderboardEmbed.fields?.concat(fields);
   // Debugging.leafDebug(leaderboardEmbed, true);
   return leaderboardEmbed;
+}
+
+function chunkArray(array: any[], size: number): any[] {
+  const result = [];
+  const arrayCopy = [...array];
+  while (arrayCopy.length > 0) {
+    result.push(arrayCopy.splice(0, size));
+  }
+  return result;
+}
+
+export async function leaderboardViewGenerate(
+  dmgCategory: ElementDamageCategories,
+  groupType: GroupCategoryType,
+): Promise<SimpleEmbed[]> {
+  const elementCache = await accessElementCache(dmgCategory);
+
+  const groupCache = elementCache[groupType].clone();
+
+  const chunks = chunkArray(groupCache.toArray(), 10) as LeaderboardCacheObject[][];
+
+  const embeds: SimpleEmbed[] = [];
+
+  let rank = 1;
+
+  chunks.forEach((chunk) => {
+    const props = categoryProps(dmgCategory);
+    const embed: SimpleEmbed = {
+      title: `**${props.name} Damage Leaderboard**\n`,
+      color: props.color,
+      thumbnail: { url: props.icon },
+      description: `Highest Damage of **${props.skill}\n**`,
+      timestamp: new Date().toISOString(),
+      footer: {
+        text: `${chunks.indexOf(chunk) + 1} of ${chunks.length}`,
+      },
+    };
+
+    chunk.forEach((cacheData) => {
+      embed.description = `${embed.description}\n${rank}.\`${cacheData.user.tag}\` - [${cacheData.data.score}](${cacheData.data.proof})`;
+      rank += 1;
+    });
+    embeds.push(embed);
+  });
+
+  return embeds;
 }
 
 /**
