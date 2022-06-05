@@ -191,6 +191,7 @@ export default new InteractionCommand({
                     console.log('Error while submitting leaderboard entry');
                     Debugging.leafDebug(err, true);
                   });
+                PMAEventHandler.emit('leaderboardRefresh', true);
                 proofMsg.react('✅').catch((err) => {
                   Debugging.leafDebug(err, true);
                 });
