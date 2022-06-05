@@ -247,5 +247,23 @@ export default new InteractionCommand({
         PMAEventHandler.emit('leaderboardChannelUpdate', setupChannel);
       },
     },
+    {
+      name: 'refresh',
+      description: 'Refreshes leaderboard cache',
+      type: ApplicationCommandOptionTypes.SUB_COMMAND,
+      run(ctx) {
+        if (!process.env.LEADERBOARD || process.env.LEADERBOARD === 'false') {
+          ctx.editOrRespond({
+            content: 'Refresh initiated, please wait for a while before updating leaderboard',
+            flags: MessageFlags.EPHEMERAL,
+          });
+        } else {
+          ctx.editOrRespond({
+            content: 'Refresh is ongoing, please wait for a while before updating leaderboard',
+            flags: MessageFlags.EPHEMERAL,
+          });
+        }
+      },
+    },
   ],
 });
