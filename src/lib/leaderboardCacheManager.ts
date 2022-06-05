@@ -264,7 +264,7 @@ export async function leaderboardViewGenerate(
   chunks.forEach((chunk) => {
     const props = categoryProps(dmgCategory);
     const embed: SimpleEmbed = {
-      title: `**${props.name} Damage Leaderboard**\n`,
+      title: `**${props.name} Damage ${groupType} Leaderboard**\n`,
       color: props.color,
       thumbnail: { url: props.icon },
       description: `Highest Damage of **${props.skill}\n**`,
