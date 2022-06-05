@@ -21,6 +21,7 @@ import {
 } from '../../botTypes/types';
 import { LeaderBoardArgs, SimpleEmbed } from '../../botTypes/interfaces';
 import {
+  isRefreshComplete,
   leaderboardViewGenerate,
   showcaseLeaderboardGenerate,
 } from '../../lib/leaderboardCacheManager';
@@ -243,7 +244,15 @@ export default new InteractionCommand({
             flags: MessageFlags.EPHEMERAL,
           });
         }
-        return StaffCheck.isStaff(ctx.member!);
+
+        if (!isRefreshComplete()) {
+          ctx.editOrRespond({
+            content: 'Please wait before using this command, refresh is not complete',
+            flags: MessageFlags.EPHEMERAL,
+          });
+        }
+
+        return StaffCheck.isStaff(ctx.member!) && isRefreshComplete();
       },
       async run(ctx, args) {
         const setupChannel = args.channel as Channel;
@@ -260,18 +269,20 @@ export default new InteractionCommand({
       name: 'refresh',
       description: 'Refreshes leaderboard cache',
       type: ApplicationCommandOptionTypes.SUB_COMMAND,
-      run(ctx) {
-        if (!process.env.LEADERBOARD || process.env.LEADERBOARD === 'false') {
+      onBeforeRun(ctx) {
+        if (!isRefreshComplete()) {
           ctx.editOrRespond({
-            content: 'Refresh initiated, please wait for a while before updating leaderboard',
-            flags: MessageFlags.EPHEMERAL,
-          });
-        } else {
-          ctx.editOrRespond({
-            content: 'Refresh is ongoing, please wait for a while before updating leaderboard',
+            content: 'Refresh is ongoing, please wait for a while before using this command',
             flags: MessageFlags.EPHEMERAL,
           });
         }
+        return isRefreshComplete();
+      },
+      run(ctx) {
+        ctx.editOrRespond({
+          content: 'Refresh initiated, please wait for a while before using this command',
+          flags: MessageFlags.EPHEMERAL,
+        });
       },
     },
     {
@@ -304,6 +315,15 @@ export default new InteractionCommand({
           ],
         },
       ],
+      onBeforeRun(ctx) {
+        if (!isRefreshComplete()) {
+          ctx.editOrRespond({
+            content: 'Refresh is ongoing, please wait for a while before using this command',
+            flags: MessageFlags.EPHEMERAL,
+          });
+        }
+        return isRefreshComplete();
+      },
       async run(ctx, args) {
         const emb = await showcaseLeaderboardGenerate(
           args.element_category as ElementDamageCategories,
@@ -370,7 +390,15 @@ export default new InteractionCommand({
           ],
         },
       ],
-
+      onBeforeRun(ctx) {
+        if (!isRefreshComplete()) {
+          ctx.editOrRespond({
+            content: 'Refresh is ongoing, please wait for a while before using this command',
+            flags: MessageFlags.EPHEMERAL,
+          });
+        }
+        return isRefreshComplete();
+      },
       async run(ctx, args: LeaderBoardArgs) {
         const leaderboardEmbeds = await leaderboardViewGenerate(
           args.element_category!,
