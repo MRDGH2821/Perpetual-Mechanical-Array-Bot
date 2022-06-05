@@ -14,9 +14,16 @@ import { COLORS, ChannelIds, ICONS } from '../../lib/Constants';
 import {
   Debugging, StaffCheck, randomSkillIcon, PMAEventHandler,
 } from '../../lib/Utilities';
-import { ElementDamageCategories, LeaderboardDBOptions } from '../../botTypes/types';
+import {
+  ElementDamageCategories,
+  GroupCategoryType,
+  LeaderboardDBOptions,
+} from '../../botTypes/types';
 import { LeaderBoardArgs, SimpleEmbed } from '../../botTypes/interfaces';
-import { showcaseLeaderboardGenerate } from '../../lib/leaderboardCacheManager';
+import {
+  leaderboardViewGenerate,
+  showcaseLeaderboardGenerate,
+} from '../../lib/leaderboardCacheManager';
 
 export default new InteractionCommand({
   name: 'leaderboard',
@@ -320,6 +327,90 @@ export default new InteractionCommand({
               },
             ],
           },
+        });
+      },
+    },
+    {
+      name: 'view',
+      description: 'View individual leaderboard',
+      type: ApplicationCommandOptionTypes.SUB_COMMAND,
+      options: [
+        {
+          name: 'element_category',
+          description: 'Which element was used?',
+          type: ApplicationCommandOptionTypes.STRING,
+          required: true,
+          choices: <{ name: string; value: ElementDamageCategories }[]>[
+            {
+              name: 'Anemo: Palm Vortex',
+              value: 'anemo-dmg-skill',
+            },
+            {
+              name: 'Geo: Starfell Sword',
+              value: 'geo-dmg-skill',
+            },
+            {
+              name: 'Electro: Lightening Blade',
+              value: 'electro-dmg-skill',
+            },
+            {
+              name: 'Universal: 5th normal Atk dmg',
+              value: 'uni-dmg-n5',
+            },
+          ],
+        },
+        {
+          name: 'type_category',
+          description: 'Whether this score was made solo or not',
+          type: ApplicationCommandOptionTypes.STRING,
+          required: true,
+          choices: <{ name: string; value: GroupCategoryType }[]>[
+            { name: 'Solo', value: 'solo' },
+            { name: 'Open', value: 'open' },
+          ],
+        },
+      ],
+
+      async run(ctx, args: LeaderBoardArgs) {
+        const leaderboardEmbeds = await leaderboardViewGenerate(
+          args.element_category!,
+          args.type_category!,
+        );
+
+        const totalEmbeds = leaderboardEmbeds.length;
+        let currentIndex = 0;
+
+        const viewRow = new ComponentActionRow()
+          .addButton({
+            emoji: '⬅️',
+            label: 'Previous',
+            customId: 'previous',
+            disabled: currentIndex === 0,
+            async run(btnCtx) {
+              currentIndex -= 1;
+              btnCtx.editOrRespond({
+                embed: leaderboardEmbeds[currentIndex],
+                components: [viewRow],
+              });
+            },
+          })
+          .addButton({
+            emoji: '➡️',
+            label: 'Next',
+            customId: 'next',
+            disabled: currentIndex === totalEmbeds - 1,
+            async run(btnCtx) {
+              currentIndex += 1;
+              await btnCtx.editOrRespond({
+                embed: leaderboardEmbeds[currentIndex],
+                components: [viewRow],
+              });
+            },
+          });
+
+        await ctx.editOrRespond({
+          embed: leaderboardEmbeds[currentIndex],
+          components: [viewRow],
         });
       },
     },
