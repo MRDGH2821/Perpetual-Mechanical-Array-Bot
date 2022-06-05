@@ -12,7 +12,11 @@ import EnvConfig from '../../lib/EnvConfig';
 import db from '../../lib/Firestore';
 import { COLORS, ChannelIds, ICONS } from '../../lib/Constants';
 import {
-  Debugging, StaffCheck, randomSkillIcon, PMAEventHandler,
+  Debugging,
+  StaffCheck,
+  randomSkillIcon,
+  PMAEventHandler,
+  getAbyssQuote,
 } from '../../lib/Utilities';
 import {
   ElementDamageCategories,
@@ -424,26 +428,40 @@ export default new InteractionCommand({
             emoji: '⬅️',
             label: 'Previous',
             customId: 'previous',
-            disabled: currentIndex === 0,
+            style: MessageComponentButtonStyles.SECONDARY,
             async run(btnCtx) {
-              currentIndex -= 1;
-              btnCtx.editOrRespond({
-                embed: leaderboardEmbeds[currentIndex],
-                components: [viewRow],
-              });
+              if (currentIndex >= 0) {
+                currentIndex -= 1;
+                await btnCtx.editOrRespond({
+                  embed: leaderboardEmbeds[currentIndex],
+                  components: [viewRow],
+                });
+              } else {
+                await btnCtx.editOrRespond({
+                  content: getAbyssQuote(),
+                  components: [viewRow],
+                });
+              }
             },
           })
           .addButton({
             emoji: '➡️',
             label: 'Next',
             customId: 'next',
-            disabled: currentIndex === totalEmbeds - 1,
+            style: MessageComponentButtonStyles.SECONDARY,
             async run(btnCtx) {
-              currentIndex += 1;
-              await btnCtx.editOrRespond({
-                embed: leaderboardEmbeds[currentIndex],
-                components: [viewRow],
-              });
+              if (currentIndex < totalEmbeds) {
+                currentIndex += 1;
+                await btnCtx.editOrRespond({
+                  embed: leaderboardEmbeds[currentIndex],
+                  components: [viewRow],
+                });
+              } else {
+                await btnCtx.editOrRespond({
+                  content: getAbyssQuote(),
+                  components: [viewRow],
+                });
+              }
             },
           });
 

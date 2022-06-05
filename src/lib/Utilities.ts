@@ -157,3 +157,7 @@ export function nadekoParse(embedString: string): NadekoParseResult {
     embeds: nadekoEmbedParse(parsed.embeds),
   };
 }
+
+export function getAbyssQuote(): string {
+  return randomArrPick(Constants.ABYSS_QUOTES);
+}
