@@ -40,30 +40,6 @@ export const leaderboardCache = {
       solo: <LeaderboardElementGroupCacheType> new BaseCollection(),
     },
   },
-  hydro: {
-    skill: {
-      open: <LeaderboardElementGroupCacheType> new BaseCollection(),
-      solo: <LeaderboardElementGroupCacheType> new BaseCollection(),
-    },
-  },
-  pyro: {
-    skill: {
-      open: <LeaderboardElementGroupCacheType> new BaseCollection(),
-      solo: <LeaderboardElementGroupCacheType> new BaseCollection(),
-    },
-  },
-  cryo: {
-    skill: {
-      open: <LeaderboardElementGroupCacheType> new BaseCollection(),
-      solo: <LeaderboardElementGroupCacheType> new BaseCollection(),
-    },
-  },
-  unaligned: {
-    n5: {
-      open: <LeaderboardElementGroupCacheType> new BaseCollection(),
-      solo: <LeaderboardElementGroupCacheType> new BaseCollection(),
-    },
-  },
   uni: {
     n5: {
       open: <LeaderboardElementGroupCacheType> new BaseCollection(),
