@@ -9,8 +9,10 @@ export default class BonkUtilities {
    * @constructor
    * @param {string} message - the message to check
    */
-  BonkUtilities(message: string) {
-    this.message = message;
+  constructor(message?: string) {
+    if (message) {
+      this.message = message;
+    }
   }
 
   bonkGifs = [

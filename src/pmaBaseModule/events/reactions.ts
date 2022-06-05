@@ -12,7 +12,7 @@ export default new BotEvent({
     const { message } = payload;
     const msg = message.content;
 
-    const bonk = new BonkUtilities();
+    const bonk = new BonkUtilities(msg);
 
     function reactEmoji(emoji: string) {
       try {
@@ -29,8 +29,6 @@ export default new BotEvent({
         Debugging.leafDebug(err);
       }
     }
-
-    bonk.BonkUtilities(msg);
 
     if (/\b(c+o+o+k+i+e+s*)\b|🍪|🥠/gimu.test(msg)) {
       const cookies = ['🥠', '🍪'];

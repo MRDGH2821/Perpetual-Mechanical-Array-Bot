@@ -38,10 +38,10 @@ export default new InteractionCommand({
   ],
   async run(ctx, args) {
     const isHorny = args.is_horny;
-    const bonk = new BonkUtilities();
     const { target } = args;
     let { reason } = args;
     const isSelf = ctx.user === target;
+    const bonk = new BonkUtilities(reason);
 
     const embedMsg: RequestTypes.CreateChannelMessageEmbed = {
       title: '**Bonked!**',
