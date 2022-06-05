@@ -1,5 +1,7 @@
 import { BaseCollection } from 'detritus-utils';
 import { RestClient } from 'detritus-client/lib/rest';
+import { ShardClient } from 'detritus-client';
+import { User } from 'detritus-client/lib/structures';
 import { SimpleEmbed } from '../botTypes/interfaces';
 import {
   ElementDamageCategories,
@@ -13,7 +15,7 @@ import {
 import db from './Firestore';
 import { categoryProps } from './Utilities';
 import { EleDmgCategoriesArr } from './Constants';
-import { getRestClient } from './BotClientExtracted';
+import { getRestClient, getShardClient } from './BotClientExtracted';
 
 export const leaderboardCache = {
   anemo: {
@@ -80,16 +82,27 @@ export async function getLeaderboardData(
   });
 }
 
-export function setLeaderboardData(
+export async function setLeaderboardData(
   givenData: SetLeaderboardOptions,
+  SClient: ShardClient = getShardClient(),
   RClient: RestClient = getRestClient(),
 ) {
   const { collection, dmgCategory, typeCategory } = givenData;
-  getLeaderboardData(dmgCategory, typeCategory).then((entries) => {
-    entries.forEach((entry) => {
-      RClient.fetchUser(entry.userID).then((user) => {
-        collection.set(entry.userID, { user, data: entry });
-      });
+  await getLeaderboardData(dmgCategory, typeCategory).then((entries) => {
+    // console.log(entries);
+    entries.forEach(async (entry) => {
+      let contestant: User;
+
+      contestant = SClient.users.get(entry.userID)!;
+      console.log('User from Shard: ', contestant);
+
+      if (contestant === undefined) {
+        contestant = await RClient.fetchUser(entry.userID);
+        SClient.users.set(contestant.id, contestant);
+        console.log('User from Rest: ', contestant);
+      }
+
+      collection.set(entry.userID, { user: contestant, data: entry });
     });
   });
 }
