@@ -106,12 +106,10 @@ export default new InteractionCommand({
           fields: [],
         };
 
+        const leaderBoardChannel = ctx.guild?.channels.get(ChannelIds.SHOWCASE);
+        const proofMsg = await leaderBoardChannel!.fetchMessage(msgIds[msgIds.length - 1]);
         try {
-          const leaderBoardChannel = ctx.guild?.channels.get(ChannelIds.SHOWCASE);
-
-          const { author, content } = await leaderBoardChannel!.fetchMessage(
-            msgIds[msgIds.length - 1],
-          );
+          const { author, content } = proofMsg;
 
           verifyEmb.fields?.push({
             name: '**Auto verification**',
@@ -185,6 +183,9 @@ export default new InteractionCommand({
                     console.log('Error while submitting leaderboard entry');
                     Debugging.leafDebug(err, true);
                   });
+                proofMsg.react('✅').catch((err) => {
+                  Debugging.leafDebug(err, true);
+                });
               }
             },
           })
