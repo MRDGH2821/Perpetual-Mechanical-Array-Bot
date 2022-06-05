@@ -1,7 +1,5 @@
 import { BaseCollection } from 'detritus-utils';
-import { RestClient } from 'detritus-client/lib/rest';
 import { ShardClient } from 'detritus-client';
-import { User } from 'detritus-client/lib/structures';
 import { SimpleEmbed } from '../botTypes/interfaces';
 import {
   ElementDamageCategories,
@@ -15,7 +13,7 @@ import {
 import db from './Firestore';
 import { categoryProps } from './Utilities';
 import { EleDmgCategoriesArr } from './Constants';
-import { getRestClient, getShardClient } from './BotClientExtracted';
+import { getShardClient } from './BotClientExtracted';
 
 export const leaderboardCache = {
   anemo: {
@@ -49,6 +47,10 @@ export const leaderboardCache = {
     },
   },
 };
+
+export function getLBCacheObject() {
+  return leaderboardCache;
+}
 
 export async function getLeaderboardData(
   dmgCategory: ElementDamageCategories,
@@ -85,25 +87,19 @@ export async function getLeaderboardData(
 export async function setLeaderboardData(
   givenData: SetLeaderboardOptions,
   SClient: ShardClient = getShardClient(),
-  RClient: RestClient = getRestClient(),
 ) {
   const { collection, dmgCategory, typeCategory } = givenData;
-  await getLeaderboardData(dmgCategory, typeCategory).then((entries) => {
+  await getLeaderboardData(dmgCategory, typeCategory).then(async (entries) => {
     // console.log(entries);
-    entries.forEach(async (entry) => {
-      let contestant: User;
 
-      contestant = SClient.users.get(entry.userID)!;
-      console.log('User from Shard: ', contestant);
-
-      if (contestant === undefined) {
-        contestant = await RClient.fetchUser(entry.userID);
-        SClient.users.set(contestant.id, contestant);
-        console.log('User from Rest: ', contestant);
-      }
-
-      collection.set(entry.userID, { user: contestant, data: entry });
-    });
+    // eslint-disable-next-line no-restricted-syntax
+    for (const entry of entries) {
+      // eslint-disable-next-line no-await-in-loop
+      const userC = SClient.users.get(entry.userID) || (await SClient.rest.fetchUser(entry.userID));
+      SClient.users.set(userC.id, userC);
+      console.log('User: ', userC);
+      collection.set(entry.userID, { user: userC, data: entry });
+    }
   });
 }
 
@@ -146,6 +142,7 @@ export async function showcaseLeaderboardGenerate(dmgCategory: ElementDamageCate
     thumbnail: { url: props.icon },
     description: `Highest Damage of **${props.skill}**`,
     timestamp: new Date().toISOString(),
+    fields: [],
   };
 
   const cacheData = await accessElementCache(dmgCategory);
@@ -218,6 +215,6 @@ export async function showcaseLeaderboardGenerate(dmgCategory: ElementDamageCate
     rank += 1;
   });
 
-  leaderboardEmbed.fields = fields;
+  leaderboardEmbed.fields?.concat(fields);
   return leaderboardEmbed;
 }
