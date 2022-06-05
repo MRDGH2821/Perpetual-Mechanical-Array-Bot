@@ -10,7 +10,7 @@ export default new BotEvent({
   on: true,
   async listener(RClient: RestClient = getRestClient()) {
     const LCache = getLBCacheObject();
-    process.env.LEADERBOARD = 'false';
+    process.env.LEADERBOARD_READY = 'false';
     console.log('Leaderboard Refresh Initiated');
 
     const promises = [];
@@ -73,7 +73,7 @@ export default new BotEvent({
     );
 
     await Promise.all(promises).then(() => {
-      process.env.LEADERBOARD = 'true';
+      process.env.LEADERBOARD_READY = 'true';
       console.log('Leaderboard Refresh Complete');
       // Debugging.leafDebug(LCache, true);
 
