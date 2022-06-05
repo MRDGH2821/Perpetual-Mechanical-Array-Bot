@@ -1,6 +1,7 @@
 import { ClusterClient, InteractionCommandClient } from 'detritus-client';
 import { GatewayIntents } from 'detritus-client-socket/lib/constants';
 import path from 'path';
+import { setClusterClient } from './lib/BotClientExtracted';
 import BotEvent from './lib/BotEvent';
 import EnvConfig from './lib/EnvConfig';
 import esmImporter from './lib/esmImporter';
@@ -49,10 +50,15 @@ import { Debugging, PMAEventHandler } from './lib/Utilities';
   await interactionBot.addMultipleIn('./pmaBaseModule/commands/');
   await interactionBot.addMultipleIn('./leaderboardModule/commands/');
 
-  await interactionBot.run().catch((err) => {
-    console.error(err);
-    Debugging.leafDebug(err);
-  });
+  await interactionBot
+    .run()
+    .then(() => {
+      setClusterClient(clusterBot);
+    })
+    .catch((err) => {
+      console.error(err);
+      Debugging.leafDebug(err);
+    });
 })().catch((err) => {
   Debugging.leafDebug(err, true);
 });
