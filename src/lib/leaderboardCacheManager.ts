@@ -286,6 +286,6 @@ export async function leaderboardViewGenerate(
  * Returns current status of leaderboard refresh
  * @returns {boolean} - If true it means refresh is complete
  */
-export function getRefreshStatus(): boolean {
+export function isRefreshComplete(): boolean {
   return process.env.LEADERBOARD_READY === 'true';
 }
