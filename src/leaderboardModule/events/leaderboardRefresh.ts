@@ -2,7 +2,7 @@ import { RestClient } from 'detritus-client/lib/rest';
 import BotEvent from '../../lib/BotEvent';
 import { getLBCacheObject, setLeaderboardData } from '../../lib/leaderboardCacheManager';
 import { getRestClient, getShardClient } from '../../lib/BotClientExtracted';
-import { Debugging, PMAEventHandler } from '../../lib/Utilities';
+import { PMAEventHandler } from '../../lib/Utilities';
 import { LeaderboardUpdateEventArgs } from '../../botTypes/types';
 
 export default new BotEvent({
@@ -75,7 +75,7 @@ export default new BotEvent({
     await Promise.all(promises).then(() => {
       process.env.LEADERBOARD = 'true';
       console.log('Leaderboard Refresh Complete');
-      Debugging.leafDebug(LCache, true);
+      // Debugging.leafDebug(LCache, true);
 
       console.log('Sending leaderboard update request');
 
