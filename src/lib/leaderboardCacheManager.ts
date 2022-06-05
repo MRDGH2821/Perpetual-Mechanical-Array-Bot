@@ -99,7 +99,9 @@ export async function setLeaderboardData(
     for (const entry of entries) {
       // eslint-disable-next-line no-await-in-loop
       const userC = SClient.users.get(entry.userID) || (await SClient.rest.fetchUser(entry.userID));
-      SClient.users.set(userC.id, userC);
+      if (!SClient.users.has(userC.id)) {
+        SClient.users.set(userC.id, userC);
+      }
       // console.log('User: ', userC);
       collection.set(entry.userID, { user: userC, data: entry });
     }
