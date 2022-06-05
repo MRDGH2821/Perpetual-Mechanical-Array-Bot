@@ -268,8 +268,16 @@ export default new InteractionCommand({
     },
     {
       name: 'refresh',
-      description: 'Refreshes leaderboard cache',
+      description: 'Refreshes leaderboard cache & optionally updates leaderboard channel',
       type: ApplicationCommandOptionTypes.SUB_COMMAND,
+      options: [
+        {
+          name: 'update_leaderboard',
+          description: 'Should update leaderboard after cache refresh? (default False)',
+          type: ApplicationCommandOptionTypes.BOOLEAN,
+          default: false,
+        },
+      ],
       onBeforeRun(ctx) {
         if (!isRefreshComplete()) {
           ctx.editOrRespond({
@@ -279,9 +287,11 @@ export default new InteractionCommand({
         }
         return isRefreshComplete();
       },
-      run(ctx) {
+      run(ctx, args) {
+        PMAEventHandler.emit('leaderboardRefresh', args.update_leaderboard);
+
         ctx.editOrRespond({
-          content: 'Refresh initiated, please wait for a while before using this command',
+          content: `Refresh initiated, please wait for a while before using this command\nWill update Leaderboard? \`${args.update_leaderboard}\``,
           flags: MessageFlags.EPHEMERAL,
         });
       },
