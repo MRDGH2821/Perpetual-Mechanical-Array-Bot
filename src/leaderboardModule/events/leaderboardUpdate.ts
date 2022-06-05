@@ -1,24 +1,14 @@
+import { ShardClient } from 'detritus-client';
 import BotEvent from '../../lib/BotEvent';
 import db from '../../lib/Firestore';
 import { showcaseLeaderboardGenerate } from '../../lib/leaderboardCacheManager';
-import { LeaderboardUpdateEventArgs } from '../../botTypes/types';
-import { getRestClient, getShardClient } from '../../lib/BotClientExtracted';
+import { getShardClient } from '../../lib/BotClientExtracted';
 import { Debugging } from '../../lib/Utilities';
 
 export default new BotEvent({
   event: 'leaderboardUpdate',
   on: true,
-  async listener(args: LeaderboardUpdateEventArgs) {
-    let { RClient, SClient } = args;
-
-    if (RClient === undefined) {
-      RClient = getRestClient();
-    }
-
-    if (SClient === undefined) {
-      SClient = getShardClient();
-    }
-
+  async listener(SClient: ShardClient = getShardClient()) {
     const anemoSkillBoard = await showcaseLeaderboardGenerate('anemo-dmg-skill');
     const geoSkillBoard = await showcaseLeaderboardGenerate('geo-dmg-skill');
     const electroSkillBoard = await showcaseLeaderboardGenerate('electro-dmg-skill');
@@ -35,22 +25,26 @@ export default new BotEvent({
       channelID: string;
     };
 
-    const leaderboardHook = await RClient.fetchWebhook(webhookMsg.webhookID);
+    const leaderboardHook = await SClient.rest.fetchWebhook(webhookMsg.webhookID);
     await Promise.all([
       leaderboardHook
         .editMessage(anemoMsg?.messageID, { embeds: [anemoSkillBoard] })
         .catch((err) => {
+          console.log('Anemo leaderboard update failed');
           Debugging.leafDebug(err, true);
         }),
       leaderboardHook.editMessage(geoMsg?.messageID, { embeds: [geoSkillBoard] }).catch((err) => {
+        console.log('Geo leaderboard update failed');
         Debugging.leafDebug(err, true);
       }),
       leaderboardHook
         .editMessage(electroMsg?.messageID, { embeds: [electroSkillBoard] })
         .catch((err) => {
+          console.log('Electro leaderboard update failed');
           Debugging.leafDebug(err, true);
         }),
       leaderboardHook.editMessage(uniMsg?.messageID, { embeds: [uniSkillBoard] }).catch((err) => {
+        console.log('Uni leaderboard update failed');
         Debugging.leafDebug(err, true);
       }),
     ]).then(() => {

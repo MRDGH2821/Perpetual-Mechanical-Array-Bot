@@ -1,6 +1,5 @@
 import { Webhook } from 'detritus-client/lib/structures';
 import { SimpleEmbed } from '../../botTypes/interfaces';
-import { LeaderboardUpdateEventArgs } from '../../botTypes/types';
 import BotEvent from '../../lib/BotEvent';
 import { ChannelIds, COLORS } from '../../lib/Constants';
 import db from '../../lib/Firestore';
@@ -79,9 +78,6 @@ export default new BotEvent({
       });
     });
 
-    PMAEventHandler.emit('leaderboardUpdate', <LeaderboardUpdateEventArgs>{
-      RClient: webhook.client.rest,
-      webhook,
-    });
+    PMAEventHandler.emit('leaderboardUpdate');
   },
 });

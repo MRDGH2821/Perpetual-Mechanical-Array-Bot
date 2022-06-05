@@ -30,7 +30,7 @@ export default new BotEvent({
     setShardClient(clusterShard);
 
     setTimeout(() => {
-      PMAEventHandler.emit('leaderboardRefresh', clusterShard.rest);
+      PMAEventHandler.emit('leaderboardRefresh');
     }, 1000 * 5);
   },
 });
