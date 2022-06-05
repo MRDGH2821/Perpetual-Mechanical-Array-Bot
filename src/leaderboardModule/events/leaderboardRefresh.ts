@@ -2,7 +2,7 @@ import { RestClient } from 'detritus-client/lib/rest';
 import BotEvent from '../../lib/BotEvent';
 import { leaderboardCache, setLeaderboardData } from '../../lib/leaderboardCacheManager';
 import { getRestClient, getShardClient } from '../../lib/BotClientExtracted';
-import { PMAEventHandler } from '../../lib/Utilities';
+import { Debugging, PMAEventHandler } from '../../lib/Utilities';
 import { LeaderboardUpdateEventArgs } from '../../botTypes/types';
 
 export default new BotEvent({
@@ -18,71 +18,64 @@ export default new BotEvent({
     // Anemo refresh
 
     promises.push(
-      setLeaderboardData(
-        {
-          collection: LCache.anemo.skill.open,
-          dmgCategory: 'anemo-dmg-skill',
-          typeCategory: 'open',
-        },
-        RClient,
-      ),
-      setLeaderboardData(
-        {
-          collection: LCache.anemo.skill.solo,
-          dmgCategory: 'anemo-dmg-skill',
-          typeCategory: 'solo',
-        },
-        RClient,
-      ),
+      setLeaderboardData({
+        collection: LCache.anemo.skill.open,
+        dmgCategory: 'anemo-dmg-skill',
+        typeCategory: 'open',
+      }),
+      setLeaderboardData({
+        collection: LCache.anemo.skill.solo,
+        dmgCategory: 'anemo-dmg-skill',
+        typeCategory: 'solo',
+      }),
     );
 
     // Geo Refresh
     promises.push(
-      setLeaderboardData(
-        { collection: LCache.geo.skill.open, dmgCategory: 'geo-dmg-skill', typeCategory: 'open' },
-        RClient,
-      ),
-      setLeaderboardData(
-        { collection: LCache.geo.skill.solo, dmgCategory: 'geo-dmg-skill', typeCategory: 'solo' },
-        RClient,
-      ),
+      setLeaderboardData({
+        collection: LCache.geo.skill.open,
+        dmgCategory: 'geo-dmg-skill',
+        typeCategory: 'open',
+      }),
+      setLeaderboardData({
+        collection: LCache.geo.skill.solo,
+        dmgCategory: 'geo-dmg-skill',
+        typeCategory: 'solo',
+      }),
     );
 
     // Electro Refresh
     promises.push(
-      setLeaderboardData(
-        {
-          collection: LCache.electro.skill.open,
-          dmgCategory: 'electro-dmg-skill',
-          typeCategory: 'open',
-        },
-        RClient,
-      ),
-      setLeaderboardData(
-        {
-          collection: LCache.electro.skill.solo,
-          dmgCategory: 'electro-dmg-skill',
-          typeCategory: 'solo',
-        },
-        RClient,
-      ),
+      setLeaderboardData({
+        collection: LCache.electro.skill.open,
+        dmgCategory: 'electro-dmg-skill',
+        typeCategory: 'open',
+      }),
+      setLeaderboardData({
+        collection: LCache.electro.skill.solo,
+        dmgCategory: 'electro-dmg-skill',
+        typeCategory: 'solo',
+      }),
     );
 
     // Universal n5 Refresh
     promises.push(
-      setLeaderboardData(
-        { collection: LCache.uni.n5.open, dmgCategory: 'uni-dmg-n5', typeCategory: 'open' },
-        RClient,
-      ),
-      setLeaderboardData(
-        { collection: LCache.uni.n5.solo, dmgCategory: 'uni-dmg-n5', typeCategory: 'solo' },
-        RClient,
-      ),
+      setLeaderboardData({
+        collection: LCache.uni.n5.open,
+        dmgCategory: 'uni-dmg-n5',
+        typeCategory: 'open',
+      }),
+      setLeaderboardData({
+        collection: LCache.uni.n5.solo,
+        dmgCategory: 'uni-dmg-n5',
+        typeCategory: 'solo',
+      }),
     );
 
     await Promise.all(promises).then(() => {
       process.env.LEADERBOARD = 'true';
       console.log('Leaderboard Refresh Complete');
+      Debugging.leafDebug(leaderboardCache, true);
       console.log('Sending leaderboard update request');
 
       PMAEventHandler.emit('leaderboardUpdate', <LeaderboardUpdateEventArgs>{
