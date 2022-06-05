@@ -234,3 +234,11 @@ export async function showcaseLeaderboardGenerate(dmgCategory: ElementDamageCate
   // Debugging.leafDebug(leaderboardEmbed, true);
   return leaderboardEmbed;
 }
+
+/**
+ * Returns current status of leaderboard refresh
+ * @returns {boolean} - If true it means refresh is complete
+ */
+export function getRefreshStatus(): boolean {
+  return process.env.LEADERBOARD_READY === 'true';
+}
