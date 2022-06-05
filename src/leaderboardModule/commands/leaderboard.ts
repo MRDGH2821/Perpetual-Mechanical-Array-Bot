@@ -17,6 +17,7 @@ import {
   randomSkillIcon,
   PMAEventHandler,
   getAbyssQuote,
+  extractLinks,
 } from '../../lib/Utilities';
 import {
   ElementDamageCategories,
@@ -112,29 +113,48 @@ export default new InteractionCommand({
         const dmgCategory = args.element_category!;
 
         const msgIds = args.proof_link?.match(/\d+/gm)!;
+        const leaderBoardChannel = ctx.guild?.channels.get(ChannelIds.SHOWCASE);
+        const proofMsg = await leaderBoardChannel!.fetchMessage(msgIds[msgIds.length - 1]);
+
         const verifyEmb: SimpleEmbed = {
           title: '**Entry Verification**',
           description: `**Contestant**: ${args.contestant?.mention} \`${args.contestant?.tag}\` \n**Category**: ${dmgCategory} \n**Group**: ${args.type_category} \n**Score (i.e. Dmg value)**: ${args.score} \n\n**Proof**: \n${args.proof_link}`,
           fields: [],
+          image: {
+            url: '',
+          },
+          video: {
+            url: '',
+          },
         };
 
-        const leaderBoardChannel = ctx.guild?.channels.get(ChannelIds.SHOWCASE);
-        const proofMsg = await leaderBoardChannel!.fetchMessage(msgIds[msgIds.length - 1]);
         try {
-          const { author, content } = proofMsg;
+          const { author, content, attachments } = proofMsg;
 
-          verifyEmb.fields?.push({
-            name: '**Auto verification**',
-            value: `**Contestant**: ${
-              author.id === args.contestant?.id
-                ? 'Verified'
-                : `Cannot Verify (most likely submission done on behalf of ${args.contestant?.tag} by ${author.tag})`
-            }\n**Score**: ${
-              content.match(`${args.score}`)?.length
-                ? 'Verified'
-                : "Cannot Verify (most likely because contestant didn't put score as text while uploading proof)"
-            }`,
-          });
+          const attURL = attachments.first()?.url;
+          verifyEmb.image = { url: attURL };
+
+          Debugging.leafDebug(attachments);
+          verifyEmb.fields?.push(
+            {
+              name: '**Auto verification**',
+              value: `**Contestant**: ${
+                author.id === args.contestant?.id
+                  ? 'Verified'
+                  : `Cannot Verify (most likely submission done on behalf of ${args.contestant?.tag} by ${author.tag})`
+              }\n**Score**: ${
+                content.match(`${args.score}`)?.length
+                  ? 'Verified'
+                  : "Cannot Verify (most likely because contestant didn't put score as text while uploading proof)"
+              }`,
+            },
+            {
+              name: '**Attachments direct link**',
+              value: `Link 1: ${
+                attachments.first()?.url || 'Failed to get attachment url'
+              }\nLink 2: ${attachments.first()?.proxyUrl || 'Failed to get attachment url'}`,
+            },
+          );
         } catch (err) {
           console.error(err);
           Debugging.leafDebug(err);
@@ -227,6 +247,20 @@ export default new InteractionCommand({
           embeds: [verifyEmb],
           components: [approveRow],
         });
+        if (proofMsg.attachments.first()?.isVideo) {
+          await ctx.createMessage({
+            content: `${
+              proofMsg.attachments.first()?.url || '*Tried to put video url, but failed*'
+            }`,
+          });
+        } else {
+          await ctx.createMessage({
+            content: `${
+              extractLinks(proofMsg.content)?.at(0)
+              || "*Tried to extract first url in contestant's message but failed*"
+            }`,
+          });
+        }
       },
     },
     {
