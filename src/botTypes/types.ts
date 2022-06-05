@@ -30,6 +30,13 @@ export type ElementDamageCategories =
   | 'electro-dmg-skill'
   | 'uni-dmg-n5';
 
+export type HallOfFameCategories =
+  | 'anemo-crown'
+  | 'geo-crown'
+  | 'electro-crown'
+  | 'unaligned-crown'
+  | 'spiral-abyss-current';
+
 export type LeaderboardDBOptions = {
   elementCategory: ElementDamageCategories;
   proof: string;
