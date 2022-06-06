@@ -5,7 +5,9 @@ import EventEmitter from 'events';
 import {
   NadekoContent, NadekoEmbed, NadekoParseResult, SimpleEmbed,
 } from '../botTypes/interfaces';
-import { CategoryProp, ElementDamageCategories, ELEMENTS } from '../botTypes/types';
+import {
+  CategoryProp, ElementDamageCategories, ElementProp, ELEMENTS,
+} from '../botTypes/types';
 import * as Constants from './Constants';
 
 export const PMAEventHandler = new EventEmitter();
@@ -93,6 +95,50 @@ export function categoryProps(dmgCategory: ElementDamageCategories): CategoryPro
   }
 }
 
+export function elementProps(element: ELEMENTS): ElementProp {
+  switch (element) {
+    case 'anemo': {
+      return {
+        icon: Constants.ICONS.PALM_VORTEX_AETHER,
+        name: 'Herrscher of Wind',
+        crown: '*Prepare to get blown away!*',
+        color: Constants.COLORS.ANEMO,
+        emoji: Constants.EMOJIS.Anemo,
+      };
+    }
+    case 'geo': {
+      return {
+        icon: Constants.ICONS.STARFELL_SWORD_LUMINE,
+        name: 'Jūnzhǔ of Earth',
+        crown: '*Shockwaves underneath your feet!*',
+        color: Constants.COLORS.GEO,
+        emoji: Constants.EMOJIS.Geo,
+      };
+    }
+    case 'electro': {
+      return {
+        icon: Constants.ICONS.LIGHTENING_BLADE_AETHER,
+        name: "Ten'nō of Thunder",
+        crown: '*Got Electrocuted?*',
+        color: Constants.COLORS.ELECTRO,
+        emoji: Constants.EMOJIS.Electro,
+      };
+    }
+    case 'unaligned': {
+      return {
+        icon: Constants.ICONS.VOID,
+        name: 'Arbitrator of Fate',
+        crown:
+          '*These people are the true & attentive MC Mains...*\n\nThey went extra mile to crown Unaligned Traveler in Archon Quest Chapter 2: Prologue Autumn Winds, Scarlet Leaves\n\n***Never** Question their Hardwork, Dedication ~~& Mora..~~*',
+        color: Constants.COLORS.UNALIGNED,
+        emoji: Constants.EMOJIS.Void,
+      };
+    }
+    default: {
+      throw new Error(`Props for ${element} do not exist`);
+    }
+  }
+}
 export namespace StaffCheck {
   export function isStaff(member: Member) {
     const roles = member.roles.map((role) => role?.id);
