@@ -1,5 +1,6 @@
 import { Colors, Snowflake } from 'detritus-client/lib/constants';
-import { ElementDamageCategories } from '../botTypes/types';
+// eslint-disable-next-line import/no-cycle
+import { ElementDamageCategories, ELEMENTS } from '../botTypes/types';
 
 function formatEmoji(EmojiSnowflake: Snowflake) {
   return `<:_:${EmojiSnowflake}>`;
@@ -22,6 +23,17 @@ export const EleDmgCategoriesArr: ElementDamageCategories[] = [
   'geo-dmg-skill',
   'electro-dmg-skill',
   'uni-dmg-n5',
+];
+
+export const ElementsArr: ELEMENTS[] = [
+  'anemo',
+  'cryo',
+  'dendro',
+  'electro',
+  'geo',
+  'hydro',
+  'pyro',
+  'unaligned',
 ];
 
 export enum ICONS {
@@ -71,6 +83,14 @@ export const EMOJIS = {
   LumineMAD_REEE: formatEmoji('814814997196308491'),
   LuminePanic: formatEmoji('814883112998666241'),
   TarouAngy: formatEmoji('854040153555468329'),
+  Anemo: formatEmoji('803516622772895764'),
+  Geo: formatEmoji('803516612430135326'),
+  Electro: formatEmoji('803516644923146260'),
+  Dendro: formatEmoji('803516669984505856'),
+  Hydro: formatEmoji('803516313782714378'),
+  Pyro: formatEmoji('803516441424822303'),
+  Cryo: formatEmoji('803516632735154177'),
+  Void: formatEmoji('983370274227499050'),
 };
 
 export enum ChannelIds {
