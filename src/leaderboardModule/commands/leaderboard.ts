@@ -18,7 +18,7 @@ import { ChannelIds, COLORS, ICONS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import db from '../../lib/Firestore';
 import {
-  isRefreshComplete,
+  isLBRefreshComplete,
   leaderboardViewGenerate,
   showcaseLeaderboardGenerate,
 } from '../../lib/leaderboardCacheManager';
@@ -286,14 +286,14 @@ export default new InteractionCommand({
           });
         }
 
-        if (!isRefreshComplete()) {
+        if (!isLBRefreshComplete()) {
           ctx.editOrRespond({
             content: 'Please wait before using this command, refresh is not complete',
             flags: MessageFlags.EPHEMERAL,
           });
         }
 
-        return StaffCheck.isStaff(ctx.member!) && isRefreshComplete();
+        return StaffCheck.isStaff(ctx.member!) && isLBRefreshComplete();
       },
       async run(ctx, args) {
         const setupChannel = args.channel as Channel;
@@ -319,13 +319,13 @@ export default new InteractionCommand({
         },
       ],
       onBeforeRun(ctx) {
-        if (!isRefreshComplete()) {
+        if (!isLBRefreshComplete()) {
           ctx.editOrRespond({
             content: 'Refresh is ongoing, please wait for a while before using this command',
             flags: MessageFlags.EPHEMERAL,
           });
         }
-        return isRefreshComplete();
+        return isLBRefreshComplete();
       },
       run(ctx, args) {
         PMAEventHandler.emit('leaderboardRefresh', args.update_leaderboard);
@@ -367,13 +367,13 @@ export default new InteractionCommand({
         },
       ],
       onBeforeRun(ctx) {
-        if (!isRefreshComplete()) {
+        if (!isLBRefreshComplete()) {
           ctx.editOrRespond({
             content: 'Refresh is ongoing, please wait for a while before using this command',
             flags: MessageFlags.EPHEMERAL,
           });
         }
-        return isRefreshComplete();
+        return isLBRefreshComplete();
       },
       async run(ctx, args) {
         const emb = await showcaseLeaderboardGenerate(
@@ -442,13 +442,13 @@ export default new InteractionCommand({
         },
       ],
       onBeforeRun(ctx) {
-        if (!isRefreshComplete()) {
+        if (!isLBRefreshComplete()) {
           ctx.editOrRespond({
             content: 'Refresh is ongoing, please wait for a while before using this command',
             flags: MessageFlags.EPHEMERAL,
           });
         }
-        return isRefreshComplete();
+        return isLBRefreshComplete();
       },
       async run(ctx, args: LeaderBoardArgs) {
         const leaderboardEmbeds = await leaderboardViewGenerate(
