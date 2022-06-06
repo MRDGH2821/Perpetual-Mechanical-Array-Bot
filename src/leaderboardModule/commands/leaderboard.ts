@@ -252,6 +252,7 @@ export default new InteractionCommand({
             content: `${
               proofMsg.attachments.first()?.url || '*Tried to put video url, but failed*'
             }`,
+            flags: MessageFlags.EPHEMERAL,
           });
         } else {
           await ctx.createMessage({
@@ -259,6 +260,7 @@ export default new InteractionCommand({
               extractLinks(proofMsg.content)?.at(0)
               || "*Tried to extract first url in contestant's message but failed*"
             }`,
+            flags: MessageFlags.EPHEMERAL,
           });
         }
       },
