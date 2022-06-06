@@ -12,7 +12,7 @@ import {
 import { getShardClient } from './BotClientExtracted';
 import { ElementsArr } from './Constants';
 import db from './Firestore';
-import { elementProps } from './Utilities';
+import { elementProps, randomArrPick } from './Utilities';
 
 const totalCrownUsers = 30;
 
@@ -122,12 +122,16 @@ function accessElementCache(element: ELEMENTS): Promise<HallOfFameCrownCacheType
 
 function constructField(collection: HallOfFameCrownQuantityCacheType) {
   let str = '';
-  let qty = 1;
-  collection.every((data) => {
-    str = `${str}\n${data.user.mention} \`${data.user.tag}\``;
-    qty += 1;
-    return qty <= totalCrownUsers;
-  });
+
+  const selected: HallOfFameCacheObject[] = [];
+
+  while (selected.length < totalCrownUsers) {
+    const data: HallOfFameCacheObject = randomArrPick(collection.toArray());
+    if (!selected.includes(data)) {
+      str = `${str}\n${data.user.mention} \`${data.user.tag}\``;
+    }
+  }
+
   str = `${str}\n-`;
   return str;
 }
