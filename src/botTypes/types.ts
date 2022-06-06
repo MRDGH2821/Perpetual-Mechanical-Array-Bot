@@ -1,5 +1,6 @@
 import { User } from 'detritus-client/lib/structures';
 import { BaseCollection } from 'detritus-utils';
+// eslint-disable-next-line import/no-cycle
 import { COLORS, ICONS, TravelerTypes } from '../lib/Constants';
 
 export type CategoryProp = {
@@ -7,6 +8,14 @@ export type CategoryProp = {
   name: TravelerTypes;
   skill: string;
   color: COLORS;
+};
+
+export type ElementProp = {
+  icon: ICONS;
+  name: string;
+  crown: string;
+  color: COLORS;
+  emoji: string;
 };
 
 export type DamageType = 'skill' | 'n5';
@@ -58,4 +67,21 @@ export type LeaderboardElementGroupCacheType = BaseCollection<User['id'], Leader
 export type LeaderboardElementCacheType = {
   open: LeaderboardElementGroupCacheType;
   solo: LeaderboardElementGroupCacheType;
+};
+
+export type HallOfFameDBOptions = { crowns: 1 | 2 | 3; userID: User['id'] };
+
+export type HallOfFameCacheObject = { user: User; data: HallOfFameDBOptions };
+
+export type HallOfFameCrownQuantityCacheType = BaseCollection<User['id'], HallOfFameCacheObject>;
+
+export type HallOfFameCrownCacheType = {
+  one: HallOfFameCrownQuantityCacheType;
+  two?: HallOfFameCrownQuantityCacheType;
+  three?: HallOfFameCrownQuantityCacheType;
+};
+
+export type SetHallOfFameOptions = {
+  collection: HallOfFameCrownQuantityCacheType;
+  element: ELEMENTS;
 };
