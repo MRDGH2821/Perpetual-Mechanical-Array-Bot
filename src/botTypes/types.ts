@@ -1,6 +1,6 @@
-import { BaseCollection } from 'detritus-utils';
 import { User } from 'detritus-client/lib/structures';
-import { COLORS, ICONS, TravelerTypes } from 'lib/Constants';
+import { BaseCollection } from 'detritus-utils';
+import { COLORS, ICONS, TravelerTypes } from '../lib/Constants';
 
 export type CategoryProp = {
   icon: ICONS;

@@ -1,4 +1,3 @@
-import { CategoryProp, ELEMENTS, ElementDamageCategories } from 'botTypes/types';
 import { Permissions } from 'detritus-client/lib/constants';
 import { Member } from 'detritus-client/lib/structures';
 import { PermissionTools } from 'detritus-client/lib/utils';
@@ -6,6 +5,7 @@ import EventEmitter from 'events';
 import {
   NadekoContent, NadekoEmbed, NadekoParseResult, SimpleEmbed,
 } from '../botTypes/interfaces';
+import { CategoryProp, ElementDamageCategories, ELEMENTS } from '../botTypes/types';
 import * as Constants from './Constants';
 
 export const PMAEventHandler = new EventEmitter();

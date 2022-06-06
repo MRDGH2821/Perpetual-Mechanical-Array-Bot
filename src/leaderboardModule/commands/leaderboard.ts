@@ -1,5 +1,3 @@
-import { ComponentActionRow } from 'detritus-client/lib/utils';
-import { InteractionCommand } from 'detritus-client/lib/interaction';
 import {
   ApplicationCommandOptionTypes,
   ChannelTypes,
@@ -7,29 +5,31 @@ import {
   MessageComponentButtonStyles,
   MessageFlags,
 } from 'detritus-client/lib/constants';
+import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { Channel } from 'detritus-client/lib/structures';
-import EnvConfig from '../../lib/EnvConfig';
-import db from '../../lib/Firestore';
-import { COLORS, ChannelIds, ICONS } from '../../lib/Constants';
-import {
-  Debugging,
-  StaffCheck,
-  randomSkillIcon,
-  PMAEventHandler,
-  getAbyssQuote,
-  extractLinks,
-} from '../../lib/Utilities';
+import { ComponentActionRow } from 'detritus-client/lib/utils';
+import { LeaderBoardArgs, SimpleEmbed } from '../../botTypes/interfaces';
 import {
   ElementDamageCategories,
   GroupCategoryType,
   LeaderboardDBOptions,
 } from '../../botTypes/types';
-import { LeaderBoardArgs, SimpleEmbed } from '../../botTypes/interfaces';
+import { ChannelIds, COLORS, ICONS } from '../../lib/Constants';
+import EnvConfig from '../../lib/EnvConfig';
+import db from '../../lib/Firestore';
 import {
   isRefreshComplete,
   leaderboardViewGenerate,
   showcaseLeaderboardGenerate,
 } from '../../lib/leaderboardCacheManager';
+import {
+  Debugging,
+  extractLinks,
+  getAbyssQuote,
+  PMAEventHandler,
+  randomSkillIcon,
+  StaffCheck,
+} from '../../lib/Utilities';
 
 export default new InteractionCommand({
   name: 'leaderboard',

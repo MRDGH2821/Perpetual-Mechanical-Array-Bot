@@ -4,8 +4,8 @@ import {
 } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { ComponentActionRow } from 'detritus-client/lib/utils';
-import { COLORS } from 'lib/Constants';
-import EnvConfig from 'lib/EnvConfig';
+import { COLORS } from '../../lib/Constants';
+import EnvConfig from '../../lib/EnvConfig';
 
 export default new InteractionCommand({
   name: 'code',

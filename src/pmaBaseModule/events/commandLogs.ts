@@ -1,8 +1,8 @@
 import { GatewayClientEvents } from 'detritus-client';
 import { RequestTypes } from 'detritus-client-rest';
 import { ClientEvents } from 'detritus-client/lib/constants';
-import { ChannelIds, COLORS } from 'lib/Constants';
 import BotEvent from '../../lib/BotEvent';
+import { ChannelIds, COLORS } from '../../lib/Constants';
 
 export default new BotEvent({
   event: ClientEvents.INTERACTION_CREATE,

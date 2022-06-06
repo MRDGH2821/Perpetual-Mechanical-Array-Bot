@@ -1,10 +1,10 @@
 import { GatewayClientEvents } from 'detritus-client';
 import { ClientEvents } from 'detritus-client/lib/constants';
-import BonkUtilities from 'lib/BonkUtilities';
-import { EMOJIS } from 'lib/Constants';
-import EnvConfig from 'lib/EnvConfig';
-import { Debugging, randomArrPick } from 'lib/Utilities';
+import BonkUtilities from '../../lib/BonkUtilities';
 import BotEvent from '../../lib/BotEvent';
+import { EMOJIS } from '../../lib/Constants';
+import EnvConfig from '../../lib/EnvConfig';
+import { Debugging, randomArrPick } from '../../lib/Utilities';
 
 export default new BotEvent({
   event: ClientEvents.MESSAGE_CREATE,

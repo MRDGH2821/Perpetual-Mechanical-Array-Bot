@@ -1,5 +1,5 @@
 import { InteractionCommand } from 'detritus-client/lib/interaction';
-import EnvConfig from 'lib/EnvConfig';
+import EnvConfig from '../../lib/EnvConfig';
 
 export default new InteractionCommand({
   name: 'test',

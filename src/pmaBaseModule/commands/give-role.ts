@@ -1,13 +1,13 @@
-import { GiveRoleArgs } from 'botTypes/interfaces';
 import { RequestTypes } from 'detritus-client-rest';
 import { ApplicationCommandOptionTypes, MessageFlags } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { Member } from 'detritus-client/lib/structures';
 import { ComponentActionRow } from 'detritus-client/lib/utils';
-import * as Constants from 'lib/Constants';
-import EnvConfig from 'lib/EnvConfig';
-import { initialiseSwitcher, roleCheckSwitcher } from 'lib/RoleCheck';
-import { StaffCheck } from 'lib/Utilities';
+import { GiveRoleArgs } from '../../botTypes/interfaces';
+import * as Constants from '../../lib/Constants';
+import EnvConfig from '../../lib/EnvConfig';
+import { initialiseSwitcher, roleCheckSwitcher } from '../../lib/RoleCheck';
+import { StaffCheck } from '../../lib/Utilities';
 
 export default new InteractionCommand({
   name: 'give-role',

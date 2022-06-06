@@ -1,8 +1,8 @@
 import { ShardClient } from 'detritus-client';
+import { getShardClient } from '../../lib/BotClientExtracted';
 import BotEvent from '../../lib/BotEvent';
 import db from '../../lib/Firestore';
 import { showcaseLeaderboardGenerate } from '../../lib/leaderboardCacheManager';
-import { getShardClient } from '../../lib/BotClientExtracted';
 import { Debugging } from '../../lib/Utilities';
 
 export default new BotEvent({

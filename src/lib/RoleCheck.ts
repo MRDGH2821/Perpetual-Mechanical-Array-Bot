@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import { AfterRoleCheck, GiveRoleArgs, SimpleEmbed } from 'botTypes/interfaces';
 import { BaseCollection } from 'detritus-client/lib/collections';
 import { MessageComponentButtonStyles, MessageFlags } from 'detritus-client/lib/constants';
 import { InteractionContext } from 'detritus-client/lib/interaction';
 import { Member } from 'detritus-client/lib/structures';
 import { ComponentActionRow, ComponentContext } from 'detritus-client/lib/utils';
-import { COLORS, ROLE_IDS } from 'lib/Constants';
+import { AfterRoleCheck, GiveRoleArgs, SimpleEmbed } from '../botTypes/interfaces';
+import { COLORS, ROLE_IDS } from './Constants';
 
 const toGiveRoles: string[] = [];
 const awardedRoles: string[] = [];

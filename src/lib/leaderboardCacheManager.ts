@@ -1,20 +1,20 @@
-import { BaseCollection } from 'detritus-utils';
 import { ShardClient } from 'detritus-client';
+import { BaseCollection } from 'detritus-utils';
 import { SimpleEmbed } from '../botTypes/interfaces';
 import {
   ElementDamageCategories,
   ELEMENTS,
-  LeaderboardElementGroupCacheType,
-  LeaderboardDBOptions,
-  SetLeaderboardOptions,
   GroupCategoryType,
-  LeaderboardElementCacheType,
   LeaderboardCacheObject,
+  LeaderboardDBOptions,
+  LeaderboardElementCacheType,
+  LeaderboardElementGroupCacheType,
+  SetLeaderboardOptions,
 } from '../botTypes/types';
+import { getShardClient } from './BotClientExtracted';
+import { EleDmgCategoriesArr } from './Constants';
 import db from './Firestore';
 import { categoryProps } from './Utilities';
-import { EleDmgCategoriesArr } from './Constants';
-import { getShardClient } from './BotClientExtracted';
 
 const totalRanks = 7;
 

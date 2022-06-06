@@ -1,8 +1,8 @@
-import { TechArgs } from 'botTypes/interfaces';
 import { ApplicationCommandOptionTypes } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
-import EnvConfig from 'lib/EnvConfig';
-import { EMC_TECHS } from 'lib/TravelerTechnologies';
+import { TechArgs } from '../../botTypes/interfaces';
+import EnvConfig from '../../lib/EnvConfig';
+import { EMC_TECHS } from '../../lib/TravelerTechnologies';
 
 export default new InteractionCommand({
   name: 'emc',

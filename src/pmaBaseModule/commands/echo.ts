@@ -1,4 +1,3 @@
-import { EchoArgs } from 'botTypes/interfaces';
 import {
   ApplicationCommandOptionTypes,
   ChannelTypes,
@@ -6,8 +5,9 @@ import {
 } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { Embed } from 'detritus-client/lib/utils';
-import EnvConfig from 'lib/EnvConfig';
-import { Debugging, nadekoParse, StaffCheck } from 'lib/Utilities';
+import { EchoArgs } from '../../botTypes/interfaces';
+import EnvConfig from '../../lib/EnvConfig';
+import { Debugging, nadekoParse, StaffCheck } from '../../lib/Utilities';
 
 export default new InteractionCommand({
   name: 'echo',

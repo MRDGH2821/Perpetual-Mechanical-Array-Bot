@@ -1,8 +1,8 @@
 import { GatewayClientEvents } from 'detritus-client';
 import { ClientEvents } from 'detritus-client/lib/constants';
-import EnvConfig from 'lib/EnvConfig';
-import { setRestClient, setShardClient } from 'lib/BotClientExtracted';
+import { setRestClient, setShardClient } from '../../lib/BotClientExtracted';
 import BotEvent from '../../lib/BotEvent';
+import EnvConfig from '../../lib/EnvConfig';
 import { PMAEventHandler } from '../../lib/Utilities';
 
 export default new BotEvent({
