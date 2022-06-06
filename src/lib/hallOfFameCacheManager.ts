@@ -192,7 +192,7 @@ function chunkArray(array: any[], size: number): any[] {
   return result;
 }
 
-export async function leaderboardViewGenerate(
+export async function hallOfFameViewGenerate(
   element: ELEMENTS,
   quantity: 'one' | 'two' | 'three',
 ): Promise<SimpleEmbed[]> {
