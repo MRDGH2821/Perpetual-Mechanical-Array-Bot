@@ -84,4 +84,5 @@ export type HallOfFameCrownCacheType = {
 export type SetHallOfFameOptions = {
   collection: HallOfFameCrownQuantityCacheType;
   element: ELEMENTS;
+  crownQuantity: 1 | 2 | 3;
 };

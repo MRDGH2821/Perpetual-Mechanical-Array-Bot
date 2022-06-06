@@ -74,7 +74,7 @@ export async function setHallOfFameData(
   givenData: SetHallOfFameOptions,
   SClient: ShardClient = getShardClient(),
 ) {
-  const { collection, element } = givenData;
+  const { collection, element, crownQuantity } = givenData;
   await getHallOfFameData(element).then(async (entries) => {
     // console.log(entries);
 
@@ -86,7 +86,9 @@ export async function setHallOfFameData(
         SClient.users.set(userC.id, userC);
       }
       // console.log('User: ', userC);
-      collection.set(entry.userID, { user: userC, data: entry });
+      if (entry.crowns === crownQuantity) {
+        collection.set(entry.userID, { user: userC, data: entry });
+      }
     }
   });
 }
