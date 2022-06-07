@@ -8,7 +8,7 @@ export default new BotEvent({
   async listener(updateHallOfFame: boolean = false) {
     const HoFCache = getHoFCacheObject();
     process.env.HALL_OF_FAME_READY = 'false';
-    console.log('Leaderboard Refresh Initiated');
+    console.log('Hall Of Fame Refresh Initiated');
 
     const promises = [];
 
