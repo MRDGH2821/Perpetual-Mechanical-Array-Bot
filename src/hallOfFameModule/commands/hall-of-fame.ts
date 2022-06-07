@@ -1,12 +1,13 @@
 import {
   ApplicationCommandOptionTypes,
   MessageComponentButtonStyles,
+  MessageFlags,
 } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { ComponentActionRow } from 'detritus-client/lib/utils';
 import { ELEMENTS } from '../../botTypes/types';
 import EnvConfig from '../../lib/EnvConfig';
-import { hallOfFameViewGenerate } from '../../lib/hallOfFameCacheManager';
+import { hallOfFameViewGenerate, isHoFRefreshComplete } from '../../lib/hallOfFameCacheManager';
 import { getAbyssQuote } from '../../lib/Utilities';
 
 export default new InteractionCommand({
@@ -57,7 +58,12 @@ export default new InteractionCommand({
         },
       ],
       async run(ctx, args) {
-        const hallOfFameEmbeds = await hallOfFameViewGenerate(args.element, args.crown_quantity);
+        let qty = args.crown_quantity;
+        if (args.element === 'unaligned') {
+          qty = 'one';
+        }
+
+        const hallOfFameEmbeds = await hallOfFameViewGenerate(args.element, qty);
         const totalEmbeds = hallOfFameEmbeds.length;
         let currentIndex = 0;
 
