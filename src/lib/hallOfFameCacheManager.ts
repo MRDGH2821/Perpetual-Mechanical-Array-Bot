@@ -208,14 +208,13 @@ export async function hallOfFameViewGenerate(
 
   const embeds: SimpleEmbed[] = [];
 
+  const props = elementProps(element);
   chunks.forEach((chunk) => {
-    const props = elementProps(element);
-
     const embed: SimpleEmbed = {
       title: `**${props.name}** ${props.emoji}`,
       color: props.color,
       thumbnail: { url: props.icon },
-      description: `${props.crown} Crowns used: ${quantity}\n\n`,
+      description: `${props.crown} \nCrowns used: ${quantity}\n\n`,
       timestamp: new Date().toISOString(),
       footer: {
         text: `${chunks.indexOf(chunk) + 1} of ${chunks.length}`,
@@ -227,6 +226,17 @@ export async function hallOfFameViewGenerate(
     });
     embeds.push(embed);
   });
+
+  if (!embeds.at(0)) {
+    const embed: SimpleEmbed = {
+      title: `**${props.name}** ${props.emoji}`,
+      color: props.color,
+      thumbnail: { url: props.icon },
+      description: `No users found who used ${quantity} crown(s)...`,
+      timestamp: new Date().toISOString(),
+    };
+    embeds.push(embed);
+  }
 
   return embeds;
 }
