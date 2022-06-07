@@ -110,4 +110,13 @@ export default new InteractionCommand({
       },
     },
   ],
+  onBeforeRun(ctx) {
+    if (!isHoFRefreshComplete()) {
+      ctx.editOrRespond({
+        content: 'Refresh is ongoing, please wait for a while before using this command',
+        flags: MessageFlags.EPHEMERAL,
+      });
+    }
+    return isHoFRefreshComplete();
+  },
 });
