@@ -31,6 +31,7 @@ export default new BotEvent({
 
     setTimeout(() => {
       PMAEventHandler.emit('leaderboardRefresh');
+      PMAEventHandler.emit('hallOfFameRefresh');
     }, 1000 * 5);
   },
 });

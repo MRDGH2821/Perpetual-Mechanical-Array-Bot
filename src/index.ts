@@ -2,20 +2,16 @@ import { ClusterClient, InteractionCommandClient } from 'detritus-client';
 import { GatewayIntents } from 'detritus-client-socket/lib/constants';
 import path from 'path';
 import { setClusterClient } from './lib/BotClientExtracted';
-import BotEvent from './lib/BotEvent';
 import EnvConfig from './lib/EnvConfig';
 import esmImporter from './lib/esmImporter';
 import { Debugging, PMAEventHandler } from './lib/Utilities';
 
 (async () => {
-  const pmaEvents: Array<BotEvent> = await esmImporter(
-    path.resolve(__dirname, './pmaBaseModule/events/'),
-  );
-  const leaderboardEvents: Array<BotEvent> = await esmImporter(
-    path.resolve(__dirname, './leaderboardModule/events/'),
-  );
-
-  const botEvents = [pmaEvents, leaderboardEvents].flat();
+  const botEvents = [
+    await esmImporter(path.resolve(__dirname, './pmaBaseModule/events/')),
+    await esmImporter(path.resolve(__dirname, './leaderboardModule/events/')),
+    await esmImporter(path.resolve(__dirname, './hallOfFameModule/events/')),
+  ].flat();
 
   const clusterBot = new ClusterClient(EnvConfig.token as string, {
     gateway: {
@@ -49,6 +45,7 @@ import { Debugging, PMAEventHandler } from './lib/Utilities';
 
   await interactionBot.addMultipleIn('./pmaBaseModule/commands/');
   await interactionBot.addMultipleIn('./leaderboardModule/commands/');
+  await interactionBot.addMultipleIn('./hallOfFameModule/commands/');
 
   await interactionBot
     .run()
