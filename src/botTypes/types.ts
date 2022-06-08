@@ -1,4 +1,4 @@
-import { User } from 'detritus-client/lib/structures';
+import { Member, User } from 'detritus-client/lib/structures';
 import { BaseCollection } from 'detritus-utils';
 // eslint-disable-next-line import/no-cycle
 import { COLORS, ICONS, TravelerTypes } from '../lib/Constants';
@@ -85,4 +85,17 @@ export type SetHallOfFameOptions = {
   collection: HallOfFameCrownQuantityCacheType;
   element: ELEMENTS;
   crownQuantity: 1 | 2 | 3;
+};
+
+export type CrownDBRegisterObject = {
+  userID: Member['user']['id'] | User['id'];
+  crowns: 1 | 2 | 3;
+};
+
+export type AbyssDBRegisterObject = {
+  userID: Member['user']['id'] | User['id'];
+  withTraveler: boolean;
+  currentMonth: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | number;
+  currentYear: number;
+  lunarPhase: 'waxing' | 'waning';
 };
