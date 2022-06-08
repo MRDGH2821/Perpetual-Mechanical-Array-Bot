@@ -12,7 +12,7 @@ import {
 import { getShardClient } from './BotClientExtracted';
 import { ElementsArr } from './Constants';
 import db from './Firestore';
-import { Debugging, elementProps, randomArrPick } from './Utilities';
+import { elementProps, randomArrPick } from './Utilities';
 
 const totalCrownUsers = 5;
 
@@ -125,21 +125,14 @@ function constructField(collection: HallOfFameCrownQuantityCacheType) {
 
   const selected: HallOfFameCacheObject[] = [];
   if (collection.length > 0) {
-    while (selected.length < totalCrownUsers) {
+    while (selected.length < Math.min(totalCrownUsers, collection.length)) {
       const data: HallOfFameCacheObject = randomArrPick(collection.toArray());
-      try {
-        if (!selected.includes(data)) {
-          if (data.user) {
-            selected.push(data);
-          }
-        }
-      } catch (err) {
-        console.error(err);
-        Debugging.leafDebug(data, true);
+      if (!selected.includes(data) && data.user) {
+        selected.push(data);
       }
     }
     selected.forEach((data) => {
-      str = `${str}\n<@${data.user.id}> \`${data.user.tag}\``;
+      str = `${str}\n${data.user.mention} \`${data.user.tag}\``;
     });
   } else {
     str = `${str}\n*No users found...*`;
