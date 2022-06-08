@@ -1,7 +1,6 @@
 import { RequestTypes } from 'detritus-client-rest';
-import { ApplicationCommandOptionTypes, MessageFlags } from 'detritus-client/lib/constants';
+import { ApplicationCommandOptionTypes } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
-import { Member } from 'detritus-client/lib/structures';
 import { ComponentActionRow } from 'detritus-client/lib/utils';
 import { GiveRoleArgs } from '../../botTypes/interfaces';
 import * as Constants from '../../lib/Constants';
@@ -15,6 +14,8 @@ export default new InteractionCommand({
   global: false,
   guildIds: [EnvConfig.guildId],
   onBeforeRun(ctx) {
+    return StaffCheck.isCtxStaff(ctx, true);
+  },
   options: [
     {
       name: 'one',
@@ -45,20 +46,6 @@ export default new InteractionCommand({
           },
         },
       ],
-
-      async onBefore(ctx) {
-        const canGib = StaffCheck.canGibRole(ctx.member as Member);
-
-        if (!canGib) {
-          await ctx.editOrRespond({
-            content: `You cannot give roles to anyone, not even to yourself ${Constants.EMOJIS.PepeKekPoint}`,
-            flags: MessageFlags.EPHEMERAL,
-          });
-          return false;
-        }
-        return true;
-      },
-
       async run(ctx, args: GiveRoleArgs) {
         const selectedRoles = [args.role!];
 
@@ -82,19 +69,6 @@ export default new InteractionCommand({
           required: true,
         },
       ],
-      async onBefore(ctx) {
-        const canGib = StaffCheck.canGibRole(ctx.member as Member);
-
-        if (!canGib) {
-          await ctx.editOrRespond({
-            content: `You cannot give roles to anyone, not even to yourself ${Constants.EMOJIS.PepeKekPoint}`,
-            flags: MessageFlags.EPHEMERAL,
-          });
-          return false;
-        }
-        return true;
-      },
-
       async run(ctx, args: GiveRoleArgs) {
         const firstPage: RequestTypes.CreateChannelMessageEmbed = {
           title: '**Select Roles**',

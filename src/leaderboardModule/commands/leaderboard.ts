@@ -278,14 +278,7 @@ export default new InteractionCommand({
           channelTypes: [ChannelTypes.GUILD_TEXT],
         },
       ],
-      onBeforeRun(ctx) {
-        if (!StaffCheck.isStaff(ctx.member!)) {
-          ctx.editOrRespond({
-            content: 'Only mods can change leaderboard channel',
-            flags: MessageFlags.EPHEMERAL,
-          });
-        }
-
+      async onBeforeRun(ctx) {
         if (!isLBRefreshComplete()) {
           ctx.editOrRespond({
             content: 'Please wait before using this command, refresh is not complete',
@@ -293,7 +286,7 @@ export default new InteractionCommand({
           });
         }
 
-        return StaffCheck.isStaff(ctx.member!) && isLBRefreshComplete();
+        return (await StaffCheck.isCtxStaff(ctx, true)) && isLBRefreshComplete();
       },
       async run(ctx, args) {
         const setupChannel = args.channel as Channel;
@@ -318,14 +311,15 @@ export default new InteractionCommand({
           default: false,
         },
       ],
-      onBeforeRun(ctx) {
+      async onBeforeRun(ctx) {
         if (!isLBRefreshComplete()) {
           ctx.editOrRespond({
-            content: 'Refresh is ongoing, please wait for a while before using this command',
+            content: 'Please wait before using this command, refresh is not complete',
             flags: MessageFlags.EPHEMERAL,
           });
         }
-        return isLBRefreshComplete();
+
+        return (await StaffCheck.isCtxStaff(ctx, true)) && isLBRefreshComplete();
       },
       run(ctx, args) {
         PMAEventHandler.emit('leaderboardRefresh', args.update_leaderboard);

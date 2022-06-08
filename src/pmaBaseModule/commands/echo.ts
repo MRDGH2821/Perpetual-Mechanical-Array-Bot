@@ -14,6 +14,12 @@ export default new InteractionCommand({
   global: false,
   guildIds: [EnvConfig.guildId],
   description: 'Echo a Message',
+  onBeforeRun(ctx) {
+    return StaffCheck.isCtxStaff(ctx, true);
+  },
+  onRunError(ctx, args, err) {
+    Debugging.leafDebug(err, true);
+  },
   options: [
     {
       name: 'text',
@@ -34,15 +40,7 @@ export default new InteractionCommand({
           type: ApplicationCommandOptionTypes.STRING,
         },
       ],
-      onBeforeRun(ctx) {
-        if (!StaffCheck.isStaff(ctx.member!)) {
-          ctx.editOrRespond({
-            content: 'Only mods can use this command!',
-            flags: MessageFlags.EPHEMERAL,
-          });
-        }
-        return StaffCheck.isStaff(ctx.member!);
-      },
+
       async run(ctx, args: EchoArgs) {
         const { channel, text } = args;
 
@@ -54,10 +52,6 @@ export default new InteractionCommand({
           content: `Sent!\nCheck out ${channel?.mention}`,
           flags: MessageFlags.EPHEMERAL,
         });
-      },
-
-      onRunError(ctx, args, err) {
-        Debugging.leafDebug(err, true);
       },
     },
     {
@@ -86,15 +80,6 @@ export default new InteractionCommand({
           default: ' ',
         },
       ],
-      onBeforeRun(ctx) {
-        if (!StaffCheck.isStaff(ctx.member!)) {
-          ctx.editOrRespond({
-            content: 'Only mods can use this command!',
-            flags: MessageFlags.EPHEMERAL,
-          });
-        }
-        return StaffCheck.isStaff(ctx.member!);
-      },
       async run(ctx, args: EchoArgs) {
         const { channel, text, embed } = args;
         try {
@@ -114,10 +99,6 @@ export default new InteractionCommand({
         } catch (error) {
           Debugging.leafDebug(error, true);
         }
-      },
-
-      onRunError(ctx, args, err) {
-        Debugging.leafDebug(err, true);
       },
     },
     {
@@ -139,15 +120,6 @@ export default new InteractionCommand({
           type: ApplicationCommandOptionTypes.STRING,
         },
       ],
-      onBeforeRun(ctx) {
-        if (!StaffCheck.isStaff(ctx.member!)) {
-          ctx.editOrRespond({
-            content: 'Only mods can use this command!',
-            flags: MessageFlags.EPHEMERAL,
-          });
-        }
-        return StaffCheck.isStaff(ctx.member!);
-      },
       async run(ctx, args: EchoArgs) {
         const { channel } = args;
         try {
@@ -165,10 +137,6 @@ export default new InteractionCommand({
         } catch (error) {
           Debugging.leafDebug(error, true);
         }
-      },
-
-      onRunError(ctx, args, err) {
-        Debugging.leafDebug(err, true);
       },
     },
   ],

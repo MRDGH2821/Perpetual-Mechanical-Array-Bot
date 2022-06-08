@@ -50,16 +50,15 @@ export default new InteractionCommand({
               value: 'unaligned',
             },
           ],
-        },
-      ],
-      onBeforeRun(ctx) {
+      async onBeforeRun(ctx) {
         if (!isHoFRefreshComplete()) {
           ctx.editOrRespond({
-            content: 'Refresh is ongoing, please wait for a while before using this command',
+            content: 'Please wait before using this command, refresh is not complete',
             flags: MessageFlags.EPHEMERAL,
           });
         }
-        return isHoFRefreshComplete();
+
+        return (await StaffCheck.isCtxStaff(ctx, true)) && isHoFRefreshComplete();
       },
       async run(ctx, args) {
         let qty = args.crown_quantity;
@@ -131,21 +130,15 @@ export default new InteractionCommand({
           default: false,
         },
       ],
-      onBeforeRun(ctx) {
-        if (!StaffCheck.isStaff(ctx.member!)) {
+      async onBeforeRun(ctx) {
+        if (!isHoFRefreshComplete()) {
           ctx.editOrRespond({
-            content: 'Only mods can change initiate a refresh',
+            content: 'Please wait before using this command, refresh is not complete',
             flags: MessageFlags.EPHEMERAL,
           });
         }
 
-        if (!isHoFRefreshComplete()) {
-          ctx.editOrRespond({
-            content: 'Refresh is ongoing, please wait for a while before using this command',
-            flags: MessageFlags.EPHEMERAL,
-          });
-        }
-        return isHoFRefreshComplete() && StaffCheck.isStaff(ctx.member!);
+        return (await StaffCheck.isCtxStaff(ctx, true)) && isHoFRefreshComplete();
       },
       async run(ctx, args) {
         PMAEventHandler.emit('hallOfFameRefresh', args.update_hall_of_fame);
@@ -169,21 +162,13 @@ export default new InteractionCommand({
         },
       ],
       onBeforeRun(ctx) {
-        if (!StaffCheck.isStaff(ctx.member!)) {
-          ctx.editOrRespond({
-            content: 'Only mods can change hall of fame channel',
-            flags: MessageFlags.EPHEMERAL,
-          });
-        }
-
         if (!isHoFRefreshComplete()) {
           ctx.editOrRespond({
-            content: 'Please wait before using this command, refresh is not complete',
+            content: 'Refresh is ongoing, please wait for a while before using this command',
             flags: MessageFlags.EPHEMERAL,
           });
         }
-
-        return StaffCheck.isStaff(ctx.member!) && isHoFRefreshComplete();
+        return isHoFRefreshComplete();
       },
       async run(ctx, args) {
         const setupChannel = args.channel as Channel;

@@ -6,6 +6,7 @@ import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { ComponentActionRow } from 'detritus-client/lib/utils';
 import { COLORS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
+import { StaffCheck } from '../../lib/Utilities';
 
 export default new InteractionCommand({
   name: 'code',
@@ -26,6 +27,9 @@ export default new InteractionCommand({
       default: '_Only one way to find out_',
     },
   ],
+  onBeforeRun(ctx) {
+    return StaffCheck.isCtxStaff(ctx, true);
+  },
   async run(ctx, args) {
     await ctx.editOrRespond({
       embed: {
