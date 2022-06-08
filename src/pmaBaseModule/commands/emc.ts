@@ -8,7 +8,7 @@ export default new InteractionCommand({
   name: 'emc',
   description: 'Electro Main Character',
   global: false,
-  guildIds: [EnvConfig.guildId as string],
+  guildIds: [EnvConfig.guildId],
   options: [
     {
       name: 'bellowing_thunder',

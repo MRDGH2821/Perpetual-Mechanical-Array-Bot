@@ -8,7 +8,7 @@ export default new InteractionCommand({
   name: 'amc',
   description: 'Anemo Main Character',
   global: false,
-  guildIds: [EnvConfig.guildId as string],
+  guildIds: [EnvConfig.guildId],
   options: [
     {
       name: 'palm_vortex',

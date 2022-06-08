@@ -8,7 +8,7 @@ export default new InteractionCommand({
   name: 'gmc',
   description: 'Geo Main Character',
   global: false,
-  guildIds: [EnvConfig.guildId as string],
+  guildIds: [EnvConfig.guildId],
   options: [
     {
       name: 'starfell_sword',

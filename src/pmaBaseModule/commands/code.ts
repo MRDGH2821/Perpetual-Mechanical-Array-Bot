@@ -11,7 +11,7 @@ export default new InteractionCommand({
   name: 'code',
   description: 'Genshin impact code formatter',
   global: false,
-  guildIds: [EnvConfig.guildId!],
+  guildIds: [EnvConfig.guildId],
   options: [
     {
       name: 'genshin_code',

@@ -13,8 +13,8 @@ export default new InteractionCommand({
   name: 'give-role',
   description: 'Gives role to selected user',
   global: false,
-  guildIds: [EnvConfig.guildId as string],
-
+  guildIds: [EnvConfig.guildId],
+  onBeforeRun(ctx) {
   options: [
     {
       name: 'one',

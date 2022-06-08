@@ -12,7 +12,7 @@ import { Debugging, nadekoParse, StaffCheck } from '../../lib/Utilities';
 export default new InteractionCommand({
   name: 'echo',
   global: false,
-  guildIds: [EnvConfig.guildId!],
+  guildIds: [EnvConfig.guildId],
   description: 'Echo a Message',
   options: [
     {

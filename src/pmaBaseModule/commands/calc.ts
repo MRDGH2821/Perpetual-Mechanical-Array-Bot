@@ -11,7 +11,7 @@ export default new InteractionCommand({
   name: 'calc',
   description: 'Calculates stuff',
   global: false,
-  guildIds: [EnvConfig.guildId as string],
+  guildIds: [EnvConfig.guildId],
   options: [
     {
       name: 'expression',

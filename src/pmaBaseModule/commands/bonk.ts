@@ -9,7 +9,7 @@ export default new InteractionCommand({
   name: 'bonk',
   description: 'Select a member to bonk them',
   global: false,
-  guildIds: [EnvConfig.guildId as string],
+  guildIds: [EnvConfig.guildId],
   options: [
     {
       name: 'target',

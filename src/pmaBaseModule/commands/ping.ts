@@ -7,7 +7,7 @@ export default new InteractionCommand({
   name: 'ping',
   description: 'Shows bot ping',
   global: false,
-  guildIds: [EnvConfig.guildId as string],
+  guildIds: [EnvConfig.guildId],
   async run(context) {
     const { gateway, rest } = await context.client.ping();
 
