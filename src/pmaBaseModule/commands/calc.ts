@@ -103,7 +103,7 @@ export default new InteractionCommand({
       },
     },
     {
-      name: 'damage',
+      name: 'dmg_compare',
       description: 'Calculates damage of your character',
       type: ApplicationCommandOptionTypes.SUB_COMMAND,
       options: [
