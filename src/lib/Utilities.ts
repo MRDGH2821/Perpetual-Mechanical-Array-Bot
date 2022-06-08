@@ -157,13 +157,13 @@ export namespace StaffCheck {
     ctx: InteractionContext | ComponentContext,
     postEphemeral = false,
   ) {
-    if (postEphemeral) {
-      await ctx.editOrRespond({
-        content: 'Only a mod can use this command',
-        flags: MessageFlags.EPHEMERAL,
-      });
-    }
     if (ctx.member) {
+      if (!isStaff(ctx.member) && postEphemeral) {
+        await ctx.editOrRespond({
+          content: 'Only a mod can use this command',
+          flags: MessageFlags.EPHEMERAL,
+        });
+      }
       return isStaff(ctx.member);
     }
     return false;
