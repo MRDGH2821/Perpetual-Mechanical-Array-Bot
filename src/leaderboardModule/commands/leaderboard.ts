@@ -331,8 +331,8 @@ export default new InteractionCommand({
       },
     },
     {
-      name: 'view_mini',
-      description: 'View individual leaderboard embed',
+      name: 'view_summary',
+      description: 'View individual leaderboard summary',
       type: ApplicationCommandOptionTypes.SUB_COMMAND,
       options: [
         {
