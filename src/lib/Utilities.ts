@@ -1,6 +1,7 @@
-import { Permissions } from 'detritus-client/lib/constants';
+import { MessageFlags, Permissions } from 'detritus-client/lib/constants';
+import { InteractionContext } from 'detritus-client/lib/interaction';
 import { Member } from 'detritus-client/lib/structures';
-import { PermissionTools } from 'detritus-client/lib/utils';
+import { ComponentContext, PermissionTools } from 'detritus-client/lib/utils';
 import EventEmitter from 'events';
 import {
   NadekoContent, NadekoEmbed, NadekoParseResult, SimpleEmbed,
@@ -150,6 +151,22 @@ export namespace StaffCheck {
       PermissionTools.checkPermissions(member.permissions, Permissions.MANAGE_ROLES)
       || isStaff(member)
     );
+  }
+
+  export async function isCtxStaff(
+    ctx: InteractionContext | ComponentContext,
+    postEphemeral = false,
+  ) {
+    if (postEphemeral) {
+      await ctx.editOrRespond({
+        content: 'Only a mod can use this command',
+        flags: MessageFlags.EPHEMERAL,
+      });
+    }
+    if (ctx.member) {
+      return isStaff(ctx.member);
+    }
+    return false;
   }
 }
 
