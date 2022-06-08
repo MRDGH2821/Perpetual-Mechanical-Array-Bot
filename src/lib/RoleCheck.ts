@@ -6,6 +6,7 @@ import { Member } from 'detritus-client/lib/structures';
 import { ComponentActionRow, ComponentContext } from 'detritus-client/lib/utils';
 import { AfterRoleCheck, GiveRoleArgs, SimpleEmbed } from '../botTypes/interfaces';
 import { COLORS, ROLE_IDS } from './Constants';
+import { PMAEventHandler } from './Utilities';
 
 const toGiveRoles: string[] = [];
 const awardedRoles: string[] = [];
@@ -70,6 +71,7 @@ function nonEleCrownCheck(
     notes: 'Paid attention to the game!',
     role: ROLE_IDS.CROWN.UNALIGNED,
   };
+  PMAEventHandler.emit('crownRegister', target, { quantity: 1, crownID: ROLE_IDS.CROWN.UNALIGNED });
   roleCheckSwitcher(ctx, result);
 }
 
@@ -94,6 +96,7 @@ async function abyssRoleCheck(
       run(btnCtx) {
         result.exp = 250;
         target.addRole(abyssRole);
+        PMAEventHandler.emit('abyssRegister', target, false);
         roleCheckSwitcher(btnCtx, result);
       },
     })
@@ -106,6 +109,7 @@ async function abyssRoleCheck(
         result.exp = 500;
         result.notes = 'Cleared with Traveler!';
         target.addRole(abyssRole);
+        PMAEventHandler.emit('abyssRegister', target, false);
         roleCheckSwitcher(btnCtx, result);
       },
     });
@@ -142,6 +146,7 @@ async function crownCheck(
         result.exp = 250;
         result.notes = '1 crowns';
         target.addRole(crownRole);
+        PMAEventHandler.emit('crownRegister', target, { quantity: 1, crownID: crownRole });
         roleCheckSwitcher(btnCtx, result);
       },
     })
@@ -153,6 +158,7 @@ async function crownCheck(
         result.exp = 250 * 2;
         result.notes = '2 crowns';
         target.addRole(crownRole);
+        PMAEventHandler.emit('crownRegister', target, { quantity: 2, crownID: crownRole });
         roleCheckSwitcher(btnCtx, result);
       },
     })
@@ -164,6 +170,7 @@ async function crownCheck(
         result.exp = 250 * 2 * 3;
         result.notes = '3 crowns';
         target.addRole(crownRole);
+        PMAEventHandler.emit('crownRegister', target, { quantity: 3, crownID: crownRole });
         roleCheckSwitcher(btnCtx, result);
       },
     });
