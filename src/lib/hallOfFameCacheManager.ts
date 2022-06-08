@@ -12,9 +12,9 @@ import {
 import { getShardClient } from './BotClientExtracted';
 import { ElementsArr } from './Constants';
 import db from './Firestore';
-import { elementProps, randomArrPick } from './Utilities';
+import { Debugging, elementProps, randomArrPick } from './Utilities';
 
-const totalCrownUsers = 30;
+const totalCrownUsers = 5;
 
 export const hallOfFameCache = {
   anemo: {
@@ -124,14 +124,26 @@ function constructField(collection: HallOfFameCrownQuantityCacheType) {
   let str = '';
 
   const selected: HallOfFameCacheObject[] = [];
-
-  while (selected.length < totalCrownUsers) {
-    const data: HallOfFameCacheObject = randomArrPick(collection.toArray());
-    if (!selected.includes(data)) {
-      str = `${str}\n${data.user.mention} \`${data.user.tag}\``;
+  if (collection.length > 0) {
+    while (selected.length < totalCrownUsers) {
+      const data: HallOfFameCacheObject = randomArrPick(collection.toArray());
+      try {
+        if (!selected.includes(data)) {
+          if (data.user) {
+            selected.push(data);
+          }
+        }
+      } catch (err) {
+        console.error(err);
+        Debugging.leafDebug(data, true);
+      }
     }
+    selected.forEach((data) => {
+      str = `${str}\n<@${data.user.id}> \`${data.user.tag}\``;
+    });
+  } else {
+    str = `${str}\n*No users found...*`;
   }
-
   str = `${str}\n-`;
   return str;
 }
