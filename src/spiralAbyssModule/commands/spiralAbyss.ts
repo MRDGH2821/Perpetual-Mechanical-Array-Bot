@@ -16,6 +16,7 @@ import {
   spiralAbyssViewGenerate,
 } from '../../lib/spiralAbyssCacheManager';
 import { getAbyssQuote, PMAEventHandler, StaffCheck } from '../../lib/Utilities';
+import reset from '../subcommands/reset';
 
 export default new InteractionCommand({
   name: 'spiral_abyss',
@@ -209,5 +210,6 @@ export default new InteractionCommand({
         });
       },
     },
+    reset,
   ],
 });
