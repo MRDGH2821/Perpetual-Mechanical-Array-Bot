@@ -28,6 +28,9 @@ import { Debugging, PMAEventHandler } from './lib/Utilities';
     },
     cache: {
       members: { enabled: true, limit: 500 },
+      guilds: { enabled: true, limit: 5 },
+      roles: { enabled: true, limit: 100 },
+      users: { enabled: true, limit: 500 },
     },
   });
 
@@ -61,6 +64,7 @@ import { Debugging, PMAEventHandler } from './lib/Utilities';
     .run()
     .then(() => {
       setClusterClient(clusterBot);
+      clusterBot.shards.first()?.guilds.get(EnvConfig.guildId)?.fetchMembers({ limit: 500 });
     })
     .catch((err) => {
       console.error(err);
