@@ -99,3 +99,12 @@ export type AbyssDBRegisterObject = {
   currentYear: number;
   lunarPhase: 'waxing' | 'waning';
 };
+
+export type SetSpiralAbyssOptions = {
+  collection: SpiralAbyssGroupCacheType;
+  withTraveler: boolean;
+};
+
+export type SpiralAbyssCacheObject = { user: User; data: AbyssDBRegisterObject };
+
+export type SpiralAbyssGroupCacheType = BaseCollection<User['id'], SpiralAbyssCacheObject>;
