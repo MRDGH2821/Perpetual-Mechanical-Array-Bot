@@ -11,7 +11,7 @@ import { getShardClient } from './BotClientExtracted';
 import { COLORS, ICONS } from './Constants';
 import db from './Firestore';
 
-const totalUsers = 26;
+const totalUsers = 20;
 
 export const spiralAbyssCache = {
   clearNormal: <SpiralAbyssGroupCacheType> new BaseCollection(),
@@ -113,7 +113,7 @@ export async function showcaseSpiralAbyssGenerate(withTraveler: boolean = false)
   return spiralAbyssEmbed;
 }
 
-function chunkArray(array: any[], size: number): any[] {
+function chunkArray(array: any[], size: number): any[][] {
   const result = [];
   const arrayCopy = [...array];
   while (arrayCopy.length > 0) {
@@ -140,7 +140,7 @@ export async function spiralAbyssViewGenerate(withTraveler: boolean): Promise<Si
       thumbnail: { url: ICONS.SPIRAL_ABYSS },
       description: `Cycle Details: \n${date.getDate() < 16 ? 'Waxing Phase' : 'Waning Phase'} (${
         date.getMonth() + 1
-      }/${date.getFullYear()}) `,
+      }/${date.getFullYear()}) \nClear Type: ${withTraveler ? 'Traveler Clear' : 'Normal Clear'}`,
       timestamp: new Date().toISOString(),
       footer: {
         text: `${chunks.indexOf(chunk) + 1} of ${chunks.length}`,
@@ -162,4 +162,41 @@ export async function spiralAbyssViewGenerate(withTraveler: boolean): Promise<Si
  */
 export function isSARefreshComplete(): boolean {
   return process.env.SPIRAL_ABYSS_READY === 'true';
+}
+
+export function publishSANames(withTraveler = false) {
+  const SACache = withTraveler ? spiralAbyssCache.clearTraveler : spiralAbyssCache.clearNormal;
+
+  const groupCache = SACache.clone();
+
+  const chunks = chunkArray(groupCache.toArray(), totalUsers) as SpiralAbyssCacheObject[][];
+  const date = new Date();
+
+  const embeds: SimpleEmbed[] = [];
+
+  chunks.forEach((chunk) => {
+    let value = '';
+    const embed: SimpleEmbed = {
+      title: '**Spiral Abyss Clear Board**',
+      color: COLORS.SPIRAL_ABYSS,
+      thumbnail: { url: ICONS.SPIRAL_ABYSS },
+      description: `Cycle Details: \n${date.getDate() < 16 ? 'Waxing Phase' : 'Waning Phase'} (${
+        date.getMonth() + 1
+      }/${date.getFullYear()}) \nClear Type: ${withTraveler ? 'Traveler Clear' : 'Normal Clear'}`,
+      timestamp: new Date().toISOString(),
+      fields: [],
+      footer: {
+        text: `${chunks.indexOf(chunk) + 1} of ${chunks.length}`,
+      },
+    };
+    chunk.forEach((data) => {
+      value = `${value}\n${data.user.mention} - \`${data.user.tag}\``;
+    });
+    embed.fields?.push({
+      name: '\u200b',
+      value,
+    });
+  });
+
+  return embeds;
 }
