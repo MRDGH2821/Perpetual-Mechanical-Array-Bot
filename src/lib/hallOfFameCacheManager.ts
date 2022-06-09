@@ -14,7 +14,7 @@ import { ElementsArr } from './Constants';
 import db from './Firestore';
 import { elementProps } from './Utilities';
 
-const totalCrownUsers = 5;
+const totalCrownUsers = 26;
 
 export const hallOfFameCache = {
   anemo: {
