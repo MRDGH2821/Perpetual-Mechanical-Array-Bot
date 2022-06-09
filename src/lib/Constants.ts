@@ -62,6 +62,7 @@ export enum COLORS {
   UNIVERSAL = 0xfffffd,
   ERROR = 0xff0033,
   SUCCESS = 0x00c455,
+  SPIRAL_ABYSS = 0x4d00f0,
 }
 
 export const EMOJIS = {
