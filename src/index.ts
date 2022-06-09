@@ -11,6 +11,7 @@ import { Debugging, PMAEventHandler } from './lib/Utilities';
     await esmImporter(path.resolve(__dirname, './pmaBaseModule/events/')),
     await esmImporter(path.resolve(__dirname, './leaderboardModule/events/')),
     await esmImporter(path.resolve(__dirname, './hallOfFameModule/events/')),
+    await esmImporter(path.resolve(__dirname, './spiralAbyssModule/events/')),
   ].flat();
 
   const clusterBot = new ClusterClient(EnvConfig.token as string, {
@@ -43,9 +44,18 @@ import { Debugging, PMAEventHandler } from './lib/Utilities';
 
   const interactionBot = new InteractionCommandClient(clusterBot);
 
+  /*
+  await interactionBot.rest.bulkOverwriteApplicationCommands(EnvConfig.clientId, []);
+  await interactionBot.rest.bulkOverwriteApplicationGuildCommands(
+    EnvConfig.clientId,
+    EnvConfig.guildId,
+    [],
+  );
+*/
   await interactionBot.addMultipleIn('./pmaBaseModule/commands/');
   await interactionBot.addMultipleIn('./leaderboardModule/commands/');
   await interactionBot.addMultipleIn('./hallOfFameModule/commands/');
+  await interactionBot.addMultipleIn('./spiralAbyssModule/commands/');
 
   await interactionBot
     .run()
