@@ -35,7 +35,7 @@ export default new InteractionCommand({
   name: 'leaderboard',
   description: 'Leaderboard commands',
   global: false,
-  guildIds: [EnvConfig.guildId!],
+  guildIds: [EnvConfig.guildId],
   options: [
     {
       name: 'register',
