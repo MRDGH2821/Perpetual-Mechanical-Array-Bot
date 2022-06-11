@@ -99,5 +99,11 @@ export default new BotEvent({
 
       reactEmoji(randomArrPick(emotes));
     }
+
+    if (/(<@263408665539641344>)/gimu.test(msg)) {
+      const emotes = ['💀', '☠️', '🦴'];
+
+      reactEmoji(randomArrPick(emotes));
+    }
   },
 });
