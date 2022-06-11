@@ -39,6 +39,6 @@ export default new BotEvent({
         channelID: finalWebhook.channelId,
       })
       .then(() => console.log('Webhook details saved in database'));
-    PMAEventHandler.emit('spiralAbyssSend', finalWebhook);
+    // PMAEventHandler.emit('spiralAbyssSend', finalWebhook);
   },
 });

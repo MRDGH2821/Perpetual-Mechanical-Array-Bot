@@ -1,11 +1,10 @@
 import BotEvent from '../../lib/BotEvent';
 import { getSACacheObject, setSpiralAbyssData } from '../../lib/spiralAbyssCacheManager';
-import { PMAEventHandler } from '../../lib/Utilities';
 
 export default new BotEvent({
   event: 'spiralAbyssRefresh',
   on: true,
-  async listener(updateSABoard: boolean = false) {
+  async listener() {
     const SACache = getSACacheObject();
     process.env.SPIRAL_ABYSS_READY = 'false';
     console.log('Spiral Abyss Refresh Initiated');
@@ -27,11 +26,6 @@ export default new BotEvent({
       process.env.SPIRAL_ABYSS_READY = 'true';
       console.log('Spiral Abyss Refresh Complete');
       // Debugging.leafDebug(LCache, true);
-
-      if (updateSABoard) {
-        console.log('Sending Spiral Abyss update request');
-        PMAEventHandler.emit('spiralAbyssUpdate');
-      }
     });
   },
 });

@@ -63,14 +63,7 @@ export default new InteractionCommand({
       name: 'refresh',
       description: 'Refreshes Spiral Abyss cache & optionally updates Spiral Abyss channel',
       type: ApplicationCommandOptionTypes.SUB_COMMAND,
-      options: [
-        {
-          name: 'update_leaderboard',
-          description: 'Should update leaderboard after cache refresh? (default False)',
-          type: ApplicationCommandOptionTypes.BOOLEAN,
-          default: false,
-        },
-      ],
+
       async onBeforeRun(ctx) {
         if (!isSARefreshComplete()) {
           ctx.editOrRespond({
@@ -81,11 +74,11 @@ export default new InteractionCommand({
 
         return (await StaffCheck.isCtxStaff(ctx, true)) && isSARefreshComplete();
       },
-      run(ctx, args) {
-        PMAEventHandler.emit('spiralAbyssRefresh', args.update_leaderboard);
+      run(ctx) {
+        PMAEventHandler.emit('spiralAbyssRefresh');
 
         ctx.editOrRespond({
-          content: `Refresh initiated, please wait for a while before using this command\nWill update spiral abyss boards? \`${args.update_leaderboard}\``,
+          content: 'Refresh initiated, please wait for a while before using this command',
           flags: MessageFlags.EPHEMERAL,
         });
       },
