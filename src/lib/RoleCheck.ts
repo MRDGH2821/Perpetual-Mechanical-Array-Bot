@@ -203,11 +203,10 @@ export function roleCheckSwitcher(
   beforeSwitchResults: AfterRoleCheck,
 ) {
   if (beforeSwitchResults.exp > 0) {
-    if (beforeSwitchResults.notes !== 'none') {
-      embedDescription += `✦ <@&${beforeSwitchResults.role}>: ${beforeSwitchResults.notes} (+${beforeSwitchResults.exp})\n`;
-    } else {
-      embedDescription += `✦ <@&${beforeSwitchResults.role}> (+${beforeSwitchResults.exp})\n`;
-    }
+    embedDescription
+      += beforeSwitchResults.notes !== 'none'
+        ? `✦ <@&${beforeSwitchResults.role}>: ${beforeSwitchResults.notes} (+${beforeSwitchResults.exp})\n`
+        : `✦ <@&${beforeSwitchResults.role}> (+${beforeSwitchResults.exp})\n`;
     totalExp += beforeSwitchResults.exp;
   }
   if (localCopyRoles.length > 0) {
@@ -216,26 +215,26 @@ export function roleCheckSwitcher(
     localCopyRoles = localCopyRoles.filter((role) => role !== workingRole);
     const roleFunction = roleFunctions.get(workingRole);
     roleFunction!(ctx, userTarget, workingRole);
-  } else {
-    embedDescription += `\n**Total exp:** ${totalExp}`;
-    resultEmbed.description = `${resultEmbed.description}${embedDescription}`;
-    ctx
-      .editOrRespond({
-        embeds: [resultEmbed],
-      })
-      .then(async () => {
-        await ctx.createMessage({
-          flags: MessageFlags.EPHEMERAL,
-          content: `>award ${userTarget.id} ${totalExp}`,
-        });
-
-        await ctx.createMessage({
-          flags: MessageFlags.EPHEMERAL,
-          content:
-            'Copy paste that command. And a message by <@485962834782453762> should come up like [this](https://i.imgur.com/yQvOAzZ.png)',
-        });
-
-        resetToDefault();
-      });
+    return;
   }
+  embedDescription += `\n**Total exp:** ${totalExp}`;
+  resultEmbed.description = `${resultEmbed.description}${embedDescription}`;
+  ctx
+    .editOrRespond({
+      embeds: [resultEmbed],
+    })
+    .then(async () => {
+      await ctx.createMessage({
+        flags: MessageFlags.EPHEMERAL,
+        content: `>award ${userTarget.id} ${totalExp}`,
+      });
+
+      await ctx.createMessage({
+        flags: MessageFlags.EPHEMERAL,
+        content:
+          'Copy paste that command. And a message by <@485962834782453762> should come up like [this](https://i.imgur.com/yQvOAzZ.png)',
+      });
+
+      resetToDefault();
+    });
 }

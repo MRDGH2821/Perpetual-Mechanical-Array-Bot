@@ -55,19 +55,11 @@ export default new InteractionCommand({
     };
 
     if (reason === 'none') {
-      if (isHorny) {
-        reason = bonk.bonkHornyReason();
-      } else {
-        reason = bonk.bonkReason();
-      }
+      reason = isHorny ? bonk.bonkHornyReason() : bonk.bonkReason();
     }
 
     if (isHorny || bonk.isHorny(reason)) {
-      if (isSelf) {
-        embedMsg.image!.url = bonk.selfHornyBonkGif();
-      } else {
-        embedMsg.image!.url = bonk.hornyBonkGif();
-      }
+      embedMsg.image!.url = isSelf ? bonk.selfHornyBonkGif() : bonk.hornyBonkGif();
     } else {
       embedMsg.image!.url = bonk.bonkGif();
     }

@@ -193,33 +193,33 @@ export default new InteractionCommand({
                   content: 'Ping a mod to get approval!',
                   flags: MessageFlags.EPHEMERAL,
                 });
-              } else {
-                await btnCtx.editOrRespond({
-                  embeds: [verifyEmb],
-                });
+                return;
+              }
+              await btnCtx.editOrRespond({
+                embeds: [verifyEmb],
+              });
 
-                const registration: LeaderboardDBOptions = {
-                  elementCategory: dmgCategory,
-                  proof: args.proof_link!,
-                  score: args.score!,
-                  typeCategory: args.type_category!,
-                  userID: args.contestant?.id!,
-                };
+              const registration: LeaderboardDBOptions = {
+                elementCategory: dmgCategory,
+                proof: args.proof_link!,
+                score: args.score!,
+                typeCategory: args.type_category!,
+                userID: args.contestant?.id!,
+              };
 
-                await db
-                  .collection(`${registration.elementCategory}-${registration.typeCategory}`)
-                  .doc(registration.userID)
-                  .set(registration)
-                  .then(() => console.log('Leaderboard Entry Submitted!'))
-                  .catch((err) => {
-                    console.log('Error while submitting leaderboard entry');
-                    Debugging.leafDebug(err, true);
-                  });
-                PMAEventHandler.emit('leaderboardRefresh', true);
-                proofMsg.react('✅').catch((err) => {
+              await db
+                .collection(`${registration.elementCategory}-${registration.typeCategory}`)
+                .doc(registration.userID)
+                .set(registration)
+                .then(() => console.log('Leaderboard Entry Submitted!'))
+                .catch((err) => {
+                  console.log('Error while submitting leaderboard entry');
                   Debugging.leafDebug(err, true);
                 });
-              }
+              PMAEventHandler.emit('leaderboardRefresh', true);
+              proofMsg.react('✅').catch((err) => {
+                Debugging.leafDebug(err, true);
+              });
             },
           })
           .addButton({

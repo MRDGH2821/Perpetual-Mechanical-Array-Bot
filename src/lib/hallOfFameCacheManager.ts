@@ -135,8 +135,7 @@ function constructField(collection: HallOfFameCrownQuantityCacheType) {
   } else {
     str = `${str}\n*No users found...*`;
   }
-  str = `${str}\n-`;
-  return str;
+  return `${str}\n-`;
 }
 
 export async function showcaseHallOfFameGenerate(element: ELEMENTS) {

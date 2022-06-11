@@ -2,7 +2,7 @@ import { Channel, Webhook } from 'detritus-client/lib/structures';
 import BotEvent from '../../lib/BotEvent';
 import { ICONS } from '../../lib/Constants';
 import db from '../../lib/Firestore';
-import { Debugging, PMAEventHandler } from '../../lib/Utilities';
+import { Debugging } from '../../lib/Utilities';
 
 const log = Debugging.leafDebug;
 
