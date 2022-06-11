@@ -77,8 +77,7 @@ function constructField(collection: SpiralAbyssGroupCacheType) {
   } else {
     str = `${str}\n*No users found...*`;
   }
-  str = `${str}\n-`;
-  return str;
+  return `${str}\n-`;
 }
 
 export async function showcaseSpiralAbyssGenerate(withTraveler: boolean = false) {
@@ -164,39 +163,47 @@ export function isSARefreshComplete(): boolean {
   return process.env.SPIRAL_ABYSS_READY === 'true';
 }
 
-export function publishSANames(withTraveler = false) {
-  const SACache = withTraveler ? spiralAbyssCache.clearTraveler : spiralAbyssCache.clearNormal;
+export function publishSANames(withTraveler = false): Promise<SimpleEmbed[]> {
+  return new Promise((res, rej) => {
+    const SACache = withTraveler ? spiralAbyssCache.clearTraveler : spiralAbyssCache.clearNormal;
 
-  const groupCache = SACache.clone();
+    const groupCache = SACache.clone();
 
-  const chunks = chunkArray(groupCache.toArray(), totalUsers) as SpiralAbyssCacheObject[][];
-  const date = new Date();
+    const chunks = chunkArray(groupCache.toArray(), totalUsers) as SpiralAbyssCacheObject[][];
+    const date = new Date();
 
-  const embeds: SimpleEmbed[] = [];
+    const embeds: SimpleEmbed[] = [];
 
-  chunks.forEach((chunk) => {
-    let value = '';
-    const embed: SimpleEmbed = {
-      title: '**Spiral Abyss Clear Board**',
-      color: COLORS.SPIRAL_ABYSS,
-      thumbnail: { url: ICONS.SPIRAL_ABYSS },
-      description: `Cycle Details: \n${date.getDate() < 16 ? 'Waxing Phase' : 'Waning Phase'} (${
-        date.getMonth() + 1
-      }/${date.getFullYear()}) \nClear Type: ${withTraveler ? 'Traveler Clear' : 'Normal Clear'}`,
-      timestamp: new Date().toISOString(),
-      fields: [],
-      footer: {
-        text: `${chunks.indexOf(chunk) + 1} of ${chunks.length}`,
-      },
-    };
-    chunk.forEach((data) => {
-      value = `${value}\n${data.user.mention} - \`${data.user.tag}\``;
+    chunks.forEach((chunk) => {
+      let value = '';
+      const embed: SimpleEmbed = {
+        title: '**Spiral Abyss Clear Board**',
+        color: COLORS.SPIRAL_ABYSS,
+        thumbnail: { url: ICONS.SPIRAL_ABYSS },
+        description: `Cycle Details: \n${date.getDate() < 16 ? 'Waxing Phase' : 'Waning Phase'} (${
+          date.getMonth() + 1
+        }/${date.getFullYear()}) \nClear Type: ${withTraveler ? 'Traveler Clear' : 'Normal Clear'}`,
+        timestamp: new Date().toISOString(),
+        fields: [],
+        footer: {
+          text: `${chunks.indexOf(chunk) + 1} of ${chunks.length}`,
+        },
+      };
+      chunk.forEach((data) => {
+        value = `${value}\n${data.user.mention} - \`${data.user.tag}\``;
+      });
+      embed.fields?.push({
+        name: '\u200b',
+        value: `${value}\n-`,
+      });
+
+      embeds.push(embed);
     });
-    embed.fields?.push({
-      name: '\u200b',
-      value,
-    });
+
+    if (embeds.length < 1) {
+      rej(new Error('Failed to build embeds'));
+    } else {
+      res(embeds);
+    }
   });
-
-  return embeds;
 }
