@@ -25,12 +25,13 @@ import { Debugging, PMAEventHandler } from './lib/Utilities';
         GatewayIntents.GUILD_MESSAGE_TYPING,
         GatewayIntents.GUILD_WEBHOOKS,
       ],
+      loadAllMembers: true,
     },
     cache: {
-      members: { enabled: true, limit: 500 },
+      members: { enabled: true, limit: 10000 },
       guilds: { enabled: true, limit: 5 },
       roles: { enabled: true, limit: 100 },
-      users: { enabled: true, limit: 500 },
+      users: { enabled: true, limit: 10000 },
     },
   });
 
