@@ -58,8 +58,8 @@ export interface NadekoEmbed {
   url?: string;
   description?: string;
   author?: {
-    name?: 'string';
-    icon_url?: 'string';
+    name?: string;
+    icon_url?: string;
   };
   color?: string;
   footer?: {
