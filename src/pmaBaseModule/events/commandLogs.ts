@@ -35,9 +35,9 @@ export default new BotEvent({
       thumbnail: {
         url: interaction.user.avatarUrl,
       },
-      description: `${interaction.user} in ${
-        interaction.channel
-      } triggered an interaction.\nCommand: ${interaction.data?.toString()}`,
+      description: `${interaction.user.mention} \`${interaction.user.tag}\` in ${
+        interaction.channel?.mention
+      } triggered an interaction.\n\n**Command:** ${interaction.data?.toString()}`,
       timestamp: new Date().toISOString(),
       footer: {
         text: `ID: ${interaction.user.id}`,
