@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionTypes } from 'detritus-client/lib/constants';
+import { ApplicationCommandOptionTypes, MessageFlags } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { TechArgs } from '../../botTypes/interfaces';
 import EnvConfig from '../../lib/EnvConfig';
@@ -37,9 +37,16 @@ export default new InteractionCommand({
       async run(ctx, args: TechArgs) {
         const techId = args.techs;
         const selectedTech = EMC_TECHS.BURST_TECHS.find((tech) => tech.id === techId);
-        ctx.editOrRespond({
-          content: `**${selectedTech?.name}**\n\n${selectedTech?.gif}`,
-        });
+        if (selectedTech !== undefined) {
+          ctx.editOrRespond({
+            content: `**${selectedTech.name}**\n\n${selectedTech.gif}`,
+          });
+        } else {
+          ctx.editOrRespond({
+            content: `Tech named \`${args.techs}\` does not exist`,
+            flags: MessageFlags.EPHEMERAL,
+          });
+        }
       },
     },
     {
