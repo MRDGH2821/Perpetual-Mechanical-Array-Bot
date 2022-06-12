@@ -207,5 +207,36 @@ export default new InteractionCommand({
         await ctx.editOrRespond({ embeds: [resultEmb] });
       },
     },
+    {
+      name: 'help',
+      description: 'Describes how to use this command',
+      type: ApplicationCommandOptionTypes.SUB_COMMAND,
+      async run(ctx) {
+        ctx.editOrRespond({
+          embed: {
+            title: '**Calculator Help**',
+            description: 'Calculator help',
+            color: COLORS.EMBED_COLOR,
+            fields: [
+              {
+                name: '**/calc expression**',
+                value:
+                  'Your regular calculator. Usage is similar to [Math Notepad](https://mathnotepad.com/docs/overview.html). Some features might not be available like variables. This command uses [Math.js](https://mathjs.org/docs/expressions/parsing.html) Evaluate function to solve expressions.',
+              },
+              {
+                name: '**/calc dmg_compare**',
+                value:
+                  'This command allows you to compare two sets based only on three factors, namely Attack, Crit Rate and Crit Damage. \nThis serves as a simple way to compare sets, but is not the only way to evaluate which set is better since other variables (such as external bonuses or buffs) can exist. \nIdeally, you would want a damage value above 4000 for main dps units, and well-invested units tend to reach 5000+ damage values.\n\n**Note:** Damage values might vary in-game.',
+              },
+              {
+                name: '**/calc damage**',
+                value:
+                  'This command allows you to calculate an estimated "damage" that you can achieve from three stats: Attack, Crit Rate and Crit Damage. \nIdeally, you would want a damage value above 4000 for main dps units, and well-invested units tend to reach 5000+ above damage values.\n\n**Note:** Damage values might vary in-game.',
+              },
+            ],
+          },
+        });
+      },
+    },
   ],
 });
