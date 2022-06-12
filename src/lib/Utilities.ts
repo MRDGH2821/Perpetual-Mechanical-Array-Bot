@@ -3,11 +3,17 @@ import { InteractionContext } from 'detritus-client/lib/interaction';
 import { Member } from 'detritus-client/lib/structures';
 import { ComponentContext, PermissionTools } from 'detritus-client/lib/utils';
 import EventEmitter from 'events';
+import https from 'https';
 import {
   NadekoContent, NadekoEmbed, NadekoParseResult, SimpleEmbed,
 } from '../botTypes/interfaces';
 import {
-  CategoryProp, ElementDamageCategories, ElementProp, ELEMENTS,
+  CategoryProp,
+  ElementDamageCategories,
+  ElementProp,
+  ELEMENTS,
+  JokeCategories,
+  OneJokeFormat,
 } from '../botTypes/types';
 import * as Constants from './Constants';
 
@@ -191,7 +197,9 @@ function nadekoEmbedParse(embeds: NadekoContent['embeds']): NadekoParseResult['e
         name: embed.author?.name,
         iconUrl: embed.author?.icon_url,
       },
-      color: embed.color ? parseInt(embed.color.replace('#', '0x'), 16) : undefined,
+      color: embed.color
+        ? parseInt(embed.color.replace('#', '0x'), 16)
+        : Constants.COLORS.EMBED_COLOR,
       description: embed.description,
       footer: {
         text: embed.footer?.text || '\u200b',
@@ -230,4 +238,18 @@ export function extractLinks(str: string) {
     // eslint-disable-next-line no-useless-escape
     /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/,
   );
+}
+
+export function getJoke(category: JokeCategories = 'Any', safeMode = true): Promise<OneJokeFormat> {
+  const safeJokeURL = `https://v2.jokeapi.dev/joke/${category}?blacklistFlags=nsfw,religious,political,racist,sexist,explicit&safe-mode`;
+  const unsafeJokeURL = `https://v2.jokeapi.dev/joke/${category}`;
+
+  return new Promise((resolve, reject) => {
+    const jokeURL = safeMode ? safeJokeURL : unsafeJokeURL;
+
+    https.get(jokeURL, (res) => {
+      res.on('data', (chunk) => resolve(JSON.parse(chunk.toString())));
+      res.on('error', (err) => reject(err));
+    });
+  });
 }

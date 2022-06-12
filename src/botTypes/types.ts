@@ -108,3 +108,32 @@ export type SetSpiralAbyssOptions = {
 export type SpiralAbyssCacheObject = { user: User; data: AbyssDBRegisterObject };
 
 export type SpiralAbyssGroupCacheType = BaseCollection<User['id'], SpiralAbyssCacheObject>;
+
+export type JokeCategories =
+  | 'Programming'
+  | 'Misc'
+  | 'Dark'
+  | 'Pun'
+  | 'Spooky'
+  | 'Christmas'
+  | 'Any';
+
+export type OneJokeFormat = {
+  error: boolean;
+  category: JokeCategories;
+  type: 'twopart' | 'single';
+  joke?: string;
+  setup?: string;
+  delivery?: string;
+  flags: {
+    nsfw: boolean;
+    religious: boolean;
+    political: boolean;
+    racist: boolean;
+    sexist: boolean;
+    explicit: boolean;
+  };
+  id: number;
+  safe: boolean;
+  lang: 'en' | 'cs' | 'de' | 'es' | 'fr' | 'pt';
+};
