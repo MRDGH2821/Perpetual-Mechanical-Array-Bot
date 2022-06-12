@@ -6,6 +6,7 @@ import { ParsedArgs } from 'detritus-client/lib/interaction';
 import {
   Channel, InteractionEditOrRespond, Member, User,
 } from 'detritus-client/lib/structures';
+import { COLORS } from '../lib/Constants';
 
 export interface BotEventOptions {
   event: Constants.ClientEvents | string;
@@ -28,7 +29,9 @@ export interface TechArgs extends ParsedArgs {
   techs?: string;
 }
 
-export interface SimpleEmbed extends RequestTypes.CreateChannelMessageEmbed {}
+export interface SimpleEmbed extends RequestTypes.CreateChannelMessageEmbed {
+  color: COLORS;
+}
 
 export interface LeaderBoardArgs extends ParsedArgs {
   contestant?: User;
