@@ -82,23 +82,35 @@ export default new InteractionCommand({
       ],
       async run(ctx, args: EchoArgs) {
         const { channel, text, embed } = args;
-        try {
-          console.log(embed);
-          const parsedEmbed = new Embed(JSON.parse(embed || '{}'));
-          console.log(parsedEmbed);
 
-          await channel?.createMessage({
-            embeds: [parsedEmbed],
-            content: text,
-          });
-
-          await ctx.editOrRespond({
-            content: 'Sent!',
-            flags: MessageFlags.EPHEMERAL,
-          });
-        } catch (error) {
-          Debugging.leafDebug(error, true);
+        if (embed) {
+          const parsedEmbed = JSON.parse(embed);
+          await channel
+            ?.createMessage({
+              embeds: [parsedEmbed],
+              content: text,
+            })
+            .then(async () => {
+              await ctx.editOrRespond({
+                content: `Sent!\nCheck out ${channel?.mention}`,
+                flags: MessageFlags.EPHEMERAL,
+              });
+            })
+            .catch((err) => {
+              throw new Error(`Input Embed is not in proper format\n${err}`);
+            });
+        } else {
+          throw new Error('Input Embed is undefined');
         }
+      },
+      async onRunError(ctx, args: EchoArgs, error) {
+        await ctx.editOrRespond({
+          content: `An error occurred\n\nError: ${error}`,
+          file: {
+            filename: 'Input_Provided.json',
+            value: args.embed,
+          },
+        });
       },
     },
     {
