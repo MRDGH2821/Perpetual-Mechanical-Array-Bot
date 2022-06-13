@@ -1,12 +1,15 @@
 import { RequestTypes } from 'detritus-client-rest';
-import { ApplicationCommandOptionTypes } from 'detritus-client/lib/constants';
+import {
+  ApplicationCommandOptionTypes,
+  MessageComponentTypes,
+} from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
-import { ComponentActionRow } from 'detritus-client/lib/utils';
+import { ComponentActionRow, ComponentSelectMenuOptionData } from 'detritus-client/lib/utils';
 import { GiveRoleArgs } from '../../botTypes/interfaces';
 import * as Constants from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import { initialiseSwitcher, roleCheckSwitcher } from '../../lib/RoleCheck';
-import { StaffCheck } from '../../lib/Utilities';
+import { Debugging, StaffCheck } from '../../lib/Utilities';
 
 export default new InteractionCommand({
   name: 'give-role',
@@ -75,9 +78,9 @@ export default new InteractionCommand({
           description: `Select Roles to give to <@${args.user?.id}>. The amount of EXP will be calculated in end.`,
           color: Constants.COLORS.EMBED_COLOR,
         };
-
+        console.log('Created 1st page');
         const target = args.user!;
-        const options = [
+        const optionsArr: ComponentSelectMenuOptionData[] = [
           {
             description: 'Completed Spiral Abyss 36/36 & all Spiral abyss achievements',
             emoji: '🌀',
@@ -151,14 +154,16 @@ export default new InteractionCommand({
           if (option.value === Constants.ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR) {
             return true;
           }
-          return !target?.roles.has(option.value);
+          return !target.roles.has(option.value);
         });
-
+        console.log('Created options');
         const rolesSelectMenu = new ComponentActionRow().addSelectMenu({
           customId: 'role_select_menu',
           minValues: 1,
-          options,
-          maxValues: options.length,
+          options: optionsArr,
+          maxValues: optionsArr.length,
+          label: 'role_select_menu',
+          type: MessageComponentTypes.SELECT_MENU,
           async run(menuCtx) {
             const selectedRoles = menuCtx.data.values!;
 
@@ -170,11 +175,15 @@ export default new InteractionCommand({
             });
           },
         });
-
+        console.log('Created select menu');
         await ctx.editOrRespond({
           embeds: [firstPage],
           components: [rolesSelectMenu],
         });
+      },
+      onRunError(context, args, error: Error) {
+        console.log(error.stack);
+        Debugging.leafDebug(error, true);
       },
     },
   ],
