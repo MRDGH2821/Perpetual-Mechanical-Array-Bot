@@ -5,7 +5,6 @@ import {
   ElementDamageCategories,
   ELEMENTS,
   GroupCategoryType,
-  LeaderboardCacheObject,
   LeaderboardDBOptions,
   LeaderboardElementCacheType,
   LeaderboardElementGroupCacheType,
@@ -14,7 +13,7 @@ import {
 import { getShardClient } from './BotClientExtracted';
 import { EleDmgCategoriesArr } from './Constants';
 import db from './Firestore';
-import { categoryProps } from './Utilities';
+import { categoryProps, chunkArray } from './Utilities';
 
 const totalRanks = 7;
 
@@ -238,15 +237,6 @@ export async function showcaseLeaderboardGenerate(dmgCategory: ElementDamageCate
   return leaderboardEmbed;
 }
 
-function chunkArray(array: any[], size: number): any[] {
-  const result = [];
-  const arrayCopy = [...array];
-  while (arrayCopy.length > 0) {
-    result.push(arrayCopy.splice(0, size));
-  }
-  return result;
-}
-
 export async function leaderboardViewGenerate(
   dmgCategory: ElementDamageCategories,
   groupType: GroupCategoryType,
@@ -255,7 +245,7 @@ export async function leaderboardViewGenerate(
 
   const groupCache = elementCache[groupType].clone();
 
-  const chunks = chunkArray(groupCache.toArray(), 10) as LeaderboardCacheObject[][];
+  const chunks = chunkArray(groupCache.toArray(), 10);
 
   const embeds: SimpleEmbed[] = [];
 

@@ -1,7 +1,8 @@
 import { MessageFlags, Permissions } from 'detritus-client/lib/constants';
 import { InteractionContext } from 'detritus-client/lib/interaction';
-import { Member } from 'detritus-client/lib/structures';
+import { Member, User } from 'detritus-client/lib/structures';
 import { ComponentContext, PermissionTools } from 'detritus-client/lib/utils';
+import { BaseCollection } from 'detritus-utils';
 import EventEmitter from 'events';
 import https from 'https';
 import {
@@ -12,8 +13,10 @@ import {
   ElementDamageCategories,
   ElementProp,
   ELEMENTS,
+  HallOfFameCacheObject,
   JokeCategories,
   OneJokeFormat,
+  SpiralAbyssCacheObject,
 } from '../botTypes/types';
 import * as Constants from './Constants';
 
@@ -252,4 +255,36 @@ export function getJoke(category: JokeCategories = 'Any', safeMode = true): Prom
       res.on('error', (err) => reject(err));
     });
   });
+}
+
+export function chunkArray<T>(array: T[], size: number): T[][] {
+  const result = [];
+  const arrayCopy = [...array];
+  while (arrayCopy.length > 0) {
+    result.push(arrayCopy.splice(0, size));
+  }
+  return result;
+}
+
+type V = SpiralAbyssCacheObject | HallOfFameCacheObject;
+
+export function constructField<T extends BaseCollection<User['id'], V>, N extends number>(
+  collection: T,
+  maxLimit: N,
+): string {
+  let str = '';
+
+  const selected: V[] = collection
+    .toArray()
+    .sort(() => Math.random() - 0.5)
+    .slice(0, maxLimit);
+
+  if (selected.length > 0) {
+    selected.forEach((data) => {
+      str = `${str}\n${data.user.mention} \`${data.user.tag}\``;
+    });
+  } else {
+    str = `${str}\n*No users found...*`;
+  }
+  return `${str}\n-`;
 }

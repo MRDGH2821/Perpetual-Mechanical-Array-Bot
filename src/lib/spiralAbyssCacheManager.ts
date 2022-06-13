@@ -10,6 +10,7 @@ import {
 import { getShardClient } from './BotClientExtracted';
 import { COLORS, ICONS } from './Constants';
 import db from './Firestore';
+import { chunkArray, constructField } from './Utilities';
 
 const totalUsers = 20;
 
@@ -62,24 +63,6 @@ export async function setSpiralAbyssData(
   });
 }
 
-function constructField(collection: SpiralAbyssGroupCacheType) {
-  let str = '';
-
-  const selected: SpiralAbyssCacheObject[] = collection
-    .toArray()
-    .sort(() => Math.random() - 0.5)
-    .slice(0, totalUsers);
-
-  if (selected.length > 0) {
-    selected.forEach((data) => {
-      str = `${str}\n${data.user.mention} \`${data.user.tag}\``;
-    });
-  } else {
-    str = `${str}\n*No users found...*`;
-  }
-  return `${str}\n-`;
-}
-
 export async function showcaseSpiralAbyssGenerate(withTraveler: boolean = false) {
   const date = new Date();
 
@@ -99,12 +82,12 @@ export async function showcaseSpiralAbyssGenerate(withTraveler: boolean = false)
   if (!withTraveler) {
     fields.push({
       name: '**Cleared current Spiral Abyss Cycle**',
-      value: constructField(spiralAbyssCache.clearNormal),
+      value: constructField(spiralAbyssCache.clearNormal, totalUsers),
     });
   } else {
     fields.push({
       name: '**Cleared with Traveler**',
-      value: constructField(spiralAbyssCache.clearTraveler),
+      value: constructField(spiralAbyssCache.clearTraveler, totalUsers),
     });
   }
   spiralAbyssEmbed.fields?.concat(fields);
@@ -112,21 +95,12 @@ export async function showcaseSpiralAbyssGenerate(withTraveler: boolean = false)
   return spiralAbyssEmbed;
 }
 
-function chunkArray(array: any[], size: number): any[][] {
-  const result = [];
-  const arrayCopy = [...array];
-  while (arrayCopy.length > 0) {
-    result.push(arrayCopy.splice(0, size));
-  }
-  return result;
-}
-
 export async function spiralAbyssViewGenerate(withTraveler: boolean): Promise<SimpleEmbed[]> {
   const SACache = withTraveler ? spiralAbyssCache.clearTraveler : spiralAbyssCache.clearNormal;
 
   const groupCache = SACache.clone();
 
-  const chunks = chunkArray(groupCache.toArray(), 10) as SpiralAbyssCacheObject[][];
+  const chunks = chunkArray(groupCache.toArray(), 10);
 
   const embeds: SimpleEmbed[] = [];
 

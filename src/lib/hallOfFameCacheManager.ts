@@ -3,7 +3,6 @@ import { BaseCollection } from 'detritus-utils';
 import { SimpleEmbed } from '../botTypes/interfaces';
 import {
   ELEMENTS,
-  HallOfFameCacheObject,
   HallOfFameCrownCacheType,
   HallOfFameCrownQuantityCacheType,
   HallOfFameDBOptions,
@@ -12,7 +11,7 @@ import {
 import { getShardClient } from './BotClientExtracted';
 import { ElementsArr } from './Constants';
 import db from './Firestore';
-import { elementProps } from './Utilities';
+import { chunkArray, constructField, elementProps } from './Utilities';
 
 const totalCrownUsers = 26;
 
@@ -120,24 +119,6 @@ function accessElementCache(element: ELEMENTS): Promise<HallOfFameCrownCacheType
   });
 }
 
-function constructField(collection: HallOfFameCrownQuantityCacheType) {
-  let str = '';
-
-  const selected: HallOfFameCacheObject[] = collection
-    .toArray()
-    .sort(() => Math.random() - 0.5)
-    .slice(0, totalCrownUsers);
-
-  if (selected.length > 0) {
-    selected.forEach((data) => {
-      str = `${str}\n${data.user.mention} \`${data.user.tag}\``;
-    });
-  } else {
-    str = `${str}\n*No users found...*`;
-  }
-  return `${str}\n-`;
-}
-
 export async function showcaseHallOfFameGenerate(element: ELEMENTS) {
   const props = elementProps(element);
 
@@ -157,41 +138,33 @@ export async function showcaseHallOfFameGenerate(element: ELEMENTS) {
   if (!cacheData.two) {
     hallOfFameEmbed.description = `${hallOfFameEmbed.description}\n\n${constructField(
       cacheData.one,
+      totalCrownUsers,
     )}`;
     return hallOfFameEmbed;
   }
 
   fields.push({
     name: '**Single Crowners**',
-    value: constructField(cacheData.one),
+    value: constructField(cacheData.one, totalCrownUsers),
   });
 
   if (cacheData.two) {
     fields.push({
       name: '**Double Crowners**',
-      value: constructField(cacheData.two),
+      value: constructField(cacheData.two, totalCrownUsers),
     });
   }
 
   if (cacheData.three) {
     fields.push({
       name: '**Triple Crowners**',
-      value: constructField(cacheData.three),
+      value: constructField(cacheData.three, totalCrownUsers),
     });
   }
 
   hallOfFameEmbed.fields?.concat(fields);
   // Debugging.leafDebug(leaderboardEmbed, true);
   return hallOfFameEmbed;
-}
-
-function chunkArray(array: any[], size: number): any[] {
-  const result = [];
-  const arrayCopy = [...array];
-  while (arrayCopy.length > 0) {
-    result.push(arrayCopy.splice(0, size));
-  }
-  return result;
 }
 
 export async function hallOfFameViewGenerate(
@@ -206,7 +179,7 @@ export async function hallOfFameViewGenerate(
     throw new Error(`${element} traveler cannot have ${quantity} crowns`);
   }
 
-  const chunks = chunkArray(groupCache.toArray(), 10) as HallOfFameCacheObject[][];
+  const chunks = chunkArray(groupCache.toArray(), 10);
 
   const embeds: SimpleEmbed[] = [];
 
