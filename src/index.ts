@@ -14,6 +14,13 @@ import { Debugging, PMAEventHandler } from './lib/Utilities';
     await esmImporter(path.resolve(__dirname, './spiralAbyssModule/events/')),
   ].flat();
 
+  const botCommands = [
+    await esmImporter(path.resolve(__dirname, './pmaBaseModule/commands/')),
+    await esmImporter(path.resolve(__dirname, './leaderboardModule/commands/')),
+    await esmImporter(path.resolve(__dirname, './hallOfFameModule/commands/')),
+    await esmImporter(path.resolve(__dirname, './spiralAbyssModule/commands/')),
+  ].flat();
+
   const clusterBot = new ClusterClient(EnvConfig.token as string, {
     gateway: {
       intents: [
@@ -32,6 +39,7 @@ import { Debugging, PMAEventHandler } from './lib/Utilities';
       guilds: { enabled: true, limit: 5 },
       roles: { enabled: true, limit: 100 },
       users: { enabled: true, limit: 10000 },
+      emojis: { enabled: true, limit: 10000 },
     },
   });
 
@@ -53,13 +61,11 @@ import { Debugging, PMAEventHandler } from './lib/Utilities';
   await interactionBot.rest.bulkOverwriteApplicationGuildCommands(
     EnvConfig.clientId,
     EnvConfig.guildId,
-    [],
+    botCommands,
   );
-*/
-  await interactionBot.addMultipleIn('./pmaBaseModule/commands/');
-  await interactionBot.addMultipleIn('./leaderboardModule/commands/');
-  await interactionBot.addMultipleIn('./hallOfFameModule/commands/');
-  await interactionBot.addMultipleIn('./spiralAbyssModule/commands/');
+  */
+
+  interactionBot.addMultiple(botCommands);
 
   await interactionBot
     .run()
