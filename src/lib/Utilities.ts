@@ -35,7 +35,7 @@ export namespace Debugging {
   }
 }
 
-export function randomArrPick(array: any[]) {
+export function randomArrPick<T>(array: T[]): T {
   return array[Math.floor(Math.random() * array.length)];
 }
 
