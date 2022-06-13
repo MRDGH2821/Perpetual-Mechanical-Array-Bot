@@ -126,6 +126,7 @@ const reset: InteractionCommandOptionOptions = {
           if (args.remove_roles === true) {
             const announceEmb: SimpleEmbed = {
               title: '**New Enemy Lineup!**',
+              color: COLORS.SPIRAL_ABYSS,
               description: `Enemy Lineup has changed which means Spiral abyss roles are up for grabs!\nSubmit in-game screenshot or Hoyolab profile link or Hoyolab screenshot at <#${ChannelIds.ROLE_APPLICATION}> as a proof to get the role!\n\n(~~Yes roles are removed~~)`,
             };
 
