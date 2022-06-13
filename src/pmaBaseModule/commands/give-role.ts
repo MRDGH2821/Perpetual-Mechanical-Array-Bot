@@ -9,7 +9,7 @@ import { GiveRoleArgs } from '../../botTypes/interfaces';
 import * as Constants from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import { initialiseSwitcher, roleCheckSwitcher } from '../../lib/RoleCheck';
-import { Debugging, StaffCheck } from '../../lib/Utilities';
+import { Debugging, randomArrPick, StaffCheck } from '../../lib/Utilities';
 
 export default new InteractionCommand({
   name: 'give-role',
@@ -73,71 +73,90 @@ export default new InteractionCommand({
         },
       ],
       async run(ctx, args: GiveRoleArgs) {
+        ctx.editOrRespond({
+          embed: {
+            description: 'Loading...',
+          },
+        });
         const firstPage: RequestTypes.CreateChannelMessageEmbed = {
           title: '**Select Roles**',
           description: `Select Roles to give to <@${args.user?.id}>. The amount of EXP will be calculated in end.`,
           color: Constants.COLORS.EMBED_COLOR,
         };
-        console.log('Created 1st page');
+
         const target = args.user!;
+        const roles = await ctx.guild?.fetchRoles();
+        if (!roles) {
+          throw new Error('Fetching roles failed');
+        }
+        const EMOJIS_ARR = ctx.emojis.toArray();
         const optionsArr: ComponentSelectMenuOptionData[] = [
           {
             description: 'Completed Spiral Abyss 36/36 & all Spiral abyss achievements',
             emoji: '🌀',
-            label: ctx.guild?.roles.get(Constants.ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR)?.name,
+            label: roles.get(Constants.ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR)?.name,
             value: Constants.ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR,
           },
           {
             default: target?.roles.has(Constants.ROLE_IDS.REPUTATION.MONDSTADT),
             description: '100% Map + Subregions + Achievements + Max Reputation',
             emoji: '🕊️',
-            label: ctx.guild?.roles.get(Constants.ROLE_IDS.REPUTATION.MONDSTADT)?.name,
+            label: roles.get(Constants.ROLE_IDS.REPUTATION.MONDSTADT)?.name,
             value: Constants.ROLE_IDS.REPUTATION.MONDSTADT,
           },
           {
             default: target?.roles.has(Constants.ROLE_IDS.REPUTATION.LIYUE),
             description: '100% Map + Subregions + Achievements + Max Reputation',
             emoji: '⚖️',
-            label: ctx.guild?.roles.get(Constants.ROLE_IDS.REPUTATION.LIYUE)?.name,
+            label: roles.get(Constants.ROLE_IDS.REPUTATION.LIYUE)?.name,
             value: Constants.ROLE_IDS.REPUTATION.LIYUE,
           },
           {
             default: target?.roles.has(Constants.ROLE_IDS.REPUTATION.INAZUMA),
             description: '100% Map + Subregions + Achievements + Max Reputation',
             emoji: '⛩️',
-            label: ctx.guild?.roles.get(Constants.ROLE_IDS.REPUTATION.INAZUMA)?.name,
+            label: roles.get(Constants.ROLE_IDS.REPUTATION.INAZUMA)?.name,
             value: Constants.ROLE_IDS.REPUTATION.INAZUMA,
           },
           {
             description: 'Crowned their Anemo Traveler',
-            emoji: '🌪️',
-            label: ctx.guild?.roles.get(Constants.ROLE_IDS.CROWN.ANEMO)?.name,
+            emoji:
+              EMOJIS_ARR.find((emoji) => emoji.id === Constants.EMOJIS.Anemo.match(/\d+/gm)![0])
+              || '🌪️',
+            label: roles.get(Constants.ROLE_IDS.CROWN.ANEMO)?.name,
             value: Constants.ROLE_IDS.CROWN.ANEMO,
           },
           {
             description: 'Crowned their Geo Traveler',
-            emoji: '🪨',
-            label: ctx.guild?.roles.get(Constants.ROLE_IDS.CROWN.GEO)?.name,
+            emoji:
+              EMOJIS_ARR.find((emoji) => emoji.id === Constants.EMOJIS.Geo.match(/\d+/gm)![0])
+              || '🪨',
+            label: roles.get(Constants.ROLE_IDS.CROWN.GEO)?.name,
             value: Constants.ROLE_IDS.CROWN.GEO,
           },
           {
             description: 'Crowned their Electro Traveler',
-            emoji: '⚡',
-            label: ctx.guild?.roles.get(Constants.ROLE_IDS.CROWN.ELECTRO)?.name,
+            emoji:
+              EMOJIS_ARR.find(
+                (emoji) => emoji.id === Constants.EMOJIS.Electro.match(/\d+/gm)![0],
+              ) || '⚡',
+            label: roles.get(Constants.ROLE_IDS.CROWN.ELECTRO)?.name,
             value: Constants.ROLE_IDS.CROWN.ELECTRO,
           },
           {
             default: target?.roles.has(Constants.ROLE_IDS.CROWN.UNALIGNED),
             description: 'Crowned their Unaligned Traveler',
-            emoji: '👑',
-            label: ctx.guild?.roles.get(Constants.ROLE_IDS.CROWN.UNALIGNED)?.name,
+            emoji:
+              EMOJIS_ARR.find((emoji) => emoji.id === Constants.EMOJIS.Void.match(/\d+/gm)![0])
+              || '👑',
+            label: roles.get(Constants.ROLE_IDS.CROWN.UNALIGNED)?.name,
             value: Constants.ROLE_IDS.CROWN.UNALIGNED,
           },
           {
             default: target?.roles.has(Constants.ROLE_IDS.OTHERS.WHALE),
             description: 'Spent $1500, or have c6 5* chars or r5 5* weapons',
-            emoji: '💰',
-            label: ctx.guild?.roles.get(Constants.ROLE_IDS.OTHERS.WHALE)?.name,
+            emoji: randomArrPick(['🐋', '🐳', '💰']),
+            label: roles.get(Constants.ROLE_IDS.OTHERS.WHALE)?.name,
             value: Constants.ROLE_IDS.OTHERS.WHALE,
           },
         ].filter((option) => {
@@ -156,7 +175,6 @@ export default new InteractionCommand({
           }
           return !target.roles.has(option.value);
         });
-        console.log('Created options');
         const rolesSelectMenu = new ComponentActionRow().addSelectMenu({
           customId: 'role_select_menu',
           minValues: 1,
@@ -175,16 +193,26 @@ export default new InteractionCommand({
             });
           },
         });
-        console.log('Created select menu');
         await ctx.editOrRespond({
           embeds: [firstPage],
           components: [rolesSelectMenu],
         });
       },
-      onRunError(context, args, error: Error) {
-        console.log(error.stack);
-        Debugging.leafDebug(error, true);
-      },
     },
   ],
+  async onRunError(ctx, args, error: Error) {
+    Debugging.leafDebug(error, true);
+    ctx.editOrRespond({
+      content: `${ctx.owners.first()?.mention}`,
+      embed: {
+        title: '**An Error Occurred**',
+        color: Constants.COLORS.ERROR,
+        description: `An error occurred, error details in the file.\nInput: ${args}`,
+      },
+      file: {
+        value: JSON.stringify(error),
+        filename: 'Give-Role-Error.json',
+      },
+    });
+  },
 });
