@@ -7,7 +7,7 @@ import {
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { Channel } from 'detritus-client/lib/structures';
 import { ComponentActionRow } from 'detritus-client/lib/utils';
-import { ELEMENTS } from '../../botTypes/types';
+import { HALL_OF_FAME_ELEMENT_CHOICES } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import {
   hallOfFameViewGenerate,
@@ -91,24 +91,7 @@ export default new InteractionCommand({
           description: 'Select Element',
           type: ApplicationCommandOptionTypes.STRING,
           required: true,
-          choices: <{ name: string; value: ELEMENTS }[]>[
-            {
-              name: 'Herrscher of Wind (Anemo)',
-              value: 'anemo',
-            },
-            {
-              name: 'Jūnzhǔ of Earth (Geo)',
-              value: 'geo',
-            },
-            {
-              name: "Ten'nō of Thunder (Electro)",
-              value: 'electro',
-            },
-            {
-              name: 'Arbitrator of Fate (Unaligned)',
-              value: 'unaligned',
-            },
-          ],
+          choices: HALL_OF_FAME_ELEMENT_CHOICES,
         },
         {
           name: 'crown_quantity',
@@ -139,24 +122,7 @@ export default new InteractionCommand({
           description: 'Select Element',
           type: ApplicationCommandOptionTypes.STRING,
           required: true,
-          choices: <{ name: string; value: ELEMENTS }[]>[
-            {
-              name: 'Herrscher of Wind (Anemo)',
-              value: 'anemo',
-            },
-            {
-              name: 'Jūnzhǔ of Earth (Geo)',
-              value: 'geo',
-            },
-            {
-              name: "Ten'nō of Thunder (Electro)",
-              value: 'electro',
-            },
-            {
-              name: 'Arbitrator of Fate (Unaligned)',
-              value: 'unaligned',
-            },
-          ],
+          choices: HALL_OF_FAME_ELEMENT_CHOICES,
         },
       ],
       async run(ctx, args) {

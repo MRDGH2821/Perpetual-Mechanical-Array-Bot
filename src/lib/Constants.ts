@@ -210,3 +210,43 @@ export const ABYSS_QUOTES = [
   'https://tenor.com/view/cave-dive-darkness-leap-gif-5803442',
   'https://tenor.com/view/full-bore-and-into-the-abyss-davy-jones-abyss-dark-bore-gif-22332324',
 ];
+
+export const LEADERBOARD_ELE_CATEGORY_CHOICES = <
+  { name: string; value: ElementDamageCategories }[]
+>[
+  {
+    name: 'Anemo: Palm Vortex',
+    value: 'anemo-dmg-skill',
+  },
+  {
+    name: 'Geo: Starfell Sword',
+    value: 'geo-dmg-skill',
+  },
+  {
+    name: 'Electro: Lightening Blade',
+    value: 'electro-dmg-skill',
+  },
+  {
+    name: 'Universal: 5th normal Atk dmg',
+    value: 'uni-dmg-n5',
+  },
+];
+
+export const HALL_OF_FAME_ELEMENT_CHOICES = <{ name: string; value: ELEMENTS }[]>[
+  {
+    name: 'Herrscher of Wind (Anemo)',
+    value: 'anemo',
+  },
+  {
+    name: 'Jūnzhǔ of Earth (Geo)',
+    value: 'geo',
+  },
+  {
+    name: "Ten'nō of Thunder (Electro)",
+    value: 'electro',
+  },
+  {
+    name: 'Arbitrator of Fate (Unaligned)',
+    value: 'unaligned',
+  },
+];

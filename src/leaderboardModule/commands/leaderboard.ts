@@ -14,7 +14,9 @@ import {
   GroupCategoryType,
   LeaderboardDBOptions,
 } from '../../botTypes/types';
-import { ChannelIds, COLORS, ICONS } from '../../lib/Constants';
+import {
+  ChannelIds, COLORS, ICONS, LEADERBOARD_ELE_CATEGORY_CHOICES,
+} from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import db from '../../lib/Firestore';
 import {
@@ -63,24 +65,7 @@ export default new InteractionCommand({
           description: 'Which element was used?',
           type: ApplicationCommandOptionTypes.STRING,
           required: true,
-          choices: <{ name: string; value: ElementDamageCategories }[]>[
-            {
-              name: 'Anemo: Palm Vortex',
-              value: 'anemo-dmg-skill',
-            },
-            {
-              name: 'Geo: Starfell Sword',
-              value: 'geo-dmg-skill',
-            },
-            {
-              name: 'Electro: Lightening Blade',
-              value: 'electro-dmg-skill',
-            },
-            {
-              name: 'Universal: 5th normal Atk dmg',
-              value: 'uni-dmg-n5',
-            },
-          ],
+          choices: LEADERBOARD_ELE_CATEGORY_CHOICES,
         },
         {
           name: 'type_category',
@@ -337,24 +322,7 @@ export default new InteractionCommand({
           description: 'Select category to view',
           type: ApplicationCommandOptionTypes.STRING,
           required: true,
-          choices: <{ name: string; value: ElementDamageCategories }[]>[
-            {
-              name: 'Anemo: Palm Vortex',
-              value: 'anemo-dmg-skill',
-            },
-            {
-              name: 'Geo: Starfell Sword',
-              value: 'geo-dmg-skill',
-            },
-            {
-              name: 'Electro: Lightening Blade',
-              value: 'electro-dmg-skill',
-            },
-            {
-              name: 'Universal: 5th normal Atk dmg',
-              value: 'uni-dmg-n5',
-            },
-          ],
+          choices: LEADERBOARD_ELE_CATEGORY_CHOICES,
         },
       ],
       onBeforeRun(ctx) {
@@ -396,24 +364,7 @@ export default new InteractionCommand({
           description: 'Which element was used?',
           type: ApplicationCommandOptionTypes.STRING,
           required: true,
-          choices: <{ name: string; value: ElementDamageCategories }[]>[
-            {
-              name: 'Anemo: Palm Vortex',
-              value: 'anemo-dmg-skill',
-            },
-            {
-              name: 'Geo: Starfell Sword',
-              value: 'geo-dmg-skill',
-            },
-            {
-              name: 'Electro: Lightening Blade',
-              value: 'electro-dmg-skill',
-            },
-            {
-              name: 'Universal: 5th normal Atk dmg',
-              value: 'uni-dmg-n5',
-            },
-          ],
+          choices: LEADERBOARD_ELE_CATEGORY_CHOICES,
         },
         {
           name: 'type_category',
