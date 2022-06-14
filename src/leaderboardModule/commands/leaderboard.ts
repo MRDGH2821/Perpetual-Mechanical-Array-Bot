@@ -118,6 +118,7 @@ export default new InteractionCommand({
 
         const verifyEmb: SimpleEmbed = {
           title: '**Entry Verification**',
+          color: COLORS.EMBED_COLOR,
           description: `**Contestant**: ${args.contestant?.mention} \`${args.contestant?.tag}\` \n**Category**: ${dmgCategory} \n**Group**: ${args.type_category} \n**Score (i.e. Dmg value)**: ${args.score} \n\n**Proof**: \n${args.proof_link}`,
           fields: [],
           image: {
