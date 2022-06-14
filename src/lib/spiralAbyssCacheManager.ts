@@ -10,7 +10,7 @@ import {
 import { getShardClient } from './BotClientExtracted';
 import { COLORS, ICONS } from './Constants';
 import db from './Firestore';
-import { chunkArray, constructField } from './Utilities';
+import { chunkArray } from './Utilities';
 
 const totalUsers = 20;
 
@@ -61,38 +61,6 @@ export async function setSpiralAbyssData(
       }
     }
   });
-}
-
-export async function showcaseSpiralAbyssGenerate(withTraveler: boolean = false) {
-  const date = new Date();
-
-  const spiralAbyssEmbed: SimpleEmbed = {
-    title: '**Spiral Abyss Clear Board**',
-    color: COLORS.SPIRAL_ABYSS,
-    thumbnail: { url: ICONS.SPIRAL_ABYSS },
-    description: `Cycle Details: \n${date.getDate() < 16 ? 'Waxing Phase' : 'Waning Phase'} (${
-      date.getMonth() + 1
-    }/${date.getFullYear()}) `,
-    timestamp: new Date().toISOString(),
-    fields: [],
-  };
-
-  const fields = spiralAbyssEmbed.fields!;
-
-  if (!withTraveler) {
-    fields.push({
-      name: '**Cleared current Spiral Abyss Cycle**',
-      value: constructField(spiralAbyssCache.clearNormal, totalUsers),
-    });
-  } else {
-    fields.push({
-      name: '**Cleared with Traveler**',
-      value: constructField(spiralAbyssCache.clearTraveler, totalUsers),
-    });
-  }
-  spiralAbyssEmbed.fields?.concat(fields);
-  // Debugging.leafDebug(leaderboardEmbed, true);
-  return spiralAbyssEmbed;
 }
 
 export async function spiralAbyssViewGenerate(withTraveler: boolean): Promise<SimpleEmbed[]> {

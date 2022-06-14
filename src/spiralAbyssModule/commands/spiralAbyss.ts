@@ -8,13 +8,8 @@ import {
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { Channel } from 'detritus-client/lib/structures';
 import { ComponentActionRow } from 'detritus-client/lib/utils';
-import { COLORS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
-import {
-  isSARefreshComplete,
-  showcaseSpiralAbyssGenerate,
-  spiralAbyssViewGenerate,
-} from '../../lib/spiralAbyssCacheManager';
+import { isSARefreshComplete, spiralAbyssViewGenerate } from '../../lib/spiralAbyssCacheManager';
 import { getAbyssQuote, PMAEventHandler, StaffCheck } from '../../lib/Utilities';
 import reset from '../subcommands/reset';
 
@@ -75,42 +70,6 @@ export default new InteractionCommand({
         ctx.editOrRespond({
           content: 'Refresh initiated, please wait for a while before using this command',
           flags: MessageFlags.EPHEMERAL,
-        });
-      },
-    },
-    {
-      name: 'view_summary',
-      description: 'View individual spiral abyss summary',
-      type: ApplicationCommandOptionTypes.SUB_COMMAND,
-      options: [
-        {
-          name: 'with_traveler',
-          description: 'Select category to view',
-          type: ApplicationCommandOptionTypes.BOOLEAN,
-          required: true,
-        },
-      ],
-      async run(ctx, args) {
-        const emb = await showcaseSpiralAbyssGenerate(args.with_traveler);
-
-        ctx.editOrRespond({
-          embed: emb,
-        });
-      },
-
-      onRunError(ctx, args, error) {
-        ctx.editOrRespond({
-          embed: {
-            title: 'An error occurred',
-            color: COLORS.ERROR,
-            description: 'Spiral Abyss board could not be fetched',
-            fields: [
-              {
-                name: '**Error message**',
-                value: `${error || 'Check console'}`,
-              },
-            ],
-          },
         });
       },
     },
