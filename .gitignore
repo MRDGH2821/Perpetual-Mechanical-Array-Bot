@@ -91,3 +91,5 @@ out/*
 offline_db/*
 offline_db_beta/*
 .dependencygraph/*
+report/*
+*.bak
