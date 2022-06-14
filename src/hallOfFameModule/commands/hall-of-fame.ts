@@ -21,6 +21,15 @@ export default new InteractionCommand({
   description: 'Hall of Fame Commands',
   global: false,
   guildIds: [EnvConfig.guildId],
+  onBeforeRun(ctx) {
+    if (!isHoFRefreshComplete()) {
+      ctx.editOrRespond({
+        content: 'Please wait before using this command, refresh is not complete',
+        flags: MessageFlags.EPHEMERAL,
+      });
+    }
+    return isHoFRefreshComplete();
+  },
   options: [
     {
       name: 'setup',
@@ -35,15 +44,8 @@ export default new InteractionCommand({
           channelTypes: [ChannelTypes.GUILD_TEXT],
         },
       ],
-      async onBeforeRun(ctx) {
-        if (!isHoFRefreshComplete()) {
-          ctx.editOrRespond({
-            content: 'Please wait before using this command, refresh is not complete',
-            flags: MessageFlags.EPHEMERAL,
-          });
-        }
-
-        return (await StaffCheck.isCtxStaff(ctx, true)) && isHoFRefreshComplete();
+      onBeforeRun(ctx) {
+        return StaffCheck.isCtxStaff(ctx, true);
       },
       async run(ctx, args) {
         const setupChannel = args.channel as Channel;
@@ -68,15 +70,8 @@ export default new InteractionCommand({
           default: false,
         },
       ],
-      async onBeforeRun(ctx) {
-        if (!isHoFRefreshComplete()) {
-          ctx.editOrRespond({
-            content: 'Please wait before using this command, refresh is not complete',
-            flags: MessageFlags.EPHEMERAL,
-          });
-        }
-
-        return (await StaffCheck.isCtxStaff(ctx, true)) && isHoFRefreshComplete();
+      onBeforeRun(ctx) {
+        return StaffCheck.isCtxStaff(ctx, true);
       },
       async run(ctx, args) {
         PMAEventHandler.emit('hallOfFameRefresh', args.update_hall_of_fame);
@@ -86,7 +81,6 @@ export default new InteractionCommand({
         });
       },
     },
-
     {
       name: 'view_summary',
       description: 'View individual hall of fame summary',
@@ -128,15 +122,6 @@ export default new InteractionCommand({
           ],
         },
       ],
-      onBeforeRun(ctx) {
-        if (!isHoFRefreshComplete()) {
-          ctx.editOrRespond({
-            content: 'Refresh is ongoing, please wait for a while before using this command',
-            flags: MessageFlags.EPHEMERAL,
-          });
-        }
-        return isHoFRefreshComplete();
-      },
       async run(ctx, args) {
         const embed = await showcaseHallOfFameGenerate(args.element);
         await ctx.editOrRespond({
@@ -174,15 +159,6 @@ export default new InteractionCommand({
           ],
         },
       ],
-      onBeforeRun(ctx) {
-        if (!isHoFRefreshComplete()) {
-          ctx.editOrRespond({
-            content: 'Refresh is ongoing, please wait for a while before using this command',
-            flags: MessageFlags.EPHEMERAL,
-          });
-        }
-        return isHoFRefreshComplete();
-      },
       async run(ctx, args) {
         let qty = args.crown_quantity;
         if (args.element === 'unaligned') {

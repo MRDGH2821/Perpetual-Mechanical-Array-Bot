@@ -36,6 +36,16 @@ export default new InteractionCommand({
   description: 'Leaderboard commands',
   global: false,
   guildIds: [EnvConfig.guildId],
+  async onBeforeRun(ctx) {
+    if (!isLBRefreshComplete()) {
+      ctx.editOrRespond({
+        content: 'Please wait before using this command, refresh is not complete',
+        flags: MessageFlags.EPHEMERAL,
+      });
+    }
+
+    return isLBRefreshComplete();
+  },
   options: [
     {
       name: 'register',
@@ -279,15 +289,8 @@ export default new InteractionCommand({
           channelTypes: [ChannelTypes.GUILD_TEXT],
         },
       ],
-      async onBeforeRun(ctx) {
-        if (!isLBRefreshComplete()) {
-          ctx.editOrRespond({
-            content: 'Please wait before using this command, refresh is not complete',
-            flags: MessageFlags.EPHEMERAL,
-          });
-        }
-
-        return (await StaffCheck.isCtxStaff(ctx, true)) && isLBRefreshComplete();
+      onBeforeRun(ctx) {
+        return StaffCheck.isCtxStaff(ctx, true);
       },
       async run(ctx, args) {
         const setupChannel = args.channel as Channel;
@@ -312,15 +315,8 @@ export default new InteractionCommand({
           default: false,
         },
       ],
-      async onBeforeRun(ctx) {
-        if (!isLBRefreshComplete()) {
-          ctx.editOrRespond({
-            content: 'Please wait before using this command, refresh is not complete',
-            flags: MessageFlags.EPHEMERAL,
-          });
-        }
-
-        return (await StaffCheck.isCtxStaff(ctx, true)) && isLBRefreshComplete();
+      onBeforeRun(ctx) {
+        return StaffCheck.isCtxStaff(ctx, true);
       },
       run(ctx, args) {
         PMAEventHandler.emit('leaderboardRefresh', args.update_leaderboard);
@@ -362,13 +358,7 @@ export default new InteractionCommand({
         },
       ],
       onBeforeRun(ctx) {
-        if (!isLBRefreshComplete()) {
-          ctx.editOrRespond({
-            content: 'Refresh is ongoing, please wait for a while before using this command',
-            flags: MessageFlags.EPHEMERAL,
-          });
-        }
-        return isLBRefreshComplete();
+        return StaffCheck.isCtxStaff(ctx, true);
       },
       async run(ctx, args) {
         const emb = await showcaseLeaderboardGenerate(
@@ -436,15 +426,6 @@ export default new InteractionCommand({
           ],
         },
       ],
-      onBeforeRun(ctx) {
-        if (!isLBRefreshComplete()) {
-          ctx.editOrRespond({
-            content: 'Refresh is ongoing, please wait for a while before using this command',
-            flags: MessageFlags.EPHEMERAL,
-          });
-        }
-        return isLBRefreshComplete();
-      },
       async run(ctx, args: LeaderBoardArgs) {
         const leaderboardEmbeds = await leaderboardViewGenerate(
           args.element_category!,
