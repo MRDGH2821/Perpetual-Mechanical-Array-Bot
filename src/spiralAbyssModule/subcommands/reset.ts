@@ -1,7 +1,6 @@
 import {
   ApplicationCommandOptionTypes,
   MessageComponentButtonStyles,
-  MessageFlags,
 } from 'detritus-client/lib/constants';
 import { InteractionCommandOptionOptions } from 'detritus-client/lib/interaction';
 import { Member } from 'detritus-client/lib/structures';
@@ -12,7 +11,6 @@ import {
   ChannelIds, COLORS, ICONS, ROLE_IDS,
 } from '../../lib/Constants';
 import db from '../../lib/Firestore';
-import { isSARefreshComplete } from '../../lib/spiralAbyssCacheManager';
 import { Debugging, PMAEventHandler, StaffCheck } from '../../lib/Utilities';
 
 const reset: InteractionCommandOptionOptions = {
@@ -46,13 +44,7 @@ const reset: InteractionCommandOptionOptions = {
     },
   ],
   async onBeforeRun(ctx) {
-    if (!isSARefreshComplete()) {
-      ctx.editOrRespond({
-        content: 'Please wait before using this command, refresh is not complete',
-        flags: MessageFlags.EPHEMERAL,
-      });
-    }
-    return (await StaffCheck.isCtxStaff(ctx, true)) && isSARefreshComplete();
+    return StaffCheck.isCtxStaff(ctx, true);
   },
   async run(ctx, args) {
     const verifyEmb: SimpleEmbed = {

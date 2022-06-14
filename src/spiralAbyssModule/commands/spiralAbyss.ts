@@ -24,6 +24,15 @@ export default new InteractionCommand({
   global: false,
   guildIds: [EnvConfig.guildId],
   type: ApplicationCommandTypes.CHAT_INPUT,
+  onBeforeRun(ctx) {
+    if (!isSARefreshComplete()) {
+      ctx.editOrRespond({
+        content: 'Refresh is ongoing, please wait for a while before using this command',
+        flags: MessageFlags.EPHEMERAL,
+      });
+    }
+    return isSARefreshComplete();
+  },
   options: [
     {
       name: 'setup',
@@ -39,14 +48,7 @@ export default new InteractionCommand({
         },
       ],
       async onBeforeRun(ctx) {
-        if (!isSARefreshComplete()) {
-          ctx.editOrRespond({
-            content: 'Please wait before using this command, refresh is not complete',
-            flags: MessageFlags.EPHEMERAL,
-          });
-        }
-
-        return (await StaffCheck.isCtxStaff(ctx, true)) && isSARefreshComplete();
+        return StaffCheck.isCtxStaff(ctx, true);
       },
       async run(ctx, args) {
         const setupChannel = args.channel as Channel;
@@ -61,18 +63,11 @@ export default new InteractionCommand({
     },
     {
       name: 'refresh',
-      description: 'Refreshes Spiral Abyss cache & optionally updates Spiral Abyss channel',
+      description: 'Refreshes Spiral Abyss cache',
       type: ApplicationCommandOptionTypes.SUB_COMMAND,
 
       async onBeforeRun(ctx) {
-        if (!isSARefreshComplete()) {
-          ctx.editOrRespond({
-            content: 'Please wait before using this command, refresh is not complete',
-            flags: MessageFlags.EPHEMERAL,
-          });
-        }
-
-        return (await StaffCheck.isCtxStaff(ctx, true)) && isSARefreshComplete();
+        return StaffCheck.isCtxStaff(ctx, true);
       },
       run(ctx) {
         PMAEventHandler.emit('spiralAbyssRefresh');
@@ -95,15 +90,6 @@ export default new InteractionCommand({
           required: true,
         },
       ],
-      onBeforeRun(ctx) {
-        if (!isSARefreshComplete()) {
-          ctx.editOrRespond({
-            content: 'Refresh is ongoing, please wait for a while before using this command',
-            flags: MessageFlags.EPHEMERAL,
-          });
-        }
-        return isSARefreshComplete();
-      },
       async run(ctx, args) {
         const emb = await showcaseSpiralAbyssGenerate(args.with_traveler);
 
@@ -140,15 +126,7 @@ export default new InteractionCommand({
           required: true,
         },
       ],
-      onBeforeRun(ctx) {
-        if (!isSARefreshComplete()) {
-          ctx.editOrRespond({
-            content: 'Refresh is ongoing, please wait for a while before using this command',
-            flags: MessageFlags.EPHEMERAL,
-          });
-        }
-        return isSARefreshComplete();
-      },
+
       async run(ctx, args) {
         const SAEmbeds = await spiralAbyssViewGenerate(args.with_traveler);
 
