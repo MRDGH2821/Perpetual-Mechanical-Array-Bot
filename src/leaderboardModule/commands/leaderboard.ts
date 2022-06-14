@@ -27,10 +27,10 @@ import {
 import {
   Debugging,
   extractLinks,
-  getAbyssQuote,
   PMAEventHandler,
   randomSkillIcon,
   StaffCheck,
+  viewPages,
 } from '../../lib/Utilities';
 
 export default new InteractionCommand({
@@ -383,54 +383,9 @@ export default new InteractionCommand({
           args.type_category!,
         );
 
-        const totalEmbeds = leaderboardEmbeds.length;
-        let currentIndex = 0;
-
-        const viewRow = new ComponentActionRow()
-          .addButton({
-            emoji: '⬅️',
-            label: 'Previous',
-            customId: 'previous',
-            style: MessageComponentButtonStyles.SECONDARY,
-            async run(btnCtx) {
-              if (currentIndex >= 0) {
-                currentIndex -= 1;
-                await btnCtx.editOrRespond({
-                  embed: leaderboardEmbeds[currentIndex],
-                  components: [viewRow],
-                });
-              } else {
-                await btnCtx.editOrRespond({
-                  content: getAbyssQuote(),
-                  components: [viewRow],
-                });
-              }
-            },
-          })
-          .addButton({
-            emoji: '➡️',
-            label: 'Next',
-            customId: 'next',
-            style: MessageComponentButtonStyles.SECONDARY,
-            async run(btnCtx) {
-              if (currentIndex < totalEmbeds) {
-                currentIndex += 1;
-                await btnCtx.editOrRespond({
-                  embed: leaderboardEmbeds[currentIndex],
-                  components: [viewRow],
-                });
-              } else {
-                await btnCtx.editOrRespond({
-                  content: getAbyssQuote(),
-                  components: [viewRow],
-                });
-              }
-            },
-          });
-
         await ctx.editOrRespond({
-          embed: leaderboardEmbeds[currentIndex],
-          components: [viewRow],
+          embed: leaderboardEmbeds[0],
+          components: [viewPages(leaderboardEmbeds)],
         });
       },
     },

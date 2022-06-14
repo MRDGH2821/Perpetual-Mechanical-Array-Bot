@@ -1,8 +1,12 @@
 import { RequestTypes } from 'detritus-client-rest';
-import { MessageFlags, Permissions } from 'detritus-client/lib/constants';
+import {
+  MessageComponentButtonStyles,
+  MessageFlags,
+  Permissions,
+} from 'detritus-client/lib/constants';
 import { InteractionContext } from 'detritus-client/lib/interaction';
 import { InteractionEditOrRespond, Member, User } from 'detritus-client/lib/structures';
-import { ComponentContext, PermissionTools } from 'detritus-client/lib/utils';
+import { ComponentActionRow, ComponentContext, PermissionTools } from 'detritus-client/lib/utils';
 import { BaseCollection } from 'detritus-utils';
 import EventEmitter from 'events';
 import https from 'https';
@@ -317,4 +321,53 @@ export function respondTech(
     content: `Tech named \`${inputTechId}\` does not exist`,
     flags: MessageFlags.EPHEMERAL,
   };
+}
+
+export function viewPages(embeds: SimpleEmbed[]): ComponentActionRow {
+  const totalEmbeds = embeds.length;
+  let currentIndex = 0;
+
+  const viewRow = new ComponentActionRow()
+    .addButton({
+      emoji: '⬅️',
+      label: 'Previous',
+      customId: 'previous',
+      style: MessageComponentButtonStyles.SECONDARY,
+      async run(btnCtx) {
+        if (currentIndex >= 0) {
+          currentIndex -= 1;
+          await btnCtx.editOrRespond({
+            embed: embeds[currentIndex],
+            components: [viewRow],
+          });
+        } else {
+          await btnCtx.editOrRespond({
+            content: getAbyssQuote(),
+            components: [viewRow],
+          });
+        }
+      },
+    })
+    .addButton({
+      emoji: '➡️',
+      label: 'Next',
+      customId: 'next',
+      style: MessageComponentButtonStyles.SECONDARY,
+      async run(btnCtx) {
+        if (currentIndex < totalEmbeds) {
+          currentIndex += 1;
+          await btnCtx.editOrRespond({
+            embed: embeds[currentIndex],
+            components: [viewRow],
+          });
+        } else {
+          await btnCtx.editOrRespond({
+            content: getAbyssQuote(),
+            components: [viewRow],
+          });
+        }
+      },
+    });
+
+  return viewRow;
 }

@@ -1,12 +1,10 @@
 import {
   ApplicationCommandOptionTypes,
   ChannelTypes,
-  MessageComponentButtonStyles,
   MessageFlags,
 } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { Channel } from 'detritus-client/lib/structures';
-import { ComponentActionRow } from 'detritus-client/lib/utils';
 import { HALL_OF_FAME_ELEMENT_CHOICES } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import {
@@ -14,7 +12,7 @@ import {
   isHoFRefreshComplete,
   showcaseHallOfFameGenerate,
 } from '../../lib/hallOfFameCacheManager';
-import { getAbyssQuote, PMAEventHandler, StaffCheck } from '../../lib/Utilities';
+import { PMAEventHandler, StaffCheck, viewPages } from '../../lib/Utilities';
 
 export default new InteractionCommand({
   name: 'hall-of-fame',
@@ -132,54 +130,10 @@ export default new InteractionCommand({
         }
 
         const hallOfFameEmbeds = await hallOfFameViewGenerate(args.element, qty);
-        const totalEmbeds = hallOfFameEmbeds.length;
-        let currentIndex = 0;
-
-        const viewRow = new ComponentActionRow()
-          .addButton({
-            emoji: '⬅️',
-            label: 'Previous',
-            customId: 'previous',
-            style: MessageComponentButtonStyles.SECONDARY,
-            async run(btnCtx) {
-              if (currentIndex >= 0) {
-                currentIndex -= 1;
-                await btnCtx.editOrRespond({
-                  embed: hallOfFameEmbeds[currentIndex],
-                  components: [viewRow],
-                });
-              } else {
-                await btnCtx.editOrRespond({
-                  content: getAbyssQuote(),
-                  components: [viewRow],
-                });
-              }
-            },
-          })
-          .addButton({
-            emoji: '➡️',
-            label: 'Next',
-            customId: 'next',
-            style: MessageComponentButtonStyles.SECONDARY,
-            async run(btnCtx) {
-              if (currentIndex < totalEmbeds) {
-                currentIndex += 1;
-                await btnCtx.editOrRespond({
-                  embed: hallOfFameEmbeds[currentIndex],
-                  components: [viewRow],
-                });
-              } else {
-                await btnCtx.editOrRespond({
-                  content: getAbyssQuote(),
-                  components: [viewRow],
-                });
-              }
-            },
-          });
 
         await ctx.editOrRespond({
-          embed: hallOfFameEmbeds[currentIndex],
-          components: [viewRow],
+          embed: hallOfFameEmbeds[0],
+          components: [viewPages(hallOfFameEmbeds)],
         });
       },
     },

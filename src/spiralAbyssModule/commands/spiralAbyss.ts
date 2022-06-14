@@ -2,15 +2,13 @@ import {
   ApplicationCommandOptionTypes,
   ApplicationCommandTypes,
   ChannelTypes,
-  MessageComponentButtonStyles,
   MessageFlags,
 } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { Channel } from 'detritus-client/lib/structures';
-import { ComponentActionRow } from 'detritus-client/lib/utils';
 import EnvConfig from '../../lib/EnvConfig';
 import { isSARefreshComplete, spiralAbyssViewGenerate } from '../../lib/spiralAbyssCacheManager';
-import { getAbyssQuote, PMAEventHandler, StaffCheck } from '../../lib/Utilities';
+import { PMAEventHandler, StaffCheck, viewPages } from '../../lib/Utilities';
 import reset from '../subcommands/reset';
 
 export default new InteractionCommand({
@@ -89,54 +87,9 @@ export default new InteractionCommand({
       async run(ctx, args) {
         const SAEmbeds = await spiralAbyssViewGenerate(args.with_traveler);
 
-        const totalEmbeds = SAEmbeds.length;
-        let currentIndex = 0;
-
-        const viewRow = new ComponentActionRow()
-          .addButton({
-            emoji: '⬅️',
-            label: 'Previous',
-            customId: 'previous',
-            style: MessageComponentButtonStyles.SECONDARY,
-            async run(btnCtx) {
-              if (currentIndex >= 0) {
-                currentIndex -= 1;
-                await btnCtx.editOrRespond({
-                  embed: SAEmbeds[currentIndex],
-                  components: [viewRow],
-                });
-              } else {
-                await btnCtx.editOrRespond({
-                  content: getAbyssQuote(),
-                  components: [viewRow],
-                });
-              }
-            },
-          })
-          .addButton({
-            emoji: '➡️',
-            label: 'Next',
-            customId: 'next',
-            style: MessageComponentButtonStyles.SECONDARY,
-            async run(btnCtx) {
-              if (currentIndex < totalEmbeds) {
-                currentIndex += 1;
-                await btnCtx.editOrRespond({
-                  embed: SAEmbeds[currentIndex],
-                  components: [viewRow],
-                });
-              } else {
-                await btnCtx.editOrRespond({
-                  content: getAbyssQuote(),
-                  components: [viewRow],
-                });
-              }
-            },
-          });
-
         await ctx.editOrRespond({
-          embed: SAEmbeds[currentIndex],
-          components: [viewRow],
+          embed: SAEmbeds[0],
+          components: [viewPages(SAEmbeds)],
         });
       },
     },
