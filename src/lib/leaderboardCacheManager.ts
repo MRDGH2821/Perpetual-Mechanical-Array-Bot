@@ -137,6 +137,56 @@ function accessElementCache(
   });
 }
 
+function constructRanks(
+  groupCache: LeaderboardElementGroupCacheType,
+  groupType: GroupCategoryType,
+) {
+  const fields: SimpleEmbed['fields'] = [];
+  let rank = 1;
+  let topPeople = '';
+
+  const groupTitle = groupType.charAt(0).toUpperCase() + groupType.slice(1);
+  groupCache.every((dataCache) => {
+    topPeople = `${topPeople}\n${rank}. \`${dataCache.user.tag}\` - [${dataCache.data.score}](${dataCache.data.proof})`;
+    if (groupCache.size > totalRanks) {
+      if (rank === totalRanks) {
+        const field = {
+          inline: true,
+          name: `**${groupTitle} Category Top 1-${totalRanks}**`,
+          value: `${topPeople} \n-`,
+        };
+        fields.push(field);
+        topPeople = '';
+      } else if (rank === totalRanks * 2 || rank === groupCache.size) {
+        const field = {
+          inline: true,
+          name: `**${groupTitle} Category Top ${totalRanks + 1}-${totalRanks * 2}**`,
+          value: `${topPeople} \n-`,
+        };
+        fields.push(field);
+        // fields.push({ name: '\u200b', value: dashLines });
+        topPeople = '';
+        return false;
+      }
+    }
+    if (rank === groupCache.size) {
+      const field = {
+        name: `**${groupTitle} Category Top 1-${totalRanks}**`,
+        value: `${topPeople} \n-`,
+      };
+      fields.push(field);
+      // fields.push({ name: '\u200b', value: dashLines });
+      topPeople = '';
+
+      return false;
+    }
+
+    rank += 1;
+    return true;
+  });
+  return fields;
+}
+
 export async function showcaseLeaderboardGenerate(dmgCategory: ElementDamageCategories) {
   const props = categoryProps(dmgCategory);
 
@@ -153,87 +203,15 @@ export async function showcaseLeaderboardGenerate(dmgCategory: ElementDamageCate
 
   const cacheData = await accessElementCache(dmgCategory);
 
-  let topOpen = '';
-  let topSolo = '';
-  let rank = 1;
-  cacheData.open.every((dataCache) => {
-    topOpen = `${topOpen}\n${rank}. \`${dataCache.user.tag}\` - [${dataCache.data.score}](${dataCache.data.proof})`;
-    if (cacheData.open.size > totalRanks) {
-      if (rank === totalRanks) {
-        const field = {
-          inline: true,
-          name: `**Open Category Top 1-${totalRanks}**`,
-          value: `${topOpen} \n-`,
-        };
-        fields.push(field);
-        topOpen = '';
-      } else if (rank === totalRanks * 2 || rank === cacheData.open.size) {
-        const field = {
-          inline: true,
-          name: `**Open Category Top ${totalRanks + 1}-${totalRanks * 2}**`,
-          value: `${topOpen} \n-`,
-        };
-        fields.push(field);
-        fields.push({ name: '\u200b', value: '\u200b' });
-        topOpen = '';
-        return false;
-      }
-    }
-    if (rank === cacheData.open.size) {
-      const field = {
-        name: `**Open Category Top 1-${totalRanks}**`,
-        value: `${topOpen} \n-`,
-      };
-      fields.push(field);
-      fields.push({ name: '\u200b', value: '\u200b' });
-      topOpen = '';
+  const dashLines = '\u200b';
+  // dash lines which were rejected. First one is suited for mobile, 2nd one for PC
+  // '--------------------------------------------------';
+  // '----------------------------------------------------------------------------';
 
-      return false;
-    }
+  fields.push(...constructRanks(cacheData.open, 'open'));
+  fields.push({ name: '\u200b', value: dashLines });
+  fields.push(...constructRanks(cacheData.solo, 'solo'));
 
-    rank += 1;
-    return true;
-  });
-  rank = 1;
-  cacheData.solo.every((dataCache) => {
-    topSolo = `${topSolo}\n${rank}. \`${dataCache.user.tag}\` - [${dataCache.data.score}](${dataCache.data.proof})`;
-    if (cacheData.solo.size > totalRanks) {
-      if (rank === totalRanks) {
-        const field = {
-          inline: true,
-          name: `**Solo Category Top 1-${totalRanks}**`,
-          value: `${topSolo} \n-`,
-        };
-        fields.push(field);
-        topSolo = '';
-      } else if (rank === totalRanks * 2 || rank === cacheData.solo.size) {
-        const field = {
-          inline: true,
-          name: `**Solo Category Top ${totalRanks + 1}-${totalRanks * 2}**`,
-          value: `${topSolo} \n-`,
-        };
-        fields.push(field);
-        topSolo = '';
-        return false;
-      }
-    }
-    if (rank === cacheData.solo.size) {
-      const field = {
-        name: `**Solo Category Top 1-${totalRanks}**`,
-        value: `${topSolo} \n-`,
-      };
-      fields.push(field);
-      fields.push({ name: '\u200b', value: '\u200b' });
-      topSolo = '';
-
-      return false;
-    }
-    rank += 1;
-    return true;
-  });
-
-  leaderboardEmbed.fields?.concat(fields);
-  // Debugging.leafDebug(leaderboardEmbed, true);
   return leaderboardEmbed;
 }
 
