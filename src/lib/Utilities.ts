@@ -120,7 +120,7 @@ export function elementProps(element: ELEMENTS): ElementProp {
       return {
         icon: Constants.ICONS.STARFELL_SWORD_LUMINE,
         name: 'Jūnzhǔ of Earth',
-        crown: '*Shockwaves underneath your feet!*',
+        crown: '*Shock waves underneath your feet!*',
         color: Constants.COLORS.GEO,
         emoji: Constants.EMOJIS.Geo,
       };
@@ -139,7 +139,7 @@ export function elementProps(element: ELEMENTS): ElementProp {
         icon: Constants.ICONS.VOID,
         name: 'Arbitrator of Fate',
         crown:
-          '*These people are the true & attentive MC Mains...*\n\nThey went extra mile to crown Unaligned Traveler in Archon Quest Chapter 2: Prologue Autumn Winds, Scarlet Leaves\n\n***Never** Question their Hardwork, Dedication ~~& Mora..~~*',
+          '*These people are the true & attentive MC Mains...*\n\nThey went extra mile to crown Unaligned Traveler in Archon Quest Chapter 2: Prologue Autumn Winds, Scarlet Leaves\n\n***Never** Question their Hard work, Dedication ~~& Mora..~~*',
         color: Constants.COLORS.UNALIGNED,
         emoji: Constants.EMOJIS.Void,
       };
