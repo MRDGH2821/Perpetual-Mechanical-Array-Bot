@@ -9,7 +9,7 @@
     "start": "node out/index.js",
     "monitor": "nodemon src/index.ts --trace-warnings",
     "lint": "eslint . --fix --ignore-path .gitignore ",
-    "pretty": "prettier . --write",
+    "pretty": "prettier . --write --ignore-path .gitignore",
     "postpretty": "npm run lint",
     "pm2:prod": "pm2 startOrRestart pma-bot.config.cjs --env prod",
     "build": "tsc && tsc-alias",
