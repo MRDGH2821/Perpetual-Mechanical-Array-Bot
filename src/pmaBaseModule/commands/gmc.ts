@@ -1,8 +1,9 @@
-import { ApplicationCommandOptionTypes, MessageFlags } from 'detritus-client/lib/constants';
+import { ApplicationCommandOptionTypes } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { TechArgs } from '../../botTypes/interfaces';
 import EnvConfig from '../../lib/EnvConfig';
 import { GMC_TECHS } from '../../lib/TravelerTechnologies';
+import { autoCompleteTech, respondTech } from '../../lib/Utilities';
 
 export default new InteractionCommand({
   name: 'gmc',
@@ -21,32 +22,14 @@ export default new InteractionCommand({
           type: ApplicationCommandOptionTypes.STRING,
           required: true,
           onAutoComplete(ctx) {
-            const inputVal = ctx.value.toLowerCase();
-            const choiceArr = GMC_TECHS.SKILL_TECHS;
-            const values = choiceArr.filter((tech) => tech.name.toLowerCase().includes(inputVal));
-
-            const choices = values.map((tech) => ({
-              name: tech.name,
-              value: tech.id,
-            }));
-
-            ctx.respond({ choices });
+            ctx.respond({
+              choices: autoCompleteTech(ctx.value.toLowerCase(), GMC_TECHS.SKILL_TECHS),
+            });
           },
         },
       ],
       async run(ctx, args: TechArgs) {
-        const techId = args.techs;
-        const selectedTech = GMC_TECHS.SKILL_TECHS.find((tech) => tech.id === techId);
-        if (selectedTech !== undefined) {
-          ctx.editOrRespond({
-            content: `**${selectedTech.name}**\n\n${selectedTech.gif}`,
-          });
-        } else {
-          ctx.editOrRespond({
-            content: `Tech named \`${args.techs}\` does not exist`,
-            flags: MessageFlags.EPHEMERAL,
-          });
-        }
+        ctx.editOrRespond(respondTech(args.techs!, GMC_TECHS.SKILL_TECHS));
       },
     },
     {
@@ -60,32 +43,14 @@ export default new InteractionCommand({
           type: ApplicationCommandOptionTypes.STRING,
           required: true,
           onAutoComplete(ctx) {
-            const inputVal = ctx.value.toLowerCase();
-            const choiceArr = GMC_TECHS.BURST_TECHS;
-            const values = choiceArr.filter((tech) => tech.name.toLowerCase().includes(inputVal));
-
-            const choices = values.map((tech) => ({
-              name: tech.name,
-              value: tech.id,
-            }));
-
-            ctx.respond({ choices });
+            ctx.respond({
+              choices: autoCompleteTech(ctx.value.toLowerCase(), GMC_TECHS.BURST_TECHS),
+            });
           },
         },
       ],
       async run(ctx, args: TechArgs) {
-        const techId = args.techs;
-        const selectedTech = GMC_TECHS.BURST_TECHS.find((tech) => tech.id === techId);
-        if (selectedTech !== undefined) {
-          ctx.editOrRespond({
-            content: `**${selectedTech.name}**\n\n${selectedTech.gif}`,
-          });
-        } else {
-          ctx.editOrRespond({
-            content: `Tech named \`${args.techs}\` does not exist`,
-            flags: MessageFlags.EPHEMERAL,
-          });
-        }
+        ctx.editOrRespond(respondTech(args.techs!, GMC_TECHS.BURST_TECHS));
       },
     },
     {

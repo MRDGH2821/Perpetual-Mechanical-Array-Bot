@@ -1,6 +1,7 @@
+import { RequestTypes } from 'detritus-client-rest';
 import { MessageFlags, Permissions } from 'detritus-client/lib/constants';
 import { InteractionContext } from 'detritus-client/lib/interaction';
-import { Member, User } from 'detritus-client/lib/structures';
+import { InteractionEditOrRespond, Member, User } from 'detritus-client/lib/structures';
 import { ComponentContext, PermissionTools } from 'detritus-client/lib/utils';
 import { BaseCollection } from 'detritus-utils';
 import EventEmitter from 'events';
@@ -19,6 +20,7 @@ import {
   SpiralAbyssCacheObject,
 } from '../botTypes/types';
 import * as Constants from './Constants';
+import { AMC_TECHS } from './TravelerTechnologies';
 
 export const PMAEventHandler = new EventEmitter();
 
@@ -287,4 +289,32 @@ export function constructField<T extends BaseCollection<User['id'], V>, N extend
     str = `${str}\n*No users found...*`;
   }
   return `${str}\n-`;
+}
+
+export function autoCompleteTech(
+  inputVal: string,
+  choiceArr: typeof AMC_TECHS['BURST_TECHS'],
+): RequestTypes.CreateInteractionResponseInnerPayload['choices'] {
+  const values = choiceArr.filter((tech) => tech.name.toLowerCase().includes(inputVal));
+
+  return values.map((tech) => ({
+    name: tech.name,
+    value: tech.id,
+  }));
+}
+
+export function respondTech(
+  inputTechId: string,
+  choiceArr: typeof AMC_TECHS['BURST_TECHS'],
+): InteractionEditOrRespond {
+  const selectedTech = choiceArr.find((tech) => tech.id === inputTechId);
+  if (selectedTech !== undefined) {
+    return {
+      content: `**${selectedTech.name}**\n\n${selectedTech.gif}`,
+    };
+  }
+  return {
+    content: `Tech named \`${inputTechId}\` does not exist`,
+    flags: MessageFlags.EPHEMERAL,
+  };
 }
