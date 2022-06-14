@@ -14,7 +14,10 @@
     "pm2:prod": "pm2 startOrRestart pma-bot.config.cjs --env prod",
     "build": "tsc && tsc-alias",
     "emulator": "firebase emulators:start --import ./offline_db_beta --export-on-exit ./offline_db",
-    "dev": "run-p -n emulator monitor"
+    "dev": "run-p -n emulator monitor",
+    "prelint:mega": "node clean.mjs report",
+    "lint:mega": "npx mega-linter-runner",
+    "postlint:mega": "npm run pretty"
   },
   "repository": {
     "type": "git",
