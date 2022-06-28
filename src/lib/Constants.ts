@@ -49,6 +49,7 @@ export enum ICONS {
   CHECK_MARK = 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/282/check-mark-button_2705.png',
   CROSS_MARK = 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/282/cross-mark_274c.png',
   MASANORI = 'https://cdn.discordapp.com/attachments/825749528275189760/954657244157452348/250.png',
+  TROPHY = 'https://whatemoji.org/wp-content/uploads/2020/07/Trophy-Emoji.png',
 }
 
 export enum COLORS {
