@@ -1,9 +1,11 @@
-import { COLORS } from '@lib/Constants';
-import EnvConfig from '@lib/EnvConfig';
 import { RequestTypes } from 'detritus-client-rest';
 import { ApplicationCommandOptionTypes } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
-import math, { parse } from 'mathjs';
+import {
+  abs, parse, print, round,
+} from 'mathjs';
+import { COLORS } from '../../lib/Constants';
+import EnvConfig from '../../lib/EnvConfig';
 
 const dmgExp = parse('atk * (1 + ( (cRate/100)*(cDmg/100) ) )');
 const dmgFormula = dmgExp.compile();
@@ -11,7 +13,7 @@ export default new InteractionCommand({
   name: 'calc',
   description: 'Calculates stuff',
   global: false,
-  guildIds: [EnvConfig.guildId as string],
+  guildIds: [EnvConfig.guildId],
   options: [
     {
       name: 'expression',
@@ -30,13 +32,11 @@ export default new InteractionCommand({
           title: '**Result**',
           color: COLORS.EMBED_COLOR,
         };
-
         const { expr } = args;
-
         if (expr.includes('\\')) {
           resultEmb.description = `Please check your expression. \nDo not put back slash or unrecognisable symbols\n\nInput: \`${expr}\``;
         } else {
-          const output = math.parse(expr).evaluate();
+          const output = parse(expr).evaluate();
           resultEmb.description = `**\`${expr}\`** = **\`${output}\`**`;
         }
 
@@ -76,11 +76,11 @@ export default new InteractionCommand({
           cDmg,
           cRate,
         });
-        const result = math.print('$atk * (1 + ($cr% * $cd%)) = **$res**', {
+        const result = print('$atk * (1 + ($cr% * $cd%)) = **$res**', {
           atk,
           cd: cDmg,
           cr: cRate,
-          res: math.round(dmgOutput, 2),
+          res: round(dmgOutput, 2),
         });
         const resultEmb: RequestTypes.CreateChannelMessageEmbed = {
           title: '**Damage Calculator**',
@@ -103,7 +103,7 @@ export default new InteractionCommand({
       },
     },
     {
-      name: 'damage',
+      name: 'dmg_compare',
       description: 'Calculates damage of your character',
       type: ApplicationCommandOptionTypes.SUB_COMMAND,
       options: [
@@ -164,16 +164,16 @@ export default new InteractionCommand({
           cRate: cRate2,
         });
 
-        const preferredCent = math.parse(' ( top / bot ) * 100').evaluate({
+        const preferredCent = parse(' ( top / bot ) * 100').evaluate({
           bot: (dmg1 + dmg2) / 2,
-          top: math.abs(dmg1 - dmg2),
+          top: abs(dmg1 - dmg2),
         });
 
         let preferred = 'Any set should do';
         if (dmg1 > dmg2) {
-          preferred = `First Set preferred (+${math.round(preferredCent, 2)}%)`;
+          preferred = `First Set preferred (+${round(preferredCent, 2)}%)`;
         } else if (dmg1 < dmg2) {
-          preferred = `Second Set preferred (+${math.round(preferredCent, 2)}%)`;
+          preferred = `Second Set preferred (+${round(preferredCent, 2)}%)`;
         } else {
           preferred = 'Any set should do';
         }
@@ -184,7 +184,7 @@ export default new InteractionCommand({
           fields: [
             {
               name: '**First Set**',
-              value: `Attack: \`${atk1}\` \nCrit Rate: \`${cRate1}%\` \nCrit Damage: \`${cDmg1}%\` \n\nResult: ${math.round(
+              value: `Attack: \`${atk1}\` \nCrit Rate: \`${cRate1}%\` \nCrit Damage: \`${cDmg1}%\` \n\nResult: ${round(
                 dmg1,
                 2,
               )}`,
@@ -192,7 +192,7 @@ export default new InteractionCommand({
             },
             {
               name: '**Second Set**',
-              value: `Attack: \`${atk2}\` \nCrit Rate: \`${cRate2}%\` \nCrit Damage: \`${cDmg2}%\` \n\nResult: ${math.round(
+              value: `Attack: \`${atk2}\` \nCrit Rate: \`${cRate2}%\` \nCrit Damage: \`${cDmg2}%\` \n\nResult: ${round(
                 dmg2,
                 2,
               )}`,
@@ -205,6 +205,37 @@ export default new InteractionCommand({
         };
 
         await ctx.editOrRespond({ embeds: [resultEmb] });
+      },
+    },
+    {
+      name: 'help',
+      description: 'Describes how to use this command',
+      type: ApplicationCommandOptionTypes.SUB_COMMAND,
+      async run(ctx) {
+        ctx.editOrRespond({
+          embed: {
+            title: '**Calculator Help**',
+            description: 'Calculator help',
+            color: COLORS.EMBED_COLOR,
+            fields: [
+              {
+                name: '**/calc expression**',
+                value:
+                  'Your regular calculator. Usage is similar to [Math Notepad](https://mathnotepad.com/docs/overview.html). Some features might not be available like variables. This command uses [Math.js](https://mathjs.org/docs/expressions/parsing.html) Evaluate function to solve expressions.',
+              },
+              {
+                name: '**/calc dmg_compare**',
+                value:
+                  'This command allows you to compare two sets based only on three factors, namely Attack, Crit Rate and Crit Damage. \nThis serves as a simple way to compare sets, but is not the only way to evaluate which set is better since other variables (such as external bonuses or buffs) can exist. \nIdeally, you would want a damage value above 4000 for main dps units, and well-invested units tend to reach 5000+ damage values.\n\n**Note:** Damage values might vary in-game.',
+              },
+              {
+                name: '**/calc damage**',
+                value:
+                  'This command allows you to calculate an estimated "damage" that you can achieve from three stats: Attack, Crit Rate and Crit Damage. \nIdeally, you would want a damage value above 4000 for main dps units, and well-invested units tend to reach 5000+ above damage values.\n\n**Note:** Damage values might vary in-game.',
+              },
+            ],
+          },
+        });
       },
     },
   ],

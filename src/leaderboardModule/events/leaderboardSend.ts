@@ -1,20 +1,33 @@
-import { IEvent, SimpleEmbed } from '@bot-types/interfaces';
-import { ChannelIds, COLORS } from '@lib/Constants';
-import db from '@lib/Firestore';
-import { showcaseLeaderboardGenerate } from '@lib/leaderboardManager';
 import { Webhook } from 'detritus-client/lib/structures';
+import { SimpleEmbed } from '../../botTypes/interfaces';
+import BotEvent from '../../lib/BotEvent';
+import { ChannelIds, COLORS } from '../../lib/Constants';
+import db from '../../lib/Firestore';
+import { PMAEventHandler } from '../../lib/Utilities';
 
-const leaderboardSend: IEvent = {
+export default new BotEvent({
   event: 'leaderboardSend',
   on: true,
   async listener(webhook: Webhook) {
-    const anemoSkillBoard = await showcaseLeaderboardGenerate('anemo-dmg-skill');
+    const anemoSkillBoard: SimpleEmbed = {
+      title: 'Anemo placeholder',
+      description: 'Will be updated soon',
+    };
 
-    const geoSkillBoard = await showcaseLeaderboardGenerate('geo-dmg-skill');
+    const geoSkillBoard: SimpleEmbed = {
+      title: 'Geo placeholder',
+      description: 'Will be updated soon',
+    };
 
-    const electroSkillBoard = await showcaseLeaderboardGenerate('electro-dmg-skill');
+    const electroSkillBoard: SimpleEmbed = {
+      title: 'Electro placeholder',
+      description: 'Will be updated soon',
+    };
 
-    const uniSkillBoard = await showcaseLeaderboardGenerate('uni-dmg-n5');
+    const uniSkillBoard: SimpleEmbed = {
+      title: 'Universal placeholder',
+      description: 'Will be updated soon',
+    };
 
     const information: SimpleEmbed = {
       color: COLORS.EMBED_COLOR,
@@ -41,34 +54,30 @@ const leaderboardSend: IEvent = {
 
     await webhook.createMessage({ embed: information });
 
-    await db
-      .collection('leaderboards')
-      .doc('anemo-dmg-skill')
-      .set({
-        messageID: (await webhook.createMessage({ embed: anemoSkillBoard }))?.id,
+    await webhook.createMessage({ embed: anemoSkillBoard, wait: true }).then((message) => {
+      db.collection('leaderboards').doc('anemo-dmg-skill').set({
+        messageID: message?.id,
       });
+    });
 
-    await db
-      .collection('leaderboards')
-      .doc('geo-dmg-skill')
-      .set({
-        messageID: (await webhook.createMessage({ embed: geoSkillBoard }))?.id,
+    await webhook.createMessage({ embed: geoSkillBoard, wait: true }).then((message) => {
+      db.collection('leaderboards').doc('geo-dmg-skill').set({
+        messageID: message?.id,
       });
+    });
 
-    await db
-      .collection('leaderboards')
-      .doc('electro-dmg-skill')
-      .set({
-        messageID: (await webhook.createMessage({ embed: electroSkillBoard }))?.id,
+    await webhook.createMessage({ embed: electroSkillBoard, wait: true }).then((message) => {
+      db.collection('leaderboards').doc('electro-dmg-skill').set({
+        messageID: message?.id,
       });
+    });
 
-    await db
-      .collection('leaderboards')
-      .doc('uni-dmg-n5')
-      .set({
-        messageID: (await webhook.createMessage({ embed: uniSkillBoard }))?.id,
+    await webhook.createMessage({ embed: uniSkillBoard, wait: true }).then((message) => {
+      db.collection('leaderboards').doc('uni-dmg-n5').set({
+        messageID: message?.id,
       });
+    });
+
+    PMAEventHandler.emit('leaderboardUpdate');
   },
-};
-
-export default leaderboardSend;
+});

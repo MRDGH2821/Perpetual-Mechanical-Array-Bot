@@ -1,7 +1,7 @@
 {
   "extends": ["eslint-config-airbnb-base", "eslint-config-airbnb-typescript/base"],
   "parserOptions": {
-    "project": ["./tsconfig.json", "./tsconfig.eslint.json"]
+    "project": ["tsconfig.json", "tsconfig.eslint.json"]
   },
   "rules": {
     "no-console": "off"

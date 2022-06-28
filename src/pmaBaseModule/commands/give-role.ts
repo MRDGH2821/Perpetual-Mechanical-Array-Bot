@@ -1,22 +1,24 @@
-import { GiveRoleArgs } from '@bot-types/interfaces';
-import {
-  ACH_ROLES, COLORS, EMOJIS, ROLE_IDS
-} from '@lib/Constants';
-import EnvConfig from '@lib/EnvConfig';
-import { initialiseSwitcher, roleCheckSwitcher } from '@lib/RoleCheck';
-import { StaffCheck } from '@lib/Utilities';
 import { RequestTypes } from 'detritus-client-rest';
-import { ApplicationCommandOptionTypes, MessageFlags } from 'detritus-client/lib/constants';
+import {
+  ApplicationCommandOptionTypes,
+  MessageComponentTypes,
+} from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
-import { Member } from 'detritus-client/lib/structures';
-import { ComponentActionRow } from 'detritus-client/lib/utils';
+import { ComponentActionRow, ComponentSelectMenuOptionData } from 'detritus-client/lib/utils';
+import { GiveRoleArgs } from '../../botTypes/interfaces';
+import * as Constants from '../../lib/Constants';
+import EnvConfig from '../../lib/EnvConfig';
+import { initialiseSwitcher, roleCheckSwitcher } from '../../lib/RoleCheck';
+import { Debugging, randomArrPick, StaffCheck } from '../../lib/Utilities';
 
 export default new InteractionCommand({
   name: 'give-role',
   description: 'Gives role to selected user',
   global: false,
-  guildIds: [EnvConfig.guildId as string],
-
+  guildIds: [EnvConfig.guildId],
+  onBeforeRun(ctx) {
+    return StaffCheck.isCtxStaff(ctx, true);
+  },
   options: [
     {
       name: 'one',
@@ -36,7 +38,7 @@ export default new InteractionCommand({
           required: true,
           async onAutoComplete(ctx) {
             const input = ctx.value.toLowerCase();
-            const values = ACH_ROLES.filter((r) => r.name.toLowerCase().includes(input));
+            const values = Constants.ACH_ROLES.filter((r) => r.name.toLowerCase().includes(input));
 
             const choices = values.map((role) => ({
               name: role.name,
@@ -47,20 +49,6 @@ export default new InteractionCommand({
           },
         },
       ],
-
-      async onBefore(ctx) {
-        const canGib = StaffCheck.canGibRole(ctx.member as Member);
-
-        if (!canGib) {
-          await ctx.editOrRespond({
-            content: `You cannot give roles to anyone, not even to yourself ${EMOJIS.PepeKekPoint}`,
-            flags: MessageFlags.EPHEMERAL,
-          });
-          return false;
-        }
-        return true;
-      },
-
       async run(ctx, args: GiveRoleArgs) {
         const selectedRoles = [args.role!];
 
@@ -68,7 +56,7 @@ export default new InteractionCommand({
         roleCheckSwitcher(ctx, {
           exp: -1,
           notes: 'none',
-          role: ROLE_IDS.OTHERS.ARCHONS,
+          role: Constants.ROLE_IDS.OTHERS.ARCHONS,
         });
       },
     },
@@ -84,105 +72,116 @@ export default new InteractionCommand({
           required: true,
         },
       ],
-      async onBefore(ctx) {
-        const canGib = StaffCheck.canGibRole(ctx.member as Member);
-
-        if (!canGib) {
-          await ctx.editOrRespond({
-            content: `You cannot give roles to anyone, not even to yourself ${EMOJIS.PepeKekPoint}`,
-            flags: MessageFlags.EPHEMERAL,
-          });
-          return false;
-        }
-        return true;
-      },
-
       async run(ctx, args: GiveRoleArgs) {
+        ctx.editOrRespond({
+          embed: {
+            description: 'Loading...',
+          },
+        });
         const firstPage: RequestTypes.CreateChannelMessageEmbed = {
           title: '**Select Roles**',
           description: `Select Roles to give to <@${args.user?.id}>. The amount of EXP will be calculated in end.`,
-          color: COLORS.EMBED_COLOR,
+          color: Constants.COLORS.EMBED_COLOR,
         };
 
         const target = args.user!;
-        const options = [
+        const roles = await ctx.guild?.fetchRoles();
+        if (!roles) {
+          throw new Error('Fetching roles failed');
+        }
+        const EMOJIS_ARR = ctx.emojis.toArray();
+        const optionsArr: ComponentSelectMenuOptionData[] = [
           {
             description: 'Completed Spiral Abyss 36/36 & all Spiral abyss achievements',
             emoji: '🌀',
-            label: ctx.guild?.roles.get(ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR)?.name,
-            value: ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR,
+            label: roles.get(Constants.ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR)?.name,
+            value: Constants.ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR,
           },
           {
-            default: target?.roles.has(ROLE_IDS.REPUTATION.MONDSTADT),
+            default: target?.roles.has(Constants.ROLE_IDS.REPUTATION.MONDSTADT),
             description: '100% Map + Subregions + Achievements + Max Reputation',
             emoji: '🕊️',
-            label: ctx.guild?.roles.get(ROLE_IDS.REPUTATION.MONDSTADT)?.name,
-            value: ROLE_IDS.REPUTATION.MONDSTADT,
+            label: roles.get(Constants.ROLE_IDS.REPUTATION.MONDSTADT)?.name,
+            value: Constants.ROLE_IDS.REPUTATION.MONDSTADT,
           },
           {
-            default: target?.roles.has(ROLE_IDS.REPUTATION.LIYUE),
+            default: target?.roles.has(Constants.ROLE_IDS.REPUTATION.LIYUE),
             description: '100% Map + Subregions + Achievements + Max Reputation',
             emoji: '⚖️',
-            label: ctx.guild?.roles.get(ROLE_IDS.REPUTATION.LIYUE)?.name,
-            value: ROLE_IDS.REPUTATION.LIYUE,
+            label: roles.get(Constants.ROLE_IDS.REPUTATION.LIYUE)?.name,
+            value: Constants.ROLE_IDS.REPUTATION.LIYUE,
           },
           {
-            default: target?.roles.has(ROLE_IDS.REPUTATION.INAZUMA),
+            default: target?.roles.has(Constants.ROLE_IDS.REPUTATION.INAZUMA),
             description: '100% Map + Subregions + Achievements + Max Reputation',
             emoji: '⛩️',
-            label: ctx.guild?.roles.get(ROLE_IDS.REPUTATION.INAZUMA)?.name,
-            value: ROLE_IDS.REPUTATION.INAZUMA,
+            label: roles.get(Constants.ROLE_IDS.REPUTATION.INAZUMA)?.name,
+            value: Constants.ROLE_IDS.REPUTATION.INAZUMA,
           },
           {
             description: 'Crowned their Anemo Traveler',
-            emoji: '🌪️',
-            label: ctx.guild?.roles.get(ROLE_IDS.CROWN.ANEMO)?.name,
-            value: ROLE_IDS.CROWN.ANEMO,
+            emoji:
+              EMOJIS_ARR.find((emoji) => emoji.id === Constants.EMOJIS.Anemo.match(/\d+/gm)![0])
+              || '🌪️',
+            label: roles.get(Constants.ROLE_IDS.CROWN.ANEMO)?.name,
+            value: Constants.ROLE_IDS.CROWN.ANEMO,
           },
           {
             description: 'Crowned their Geo Traveler',
-            emoji: '🪨',
-            label: ctx.guild?.roles.get(ROLE_IDS.CROWN.GEO)?.name,
-            value: ROLE_IDS.CROWN.GEO,
+            emoji:
+              EMOJIS_ARR.find((emoji) => emoji.id === Constants.EMOJIS.Geo.match(/\d+/gm)![0])
+              || '🪨',
+            label: roles.get(Constants.ROLE_IDS.CROWN.GEO)?.name,
+            value: Constants.ROLE_IDS.CROWN.GEO,
           },
           {
             description: 'Crowned their Electro Traveler',
-            emoji: '⚡',
-            label: ctx.guild?.roles.get(ROLE_IDS.CROWN.ELECTRO)?.name,
-            value: ROLE_IDS.CROWN.ELECTRO,
+            emoji:
+              EMOJIS_ARR.find(
+                (emoji) => emoji.id === Constants.EMOJIS.Electro.match(/\d+/gm)![0],
+              ) || '⚡',
+            label: roles.get(Constants.ROLE_IDS.CROWN.ELECTRO)?.name,
+            value: Constants.ROLE_IDS.CROWN.ELECTRO,
           },
           {
-            default: target?.roles.has(ROLE_IDS.CROWN.UNALIGNED),
+            default: target?.roles.has(Constants.ROLE_IDS.CROWN.UNALIGNED),
             description: 'Crowned their Unaligned Traveler',
-            emoji: '👑',
-            label: ctx.guild?.roles.get(ROLE_IDS.CROWN.UNALIGNED)?.name,
-            value: ROLE_IDS.CROWN.UNALIGNED,
+            emoji:
+              EMOJIS_ARR.find((emoji) => emoji.id === Constants.EMOJIS.Void.match(/\d+/gm)![0])
+              || '👑',
+            label: roles.get(Constants.ROLE_IDS.CROWN.UNALIGNED)?.name,
+            value: Constants.ROLE_IDS.CROWN.UNALIGNED,
           },
           {
-            default: target?.roles.has(ROLE_IDS.OTHERS.WHALE),
+            default: target?.roles.has(Constants.ROLE_IDS.OTHERS.WHALE),
             description: 'Spent $1500, or have c6 5* chars or r5 5* weapons',
-            emoji: '💰',
-            label: ctx.guild?.roles.get(ROLE_IDS.OTHERS.WHALE)?.name,
-            value: ROLE_IDS.OTHERS.WHALE,
+            emoji: randomArrPick(['🐋', '🐳', '💰']),
+            label: roles.get(Constants.ROLE_IDS.OTHERS.WHALE)?.name,
+            value: Constants.ROLE_IDS.OTHERS.WHALE,
           },
         ].filter((option) => {
-          if (Object.values(ROLE_IDS.CROWN).includes(option.value as ROLE_IDS.CROWN)) {
-            if (option.value === ROLE_IDS.CROWN.UNALIGNED && option.default === true) {
+          if (
+            Object.values(Constants.ROLE_IDS.CROWN).includes(
+              option.value as Constants.ROLE_IDS.CROWN,
+            )
+          ) {
+            if (option.value === Constants.ROLE_IDS.CROWN.UNALIGNED && option.default === true) {
               return false;
             }
             return true;
           }
-          if (option.value === ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR) {
+          if (option.value === Constants.ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR) {
             return true;
           }
-          return !target?.roles.has(option.value);
+          return !target.roles.has(option.value);
         });
-
         const rolesSelectMenu = new ComponentActionRow().addSelectMenu({
           customId: 'role_select_menu',
           minValues: 1,
-          options,
-          maxValues: options.length,
+          options: optionsArr,
+          maxValues: optionsArr.length,
+          label: 'role_select_menu',
+          type: MessageComponentTypes.SELECT_MENU,
           async run(menuCtx) {
             const selectedRoles = menuCtx.data.values!;
 
@@ -190,11 +189,10 @@ export default new InteractionCommand({
             roleCheckSwitcher(menuCtx, {
               exp: -1,
               notes: 'none',
-              role: ROLE_IDS.OTHERS.ARCHONS,
+              role: Constants.ROLE_IDS.OTHERS.ARCHONS,
             });
           },
         });
-
         await ctx.editOrRespond({
           embeds: [firstPage],
           components: [rolesSelectMenu],
@@ -202,4 +200,19 @@ export default new InteractionCommand({
       },
     },
   ],
+  async onRunError(ctx, args, error: Error) {
+    Debugging.leafDebug(error, true);
+    ctx.editOrRespond({
+      content: `${ctx.owners.first()?.mention}`,
+      embed: {
+        title: '**An Error Occurred**',
+        color: Constants.COLORS.ERROR,
+        description: `An error occurred, error details in the file.\nInput: ${args}`,
+      },
+      file: {
+        value: JSON.stringify(error),
+        filename: 'Give-Role-Error.json',
+      },
+    });
+  },
 });

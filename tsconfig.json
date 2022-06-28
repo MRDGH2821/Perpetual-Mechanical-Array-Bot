@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
     "allowJs": false,
-    "baseUrl": "src/",
+    "baseUrl": "./src",
     "declaration": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "importHelpers": true,
     "inlineSources": true,
     "lib": ["ES2019", "DOM", "ESNext"],
-    "module": "commonjs",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "noImplicitAny": true,
     "noImplicitReturns": true,
@@ -18,20 +18,14 @@
     "strictNullChecks": true,
     "target": "ESNext",
     "resolveJsonModule": true,
-    "watch": false,
-    "paths": {
-      "@bot-types/*": ["botTypes/*"],
-      "@lib/*": ["lib/*"],
-      "@pma-module/*": ["pmaBaseModule/*"],
-      "@leaderboard-module/*": ["leaderboardModule/*"]
-    }
+    "watch": false
   },
   "ts-node": {
     "require": ["tsconfig-paths/register"],
     "swc": true
   },
   "tsc-alias": {
-    "verbose": false
+    "resolveFullPaths": true
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", ".vscode", "./old-src", "./out/*"]

@@ -88,3 +88,8 @@ already-old/
 src/lib/firebase-service-acc/*.json
 old-src/*
 out/*
+offline_db/*
+offline_db_beta/*
+.dependencygraph/*
+report/*
+*.bak

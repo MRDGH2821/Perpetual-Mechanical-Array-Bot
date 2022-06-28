@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import { AfterRoleCheck, GiveRoleArgs, SimpleEmbed } from '@bot-types/interfaces';
-import { COLORS, ROLE_IDS } from '@lib/Constants';
 import { BaseCollection } from 'detritus-client/lib/collections';
 import { MessageComponentButtonStyles, MessageFlags } from 'detritus-client/lib/constants';
 import { InteractionContext } from 'detritus-client/lib/interaction';
 import { Member } from 'detritus-client/lib/structures';
 import { ComponentActionRow, ComponentContext } from 'detritus-client/lib/utils';
+import { AfterRoleCheck, GiveRoleArgs, SimpleEmbed } from '../botTypes/interfaces';
+import { COLORS, ROLE_IDS } from './Constants';
+import { PMAEventHandler } from './Utilities';
 
 const toGiveRoles: string[] = [];
 const awardedRoles: string[] = [];
@@ -35,7 +36,11 @@ export function initialiseSwitcher(selectedRoles: string[], originalCtxArgs: Giv
   resultEmbed.description += `The following roles have been assigned to <@${userTarget.id}>:\n`;
 }
 
-function reputationCheck(ctx: InteractionContext, target: Member, repRole: ROLE_IDS.REPUTATION) {
+function reputationCheck(
+  ctx: InteractionContext,
+  target: Member,
+  repRole: typeof ROLE_IDS.REPUTATION[keyof typeof ROLE_IDS.REPUTATION],
+) {
   target.addRole(repRole);
   const result: AfterRoleCheck = {
     exp: 250,
@@ -45,7 +50,11 @@ function reputationCheck(ctx: InteractionContext, target: Member, repRole: ROLE_
   roleCheckSwitcher(ctx, result);
 }
 
-function whaleRoleCheck(ctx: InteractionContext, target: Member, role?: ROLE_IDS.OTHERS.WHALE) {
+function whaleRoleCheck(
+  ctx: InteractionContext,
+  target: Member,
+  role?: typeof ROLE_IDS.OTHERS.WHALE,
+) {
   target.addRole(ROLE_IDS.OTHERS.WHALE || (role as string));
   const result = { exp: 250, notes: 'none', role: ROLE_IDS.OTHERS.WHALE };
   roleCheckSwitcher(ctx, result);
@@ -54,7 +63,7 @@ function whaleRoleCheck(ctx: InteractionContext, target: Member, role?: ROLE_IDS
 function nonEleCrownCheck(
   ctx: InteractionContext,
   target: Member,
-  role?: ROLE_IDS.CROWN.UNALIGNED,
+  role?: typeof ROLE_IDS.CROWN.UNALIGNED,
 ) {
   target.addRole(ROLE_IDS.CROWN.UNALIGNED || (role as string));
   const result = {
@@ -62,13 +71,14 @@ function nonEleCrownCheck(
     notes: 'Paid attention to the game!',
     role: ROLE_IDS.CROWN.UNALIGNED,
   };
+  PMAEventHandler.emit('crownRegister', target, { quantity: 1, crownID: ROLE_IDS.CROWN.UNALIGNED });
   roleCheckSwitcher(ctx, result);
 }
 
 async function abyssRoleCheck(
   ctx: InteractionContext,
   target: Member,
-  roleC?: ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR,
+  roleC?: typeof ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR,
 ) {
   const abyssRole = ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR || roleC!;
   const result: AfterRoleCheck = {
@@ -86,6 +96,7 @@ async function abyssRoleCheck(
       run(btnCtx) {
         result.exp = 250;
         target.addRole(abyssRole);
+        PMAEventHandler.emit('abyssRegister', target, false);
         roleCheckSwitcher(btnCtx, result);
       },
     })
@@ -98,6 +109,7 @@ async function abyssRoleCheck(
         result.exp = 500;
         result.notes = 'Cleared with Traveler!';
         target.addRole(abyssRole);
+        PMAEventHandler.emit('abyssRegister', target, false);
         roleCheckSwitcher(btnCtx, result);
       },
     });
@@ -114,7 +126,11 @@ async function abyssRoleCheck(
   });
 }
 
-async function crownCheck(ctx: InteractionContext, target: Member, crownRole: ROLE_IDS.CROWN) {
+async function crownCheck(
+  ctx: InteractionContext,
+  target: Member,
+  crownRole: typeof ROLE_IDS.CROWN[keyof typeof ROLE_IDS.CROWN],
+) {
   const result: AfterRoleCheck = {
     exp: 0,
     notes: 'none',
@@ -130,6 +146,7 @@ async function crownCheck(ctx: InteractionContext, target: Member, crownRole: RO
         result.exp = 250;
         result.notes = '1 crowns';
         target.addRole(crownRole);
+        PMAEventHandler.emit('crownRegister', target, { quantity: 1, crownID: crownRole });
         roleCheckSwitcher(btnCtx, result);
       },
     })
@@ -141,6 +158,7 @@ async function crownCheck(ctx: InteractionContext, target: Member, crownRole: RO
         result.exp = 250 * 2;
         result.notes = '2 crowns';
         target.addRole(crownRole);
+        PMAEventHandler.emit('crownRegister', target, { quantity: 2, crownID: crownRole });
         roleCheckSwitcher(btnCtx, result);
       },
     })
@@ -152,6 +170,7 @@ async function crownCheck(ctx: InteractionContext, target: Member, crownRole: RO
         result.exp = 250 * 2 * 3;
         result.notes = '3 crowns';
         target.addRole(crownRole);
+        PMAEventHandler.emit('crownRegister', target, { quantity: 3, crownID: crownRole });
         roleCheckSwitcher(btnCtx, result);
       },
     });
@@ -184,11 +203,10 @@ export function roleCheckSwitcher(
   beforeSwitchResults: AfterRoleCheck,
 ) {
   if (beforeSwitchResults.exp > 0) {
-    if (beforeSwitchResults.notes !== 'none') {
-      embedDescription += `✦ <@&${beforeSwitchResults.role}>: ${beforeSwitchResults.notes} (+${beforeSwitchResults.exp})\n`;
-    } else {
-      embedDescription += `✦ <@&${beforeSwitchResults.role}> (+${beforeSwitchResults.exp})\n`;
-    }
+    embedDescription
+      += beforeSwitchResults.notes !== 'none'
+        ? `✦ <@&${beforeSwitchResults.role}>: ${beforeSwitchResults.notes} (+${beforeSwitchResults.exp})\n`
+        : `✦ <@&${beforeSwitchResults.role}> (+${beforeSwitchResults.exp})\n`;
     totalExp += beforeSwitchResults.exp;
   }
   if (localCopyRoles.length > 0) {
@@ -197,26 +215,26 @@ export function roleCheckSwitcher(
     localCopyRoles = localCopyRoles.filter((role) => role !== workingRole);
     const roleFunction = roleFunctions.get(workingRole);
     roleFunction!(ctx, userTarget, workingRole);
-  } else {
-    embedDescription += `\n**Total exp:** ${totalExp}`;
-    resultEmbed.description = `${resultEmbed.description}${embedDescription}`;
-    ctx
-      .editOrRespond({
-        embeds: [resultEmbed],
-      })
-      .then(async () => {
-        await ctx.createMessage({
-          flags: MessageFlags.EPHEMERAL,
-          content: `>award ${userTarget.id} ${totalExp}`,
-        });
-
-        await ctx.createMessage({
-          flags: MessageFlags.EPHEMERAL,
-          content:
-            'Copy paste that command. And a message by <@485962834782453762> should come up like [this](https://i.imgur.com/yQvOAzZ.png)',
-        });
-
-        resetToDefault();
-      });
+    return;
   }
+  embedDescription += `\n**Total exp:** ${totalExp}`;
+  resultEmbed.description = `${resultEmbed.description}${embedDescription}`;
+  ctx
+    .editOrRespond({
+      embeds: [resultEmbed],
+    })
+    .then(async () => {
+      await ctx.createMessage({
+        flags: MessageFlags.EPHEMERAL,
+        content: `>award ${userTarget.id} ${totalExp}`,
+      });
+
+      await ctx.createMessage({
+        flags: MessageFlags.EPHEMERAL,
+        content:
+          'Copy paste that command. And a message by <@485962834782453762> should come up like [this](https://i.imgur.com/yQvOAzZ.png)',
+      });
+
+      resetToDefault();
+    });
 }

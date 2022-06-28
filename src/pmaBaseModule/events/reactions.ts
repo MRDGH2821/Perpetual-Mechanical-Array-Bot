@@ -1,18 +1,18 @@
-import { IEvent } from '@bot-types/interfaces';
-import BonkUtilities from '@lib/BonkUtilities';
-import { EMOJIS } from '@lib/Constants';
-import EnvConfig from '@lib/EnvConfig';
-import { Debugging, randomArrPick } from '@lib/Utilities';
 import { GatewayClientEvents } from 'detritus-client';
 import { ClientEvents } from 'detritus-client/lib/constants';
+import BonkUtilities from '../../lib/BonkUtilities';
+import BotEvent from '../../lib/BotEvent';
+import { EMOJIS } from '../../lib/Constants';
+import EnvConfig from '../../lib/EnvConfig';
+import { Debugging, randomArrPick } from '../../lib/Utilities';
 
-const reactions: IEvent = {
+export default new BotEvent({
   event: ClientEvents.MESSAGE_CREATE,
   async listener(payload: GatewayClientEvents.MessageCreate) {
     const { message } = payload;
     const msg = message.content;
 
-    const bonk = new BonkUtilities();
+    const bonk = new BonkUtilities(msg);
 
     function reactEmoji(emoji: string) {
       try {
@@ -29,8 +29,6 @@ const reactions: IEvent = {
         Debugging.leafDebug(err);
       }
     }
-
-    bonk.BonkUtilities(msg);
 
     if (/\b(c+o+o+k+i+e+s*)\b|🍪|🥠/gimu.test(msg)) {
       const cookies = ['🥠', '🍪'];
@@ -101,7 +99,11 @@ const reactions: IEvent = {
 
       reactEmoji(randomArrPick(emotes));
     }
-  },
-};
 
-export default reactions;
+    if (/(<@263408665539641344>)/gimu.test(msg)) {
+      const emotes = ['💀', '☠️', '🦴'];
+
+      reactEmoji(randomArrPick(emotes));
+    }
+  },
+});

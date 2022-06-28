@@ -1,5 +1,6 @@
-import { ElementCategories } from '@bot-types/types';
 import { Colors, Snowflake } from 'detritus-client/lib/constants';
+// eslint-disable-next-line import/no-cycle
+import { ElementDamageCategories, ELEMENTS } from '../botTypes/types';
 
 function formatEmoji(EmojiSnowflake: Snowflake) {
   return `<:_:${EmojiSnowflake}>`;
@@ -17,11 +18,22 @@ export enum TravelerTypes {
   UNALIGNED = 'Unaligned Traveler',
 }
 
-export const DmgCategoryTypes: ElementCategories[] = [
+export const EleDmgCategoriesArr: ElementDamageCategories[] = [
   'anemo-dmg-skill',
   'geo-dmg-skill',
   'electro-dmg-skill',
   'uni-dmg-n5',
+];
+
+export const ElementsArr: ELEMENTS[] = [
+  'anemo',
+  'cryo',
+  'dendro',
+  'electro',
+  'geo',
+  'hydro',
+  'pyro',
+  'unaligned',
 ];
 
 export enum ICONS {
@@ -37,6 +49,7 @@ export enum ICONS {
   CHECK_MARK = 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/282/check-mark-button_2705.png',
   CROSS_MARK = 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/282/cross-mark_274c.png',
   MASANORI = 'https://cdn.discordapp.com/attachments/825749528275189760/954657244157452348/250.png',
+  TROPHY = 'https://whatemoji.org/wp-content/uploads/2020/07/Trophy-Emoji.png',
 }
 
 export enum COLORS {
@@ -50,6 +63,7 @@ export enum COLORS {
   UNIVERSAL = 0xfffffd,
   ERROR = 0xff0033,
   SUCCESS = 0x00c455,
+  SPIRAL_ABYSS = 0x4d00f0,
 }
 
 export const EMOJIS = {
@@ -71,6 +85,14 @@ export const EMOJIS = {
   LumineMAD_REEE: formatEmoji('814814997196308491'),
   LuminePanic: formatEmoji('814883112998666241'),
   TarouAngy: formatEmoji('854040153555468329'),
+  Anemo: formatEmoji('803516622772895764'),
+  Geo: formatEmoji('803516612430135326'),
+  Electro: formatEmoji('803516644923146260'),
+  Dendro: formatEmoji('803516669984505856'),
+  Hydro: formatEmoji('803516313782714378'),
+  Pyro: formatEmoji('803516441424822303'),
+  Cryo: formatEmoji('803516632735154177'),
+  Void: formatEmoji('983370274227499050'),
 };
 
 export enum ChannelIds {
@@ -81,6 +103,8 @@ export enum ChannelIds {
   MUSIC_BOT_SPAM = '803534858189668372',
   PING_CELESTIA = '841941486034878464',
   SHOWCASE = '876121506680287263',
+  ROLE_APPLICATION = '804590144052002817',
+  SPIRAL_ABYSS = '804183774589485126',
 }
 
 export namespace STAFF {
@@ -111,6 +135,7 @@ export namespace ROLE_IDS {
     ARCHONS = '813613841488936971',
     ABYSSAL_CONQUEROR = '804225878685908992',
     WHALE = '804010525411246140',
+    ANOTHER_TEST_SUBJECT = '984388373693210635',
   }
 
   export enum REPUTATION {
@@ -172,3 +197,57 @@ const OTHER_ROLES = [
 ];
 
 export const ACH_ROLES = [REP_ROLES, OTHER_ROLES, CROWN_ROLES].flat();
+
+export const ABYSS_QUOTES = [
+  '*You stare into the abyss and you feel some presence staring over you*',
+  '*Darkness beseech upon the emptiness of the void, howling and yet nothing calls back*',
+  '*The path of the Copium ends here, Your journey has come to an end*',
+  '*The darkness breaks upon the dawning night, the night sky bleaks upon the emptiness*',
+  '*Well.. thats it folks*',
+  '*When you stare into the Abyss*\n*The Abyss stars back at you*',
+  'https://tenor.com/view/john-cena-cena-are-you-sure-are-you-sure-about-that-are-you-sure-about-that-meme-gif-23133134',
+  'https://tenor.com/view/staring-into-space-gif-8743533',
+  'https://tenor.com/view/stare-into-the-abyss-the-grinch-jim-carrey-how-the-grinch-stole-christmas-stare-into-nothingness-gif-18820322',
+  'https://tenor.com/view/cave-dive-darkness-leap-gif-5803442',
+  'https://tenor.com/view/full-bore-and-into-the-abyss-davy-jones-abyss-dark-bore-gif-22332324',
+];
+
+export const LEADERBOARD_ELE_CATEGORY_CHOICES = <
+  { name: string; value: ElementDamageCategories }[]
+>[
+  {
+    name: 'Anemo: Palm Vortex',
+    value: 'anemo-dmg-skill',
+  },
+  {
+    name: 'Geo: Starfell Sword',
+    value: 'geo-dmg-skill',
+  },
+  {
+    name: 'Electro: Lightening Blade',
+    value: 'electro-dmg-skill',
+  },
+  {
+    name: 'Universal: 5th normal Atk dmg',
+    value: 'uni-dmg-n5',
+  },
+];
+
+export const HALL_OF_FAME_ELEMENT_CHOICES = <{ name: string; value: ELEMENTS }[]>[
+  {
+    name: 'Herrscher of Wind (Anemo)',
+    value: 'anemo',
+  },
+  {
+    name: 'Jūnzhǔ of Earth (Geo)',
+    value: 'geo',
+  },
+  {
+    name: "Ten'nō of Thunder (Electro)",
+    value: 'electro',
+  },
+  {
+    name: 'Arbitrator of Fate (Unaligned)',
+    value: 'unaligned',
+  },
+];

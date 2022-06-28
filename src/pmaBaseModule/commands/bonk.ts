@@ -1,15 +1,15 @@
-import BonkUtilities from '@lib/BonkUtilities';
-import { COLORS } from '@lib/Constants';
-import EnvConfig from '@lib/EnvConfig';
 import { RequestTypes } from 'detritus-client-rest';
 import { ApplicationCommandOptionTypes } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
+import BonkUtilities from '../../lib/BonkUtilities';
+import { COLORS } from '../../lib/Constants';
+import EnvConfig from '../../lib/EnvConfig';
 
 export default new InteractionCommand({
   name: 'bonk',
   description: 'Select a member to bonk them',
   global: false,
-  guildIds: [EnvConfig.guildId as string],
+  guildIds: [EnvConfig.guildId],
   options: [
     {
       name: 'target',
@@ -38,10 +38,10 @@ export default new InteractionCommand({
   ],
   async run(ctx, args) {
     const isHorny = args.is_horny;
-    const bonk = new BonkUtilities();
     const { target } = args;
     let { reason } = args;
     const isSelf = ctx.user === target;
+    const bonk = new BonkUtilities(reason);
 
     const embedMsg: RequestTypes.CreateChannelMessageEmbed = {
       title: '**Bonked!**',
@@ -55,19 +55,11 @@ export default new InteractionCommand({
     };
 
     if (reason === 'none') {
-      if (isHorny) {
-        reason = bonk.bonkHornyReason();
-      } else {
-        reason = bonk.bonkReason();
-      }
+      reason = isHorny ? bonk.bonkHornyReason() : bonk.bonkReason();
     }
 
     if (isHorny || bonk.isHorny(reason)) {
-      if (isSelf) {
-        embedMsg.image!.url = bonk.selfHornyBonkGif();
-      } else {
-        embedMsg.image!.url = bonk.hornyBonkGif();
-      }
+      embedMsg.image!.url = isSelf ? bonk.selfHornyBonkGif() : bonk.hornyBonkGif();
     } else {
       embedMsg.image!.url = bonk.bonkGif();
     }

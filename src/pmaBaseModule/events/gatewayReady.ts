@@ -1,9 +1,11 @@
-import { IEvent } from '@bot-types/interfaces';
-import EnvConfig from '@lib/EnvConfig';
 import { GatewayClientEvents } from 'detritus-client';
 import { ClientEvents } from 'detritus-client/lib/constants';
+import { setRestClient, setShardClient } from '../../lib/BotClientExtracted';
+import BotEvent from '../../lib/BotEvent';
+import EnvConfig from '../../lib/EnvConfig';
+import { PMAEventHandler } from '../../lib/Utilities';
 
-const gatewayReady: IEvent = {
+export default new BotEvent({
   event: ClientEvents.GATEWAY_READY,
   once: true,
   async listener(args) {
@@ -23,7 +25,14 @@ const gatewayReady: IEvent = {
       'Global commands: ',
       await clusterShard.rest.fetchApplicationCommands(clusterShard.applicationId),
     );
-  },
-};
 
-export default gatewayReady;
+    setRestClient(clusterShard.rest);
+    setShardClient(clusterShard);
+
+    setTimeout(() => {
+      PMAEventHandler.emit('leaderboardRefresh');
+      PMAEventHandler.emit('hallOfFameRefresh');
+      PMAEventHandler.emit('spiralAbyssRefresh');
+    }, 1000 * 5);
+  },
+});

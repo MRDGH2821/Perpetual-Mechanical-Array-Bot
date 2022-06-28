@@ -1,13 +1,13 @@
-import { COLORS } from '@lib/Constants';
-import EnvConfig from '@lib/EnvConfig';
 import { RequestTypes } from 'detritus-client-rest';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
+import { COLORS } from '../../lib/Constants';
+import EnvConfig from '../../lib/EnvConfig';
 
 export default new InteractionCommand({
   name: 'ping',
   description: 'Shows bot ping',
   global: false,
-  guildIds: [EnvConfig.guildId as string],
+  guildIds: [EnvConfig.guildId],
   async run(context) {
     const { gateway, rest } = await context.client.ping();
 

@@ -1,10 +1,10 @@
-import { IEvent } from '@bot-types/interfaces';
-import { ChannelIds, COLORS } from '@lib/Constants';
 import { GatewayClientEvents } from 'detritus-client';
 import { RequestTypes } from 'detritus-client-rest';
 import { ClientEvents } from 'detritus-client/lib/constants';
+import BotEvent from '../../lib/BotEvent';
+import { ChannelIds, COLORS } from '../../lib/Constants';
 
-const commandLogs: IEvent = {
+export default new BotEvent({
   event: ClientEvents.INTERACTION_CREATE,
   on: true,
   async listener(args: GatewayClientEvents.InteractionCreate) {
@@ -35,9 +35,9 @@ const commandLogs: IEvent = {
       thumbnail: {
         url: interaction.user.avatarUrl,
       },
-      description: `${interaction.user} in ${
-        interaction.channel
-      } triggered an interaction.\nCommand: ${interaction.data?.toString()}`,
+      description: `${interaction.user.mention} \`${interaction.user.tag}\` in ${
+        interaction.channel?.mention
+      } triggered an interaction.\n\n**Command:** ${interaction.data?.toString()}`,
       timestamp: new Date().toISOString(),
       footer: {
         text: `ID: ${interaction.user.id}`,
@@ -50,6 +50,4 @@ const commandLogs: IEvent = {
       embeds: [logEmbed],
     });
   },
-};
-
-export default commandLogs;
+});

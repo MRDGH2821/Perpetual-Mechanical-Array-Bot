@@ -1,8 +1,13 @@
-import { ChannelIds, COLORS, ROLE_IDS } from '@lib/Constants';
-import EnvConfig from '@lib/EnvConfig';
 import { RequestTypes } from 'detritus-client-rest';
 import { ApplicationCommandOptionTypes, MessageFlags } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
+import { Embed } from 'detritus-client/lib/utils';
+import { ChannelIds, COLORS, ROLE_IDS } from '../../lib/Constants';
+import EnvConfig from '../../lib/EnvConfig';
+
+function processConfession(confession: string) {
+  return confession.replaceAll('\\n', '\n');
+}
 
 export default new InteractionCommand({
   name: 'confess',
@@ -18,13 +23,19 @@ export default new InteractionCommand({
     },
     {
       name: 'anonymous',
-      description: 'Post as Anonymous?',
+      description: 'Post as Anonymous? (default: False)',
       type: ApplicationCommandOptionTypes.BOOLEAN,
       default: false,
     },
     {
       name: 'ping_archons',
-      description: 'Notify Archons?',
+      description: 'Notify Archons? (default: False',
+      type: ApplicationCommandOptionTypes.BOOLEAN,
+      default: false,
+    },
+    {
+      name: 'skip_multiline',
+      description: 'Skip processing multiline (default: False)',
       type: ApplicationCommandOptionTypes.BOOLEAN,
       default: false,
     },
@@ -37,13 +48,15 @@ export default new InteractionCommand({
 
     const logsChannel = ctx.guild?.channels.get(ChannelIds.ARCHIVES);
 
+    const description = args.skip_multiline ? args.confession : processConfession(args.confession);
+
     const anonEmbed: RequestTypes.CreateChannelMessageEmbed = {
       title: '**A New confession!**',
       author: {
         name: 'Anonymous',
       },
       color: COLORS.EMBED_COLOR,
-      description: args.confession,
+      description,
       timestamp: new Date().toISOString(),
     };
 
@@ -55,7 +68,7 @@ export default new InteractionCommand({
         url: ctx.user.jumpLink,
       },
       color: COLORS.EMBED_COLOR,
-      description: args.confession,
+      description,
       timestamp: new Date().toISOString(),
       thumbnail: {
         url: ctx.user.avatarUrl,
@@ -87,7 +100,7 @@ export default new InteractionCommand({
     }
 
     logsChannel?.createMessage({
-      embeds: [confessEmbed],
+      embeds: [new Embed(confessEmbed).addField('**Unprocessed text**', args.confession)],
     });
   },
 });
