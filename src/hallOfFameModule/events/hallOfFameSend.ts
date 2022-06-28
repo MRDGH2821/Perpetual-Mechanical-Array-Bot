@@ -12,21 +12,25 @@ export default new BotEvent({
     const anemoCrownBoard: SimpleEmbed = {
       title: 'Anemo placeholder',
       description: 'Will be updated soon',
+      color: COLORS.ANEMO,
     };
 
     const geoCrownBoard: SimpleEmbed = {
       title: 'Geo placeholder',
       description: 'Will be updated soon',
+      color: COLORS.GEO,
     };
 
     const electroCrownBoard: SimpleEmbed = {
       title: 'Electro placeholder',
       description: 'Will be updated soon',
+      color: COLORS.ELECTRO,
     };
 
     const unalignedCrownBoard: SimpleEmbed = {
       title: 'Unaligned placeholder',
       description: 'Will be updated soon',
+      color: COLORS.UNALIGNED,
     };
 
     const information: SimpleEmbed = {

@@ -12,21 +12,25 @@ export default new BotEvent({
     const anemoSkillBoard: SimpleEmbed = {
       title: 'Anemo placeholder',
       description: 'Will be updated soon',
+      color: COLORS.ANEMO,
     };
 
     const geoSkillBoard: SimpleEmbed = {
       title: 'Geo placeholder',
       description: 'Will be updated soon',
+      color: COLORS.GEO,
     };
 
     const electroSkillBoard: SimpleEmbed = {
       title: 'Electro placeholder',
       description: 'Will be updated soon',
+      color: COLORS.ELECTRO,
     };
 
     const uniSkillBoard: SimpleEmbed = {
       title: 'Universal placeholder',
       description: 'Will be updated soon',
+      color: COLORS.UNIVERSAL,
     };
 
     const information: SimpleEmbed = {
