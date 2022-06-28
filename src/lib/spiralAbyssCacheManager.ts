@@ -104,6 +104,7 @@ export function publishSANames(withTraveler = false): Promise<SimpleEmbed[]> {
 
       embeds.push(embed);
     });
+    /* jscpd:ignore-start */
     if (!embeds.at(0)) {
       const embed: SimpleEmbed = {
         title: '**Spiral Abyss Clear Board**',
@@ -122,6 +123,7 @@ export function publishSANames(withTraveler = false): Promise<SimpleEmbed[]> {
       };
       embeds.push(embed);
     }
+    /* jscpd:ignore-end */
     if (embeds.length < 1) {
       rej(new Error('Failed to build embeds'));
     } else {
