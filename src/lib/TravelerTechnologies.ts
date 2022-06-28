@@ -1,3 +1,5 @@
+import { TravelerCommandProp } from '../botTypes/types';
+
 export const AMC_TECHS = {
   BURST_TECHS: [
     {
@@ -99,4 +101,56 @@ export const EMC_TECHS = {
       name: 'Cope-Arts: Balance Upon thundering bellows',
     },
   ],
+  SKILL_TECHS: [
+    {
+      gif: 'https://tenor.com/view/aaaa-gif-22162888',
+      id: 'no_techs',
+      name: 'No Techs Found',
+    },
+  ],
+};
+
+export const AMC_PROPS: TravelerCommandProp = {
+  shortName: 'amc',
+  name: 'Anemo Traveler',
+  element: 'anemo',
+  skill: {
+    name: 'palm_vortex',
+    techs: AMC_TECHS.SKILL_TECHS,
+  },
+  burst: {
+    name: 'gust_surge',
+    techs: AMC_TECHS.BURST_TECHS,
+  },
+  guide: 'https://keqingmains.com/anemo-traveler/',
+};
+
+export const GMC_PROPS: TravelerCommandProp = {
+  shortName: 'gmc',
+  name: 'Geo Traveler',
+  element: 'geo',
+  skill: {
+    name: 'starfell_sword',
+    techs: GMC_TECHS.SKILL_TECHS,
+  },
+  burst: {
+    name: 'wake_of_earth',
+    techs: GMC_TECHS.BURST_TECHS,
+  },
+  guide: 'https://keqingmains.com/geo-traveler/',
+};
+
+export const EMC_PROPS: TravelerCommandProp = {
+  shortName: 'emc',
+  name: 'Electro Traveler',
+  element: 'electro',
+  skill: {
+    name: 'lightening_blade',
+    techs: EMC_TECHS.SKILL_TECHS,
+  },
+  burst: {
+    name: 'bellowing_thunder',
+    techs: EMC_TECHS.BURST_TECHS,
+  },
+  guide: 'https://keqingmains.com/electro-traveler/',
 };

@@ -137,3 +137,26 @@ export type OneJokeFormat = {
   safe: boolean;
   lang: 'en' | 'cs' | 'de' | 'es' | 'fr' | 'pt';
 };
+
+export type TravelerCommandProp = {
+  shortName: string;
+  name: string;
+  element: ELEMENTS;
+  skill: {
+    name: string;
+    techs: {
+      gif: string;
+      id: string;
+      name: string;
+    }[];
+  };
+  burst: {
+    name: string;
+    techs: {
+      gif: string;
+      id: string;
+      name: string;
+    }[];
+  };
+  guide: string;
+};
