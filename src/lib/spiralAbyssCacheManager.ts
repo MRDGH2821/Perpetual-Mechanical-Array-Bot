@@ -10,7 +10,7 @@ import {
 import { getShardClient } from './BotClientExtracted';
 import { COLORS, ICONS } from './Constants';
 import db from './Firestore';
-import { chunkArray } from './Utilities';
+import { chunkArray, getUser } from './Utilities';
 
 const totalUsers = 20;
 
@@ -51,10 +51,7 @@ export async function setSpiralAbyssData(
     // eslint-disable-next-line no-restricted-syntax
     for (const entry of entries) {
       // eslint-disable-next-line no-await-in-loop
-      const userC = SClient.users.get(entry.userID) || (await SClient.rest.fetchUser(entry.userID));
-      if (!SClient.users.has(userC.id)) {
-        SClient.users.set(userC.id, userC);
-      }
+      const userC = await getUser(entry.userID, SClient);
       // console.log('User: ', userC);
       if (entry.withTraveler === withTraveler) {
         collection.set(entry.userID, { user: userC, data: entry });

@@ -30,6 +30,7 @@ import {
   SpiralAbyssCacheObject,
   TravelerCommandProp,
 } from '../botTypes/types';
+import { getShardClient } from './BotClientExtracted';
 import * as Constants from './Constants';
 import EnvConfig from './EnvConfig';
 import {
@@ -464,4 +465,14 @@ export function travelerCommand(element: ELEMENTS) {
       },
     ],
   });
+}
+
+export async function getUser(userId: User['id'], SClient = getShardClient()) {
+  const user = SClient.users.get(userId) || (await SClient.rest.fetchUser(userId));
+
+  if (!SClient.users.has(userId)) {
+    SClient.users.set(user.id, user);
+  }
+
+  return user;
 }
