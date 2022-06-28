@@ -228,7 +228,7 @@ export async function leaderboardViewGenerate(
   const embeds: SimpleEmbed[] = [];
 
   let rank = 1;
-
+  /* jscpd:ignore-start */
   chunks.forEach((chunk) => {
     const props = categoryProps(dmgCategory);
     const embed: SimpleEmbed = {
@@ -248,7 +248,7 @@ export async function leaderboardViewGenerate(
     });
     embeds.push(embed);
   });
-
+  /* jscpd:ignore-end */
   return embeds;
 }
 

@@ -184,6 +184,7 @@ export async function hallOfFameViewGenerate(
   const embeds: SimpleEmbed[] = [];
 
   const props = elementProps(element);
+  /* jscpd:ignore-start */
   chunks.forEach((chunk) => {
     const embed: SimpleEmbed = {
       title: `**${props.name}** ${props.emoji}`,
@@ -199,6 +200,7 @@ export async function hallOfFameViewGenerate(
     chunk.forEach((cacheData) => {
       embed.description = `${embed.description}\n${cacheData.user.mention}\`${cacheData.user.tag}\``;
     });
+    /* jscpd:ignore-end */
     embeds.push(embed);
   });
 
