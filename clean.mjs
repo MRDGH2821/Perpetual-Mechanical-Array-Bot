@@ -1,4 +1,6 @@
-import { existsSync, lstatSync, readdirSync, rmdirSync, unlinkSync } from 'fs';
+import {
+  existsSync, lstatSync, readdirSync, rmdirSync, unlinkSync,
+} from 'fs';
 
 function deleteFolderRecursive(path) {
   if (existsSync(path) && lstatSync(path).isDirectory()) {
