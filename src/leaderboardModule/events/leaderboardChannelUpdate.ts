@@ -16,7 +16,12 @@ export default new BotEvent({
       const pmaHooks = guildHooks?.filter((webhook) => !!webhook.token);
       const selectedWebhook = pmaHooks?.find((webhook) => webhook.name === 'Damage Leaderboard');
 
-      selectedWebhook?.edit({ channelId: newChannel.id, reason: 'Leaderboard Channel Changed' });
+      selectedWebhook?.edit({
+        channelId: newChannel.id,
+        reason: 'Leaderboard Channel Changed',
+        avatar: ICONS.MASANORI,
+        name: 'Damage Leaderboard',
+      });
 
       if (selectedWebhook === undefined) {
         throw new Error('No webhooks found');

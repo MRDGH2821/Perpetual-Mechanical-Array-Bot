@@ -16,7 +16,12 @@ export default new BotEvent({
       const pmaHooks = guildHooks?.filter((webhook) => !!webhook.token);
       const selectedWebhook = pmaHooks?.find((webhook) => webhook.name === 'Spiral Abyss');
 
-      selectedWebhook?.edit({ channelId: newChannel.id, reason: 'Spiral Abyss Channel Changed' });
+      selectedWebhook?.edit({
+        channelId: newChannel.id,
+        reason: 'Spiral Abyss Channel Changed',
+        avatar: ICONS.SPIRAL_ABYSS,
+        name: 'Spiral Abyss',
+      });
 
       if (selectedWebhook === undefined) {
         throw new Error('No webhooks found');

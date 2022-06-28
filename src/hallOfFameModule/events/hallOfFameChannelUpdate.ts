@@ -1,5 +1,6 @@
 import { Channel, Webhook } from 'detritus-client/lib/structures';
 import BotEvent from '../../lib/BotEvent';
+import { ICONS } from '../../lib/Constants';
 import db from '../../lib/Firestore';
 import { Debugging, PMAEventHandler } from '../../lib/Utilities';
 
@@ -15,7 +16,12 @@ export default new BotEvent({
       const pmaHooks = guildHooks?.filter((webhook) => !!webhook.token);
       const selectedWebhook = pmaHooks?.find((webhook) => webhook.name === 'Hall Of Fame');
 
-      selectedWebhook?.edit({ channelId: newChannel.id, reason: 'Hall Of Fame Channel Changed' });
+      selectedWebhook?.edit({
+        channelId: newChannel.id,
+        reason: 'Hall Of Fame Channel Changed',
+        name: 'Hall Of Fame',
+        avatar: ICONS.TROPHY,
+      });
 
       if (selectedWebhook === undefined) {
         throw new Error('No webhooks found');
@@ -27,6 +33,7 @@ export default new BotEvent({
 
       finalWebhook = await newChannel.createWebhook({
         name: 'Hall Of Fame',
+        avatar: ICONS.TROPHY,
       });
     }
     await db
