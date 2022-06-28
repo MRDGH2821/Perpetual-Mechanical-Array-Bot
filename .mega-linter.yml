@@ -20,11 +20,11 @@ LINTER_RULES_PATH: .
 PRINT_ALPACA: false
 
 PRE_COMMANDS:
-- command: 'npm install'
-  cwd: 'workspace'
+  - command: 'npm install'
+    cwd: 'workspace'
 POST_COMMANDS:
- - command: 'npm run pretty'
-   cwd: 'workspace'
+  - command: 'npm run pretty'
+    cwd: 'workspace'
 IGNORE_GITIGNORED_FILES: true
 
 # Excludes cspell file itself
