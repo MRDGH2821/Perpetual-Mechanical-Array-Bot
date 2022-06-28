@@ -52,7 +52,7 @@ export default new InteractionCommand({
       async run(ctx, args: GiveRoleArgs) {
         const selectedRoles = [args.role!];
 
-        initialiseSwitcher(selectedRoles as string[], args);
+        initialiseSwitcher(selectedRoles as string[], args.user!);
         roleCheckSwitcher(ctx, {
           exp: -1,
           notes: 'none',
@@ -185,7 +185,7 @@ export default new InteractionCommand({
           async run(menuCtx) {
             const selectedRoles = menuCtx.data.values!;
 
-            initialiseSwitcher(selectedRoles, args);
+            initialiseSwitcher(selectedRoles, args.user!);
             roleCheckSwitcher(menuCtx, {
               exp: -1,
               notes: 'none',

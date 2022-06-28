@@ -4,7 +4,7 @@ import { MessageComponentButtonStyles, MessageFlags } from 'detritus-client/lib/
 import { InteractionContext } from 'detritus-client/lib/interaction';
 import { Member } from 'detritus-client/lib/structures';
 import { ComponentActionRow, ComponentContext } from 'detritus-client/lib/utils';
-import { AfterRoleCheck, GiveRoleArgs, SimpleEmbed } from '../botTypes/interfaces';
+import { AfterRoleCheck, SimpleEmbed } from '../botTypes/interfaces';
 import { COLORS, ROLE_IDS } from './Constants';
 import { PMAEventHandler } from './Utilities';
 
@@ -29,10 +29,10 @@ const resultEmbed: SimpleEmbed = {
   description: '',
 };
 
-export function initialiseSwitcher(selectedRoles: string[], originalCtxArgs: GiveRoleArgs) {
+export function initialiseSwitcher(selectedRoles: string[], target: Member) {
   toGiveRoles.push(...selectedRoles);
   localCopyRoles.push(...selectedRoles);
-  userTarget = originalCtxArgs.user!;
+  userTarget = target;
   resultEmbed.description += `The following roles have been assigned to <@${userTarget.id}>:\n`;
 }
 
