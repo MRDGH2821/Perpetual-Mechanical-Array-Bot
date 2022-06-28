@@ -60,42 +60,8 @@ export async function setSpiralAbyssData(
   });
 }
 
-export async function spiralAbyssViewGenerate(withTraveler: boolean): Promise<SimpleEmbed[]> {
-  const SACache = withTraveler ? spiralAbyssCache.clearTraveler : spiralAbyssCache.clearNormal;
-
-  const groupCache = SACache.clone();
-
-  const chunks = chunkArray(groupCache.toArray(), 10);
-
-  const embeds: SimpleEmbed[] = [];
-
-  const date = new Date();
-
-  chunks.forEach((chunk) => {
-    const embed: SimpleEmbed = {
-      title: '**Spiral Abyss Clear Board**',
-      color: COLORS.SPIRAL_ABYSS,
-      thumbnail: { url: ICONS.SPIRAL_ABYSS },
-      description: `Cycle Details: \n${date.getDate() < 16 ? 'Waxing Phase' : 'Waning Phase'} (${
-        date.getMonth() + 1
-      }/${date.getFullYear()}) \nClear Type: ${withTraveler ? 'Traveler Clear' : 'Normal Clear'}`,
-      timestamp: new Date().toISOString(),
-      footer: {
-        text: `${chunks.indexOf(chunk) + 1} of ${chunks.length}`,
-      },
-    };
-
-    chunk.forEach((cacheData) => {
-      embed.description = `${embed.description}\n${cacheData.user.mention} - ${cacheData.user.tag}`;
-    });
-    embeds.push(embed);
-  });
-
-  return embeds;
-}
-
 /**
- * Returns current status of leaderboard refresh
+ * Returns current status of spiral abyss refresh
  * @returns {boolean} - If true it means refresh is complete
  */
 export function isSARefreshComplete(): boolean {
@@ -138,7 +104,24 @@ export function publishSANames(withTraveler = false): Promise<SimpleEmbed[]> {
 
       embeds.push(embed);
     });
-
+    if (!embeds.at(0)) {
+      const embed: SimpleEmbed = {
+        title: '**Spiral Abyss Clear Board**',
+        color: COLORS.SPIRAL_ABYSS,
+        thumbnail: { url: ICONS.SPIRAL_ABYSS },
+        description: `Cycle Details: \n${date.getDate() < 16 ? 'Waxing Phase' : 'Waning Phase'} (${
+          date.getMonth() + 1
+        }/${date.getFullYear()}) \nClear Type: ${withTraveler ? 'Traveler Clear' : 'Normal Clear'}`,
+        fields: [
+          {
+            name: '\u200b',
+            value: 'No users found who cleared spiral abyss this cycle...',
+          },
+        ],
+        timestamp: new Date().toISOString(),
+      };
+      embeds.push(embed);
+    }
     if (embeds.length < 1) {
       rej(new Error('Failed to build embeds'));
     } else {

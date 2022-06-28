@@ -7,7 +7,7 @@ import {
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { Channel } from 'detritus-client/lib/structures';
 import EnvConfig from '../../lib/EnvConfig';
-import { isSARefreshComplete, spiralAbyssViewGenerate } from '../../lib/spiralAbyssCacheManager';
+import { isSARefreshComplete, publishSANames } from '../../lib/spiralAbyssCacheManager';
 import { PMAEventHandler, StaffCheck, viewPages } from '../../lib/Utilities';
 import reset from '../subcommands/reset';
 
@@ -87,7 +87,7 @@ export default new InteractionCommand({
       ],
 
       async run(ctx, args) {
-        const SAEmbeds = await spiralAbyssViewGenerate(args.with_traveler);
+        const SAEmbeds = await publishSANames(args.with_traveler);
 
         await ctx.editOrRespond({
           embed: SAEmbeds[0],
