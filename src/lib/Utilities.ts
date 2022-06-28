@@ -1,17 +1,23 @@
 import { RequestTypes } from 'detritus-client-rest';
 import {
+  ApplicationCommandOptionTypes,
   MessageComponentButtonStyles,
   MessageFlags,
   Permissions,
 } from 'detritus-client/lib/constants';
-import { InteractionContext } from 'detritus-client/lib/interaction';
+import { InteractionCommand, InteractionContext } from 'detritus-client/lib/interaction';
 import { InteractionEditOrRespond, Member, User } from 'detritus-client/lib/structures';
 import { ComponentActionRow, ComponentContext, PermissionTools } from 'detritus-client/lib/utils';
 import { BaseCollection } from 'detritus-utils';
 import EventEmitter from 'events';
 import https from 'https';
+import { titleCase } from 'title-case';
 import {
-  NadekoContent, NadekoEmbed, NadekoParseResult, SimpleEmbed,
+  NadekoContent,
+  NadekoEmbed,
+  NadekoParseResult,
+  SimpleEmbed,
+  TechArgs,
 } from '../botTypes/interfaces';
 import {
   CategoryProp,
@@ -22,9 +28,13 @@ import {
   JokeCategories,
   OneJokeFormat,
   SpiralAbyssCacheObject,
+  TravelerCommandProp,
 } from '../botTypes/types';
 import * as Constants from './Constants';
-import { AMC_TECHS } from './TravelerTechnologies';
+import EnvConfig from './EnvConfig';
+import {
+  AMC_PROPS, AMC_TECHS, EMC_PROPS, GMC_PROPS,
+} from './TravelerTechnologies';
 
 export const PMAEventHandler = new EventEmitter();
 
@@ -333,6 +343,7 @@ export function viewPages(embeds: SimpleEmbed[]): ComponentActionRow {
       label: 'Previous',
       customId: 'previous',
       style: MessageComponentButtonStyles.SECONDARY,
+      /* jscpd:ignore-start */
       async run(btnCtx) {
         if (currentIndex >= 0) {
           currentIndex -= 1;
@@ -367,7 +378,90 @@ export function viewPages(embeds: SimpleEmbed[]): ComponentActionRow {
           });
         }
       },
+      /* jscpd:ignore-end */
     });
 
   return viewRow;
+}
+
+export function travelerCommand(element: ELEMENTS) {
+  let selectedProp: TravelerCommandProp;
+
+  switch (element) {
+    case 'anemo': {
+      selectedProp = AMC_PROPS;
+      break;
+    }
+    case 'geo': {
+      selectedProp = GMC_PROPS;
+      break;
+    }
+    case 'electro': {
+      selectedProp = EMC_PROPS;
+      break;
+    }
+
+    default:
+      throw new Error(`${element} props do not exist`);
+  }
+
+  return new InteractionCommand({
+    name: selectedProp.shortName,
+    description: `${titleCase(selectedProp.element)} Main Character`,
+    global: false,
+    guildIds: [EnvConfig.guildId],
+    options: [
+      {
+        name: selectedProp.skill.name,
+        description: `${selectedProp.shortName.toUpperCase()} Skill`,
+        type: ApplicationCommandOptionTypes.SUB_COMMAND,
+        options: [
+          {
+            name: 'techs',
+            description: 'Technologies which power skill',
+            type: ApplicationCommandOptionTypes.STRING,
+            required: true,
+            onAutoComplete(ctx) {
+              ctx.respond({
+                choices: autoCompleteTech(ctx.value.toLowerCase(), selectedProp.skill.techs),
+              });
+            },
+          },
+        ],
+        async run(ctx, args: TechArgs) {
+          ctx.editOrRespond(respondTech(args.techs!, selectedProp.skill.techs));
+        },
+      },
+      {
+        name: selectedProp.burst.name,
+        description: `${selectedProp.shortName.toUpperCase()} Burst`,
+        type: ApplicationCommandOptionTypes.SUB_COMMAND,
+        options: [
+          {
+            name: 'techs',
+            description: 'Technologies which power burst',
+            required: true,
+            onAutoComplete(ctx) {
+              ctx.respond({
+                choices: autoCompleteTech(ctx.value.toLowerCase(), selectedProp.burst.techs),
+              });
+            },
+          },
+        ],
+        async run(ctx, args: TechArgs) {
+          ctx.editOrRespond(respondTech(args.techs!, selectedProp.burst.techs));
+        },
+      },
+      {
+        name: 'guide',
+        description: `Guide on ${selectedProp.shortName.toUpperCase()}`,
+        type: ApplicationCommandOptionTypes.SUB_COMMAND,
+        async run(ctx) {
+          await ctx.editOrRespond({
+            content: selectedProp.guide,
+          });
+        },
+      },
+    ],
+  });
 }
