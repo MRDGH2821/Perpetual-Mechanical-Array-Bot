@@ -18,9 +18,12 @@ JAVASCRIPT_DEFAULT_STYLE: prettier
 TYPESCRIPT_DEFAULT_STYLE: prettier
 LINTER_RULES_PATH: .
 PRINT_ALPACA: false
+PRE_COMMANDS:
+  - command: 'npm install'
+    cwd: 'workspace'
 POST_COMMANDS:
   - command: 'npm run pretty'
-    cwd: 'root'
+    cwd: 'workspace'
 IGNORE_GITIGNORED_FILES: true
 DEFAULT_WORKSPACE: './'
 
