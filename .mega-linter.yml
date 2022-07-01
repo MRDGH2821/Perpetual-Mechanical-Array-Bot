@@ -29,3 +29,4 @@ IGNORE_GITIGNORED_FILES: true
 
 # Excludes cspell file itself
 SPELL_MISSPELL_FILTER_REGEX_EXCLUDE: cspell.
+TYPESCRIPT_ES_CLI_LINT_MODE: project
