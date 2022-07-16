@@ -78,46 +78,70 @@ function nonEleCrownCheck(
 async function abyssRoleCheck(
   ctx: InteractionContext,
   target: Member,
-  roleC?: typeof ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR,
+  SArole: ROLE_IDS.SpiralAbyss,
 ) {
-  const abyssRole = ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR || roleC!;
+  target.removeRole(ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR);
+  target.removeRole(ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN);
+  target.removeRole(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER);
+
+  const abyssRole = SArole;
+
+  const conditionals = {
+    exp: 250,
+    notes: 'Cleared 36/36',
+    role: ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR,
+  };
+
   const result: AfterRoleCheck = {
     exp: 0,
     notes: 'none',
     role: abyssRole,
   };
 
+  if (SArole === ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN) {
+    conditionals.exp = 5000;
+    conditionals.notes = 'Cleared with 3 distinct traveler teams/elements';
+    conditionals.role = ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN;
+  }
+
+  if (SArole === ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER) {
+    conditionals.exp = 500;
+    conditionals.notes = 'Cleared with traveler';
+    conditionals.role = ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER;
+  }
+
   const abyssClearRow = new ComponentActionRow()
     .addButton({
-      customId: 'clear_normal',
-      label: 'Cleared without Traveler',
+      customId: 'criteria_not_clear',
+      label: 'Criteria not satisfied',
       emoji: '👎',
       style: MessageComponentButtonStyles.SECONDARY,
       run(btnCtx) {
-        result.exp = 250;
-        target.addRole(abyssRole);
-        PMAEventHandler.emit('abyssRegister', target, false);
+        result.exp = 0;
+        // target.addRole(conditionals.role);
+        // PMAEventHandler.emit('abyssRegister', target, false);
         roleCheckSwitcher(btnCtx, result);
       },
     })
     .addButton({
-      customId: 'clear_traveler',
-      label: 'Cleared with traveler',
+      customId: 'criteria_clear',
+      label: 'Criteria satisfied!',
       emoji: '👍',
       style: MessageComponentButtonStyles.SUCCESS,
       run(btnCtx) {
-        result.exp = 500;
-        result.notes = 'Cleared with Traveler!';
-        target.addRole(abyssRole);
-        PMAEventHandler.emit('abyssRegister', target, false);
+        result.exp = conditionals.exp;
+        result.notes = conditionals.notes;
+        result.role = conditionals.role;
+        target.addRole(conditionals.role);
+
         roleCheckSwitcher(btnCtx, result);
       },
     });
 
   const abyssRoleEmbed: SimpleEmbed = {
-    title: '**Cleared Spiral Abyss with Traveler?**',
+    title: '**Cleared Spiral Abyss?**',
     color: COLORS.EMBED_COLOR,
-    description: `Did <@${target.id}> use on traveler on floor 12 all chambers?`,
+    description: `Did <@${target.id}> satisfy the condition: \n> ${conditionals.notes}`,
   };
 
   await ctx.editOrRespond({
@@ -189,7 +213,9 @@ async function crownCheck(
 
 const roleFunctions = new BaseCollection<string, Function>()
   .set(ROLE_IDS.OTHERS.WHALE, whaleRoleCheck)
-  .set(ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR, abyssRoleCheck)
+  .set(ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR, abyssRoleCheck)
+  .set(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER, abyssRoleCheck)
+  .set(ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN, abyssRoleCheck)
   .set(ROLE_IDS.REPUTATION.MONDSTADT, reputationCheck)
   .set(ROLE_IDS.REPUTATION.LIYUE, reputationCheck)
   .set(ROLE_IDS.REPUTATION.INAZUMA, reputationCheck)
