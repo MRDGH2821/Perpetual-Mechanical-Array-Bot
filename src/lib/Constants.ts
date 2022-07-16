@@ -135,9 +135,14 @@ export const STAFF_ARRAY = [
 export namespace ROLE_IDS {
   export enum OTHERS {
     ARCHONS = '813613841488936971',
-    ABYSSAL_CONQUEROR = '804225878685908992',
     WHALE = '804010525411246140',
     ANOTHER_TEST_SUBJECT = '984388373693210635',
+  }
+
+  export enum SpiralAbyss {
+    ABYSSAL_CONQUEROR = '804225878685908992',
+    ABYSSAL_TRAVELER = '886988485356040242',
+    ABYSSAL_SOVEREIGN = '928517469751115786',
   }
 
   export enum REPUTATION {
@@ -192,13 +197,24 @@ const OTHER_ROLES = [
     name: 'Affluent Adventurer 💰',
     value: ROLE_IDS.OTHERS.WHALE,
   },
+];
+
+const SPIRAL_ABYSS_ROLES = [
   {
     name: 'Abyssal Conqueror 🌀',
-    value: ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR,
+    value: ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR,
+  },
+  {
+    name: 'Abyssal Traveler 😎',
+    value: ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER,
+  },
+  {
+    name: 'Abyssal Sovereign ⚔️',
+    value: ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN,
   },
 ];
 
-export const ACH_ROLES = [REP_ROLES, OTHER_ROLES, CROWN_ROLES].flat();
+export const ACH_ROLES = [REP_ROLES, OTHER_ROLES, CROWN_ROLES, SPIRAL_ABYSS_ROLES].flat();
 
 export const ABYSS_QUOTES = [
   '*You stare into the abyss and you feel some presence staring over you*',

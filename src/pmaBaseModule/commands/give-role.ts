@@ -92,10 +92,31 @@ export default new InteractionCommand({
         const EMOJIS_ARR = ctx.emojis.toArray();
         const optionsArr: ComponentSelectMenuOptionData[] = [
           {
+            default: target?.roles.has(Constants.ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR),
             description: 'Completed Spiral Abyss 36/36 & all Spiral abyss achievements',
             emoji: '🌀',
-            label: roles.get(Constants.ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR)?.name,
-            value: Constants.ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR,
+            label: roles.get(Constants.ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR)?.name,
+            value: Constants.ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR,
+          },
+          {
+            default: target?.roles.has(Constants.ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER),
+            description: 'Completed Spiral Abyss 36/36 using Traveler',
+            emoji:
+              EMOJIS_ARR.find(
+                (emoji) => emoji.id === Constants.EMOJIS.DvalinHYPE.match(/\d+/gm)![0],
+              ) || '😎',
+            label: roles.get(Constants.ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER)?.name,
+            value: Constants.ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER,
+          },
+          {
+            // default: target?.roles.has(Constants.ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN),
+            description: '36/36 using 3 distinct Traveler teams or Traveler elements',
+            emoji:
+              EMOJIS_ARR.find(
+                (emoji) => emoji.id === Constants.EMOJIS.DullBlade.match(/\d+/gm)![0],
+              ) || '⚔️',
+            label: roles.get(Constants.ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN)?.name,
+            value: Constants.ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN,
           },
           {
             default: target?.roles.has(Constants.ROLE_IDS.REPUTATION.MONDSTADT),
