@@ -93,6 +93,8 @@ export const EMOJIS = {
   Pyro: formatEmoji('803516441424822303'),
   Cryo: formatEmoji('803516632735154177'),
   Void: formatEmoji('983370274227499050'),
+  DullBlade: formatEmoji('861628955697741844'),
+  DvalinHYPE: formatEmoji('808591175640154142'),
 };
 
 export enum ChannelIds {
