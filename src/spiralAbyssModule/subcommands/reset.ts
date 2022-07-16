@@ -81,7 +81,7 @@ const reset: InteractionCommandOptionOptions = {
 
           const dbIds: any[] = [];
 
-          const abyssRole = ROLE_IDS.OTHERS.ANOTHER_TEST_SUBJECT;
+          const abyssRole = ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR;
 
           // perform role backup
           await btnCtx.guild?.members
