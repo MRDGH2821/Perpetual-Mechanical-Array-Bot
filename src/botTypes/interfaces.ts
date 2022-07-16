@@ -1,5 +1,5 @@
 import { ElementDamageCategories } from 'botTypes/types';
-import { Constants } from 'detritus-client';
+import { Constants, Structures } from 'detritus-client';
 import { RequestTypes } from 'detritus-client-rest';
 import { Snowflake } from 'detritus-client/lib/constants';
 import { ParsedArgs } from 'detritus-client/lib/interaction';
@@ -27,6 +27,15 @@ export interface GiveRoleArgs extends ParsedArgs {
 
 export interface TechArgs extends ParsedArgs {
   techs?: string;
+}
+
+export interface ConfessArgs extends ParsedArgs {
+  confession?: string;
+  anonymous?: false;
+  ping_archons?: boolean;
+  image_upload?: Structures.Attachment;
+  image_link?: string;
+  skip_multiline?: boolean;
 }
 
 export interface SimpleEmbed extends RequestTypes.CreateChannelMessageEmbed {

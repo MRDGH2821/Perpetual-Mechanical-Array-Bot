@@ -2,8 +2,10 @@ import { RequestTypes } from 'detritus-client-rest';
 import { ApplicationCommandOptionTypes, MessageFlags } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { Embed } from 'detritus-client/lib/utils';
+import { ConfessArgs } from '../../botTypes/interfaces';
 import { ChannelIds, COLORS, ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
+import { Debugging } from '../../lib/Utilities';
 
 function processConfession(confession: string) {
   return confession.replaceAll('\\n', '\n');
@@ -29,8 +31,20 @@ export default new InteractionCommand({
     },
     {
       name: 'ping_archons',
-      description: 'Notify Archons? (default: False',
+      description: 'Notify Archons? (default: False)',
       type: ApplicationCommandOptionTypes.BOOLEAN,
+      default: false,
+    },
+    {
+      name: 'image_upload',
+      description: 'Upload an Image',
+      type: ApplicationCommandOptionTypes.ATTACHMENT,
+      default: false,
+    },
+    {
+      name: 'image_link',
+      description: 'Direct Image link',
+      type: ApplicationCommandOptionTypes.STRING,
       default: false,
     },
     {
@@ -40,7 +54,7 @@ export default new InteractionCommand({
       default: false,
     },
   ],
-  async run(ctx, args) {
+  async run(ctx, args: ConfessArgs) {
     const isAnon = args.anonymous;
     const shouldPingArchons = args.ping_archons;
 
@@ -48,8 +62,11 @@ export default new InteractionCommand({
 
     const logsChannel = ctx.guild?.channels.get(ChannelIds.ARCHIVES);
 
-    const description = args.skip_multiline ? args.confession : processConfession(args.confession);
+    const description = args.skip_multiline
+      ? args.confession!
+      : processConfession(args.confession!);
 
+    // const description = args.confession;
     const anonEmbed: RequestTypes.CreateChannelMessageEmbed = {
       title: '**A New confession!**',
       author: {
@@ -57,6 +74,9 @@ export default new InteractionCommand({
       },
       color: COLORS.EMBED_COLOR,
       description,
+      image: {
+        url: args.image_upload?.url || args.image_link || '',
+      },
       timestamp: new Date().toISOString(),
     };
 
@@ -70,6 +90,9 @@ export default new InteractionCommand({
       color: COLORS.EMBED_COLOR,
       description,
       timestamp: new Date().toISOString(),
+      image: {
+        url: args.image_upload?.url || args.image_link || '',
+      },
       thumbnail: {
         url: ctx.user.avatarUrl,
       },
@@ -100,7 +123,11 @@ export default new InteractionCommand({
     }
 
     logsChannel?.createMessage({
-      embeds: [new Embed(confessEmbed).addField('**Unprocessed text**', args.confession)],
+      embeds: [new Embed(confessEmbed).addField('**Unprocessed text**', args.confession!)],
     });
+  },
+
+  onError(ctx, err) {
+    Debugging.leafDebug(err, true);
   },
 });
