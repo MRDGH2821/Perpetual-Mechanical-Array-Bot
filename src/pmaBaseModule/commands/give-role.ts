@@ -181,17 +181,24 @@ export default new InteractionCommand({
             value: Constants.ROLE_IDS.OTHERS.WHALE,
           },
         ].filter((option) => {
+          // if option is crown role
           if (
             Object.values(Constants.ROLE_IDS.CROWN).includes(
               option.value as Constants.ROLE_IDS.CROWN,
             )
           ) {
-            if (option.value === Constants.ROLE_IDS.CROWN.UNALIGNED && option.default === true) {
-              return false;
-            }
-            return true;
+            // hide unaligned crown role once obtained
+            return !(
+              option.value === Constants.ROLE_IDS.CROWN.UNALIGNED && option.default === true
+            );
           }
-          if (option.value === Constants.ROLE_IDS.OTHERS.ABYSSAL_CONQUEROR) {
+          // if option is spiral abyss role
+          if (
+            Object.values(Constants.ROLE_IDS.SpiralAbyss).includes(
+              option.value as Constants.ROLE_IDS.SpiralAbyss,
+            )
+          ) {
+            // do not hide the role
             return true;
           }
           return !target.roles.has(option.value);
