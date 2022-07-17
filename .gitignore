@@ -93,3 +93,4 @@ offline_db_beta/*
 .dependencygraph/*
 report/*
 *.bak
+megalinter-reports/
