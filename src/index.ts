@@ -37,7 +37,7 @@ import { Debugging, PMAEventHandler } from './lib/Utilities';
     cache: {
       members: { enabled: true, limit: 10000 },
       guilds: { enabled: true, limit: 5 },
-      roles: { enabled: true, limit: 100 },
+      roles: { enabled: true, limit: 1000 },
       users: { enabled: true, limit: 10000 },
       emojis: { enabled: true, limit: 10000 },
     },
