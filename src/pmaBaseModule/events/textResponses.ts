@@ -1,8 +1,12 @@
 import { GatewayClientEvents } from 'detritus-client';
 import { ClientEvents } from 'detritus-client/lib/constants';
 import BotEvent from '../../lib/BotEvent';
+import CoolDownManager from '../../lib/CoolDownManager';
 import { randomArrPick } from '../../lib/Utilities';
 
+const textResponseCD = new CoolDownManager(3000);
+
+textResponseCD.add('FBI_ICD', 0);
 export default new BotEvent({
   event: ClientEvents.MESSAGE_CREATE,
   async listener(payload: GatewayClientEvents.MessageCreate) {
@@ -12,12 +16,16 @@ export default new BotEvent({
     if (message.author.bot) {
       return;
     }
+    const timeLeft = await textResponseCD.check('FBI_ICD');
 
-    if (/banhammer/gimu.test(msg) && message.author.id === '440081484855115776') {
-      message.reply({
-        content: 'Who we are banning today? :smirk:',
-        reference: true,
-      });
+    if (timeLeft < 1 || timeLeft === false) {
+      if (/banhammer/gimu.test(msg) && message.author.id === '440081484855115776') {
+        message.reply({
+          content: 'Who we are banning today? :smirk:',
+          reference: true,
+        });
+      }
+      textResponseCD.add('FBI_ICD', 3000);
     }
 
     if (/fbi/gimu.test(msg)) {
