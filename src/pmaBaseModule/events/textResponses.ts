@@ -8,6 +8,10 @@ export default new BotEvent({
     const { message } = payload;
     const msg = message.content;
 
+    if (message.author.bot) {
+      return;
+    }
+
     if (/banhammer/gimu.test(msg) && message.author.id === '440081484855115776') {
       message.reply({
         content: 'Who we are banning today? :smirk:',
