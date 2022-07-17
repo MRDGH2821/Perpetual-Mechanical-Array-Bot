@@ -6,6 +6,7 @@ import {
 } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { Channel } from 'detritus-client/lib/structures';
+import { SpiralAbyssClearTypes } from '../../botTypes/types';
 import EnvConfig from '../../lib/EnvConfig';
 import { isSARefreshComplete, publishSANames } from '../../lib/spiralAbyssCacheManager';
 import { PMAEventHandler, StaffCheck, viewPages } from '../../lib/Utilities';
@@ -62,15 +63,29 @@ export default new InteractionCommand({
       type: ApplicationCommandOptionTypes.SUB_COMMAND,
       options: [
         {
-          name: 'with_traveler',
+          name: 'clear_type',
           description: 'Select category to view',
-          type: ApplicationCommandOptionTypes.BOOLEAN,
+          type: ApplicationCommandOptionTypes.STRING,
           required: true,
+          choices: <{ name: SpiralAbyssClearTypes; value: SpiralAbyssClearTypes }[]>[
+            {
+              name: 'Abyssal Conqueror',
+              value: 'Abyssal Conqueror',
+            },
+            {
+              name: 'Abyssal Sovereign',
+              value: 'Abyssal Sovereign',
+            },
+            {
+              name: 'Abyssal Traveler',
+              value: 'Abyssal Traveler',
+            },
+          ],
         },
       ],
 
-      async run(ctx, args) {
-        const SAEmbeds = await publishSANames(args.with_traveler);
+      async run(ctx, args: { clear_type?: SpiralAbyssClearTypes }) {
+        const SAEmbeds = await publishSANames(args.clear_type!);
 
         await ctx.editOrRespond({
           embed: SAEmbeds[0],

@@ -1,61 +1,43 @@
-import { ShardClient } from 'detritus-client';
+import { Member } from 'detritus-client/lib/structures';
 import { BaseCollection } from 'detritus-utils';
 import { SimpleEmbed } from '../botTypes/interfaces';
-import {
-  AbyssDBRegisterObject,
-  SetSpiralAbyssOptions,
-  SpiralAbyssCacheObject,
-  SpiralAbyssGroupCacheType,
-} from '../botTypes/types';
+import { SpiralAbyssClearTypes } from '../botTypes/types';
 import { getShardClient } from './BotClientExtracted';
-import { COLORS, ICONS } from './Constants';
-import db from './Firestore';
-import { chunkArray, getUser } from './Utilities';
+import { COLORS, ICONS, ROLE_IDS } from './Constants';
+import EnvConfig from './EnvConfig';
+import { chunkArray } from './Utilities';
 
 const totalUsers = 20;
 
 export const spiralAbyssCache = {
-  clearNormal: <SpiralAbyssGroupCacheType> new BaseCollection(),
-  clearTraveler: <SpiralAbyssGroupCacheType> new BaseCollection(),
+  abyssalConqueror: new BaseCollection<string, Member>(),
+  abyssalTraveler: new BaseCollection<string, Member>(),
+  abyssalSovereign: new BaseCollection<string, Member>(),
 };
 
 export function getSACacheObject() {
   return spiralAbyssCache;
 }
 
-export async function getSpiralAbyssData(): Promise<AbyssDBRegisterObject[]> {
+export function setSpiralAbyssData() {
   return new Promise((res, rej) => {
-    const dataArray: AbyssDBRegisterObject[] = [];
+    try {
+      const SClient = getShardClient();
+      const SACache = spiralAbyssCache;
+      const SARoles = ROLE_IDS.SpiralAbyss;
 
-    db.collection('spiral-abyss-current')
-      .orderBy('withTraveler', 'desc')
-      .get()
-      .then((query) => {
-        query.forEach((docSnap) => {
-          dataArray.push(docSnap.data() as AbyssDBRegisterObject);
-        });
-      })
-      .then(() => res(dataArray))
-      .catch(rej);
-  });
-}
+      const roleMembers = (roleId: string) => SClient.roles.get(EnvConfig.guildId, roleId)?.members;
 
-export async function setSpiralAbyssData(
-  givenData: SetSpiralAbyssOptions,
-  SClient: ShardClient = getShardClient(),
-) {
-  const { collection, withTraveler } = givenData;
-  await getSpiralAbyssData().then(async (entries) => {
-    // console.log(entries);
+      SACache.abyssalConqueror = roleMembers(SARoles.ABYSSAL_CONQUEROR) || new BaseCollection();
+      console.log('Abyssal Conqueror done');
+      SACache.abyssalTraveler = roleMembers(SARoles.ABYSSAL_TRAVELER) || new BaseCollection();
+      console.log('Abyssal Traveler done');
+      SACache.abyssalSovereign = roleMembers(SARoles.ABYSSAL_SOVEREIGN) || new BaseCollection();
+      console.log('Abyssal Sovereign done');
 
-    // eslint-disable-next-line no-restricted-syntax
-    for (const entry of entries) {
-      // eslint-disable-next-line no-await-in-loop
-      const userC = await getUser(entry.userID, SClient);
-      // console.log('User: ', userC);
-      if (entry.withTraveler === withTraveler) {
-        collection.set(entry.userID, { user: userC, data: entry });
-      }
+      res(true);
+    } catch (err) {
+      rej(err);
     }
   });
 }
@@ -68,13 +50,33 @@ export function isSARefreshComplete(): boolean {
   return process.env.SPIRAL_ABYSS_READY === 'true';
 }
 
-export function publishSANames(withTraveler = false): Promise<SimpleEmbed[]> {
+export function publishSANames(clearType: SpiralAbyssClearTypes): Promise<SimpleEmbed[]> {
+  let SASubCache: typeof spiralAbyssCache.abyssalConqueror;
+  switch (clearType) {
+    case 'Abyssal Conqueror': {
+      SASubCache = spiralAbyssCache.abyssalConqueror;
+      break;
+    }
+    case 'Abyssal Traveler': {
+      SASubCache = spiralAbyssCache.abyssalTraveler;
+      break;
+    }
+    case 'Abyssal Sovereign': {
+      SASubCache = spiralAbyssCache.abyssalSovereign;
+      break;
+    }
+    default: {
+      throw new Error(`${clearType} does not exist`);
+    }
+  }
   return new Promise((res, rej) => {
-    const SACache = withTraveler ? spiralAbyssCache.clearTraveler : spiralAbyssCache.clearNormal;
+    if (!SASubCache) {
+      rej(new Error(`${clearType} cache not ready`));
+    }
 
-    const groupCache = SACache.clone();
+    const groupCache = SASubCache.clone();
 
-    const chunks = chunkArray(groupCache.toArray(), totalUsers) as SpiralAbyssCacheObject[][];
+    const chunks = chunkArray(groupCache.toArray(), totalUsers);
     const date = new Date();
 
     const embeds: SimpleEmbed[] = [];
@@ -82,12 +84,12 @@ export function publishSANames(withTraveler = false): Promise<SimpleEmbed[]> {
     chunks.forEach((chunk) => {
       let value = '';
       const embed: SimpleEmbed = {
-        title: '**Spiral Abyss Clear Board**',
+        title: `**Spiral Abyss Clear Board: ${clearType}**`,
         color: COLORS.SPIRAL_ABYSS,
         thumbnail: { url: ICONS.SPIRAL_ABYSS },
         description: `Cycle Details: \n${date.getDate() < 16 ? 'Waxing Phase' : 'Waning Phase'} (${
           date.getMonth() + 1
-        }/${date.getFullYear()}) \nClear Type: ${withTraveler ? 'Traveler Clear' : 'Normal Clear'}`,
+        }/${date.getFullYear()})`,
         timestamp: new Date().toISOString(),
         fields: [],
         footer: {
@@ -107,12 +109,12 @@ export function publishSANames(withTraveler = false): Promise<SimpleEmbed[]> {
     /* jscpd:ignore-start */
     if (!embeds.at(0)) {
       const embed: SimpleEmbed = {
-        title: '**Spiral Abyss Clear Board**',
+        title: `**Spiral Abyss Clear Board: ${clearType}**`,
         color: COLORS.SPIRAL_ABYSS,
         thumbnail: { url: ICONS.SPIRAL_ABYSS },
         description: `Cycle Details: \n${date.getDate() < 16 ? 'Waxing Phase' : 'Waning Phase'} (${
           date.getMonth() + 1
-        }/${date.getFullYear()}) \nClear Type: ${withTraveler ? 'Traveler Clear' : 'Normal Clear'}`,
+        }/${date.getFullYear()})`,
         fields: [
           {
             name: '\u200b',
