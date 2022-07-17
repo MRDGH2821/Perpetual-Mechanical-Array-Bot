@@ -57,23 +57,6 @@ export default new InteractionCommand({
     },
     /* jscpd:ignore-end */
     {
-      name: 'refresh',
-      description: 'Refreshes Spiral Abyss cache',
-      type: ApplicationCommandOptionTypes.SUB_COMMAND,
-
-      async onBeforeRun(ctx) {
-        return StaffCheck.isCtxStaff(ctx, true);
-      },
-      run(ctx) {
-        PMAEventHandler.emit('spiralAbyssRefresh');
-
-        ctx.editOrRespond({
-          content: 'Refresh initiated, please wait for a while before using this command',
-          flags: MessageFlags.EPHEMERAL,
-        });
-      },
-    },
-    {
       name: 'view',
       description: 'View individual leaderboard',
       type: ApplicationCommandOptionTypes.SUB_COMMAND,
