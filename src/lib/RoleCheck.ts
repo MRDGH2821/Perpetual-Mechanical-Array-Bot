@@ -80,9 +80,20 @@ async function abyssRoleCheck(
   target: Member,
   SArole: ROLE_IDS.SpiralAbyss,
 ) {
-  target.removeRole(ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR);
-  target.removeRole(ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN);
-  target.removeRole(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER);
+  const beforeRemoval = {
+    conqueror: target.roles.has(ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR),
+    sovereign: target.roles.has(ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN),
+    traveler: target.roles.has(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER),
+  };
+  console.log(beforeRemoval);
+  async function removeRoles() {
+    console.log('Roles removed');
+    await target.removeRole(ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR);
+    await target.removeRole(ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN);
+    await target.removeRole(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER);
+  }
+
+  removeRoles();
 
   const abyssRole = SArole;
 
@@ -98,6 +109,25 @@ async function abyssRoleCheck(
     role: abyssRole,
   };
 
+  async function restoreRoles(newRoleID: string) {
+    // removeRoles();
+    if (beforeRemoval.sovereign || newRoleID === ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN) {
+      console.log('Adding sovereign');
+      return target.addRole(ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN);
+    }
+    if (beforeRemoval.traveler || newRoleID === ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER) {
+      console.log('Adding traveler');
+      return target.addRole(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER);
+    }
+    if (beforeRemoval.conqueror || newRoleID === ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR) {
+      console.log('Adding conqueror');
+      return target.addRole(ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR);
+    }
+
+    return new Promise((res) => {
+      res('No roles assigned');
+    });
+  }
   if (SArole === ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN) {
     conditionals.exp = 5000;
     conditionals.notes = 'Cleared with 3 distinct traveler teams/elements';
@@ -106,7 +136,7 @@ async function abyssRoleCheck(
 
   if (SArole === ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER) {
     conditionals.exp = 500;
-    conditionals.notes = 'Cleared with traveler';
+    conditionals.notes = 'Cleared floor 12 with traveler';
     conditionals.role = ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER;
   }
 
@@ -120,6 +150,8 @@ async function abyssRoleCheck(
         result.exp = 0;
         // target.addRole(conditionals.role);
         // PMAEventHandler.emit('abyssRegister', target, false);
+        console.log('Criteria not satisfied, restoring roles');
+        restoreRoles('none');
         roleCheckSwitcher(btnCtx, result);
       },
     })
@@ -128,12 +160,13 @@ async function abyssRoleCheck(
       label: 'Criteria satisfied!',
       emoji: '👍',
       style: MessageComponentButtonStyles.SUCCESS,
-      run(btnCtx) {
+      async run(btnCtx) {
         result.exp = conditionals.exp;
         result.notes = conditionals.notes;
         result.role = conditionals.role;
         target.addRole(conditionals.role);
-
+        console.log('Criteria satisfied, restoring higher roles if any');
+        await restoreRoles(conditionals.role);
         roleCheckSwitcher(btnCtx, result);
       },
     });
