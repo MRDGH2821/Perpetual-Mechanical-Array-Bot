@@ -1,6 +1,7 @@
 import { GatewayClientEvents } from 'detritus-client';
 import { ClientEvents } from 'detritus-client/lib/constants';
 import BotEvent from '../../lib/BotEvent';
+import { randomArrPick } from '../../lib/Utilities';
 
 export default new BotEvent({
   event: ClientEvents.MESSAGE_CREATE,
@@ -16,6 +17,18 @@ export default new BotEvent({
       message.reply({
         content: 'Who we are banning today? :smirk:',
         reference: true,
+      });
+    }
+
+    if (/fbi/gimu.test(msg)) {
+      const fbiQuotes = [
+        'https://tenor.com/view/traffic-fbi-open-up-raid-gif-13450966',
+        'Did you know FBI stands for Faraway Buddy Insideyourdevice ?',
+        'https://tenor.com/view/chicken-fbi-skeptic-chicken-funny-gif-14153035',
+      ];
+
+      message.reply({
+        content: randomArrPick(fbiQuotes),
       });
     }
   },
