@@ -109,6 +109,8 @@ export type SpiralAbyssCacheObject = { user: User; data: AbyssDBRegisterObject }
 
 export type SpiralAbyssGroupCacheType = BaseCollection<User['id'], SpiralAbyssCacheObject>;
 
+export type SpiralAbyssClearTypes = 'Abyssal Conqueror' | 'Abyssal Traveler' | 'Abyssal Sovereign';
+
 export type JokeCategories =
   | 'Programming'
   | 'Misc'
