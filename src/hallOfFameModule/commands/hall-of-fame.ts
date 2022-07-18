@@ -93,17 +93,6 @@ export default new InteractionCommand({
           required: true,
           choices: HALL_OF_FAME_ELEMENT_CHOICES,
         },
-        {
-          name: 'crown_quantity',
-          description: 'Select Crown Quantity',
-          type: ApplicationCommandOptionTypes.STRING,
-          required: true,
-          choices: [
-            { name: 'One (1)', value: 'one' },
-            { name: 'Two (2)', value: 'two' },
-            { name: 'Three (3)', value: 'three' },
-          ],
-        },
       ],
       async run(ctx, args) {
         const embed = await showcaseHallOfFameGenerate(args.element);
@@ -123,6 +112,17 @@ export default new InteractionCommand({
           type: ApplicationCommandOptionTypes.STRING,
           required: true,
           choices: HALL_OF_FAME_ELEMENT_CHOICES,
+        },
+        {
+          name: 'crown_quantity',
+          description: 'Select Crown Quantity',
+          type: ApplicationCommandOptionTypes.STRING,
+          required: true,
+          choices: [
+            { name: 'One (1)', value: 'one' },
+            { name: 'Two (2)', value: 'two' },
+            { name: 'Three (3)', value: 'three' },
+          ],
         },
       ],
       async run(ctx, args) {
