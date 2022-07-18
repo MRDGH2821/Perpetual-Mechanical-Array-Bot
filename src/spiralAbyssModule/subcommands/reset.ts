@@ -119,7 +119,28 @@ const reset: InteractionCommandOptionOptions = {
             const announceEmb: SimpleEmbed = {
               title: '**New Enemy Lineup!**',
               color: COLORS.SPIRAL_ABYSS,
-              description: `Enemy Lineup has changed which means Spiral abyss roles are up for grabs!\nSubmit in-game screenshot or Hoyolab profile link or Hoyolab screenshot at <#${ChannelIds.ROLE_APPLICATION}> as a proof to get the role!\n\n(~~Yes roles are removed~~)`,
+              description: `Enemy Lineup has changed which means Spiral abyss roles are up for grabs!\nSubmit in-game screenshot or Hoyolab profile link or Hoyolab screenshot at <#${ChannelIds.ROLE_APPLICATION}> as a proof to get the role!\n\nRequirements for obtaining respective roles:`,
+              fields: [
+                {
+                  name: 'Abyssal Conqueror',
+                  value: 'Clear Spiral Abyss 36/36 & get all achievements\nTotal exp: `250`',
+                },
+                {
+                  name: 'Abyssal Traveler',
+                  value: 'Above requirements + Clear Floor 12 using Traveler\nTotal exp: `500`',
+                },
+                {
+                  name: 'Abyssal Sovereign',
+                  value:
+                    'Above requirements + Clear Floor 12 using 3 distinct traveler teams (elements can be same) or 3 different traveler elements (teams can be same)\nTotal exp: `5000`',
+                },
+                {
+                  name: '\u200B',
+                  value: args.remove_roles
+                    ? '||*Yes roles were removed and none of the animals were harmed in this process.*||'
+                    : '*No roles were removed nor any animals were hurt in this process.*',
+                },
+              ],
             };
 
             ctx.channels.get(ChannelIds.SPIRAL_ABYSS)?.createMessage({
@@ -129,7 +150,6 @@ const reset: InteractionCommandOptionOptions = {
               embed: announceEmb,
             });
           }
-
           await btnCtx.editOrRespond({
             embed: successEmbed,
             files,
