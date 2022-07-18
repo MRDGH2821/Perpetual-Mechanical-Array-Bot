@@ -150,7 +150,7 @@ async function abyssRoleCheck(
         result.exp = 0;
         // target.addRole(conditionals.role);
         // PMAEventHandler.emit('abyssRegister', target, false);
-        console.log('Criteria not satisfied, restoring roles');
+        console.log('Criteria not satisfied, restoring roles if any');
         restoreRoles('none');
         roleCheckSwitcher(btnCtx, result);
       },
