@@ -3,7 +3,7 @@ import {
   ApplicationCommandOptionTypes,
   MessageComponentButtonStyles,
 } from 'detritus-client/lib/constants';
-import { InteractionCommandOptionOptions } from 'detritus-client/lib/interaction';
+import { InteractionCommandOptionOptions, ParsedArgs } from 'detritus-client/lib/interaction';
 import { Member } from 'detritus-client/lib/structures';
 import { ComponentActionRow } from 'detritus-client/lib/utils';
 import { SimpleEmbed } from '../../botTypes/interfaces';
@@ -12,6 +12,13 @@ import {
   ChannelIds, COLORS, ICONS, ROLE_IDS,
 } from '../../lib/Constants';
 import { Debugging, PMAEventHandler, StaffCheck } from '../../lib/Utilities';
+
+interface ResetArgs extends ParsedArgs {
+  remove_roles?: boolean;
+  publish_names?: boolean;
+  send_announcement?: boolean;
+  announce_with_ping?: boolean;
+}
 
 const reset: InteractionCommandOptionOptions = {
   name: 'reset',
@@ -46,10 +53,7 @@ const reset: InteractionCommandOptionOptions = {
   async onBeforeRun(ctx) {
     return StaffCheck.isCtxStaff(ctx, true);
   },
-  async run(
-    ctx,
-    args: { remove_roles?: boolean; publish_names?: boolean; announce_with_ping?: boolean },
-  ) {
+  async run(ctx, args: ResetArgs) {
     const verifyEmb: SimpleEmbed = {
       title: '**Are you sure?**',
       description: `Performing This action will result in the following -\n 1. Will publish names: \`${args.publish_names}\`\n 2. Will remove roles: \`${args.remove_roles}\`\n 3. Send Announcement message: \`${args.send_announcement}\` \n 4. Will Announce with ping: \`${args.announce_with_ping}\``,
