@@ -25,6 +25,30 @@ export default new InteractionCommand({
       description: 'Enter the rewards obtainable from redeeming code',
       type: ApplicationCommandOptionTypes.STRING,
       default: '_Only one way to find out_',
+      onAutoComplete(ctx) {
+        const input = ctx.value.toLowerCase();
+        const values = [
+          {
+            name: '100 Primogems',
+            value: '100 Primogems',
+          },
+          {
+            name: '60 Primogems',
+            value: '60 Primogems',
+          },
+          {
+            name: '50 Primogems',
+            value: '50 Primogems',
+          },
+        ].filter((r) => r.name.toLowerCase().includes(input));
+
+        const choices = values.map((choice) => ({
+          name: choice.name,
+          value: choice.value,
+        }));
+
+        ctx.respond({ choices });
+      },
     },
   ],
   onBeforeRun(ctx) {
