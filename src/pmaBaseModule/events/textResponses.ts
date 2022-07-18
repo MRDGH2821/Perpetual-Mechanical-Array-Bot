@@ -7,6 +7,7 @@ import { randomArrPick } from '../../lib/Utilities';
 const textResponseCD = new CoolDownManager(3000);
 
 textResponseCD.add('FBI_ICD', 0);
+textResponseCD.add('TikTok_ICD', 0);
 export default new BotEvent({
   event: ClientEvents.MESSAGE_CREATE,
   async listener(payload: GatewayClientEvents.MessageCreate) {
@@ -16,7 +17,6 @@ export default new BotEvent({
     if (message.author.bot) {
       return;
     }
-    const timeLeft = await textResponseCD.check('FBI_ICD');
     // console.log({ timeLeft });
 
     if (/banhammer/gimu.test(msg) && message.author.id === '440081484855115776') {
@@ -25,9 +25,9 @@ export default new BotEvent({
         reference: true,
       });
     }
-    textResponseCD.add('FBI_ICD', 3000);
 
-    if ((timeLeft < 1 || timeLeft === false) && /fbi/gimu.test(msg)) {
+    const fbiICD = await textResponseCD.check('FBI_ICD');
+    if ((fbiICD < 1 || fbiICD === false) && /fbi/gimu.test(msg)) {
       const fbiQuotes = [
         'https://tenor.com/view/traffic-fbi-open-up-raid-gif-13450966',
         'Did you know FBI stands for Faraway Buddy Insideyourdevice ?',
@@ -41,6 +41,23 @@ export default new BotEvent({
       message.reply({
         content: randomArrPick(fbiQuotes),
       });
+
+      textResponseCD.add('FBI_ICD', 3000);
     }
+    /*
+    const tikTokICD = await textResponseCD.check('TikTok_ICD');
+    if ((tikTokICD < 1 || tikTokICD === false) && /TikTok/gimu.test(msg)) {
+      const tikTokQuotes = [
+        'Somebody mentioned TikTok?!?!?!??!? \n\n*Dies of cringe*',
+        'https://tenor.com/view/tiktok-tiktok-cringe-watermark-tiktok-watermark-watermark-cringe-gif-22182993',
+      ];
+
+      message.reply({
+        content: randomArrPick(tikTokQuotes),
+      });
+
+      textResponseCD.add('TikTok_ICD', 10000);
+    }
+    */
   },
 });
