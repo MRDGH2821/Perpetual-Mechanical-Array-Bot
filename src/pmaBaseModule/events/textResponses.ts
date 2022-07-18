@@ -17,7 +17,7 @@ export default new BotEvent({
       return;
     }
     const timeLeft = await textResponseCD.check('FBI_ICD');
-    console.log({ timeLeft });
+    // console.log({ timeLeft });
 
     if (/banhammer/gimu.test(msg) && message.author.id === '440081484855115776') {
       message.reply({
