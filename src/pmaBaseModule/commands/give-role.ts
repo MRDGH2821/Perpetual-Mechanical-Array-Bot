@@ -2,6 +2,7 @@ import { RequestTypes } from 'detritus-client-rest';
 import {
   ApplicationCommandOptionTypes,
   MessageComponentTypes,
+  MessageFlags,
 } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { ComponentActionRow, ComponentSelectMenuOptionData } from 'detritus-client/lib/utils';
@@ -52,8 +53,14 @@ export default new InteractionCommand({
       async run(ctx, args: GiveRoleArgs) {
         const selectedRoles = [args.role!];
 
+        if (!Constants.ACH_ROLES.find((prop) => prop.value === args.role)) {
+          return ctx.editOrRespond({
+            content: `<@&${args.role}> is not a valid role`,
+            flags: MessageFlags.EPHEMERAL,
+          });
+        }
         initialiseSwitcher(selectedRoles as string[], args.user!);
-        roleCheckSwitcher(ctx, {
+        return roleCheckSwitcher(ctx, {
           exp: -1,
           notes: 'none',
           role: Constants.ROLE_IDS.OTHERS.ARCHONS,
@@ -238,8 +245,8 @@ export default new InteractionCommand({
         description: `An error occurred, error details in the file.\nInput: ${args}`,
       },
       file: {
-        value: JSON.stringify(error),
-        filename: 'Give-Role-Error.json',
+        value: `${error}`,
+        filename: 'Give-Role-Error.txt',
       },
     });
   },
