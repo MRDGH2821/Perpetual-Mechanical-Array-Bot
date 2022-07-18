@@ -31,6 +31,12 @@ const reset: InteractionCommandOptionOptions = {
       default: true,
     },
     {
+      name: 'send_announcement',
+      description: 'Will send an announcement (default True)',
+      type: ApplicationCommandOptionTypes.BOOLEAN,
+      default: true,
+    },
+    {
       name: 'announce_with_ping',
       description: 'Will announce with a ping (default False)',
       type: ApplicationCommandOptionTypes.BOOLEAN,
@@ -46,13 +52,10 @@ const reset: InteractionCommandOptionOptions = {
   ) {
     const verifyEmb: SimpleEmbed = {
       title: '**Are you sure?**',
-      description: `Performing This action will result in the following -\n 1. Will publish names: \`${args.publish_names}\`\n 2. Will remove roles: \`${args.remove_roles}\`\n 3. Will Announce with ping: \`${args.announce_with_ping}\``,
+      description: `Performing This action will result in the following -\n 1. Will publish names: \`${args.publish_names}\`\n 2. Will remove roles: \`${args.remove_roles}\`\n 3. Send Announcement message: \`${args.send_announcement}\` \n 4. Will Announce with ping: \`${args.announce_with_ping}\``,
       color: COLORS.EMBED_COLOR,
       thumbnail: {
         url: '',
-      },
-      footer: {
-        text: 'By default announcement is done without ping.',
       },
     };
 
@@ -64,7 +67,7 @@ const reset: InteractionCommandOptionOptions = {
         async run(btnCtx) {
           const successEmbed: SimpleEmbed = {
             title: '**Success**',
-            description: ` 1. Names Published: \`${args.publish_names}\`\n 2. Roles Removed: \`${args.remove_roles}\`\n 3. Announced with ping: \`${args.announce_with_ping}\``,
+            description: ` 1. Names Published: \`${args.publish_names}\`\n 2. Roles Removed: \`${args.remove_roles}\`\n 3. Sent Announcement message: \`${args.send_announcement}\`\n  4. Announced with ping: \`${args.announce_with_ping}\``,
             color: COLORS.SUCCESS,
             thumbnail: {
               url: ICONS.CHECK_MARK,
@@ -108,7 +111,7 @@ const reset: InteractionCommandOptionOptions = {
           }
 
           PMAEventHandler.emit('spiralAbyssRefresh');
-          if (args.remove_roles === true) {
+          if (args.send_announcement === true) {
             const announceEmb: SimpleEmbed = {
               title: '**New Enemy Lineup!**',
               color: COLORS.SPIRAL_ABYSS,
