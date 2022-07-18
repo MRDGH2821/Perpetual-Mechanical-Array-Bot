@@ -181,7 +181,7 @@ export default new InteractionCommand({
             iconUrl: 'https://cdn-icons-png.flaticon.com/512/3596/3596176.png',
           },
           image: {
-            url: 'http://i0.kym-cdn.com/entries/icons/mobile/000/017/414/sampletext.jpg',
+            url: 'https://i.imgur.com/nvFoMIK.jpg',
           },
           thumbnail: {
             url: 'https://i.imgur.com/JRVixj1.png',
@@ -214,7 +214,7 @@ export default new InteractionCommand({
                 text: 'Sample Footer text',
                 icon_url: 'https://cdn-icons-png.flaticon.com/512/3596/3596176.png',
               },
-              image: 'http://i0.kym-cdn.com/entries/icons/mobile/000/017/414/sampletext.jpg',
+              image: 'https://i.imgur.com/nvFoMIK.jpg',
               url: 'https://youtu.be/dQw4w9WgXcQ',
               thumbnail: 'https://i.imgur.com/JRVixj1.png',
             },
