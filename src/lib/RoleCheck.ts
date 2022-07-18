@@ -30,8 +30,18 @@ const resultEmbed: SimpleEmbed = {
 };
 
 export function initialiseSwitcher(selectedRoles: string[], target: Member) {
-  toGiveRoles.push(...selectedRoles);
-  localCopyRoles.push(...selectedRoles);
+  let filteredRoles = selectedRoles;
+  if (selectedRoles.includes(ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN)) {
+    filteredRoles = selectedRoles.filter(
+      (role) => role !== ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER
+        && role !== ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR,
+    );
+  } else if (selectedRoles.includes(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER)) {
+    filteredRoles = selectedRoles.filter((role) => role !== ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR);
+  }
+
+  toGiveRoles.push(...filteredRoles);
+  localCopyRoles.push(...filteredRoles);
   userTarget = target;
   resultEmbed.description += `The following roles have been assigned to <@${userTarget.id}>:\n`;
 }
