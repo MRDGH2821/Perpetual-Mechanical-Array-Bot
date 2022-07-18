@@ -17,18 +17,17 @@ export default new BotEvent({
       return;
     }
     const timeLeft = await textResponseCD.check('FBI_ICD');
+    console.log({ timeLeft });
 
-    if (timeLeft < 1 || timeLeft === false) {
-      if (/banhammer/gimu.test(msg) && message.author.id === '440081484855115776') {
-        message.reply({
-          content: 'Who we are banning today? :smirk:',
-          reference: true,
-        });
-      }
-      textResponseCD.add('FBI_ICD', 3000);
+    if (/banhammer/gimu.test(msg) && message.author.id === '440081484855115776') {
+      message.reply({
+        content: 'Who we are banning today? :smirk:',
+        reference: true,
+      });
     }
+    textResponseCD.add('FBI_ICD', 3000);
 
-    if (/fbi/gimu.test(msg)) {
+    if ((timeLeft < 1 || timeLeft === false) && /fbi/gimu.test(msg)) {
       const fbiQuotes = [
         'https://tenor.com/view/traffic-fbi-open-up-raid-gif-13450966',
         'Did you know FBI stands for Faraway Buddy Insideyourdevice ?',
