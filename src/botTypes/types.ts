@@ -92,23 +92,6 @@ export type CrownDBRegisterObject = {
   crowns: 1 | 2 | 3;
 };
 
-export type AbyssDBRegisterObject = {
-  userID: Member['user']['id'] | User['id'];
-  withTraveler: boolean;
-  currentMonth: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | number;
-  currentYear: number;
-  lunarPhase: 'waxing' | 'waning';
-};
-
-export type SetSpiralAbyssOptions = {
-  collection: SpiralAbyssGroupCacheType;
-  withTraveler: boolean;
-};
-
-export type SpiralAbyssCacheObject = { user: User; data: AbyssDBRegisterObject };
-
-export type SpiralAbyssGroupCacheType = BaseCollection<User['id'], SpiralAbyssCacheObject>;
-
 export type SpiralAbyssClearTypes = 'Abyssal Conqueror' | 'Abyssal Traveler' | 'Abyssal Sovereign';
 
 export type JokeCategories =

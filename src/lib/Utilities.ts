@@ -27,7 +27,6 @@ import {
   HallOfFameCacheObject,
   JokeCategories,
   OneJokeFormat,
-  SpiralAbyssCacheObject,
   TravelerCommandProp,
 } from '../botTypes/types';
 import { getShardClient } from './BotClientExtracted';
@@ -283,15 +282,13 @@ export function chunkArray<T>(array: T[], size: number): T[][] {
   return result;
 }
 
-type V = SpiralAbyssCacheObject | HallOfFameCacheObject;
-
-export function constructField<T extends BaseCollection<User['id'], V>, N extends number>(
-  collection: T,
-  maxLimit: N,
-): string {
+export function constructField<
+  T extends BaseCollection<User['id'], HallOfFameCacheObject>,
+  N extends number,
+>(collection: T, maxLimit: N): string {
   let str = '';
 
-  const selected: V[] = collection
+  const selected: HallOfFameCacheObject[] = collection
     .toArray()
     .sort(() => Math.random() - 0.5)
     .slice(0, maxLimit);
