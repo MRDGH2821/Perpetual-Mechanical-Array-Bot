@@ -20,7 +20,7 @@ LINTER_RULES_PATH: .
 PRINT_ALPACA: false
 
 PRE_COMMANDS:
-  - command: 'npm install'
+  - command: 'npm ci'
     cwd: 'workspace'
 POST_COMMANDS:
   - command: 'npm run pretty'
