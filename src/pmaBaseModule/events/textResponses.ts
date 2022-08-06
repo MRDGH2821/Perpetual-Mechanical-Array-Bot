@@ -1,6 +1,7 @@
 import { GatewayClientEvents } from 'detritus-client';
 import { ClientEvents } from 'detritus-client/lib/constants';
 import BotEvent from '../../lib/BotEvent';
+import { ChannelIds, EMOJIS } from '../../lib/Constants';
 import CoolDownManager from '../../lib/CoolDownManager';
 import { freezeMuteUser, randomArrPick } from '../../lib/Utilities';
 
@@ -8,6 +9,8 @@ const textResponseCD = new CoolDownManager(3000);
 
 textResponseCD.add('FBI_ICD', 0);
 textResponseCD.add('TikTok_ICD', 0);
+textResponseCD.add('Leaks_ICD', 0);
+
 export default new BotEvent({
   event: ClientEvents.MESSAGE_CREATE,
   async listener(payload: GatewayClientEvents.MessageCreate) {
@@ -67,5 +70,34 @@ export default new BotEvent({
       textResponseCD.add('TikTok_ICD', 10000);
     }
 
+    const leaksICD = await textResponseCD.check('Leaks_ICD');
+
+    if (
+      (leaksICD < 1 || leaksICD === false)
+      && /l+e+a+k+s*/gimu.test(msg)
+      && message.channelId === ChannelIds.LEAKS_DISCUSSION
+    ) {
+      const leakQuotes = [
+        '*Why need leaks when you can have patches*\nhttps://tenor.com/view/leak-leaks-flex-seal-flex-seal-gif-15158221',
+        'You are asking for leaks?',
+        'The leaks are hiding from the leaker hunt decree',
+        `Just wait for next version/livestream${EMOJIS.smh}`,
+        EMOJIS.Copium,
+        EMOJIS.LumineCopium,
+        EMOJIS.LuminePyramid,
+      ];
+
+      message.reply({
+        content: randomArrPick(leakQuotes),
+      });
+      freezeMuteUser(
+        message.member!,
+        message.channel!,
+        15,
+        1000 * 60,
+        'Spoke the forbidden word - ||leak||',
+      );
+      textResponseCD.add('Leaks_ICD', 3000);
+    }
   },
 });
