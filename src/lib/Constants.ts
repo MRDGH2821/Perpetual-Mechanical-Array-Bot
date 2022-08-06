@@ -95,6 +95,10 @@ export const EMOJIS = {
   Void: formatEmoji('983370274227499050'),
   DullBlade: formatEmoji('861628955697741844'),
   DvalinHYPE: formatEmoji('808591175640154142'),
+  Copium: formatEmoji('897176156057518130'),
+  LumineCopium: formatEmoji('821897404260417557'),
+  LuminePyramid: formatEmoji('1004994499312877598'),
+  smh: formatEmoji('866190698676355092'),
 };
 
 export enum ChannelIds {
@@ -107,6 +111,7 @@ export enum ChannelIds {
   SHOWCASE = '876121506680287263',
   ROLE_APPLICATION = '804590144052002817',
   SPIRAL_ABYSS = '804183774589485126',
+  LEAKS_DISCUSSION = '803949792349650964',
 }
 
 export namespace STAFF {
@@ -137,6 +142,7 @@ export namespace ROLE_IDS {
     ARCHONS = '813613841488936971',
     WHALE = '804010525411246140',
     ANOTHER_TEST_SUBJECT = '984388373693210635',
+    FROZEN_MUTED = '806133418559143957',
   }
 
   export enum SpiralAbyss {
