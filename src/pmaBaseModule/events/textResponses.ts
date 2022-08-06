@@ -30,7 +30,11 @@ export default new BotEvent({
     }
 
     const fbiICD = await textResponseCD.check('FBI_ICD');
-    if ((fbiICD < 1 || fbiICD === false) && /fbi/gimu.test(msg)) {
+    if (
+      (fbiICD < 1 || fbiICD === false)
+      && /fbi/gimu.test(msg)
+      && process.env.AUTORESPONSE_FBI !== 'false'
+    ) {
       const fbiQuotes = [
         'https://tenor.com/view/traffic-fbi-open-up-raid-gif-13450966',
         'Did you know FBI stands for Faraway Buddy Insideyourdevice ?',
@@ -49,7 +53,11 @@ export default new BotEvent({
     }
 
     const tikTokICD = await textResponseCD.check('TikTok_ICD');
-    if ((tikTokICD < 1 || tikTokICD === false) && /TikTok/gimu.test(msg)) {
+    if (
+      (tikTokICD < 1 || tikTokICD === false)
+      && /TikTok/gimu.test(msg)
+      && process.env.AUTORESPONSE_TIKTOK !== 'false'
+    ) {
       const tikTokQuotes = [
         'Somebody mentioned TikTok?!?!?!??!? \n\n*Dies of cringe*',
         'https://tenor.com/view/tiktok-tiktok-cringe-watermark-tiktok-watermark-watermark-cringe-gif-22182993',
@@ -76,6 +84,7 @@ export default new BotEvent({
       (leaksICD < 1 || leaksICD === false)
       && /l+e+a+k+s*/gimu.test(msg)
       && message.channelId === ChannelIds.LEAKS_DISCUSSION
+      && process.env.AUTORESPONSE_LEAKS !== 'false'
     ) {
       const leakQuotes = [
         '*Why need leaks when you can have patches*\nhttps://tenor.com/view/leak-leaks-flex-seal-flex-seal-gif-15158221',
