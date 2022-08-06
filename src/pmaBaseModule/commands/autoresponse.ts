@@ -3,6 +3,25 @@ import { InteractionCommand } from 'detritus-client/lib/interaction';
 import EnvConfig from '../../lib/EnvConfig';
 import { StaffCheck } from '../../lib/Utilities';
 
+const autoResponseChoices = [
+  {
+    name: 'TikTok',
+    value: 'TIKTOK',
+  },
+  {
+    name: 'Leaks',
+    value: 'LEAKS',
+  },
+  {
+    name: 'Fbi',
+    value: 'FBI',
+  },
+  {
+    name: 'Yoyoverse',
+    value: 'YOYOVERSE',
+  },
+];
+
 export default new InteractionCommand({
   name: 'autoresponse',
   description: 'Auto response stuff',
@@ -22,21 +41,7 @@ export default new InteractionCommand({
           description: 'Select which auto response to disable',
           type: ApplicationCommandOptionTypes.STRING,
           required: true,
-          choices: [
-            {
-              name: 'TikTok',
-              value: 'TIKTOK',
-            },
-            {
-              name: 'Leaks',
-              value: 'LEAKS',
-            },
-
-            {
-              name: 'Fbi',
-              value: 'FBI',
-            },
-          ],
+          choices: autoResponseChoices,
         },
       ],
       run(ctx, args) {
@@ -61,21 +66,7 @@ export default new InteractionCommand({
           description: 'Select which auto response to enable',
           type: ApplicationCommandOptionTypes.STRING,
           required: true,
-          choices: [
-            {
-              name: 'TikTok',
-              value: 'TIKTOK',
-            },
-            {
-              name: 'Leaks',
-              value: 'LEAKS',
-            },
-
-            {
-              name: 'Fbi',
-              value: 'FBI',
-            },
-          ],
+          choices: autoResponseChoices,
         },
       ],
       run(ctx, args) {
