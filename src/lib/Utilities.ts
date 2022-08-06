@@ -485,12 +485,13 @@ export async function freezeMuteUser(
   reason: string,
 ) {
   const RNG = random(1, 100);
+  const seconds = duration / (1000 * 60);
   if (RNG < chance) {
     member?.addRole(Constants.ROLE_IDS.OTHERS.FROZEN_MUTED);
     channel?.createMessage({
       embed: {
         color: 0x5f929e,
-        title: `${member?.nick} has been frozen for ${duration}ms!`,
+        title: `${member?.nick} has been frozen for ${seconds}s!`,
         description: `${member?.mention} is now temporarily frozen (muted).\n\n**Reason**: ${reason}\n\nPlease use this time to take a break or be productive!`,
         thumbnail: {
           url: 'https://cdn.discordapp.com/attachments/804253204291387422/895916863345803284/Frozen_Skies.png',
