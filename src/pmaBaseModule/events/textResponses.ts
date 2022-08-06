@@ -106,7 +106,7 @@ export default new BotEvent({
         1000 * 60,
         'Spoke the forbidden word - ||leak||',
       );
-      textResponseCD.add('Leaks_ICD', 3000);
+      textResponseCD.add('Leaks_ICD', 18000);
     }
   },
 });
