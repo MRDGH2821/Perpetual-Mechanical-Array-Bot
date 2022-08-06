@@ -79,7 +79,6 @@ export default new BotEvent({
     }
 
     const leaksICD = await textResponseCD.check('Leaks_ICD');
-
     if (
       (leaksICD < 1 || leaksICD === false)
       && /l+e+a+k+s*/gimu.test(msg)
@@ -107,6 +106,17 @@ export default new BotEvent({
         'Spoke the forbidden word - ||leak||',
       );
       textResponseCD.add('Leaks_ICD', 18000);
+    }
+
+    if (/y+o+y+o+v+e+r+s+e+/.test(msg) && process.env.AUTORESPONSE_YOYOVERSE !== 'false') {
+      const yoyoQuotes = [
+        `Did somebody mention Yoyoverse? ${EMOJIS.LumineWoke}\nIts CEO is <@476219631539847188>`,
+        `Someone's showing interest in Yoyoverse <@476219631539847188>, maybe Hire them? ${EMOJIS.PaimonThink}`,
+        'You might wanna take a look here <@476219631539847188>',
+      ];
+      message.channel?.createMessage({
+        content: randomArrPick(yoyoQuotes),
+      });
     }
   },
 });
