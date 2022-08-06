@@ -67,6 +67,7 @@
     "nuxt",
     "oxsecurity",
     "Padoru",
+    "Paimon",
     "Pepe",
     "pepeduck",
     "postlint",
@@ -91,7 +92,9 @@
     "venv",
     "vuepress",
     "wolfdown",
-    "wscript"
+    "wscript",
+    "yoyo",
+    "YOYOVERSE"
   ],
   "version": "0.2",
   "caseSensitive": false
