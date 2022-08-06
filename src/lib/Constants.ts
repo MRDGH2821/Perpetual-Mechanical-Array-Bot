@@ -99,6 +99,8 @@ export const EMOJIS = {
   LumineCopium: formatEmoji('821897404260417557'),
   LuminePyramid: formatEmoji('1004994499312877598'),
   smh: formatEmoji('866190698676355092'),
+  LumineWoke: formatEmoji('809010967786160138'),
+  PaimonThink: formatEmoji('853288230694944798'),
 };
 
 export enum ChannelIds {
