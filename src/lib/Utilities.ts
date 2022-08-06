@@ -491,7 +491,7 @@ export async function freezeMuteUser(
     channel?.createMessage({
       embed: {
         color: 0x5f929e,
-        title: `${member?.nick} has been frozen for ${seconds}s!`,
+        title: `${member?.nick} has been frozen for ${seconds} minute(s)!`,
         description: `${member?.mention} is now temporarily frozen (muted).\n\n**Reason**: ${reason}\n\nPlease use this time to take a break or be productive!`,
         thumbnail: {
           url: 'https://cdn.discordapp.com/attachments/804253204291387422/895916863345803284/Frozen_Skies.png',
