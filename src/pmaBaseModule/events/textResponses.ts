@@ -2,7 +2,7 @@ import { GatewayClientEvents } from 'detritus-client';
 import { ClientEvents } from 'detritus-client/lib/constants';
 import BotEvent from '../../lib/BotEvent';
 import CoolDownManager from '../../lib/CoolDownManager';
-import { randomArrPick } from '../../lib/Utilities';
+import { freezeMuteUser, randomArrPick } from '../../lib/Utilities';
 
 const textResponseCD = new CoolDownManager(3000);
 
@@ -44,20 +44,28 @@ export default new BotEvent({
 
       textResponseCD.add('FBI_ICD', 3000);
     }
-    /*
+
     const tikTokICD = await textResponseCD.check('TikTok_ICD');
     if ((tikTokICD < 1 || tikTokICD === false) && /TikTok/gimu.test(msg)) {
       const tikTokQuotes = [
         'Somebody mentioned TikTok?!?!?!??!? \n\n*Dies of cringe*',
         'https://tenor.com/view/tiktok-tiktok-cringe-watermark-tiktok-watermark-watermark-cringe-gif-22182993',
+        'Do this\n https://tenor.com/view/tiktok-tiktokbad-bad-trash-garbage-gif-21041014',
+        'https://cdn.discordapp.com/attachments/803459900180004904/1005441017375367208/image0.gif',
       ];
 
-      message.reply({
-        content: randomArrPick(tikTokQuotes),
-      });
+      message
+        .reply({
+          content: randomArrPick(tikTokQuotes),
+        })
+        .then((TikTokMsg) => {
+          setTimeout(() => {
+            TikTokMsg.delete();
+          }, 10000);
+        });
 
       textResponseCD.add('TikTok_ICD', 10000);
     }
-    */
+
   },
 });
