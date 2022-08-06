@@ -83,7 +83,7 @@ export default new InteractionCommand({
     const confessEmbed: RequestTypes.CreateChannelMessageEmbed = {
       title: '**A New confession!**',
       author: {
-        name: ctx.user.tag,
+        name: ctx.member?.nick!,
         iconUrl: ctx.user.avatarUrl,
         url: ctx.user.jumpLink,
       },
@@ -95,6 +95,9 @@ export default new InteractionCommand({
       },
       thumbnail: {
         url: ctx.user.avatarUrl,
+      },
+      footer: {
+        text: `by - ${ctx.user.tag}`,
       },
     };
 
