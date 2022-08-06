@@ -6,11 +6,14 @@ import {
   Permissions,
 } from 'detritus-client/lib/constants';
 import { InteractionCommand, InteractionContext } from 'detritus-client/lib/interaction';
-import { InteractionEditOrRespond, Member, User } from 'detritus-client/lib/structures';
+import {
+  Channel, InteractionEditOrRespond, Member, User,
+} from 'detritus-client/lib/structures';
 import { ComponentActionRow, ComponentContext, PermissionTools } from 'detritus-client/lib/utils';
 import { BaseCollection } from 'detritus-utils';
 import EventEmitter from 'events';
 import https from 'https';
+import { random } from 'mathjs';
 import { titleCase } from 'title-case';
 import {
   NadekoContent,
@@ -472,4 +475,35 @@ export async function getUser(userId: User['id'], SClient = getShardClient()) {
   }
 
   return user;
+}
+
+export async function freezeMuteUser(
+  member: Member,
+  channel: Channel,
+  chance: number,
+  duration: number,
+  reason: string,
+) {
+  const RNG = random(1, 100);
+  if (RNG < chance) {
+    member?.addRole(Constants.ROLE_IDS.OTHERS.FROZEN_MUTED);
+    channel?.createMessage({
+      embed: {
+        color: 0x5f929e,
+        title: `${member?.nick} has been frozen for ${duration}ms!`,
+        description: `${member?.mention} is now temporarily frozen (muted).\n\n**Reason**: ${reason}\n\nPlease use this time to take a break or be productive!`,
+        thumbnail: {
+          url: 'https://cdn.discordapp.com/attachments/804253204291387422/895916863345803284/Frozen_Skies.png',
+        },
+        footer: {
+          iconUrl:
+            'https://cdn.discordapp.com/icons/803424731474034709/a_ebc29957047bf6244f0b528c2acd7af9.png',
+          text: 'For any problems, file a ticket to contact the staff.',
+        },
+      },
+    });
+    setTimeout(() => {
+      member?.removeRole(Constants.ROLE_IDS.OTHERS.FROZEN_MUTED);
+    }, duration);
+  }
 }
