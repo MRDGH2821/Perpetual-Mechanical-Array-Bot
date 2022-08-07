@@ -72,7 +72,7 @@ export const EMOJIS = {
   BoreasKek: formatEmoji('829620211190595605'),
   AetherBonk: formatEmoji('821169357765345291'),
   LuminePadoru: formatEmoji('912033737280192562'),
-  PepeKekPoint: formatEmoji('849624262625198131'),
+  PepeKekPoint: formatEmoji('1003564950633054248'),
   AetherNoU: formatEmoji('905099437767024712'),
   GoosetherConfuse: formatEmoji('907307618677178368'),
   FakeNooz: formatEmoji('865259265471152138'),
@@ -114,6 +114,7 @@ export enum ChannelIds {
   ROLE_APPLICATION = '804590144052002817',
   SPIRAL_ABYSS = '804183774589485126',
   LEAKS_DISCUSSION = '803949792349650964',
+  RNG_MUTE = '1005733473434206250',
 }
 
 export namespace STAFF {
