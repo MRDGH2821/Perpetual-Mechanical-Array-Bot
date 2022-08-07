@@ -484,9 +484,9 @@ export async function freezeMuteUser(
   duration: number,
   reason: string,
 ) {
-  const RNG = random(1, 100);
+  const RNG = random(0, 100);
   const seconds = duration / (1000 * 60);
-  if (RNG < chance) {
+  if (RNG <= chance) {
     member?.addRole(Constants.ROLE_IDS.OTHERS.FROZEN_MUTED);
     channel?.createMessage({
       embed: {
