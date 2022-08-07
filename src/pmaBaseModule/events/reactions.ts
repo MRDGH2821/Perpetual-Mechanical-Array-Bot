@@ -21,12 +21,16 @@ export default new BotEvent({
             EnvConfig.guildId,
             emoji.match(/\d+/gm)![0],
           );
-          message.react(`${resolvedEmote?.name}: ${resolvedEmote?.id}`);
+          message.react(`${resolvedEmote?.name}: ${resolvedEmote?.id}`).catch((err) => {
+            Debugging.leafDebug(err, true);
+          });
         } else {
-          message.react(emoji);
+          message.react(emoji).catch((err) => {
+            Debugging.leafDebug(err, true);
+          });
         }
       } catch (err) {
-        Debugging.leafDebug(err);
+        Debugging.leafDebug(err, true);
       }
     }
 
