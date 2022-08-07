@@ -93,6 +93,8 @@ export default new BotEvent({
         EMOJIS.Copium,
         EMOJIS.LumineCopium,
         EMOJIS.LuminePyramid,
+        `No leak mute for you ${EMOJIS.PepeKekPoint}`,
+        '*Say that once again, I dare you**.***',
       ];
 
       message.reply({
