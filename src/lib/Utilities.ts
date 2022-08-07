@@ -488,7 +488,7 @@ export async function freezeMuteUser(
   const seconds = duration / (1000 * 60);
   // console.log({ chance, RNG });
   if (RNG <= chance) {
-    member?.addRole(Constants.ROLE_IDS.OTHERS.FROZEN_MUTED);
+    member?.addRole(Constants.ROLE_IDS.OTHERS.FROZEN_RNG);
     channel?.createMessage({
       embed: {
         color: 0x5f929e,
@@ -505,7 +505,7 @@ export async function freezeMuteUser(
       },
     });
     setTimeout(() => {
-      member?.removeRole(Constants.ROLE_IDS.OTHERS.FROZEN_MUTED);
+      member?.removeRole(Constants.ROLE_IDS.OTHERS.FROZEN_RNG);
     }, duration);
   }
 }
