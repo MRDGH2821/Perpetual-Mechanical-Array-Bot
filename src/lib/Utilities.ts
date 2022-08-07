@@ -486,6 +486,7 @@ export async function freezeMuteUser(
 ) {
   const RNG = random(0, 100);
   const seconds = duration / (1000 * 60);
+  // console.log({ chance, RNG });
   if (RNG <= chance) {
     member?.addRole(Constants.ROLE_IDS.OTHERS.FROZEN_MUTED);
     channel?.createMessage({
