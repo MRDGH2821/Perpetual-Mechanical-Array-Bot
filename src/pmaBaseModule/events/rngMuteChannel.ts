@@ -3,6 +3,7 @@ import { ClientEvents } from 'detritus-client/lib/constants';
 import BotEvent from '../../lib/BotEvent';
 import { ChannelIds, EMOJIS } from '../../lib/Constants';
 import CoolDownManager from '../../lib/CoolDownManager';
+import { getQuotes } from '../../lib/QuotesManager';
 import { freezeMuteUser, randomArrPick } from '../../lib/Utilities';
 
 const rngMuteICD = new CoolDownManager(1000);
@@ -27,7 +28,9 @@ export default new BotEvent({
       `You are gonna need unfathomable amount of RNG Luck ${EMOJIS.smh}`,
       '...',
       '*A new test subject...<insert evil laughter music>*',
-    ];
+    ]
+      .concat(getQuotes('RNGMuteQuotes'))
+      .flat();
 
     const currentICD = await rngMuteICD.check('RNG_mute_ICD');
 
@@ -41,7 +44,9 @@ export default new BotEvent({
       'You got what you wanted',
       'I have taken away your ability to talk now',
       'They are the RNG God! Gotta mute them',
-    ];
+    ]
+      .concat(getQuotes('RNGMuteReasons'))
+      .flat();
 
     if (message.channelId === ChannelIds.RNG_MUTE && (currentICD < 1 || currentICD === false)) {
       message

@@ -1,6 +1,8 @@
 import { Colors, Snowflake } from 'detritus-client/lib/constants';
 // eslint-disable-next-line import/no-cycle
 import { DBQuotes, ElementDamageCategories, ELEMENTS } from '../botTypes/types';
+// eslint-disable-next-line import/no-cycle
+import { getQuotes } from './QuotesManager';
 
 function formatEmoji(EmojiSnowflake: Snowflake) {
   return `<:_:${EmojiSnowflake}>`;
@@ -238,7 +240,9 @@ export const ABYSS_QUOTES = [
   'https://tenor.com/view/stare-into-the-abyss-the-grinch-jim-carrey-how-the-grinch-stole-christmas-stare-into-nothingness-gif-18820322',
   'https://tenor.com/view/cave-dive-darkness-leap-gif-5803442',
   'https://tenor.com/view/full-bore-and-into-the-abyss-davy-jones-abyss-dark-bore-gif-22332324',
-];
+]
+  .concat(getQuotes('abyssGifs'), getQuotes('abyssQuotes'))
+  .flat();
 
 export const LEADERBOARD_ELE_CATEGORY_CHOICES = <
   { name: string; value: ElementDamageCategories }[]

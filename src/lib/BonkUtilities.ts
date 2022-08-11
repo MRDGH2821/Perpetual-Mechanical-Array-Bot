@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { EMOJIS } from './Constants';
+import { getQuotes } from './QuotesManager';
 
 export default class BonkUtilities {
   message = '';
@@ -36,7 +37,9 @@ export default class BonkUtilities {
     'https://c.tenor.com/pJLEID1hql4AAAAC/bonk-among-us.gif',
     'https://c.tenor.com/onXBTwunE5kAAAAC/riamu-idolmaster.gif',
     'https://c.tenor.com/rRO7BFsBdd8AAAAC/genshin-impact-noelle.gif',
-  ];
+  ]
+    .concat(getQuotes('bonkGifs'))
+    .flat();
 
   hornyBonkGifs = [
     'https://c.tenor.com/8pGG6mJFMRsAAAAM/bonk-bonk-go-to-jail.gif',
@@ -56,11 +59,16 @@ export default class BonkUtilities {
     'https://c.tenor.com/lbLIs_2bD8oAAAAd/raiden-bonk.gif',
     'https://c.tenor.com/G5mrFLtLJxgAAAAd/bonk-horny.gif',
     'https://c.tenor.com/S5v-oX_rN8QAAAAC/pramanix-arknights.gif',
-  ];
+  ]
+    .concat(getQuotes('hornyBonkGifs'))
+    .flat();
 
-  selfHornyBonkGifs = this.hornyBonkGifs.concat([
-    'https://c.tenor.com/_qREHP6VgcwAAAAC/telepurte-bonk.gif',
-  ]);
+  selfHornyBonkGifs = this.hornyBonkGifs
+    .concat(
+      ['https://c.tenor.com/_qREHP6VgcwAAAAC/telepurte-bonk.gif'],
+      getQuotes('selfHornyBonkGifs'),
+    )
+    .flat();
 
   allBonkGifs = this.selfHornyBonkGifs.concat(this.bonkGifs);
 
@@ -74,7 +82,9 @@ export default class BonkUtilities {
     `Because why not ${EMOJIS.BoreasKek}`,
   ];
 
-  crowdSourcedReasons = ['"Ratio" - <@462747685242273792>', '"Git Gud" - <@440081484855115776>'];
+  crowdSourcedReasons = ['"Ratio" - <@462747685242273792>', '"Git Gud" - <@440081484855115776>']
+    .concat(getQuotes('crowdSourcedBonkReasons'))
+    .flat();
 
   hornyReasons = [
     'You need no reason to be told',
@@ -92,7 +102,9 @@ export default class BonkUtilities {
     '"You can do better than that" - <@621330211220226049>',
     '"Do better" - <@621330211220226049>',
     '"You suck" - <@505390548232699906>',
-  ];
+  ]
+    .concat(getQuotes('crowdSourcedHornyBonkReasons'))
+    .flat();
 
   allHornyReasons = this.hornyReasons.concat(this.crowdSourcedHornyReasons);
 

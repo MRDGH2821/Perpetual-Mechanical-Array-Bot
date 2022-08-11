@@ -3,6 +3,7 @@ import { ClientEvents } from 'detritus-client/lib/constants';
 import BotEvent from '../../lib/BotEvent';
 import { ChannelIds, EMOJIS } from '../../lib/Constants';
 import CoolDownManager from '../../lib/CoolDownManager';
+import { getQuotes } from '../../lib/QuotesManager';
 import { freezeMuteUser, randomArrPick } from '../../lib/Utilities';
 
 const textResponseCD = new CoolDownManager(3000);
@@ -23,8 +24,11 @@ export default new BotEvent({
     // console.log({ timeLeft });
 
     if (/banhammer/gimu.test(msg) && message.author.id === '440081484855115776') {
+      const banHammerQuotes = ['Who we are banning today? :smirk:']
+        .concat(getQuotes('banHammerReasons'))
+        .flat();
       message.reply({
-        content: 'Who we are banning today? :smirk:',
+        content: randomArrPick(banHammerQuotes),
         reference: true,
       });
     }
@@ -43,7 +47,9 @@ export default new BotEvent({
         'https://tenor.com/view/priyam-raj-fbi-meme-fbi-open-up-fbi-gamer-gif-19628656',
         'https://tenor.com/view/dark-red-fbi-warning-gif-18254979',
         'You know what, I wonder if its actually NSA which spies or FBI :thinking:',
-      ];
+      ]
+        .concat(getQuotes('FBIGifs'), getQuotes('FBIQuotes'))
+        .flat();
 
       message.reply({
         content: randomArrPick(fbiQuotes),
@@ -63,7 +69,9 @@ export default new BotEvent({
         'https://tenor.com/view/tiktok-tiktok-cringe-watermark-tiktok-watermark-watermark-cringe-gif-22182993',
         'Do this\n https://tenor.com/view/tiktok-tiktokbad-bad-trash-garbage-gif-21041014',
         'https://cdn.discordapp.com/attachments/803459900180004904/1005441017375367208/image0.gif',
-      ];
+      ]
+        .concat(getQuotes('TikTokGifs'), getQuotes('TikTokQuotes'))
+        .flat();
 
       message
         .reply({
@@ -95,8 +103,12 @@ export default new BotEvent({
         EMOJIS.LuminePyramid,
         `No leak mute for you ${EMOJIS.PepeKekPoint}`,
         '*Say that once again, I dare you**.***',
-      ];
-
+      ]
+        .concat(getQuotes('leakQuotes'))
+        .flat();
+      const leakMuteReasons = ['Spoke the forbidden word - ||leak||']
+        .concat(getQuotes('leaksMuteReasons'))
+        .flat();
       message.reply({
         content: randomArrPick(leakQuotes),
       });
@@ -105,7 +117,7 @@ export default new BotEvent({
         message.channel!,
         15,
         1000 * 60,
-        'Spoke the forbidden word - ||leak||',
+        randomArrPick(leakMuteReasons),
       );
       textResponseCD.add('Leaks_ICD', 18000);
     }
@@ -115,7 +127,9 @@ export default new BotEvent({
         `Did somebody mention Yoyoverse? ${EMOJIS.LumineWoke}\nIts CEO is <@476219631539847188>`,
         `Someone's showing interest in Yoyoverse <@476219631539847188>, maybe Hire them? ${EMOJIS.PaimonThink}`,
         'You might wanna take a look here <@476219631539847188>',
-      ];
+      ]
+        .concat(getQuotes('yoyoverseQuotes'))
+        .flat();
       message.channel?.createMessage({
         content: randomArrPick(yoyoQuotes),
       });
