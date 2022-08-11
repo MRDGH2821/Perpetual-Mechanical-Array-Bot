@@ -29,16 +29,14 @@ export async function setDBQuotes(option: DBQuotes) {
   DBquotes.set(option, quotesArray);
 }
 
-export async function getQuotes(option: DBQuotes): Promise<string[]> {
-  return new Promise((res, rej) => {
-    const quotesArray = DBquotes.get(option);
+export function getQuotes(option: DBQuotes): string[] {
+  const quotesArray = DBquotes.get(option);
 
-    if (quotesArray) {
-      res(quotesArray);
-    } else {
-      rej(new Error(`No quotes/GIFs/reasons exist for "${option}"`));
-    }
-  });
+  if (quotesArray) {
+    return quotesArray;
+  }
+  return [];
+  // throw new Error(`No quotes/GIFs/reasons exist for "${option}"`);
 }
 
 export async function addQuote(option: DBQuotes, quote: string, triggerRefresh: boolean = true) {
