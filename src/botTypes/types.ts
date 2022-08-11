@@ -145,3 +145,30 @@ export type TravelerCommandProp = {
   };
   guide: string;
 };
+
+export type GIFCategories =
+  | 'bonkGifs'
+  | 'hornyBonkGifs'
+  | 'selfHornyBonkGifs'
+  | 'abyssGifs'
+  | 'FBIGifs'
+  | 'TikTokGifs';
+
+export type ReasonCategories =
+  | 'crowdSourcedBonkReasons'
+  | 'crowdSourcedHornyBonkReasons'
+  | 'RNGMuteReasons'
+  | 'leaksMuteReasons'
+  | 'banHammerReasons';
+
+export type QuoteCategories =
+  | 'abyssQuotes'
+  | 'RNGMuteQuotes'
+  | 'FBIQuotes'
+  | 'TikTokQuotes'
+  | 'leakQuotes'
+  | 'yoyoverseQuotes';
+
+export type DBQuotes = GIFCategories | ReasonCategories | QuoteCategories;
+
+export type DBQuotesCollection = BaseCollection<DBQuotes, string[]>;

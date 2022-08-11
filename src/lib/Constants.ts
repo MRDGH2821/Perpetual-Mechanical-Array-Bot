@@ -1,6 +1,6 @@
 import { Colors, Snowflake } from 'detritus-client/lib/constants';
 // eslint-disable-next-line import/no-cycle
-import { ElementDamageCategories, ELEMENTS } from '../botTypes/types';
+import { DBQuotes, ElementDamageCategories, ELEMENTS } from '../botTypes/types';
 
 function formatEmoji(EmojiSnowflake: Snowflake) {
   return `<:_:${EmojiSnowflake}>`;
@@ -278,4 +278,24 @@ export const HALL_OF_FAME_ELEMENT_CHOICES = <{ name: string; value: ELEMENTS }[]
     name: 'Arbitrator of Fate (Unaligned)',
     value: 'unaligned',
   },
+];
+
+export const botQuoteCategories: DBQuotes[] = [
+  'FBIGifs',
+  'FBIQuotes',
+  'RNGMuteQuotes',
+  'RNGMuteReasons',
+  'TikTokGifs',
+  'TikTokQuotes',
+  'abyssGifs',
+  'abyssQuotes',
+  'banHammerReasons',
+  'bonkGifs',
+  'crowdSourcedBonkReasons',
+  'crowdSourcedHornyBonkReasons',
+  'hornyBonkGifs',
+  'leakQuotes',
+  'leaksMuteReasons',
+  'selfHornyBonkGifs',
+  'yoyoverseQuotes',
 ];

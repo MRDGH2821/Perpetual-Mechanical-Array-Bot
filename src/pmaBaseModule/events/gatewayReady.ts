@@ -33,6 +33,7 @@ export default new BotEvent({
       PMAEventHandler.emit('leaderboardRefresh');
       PMAEventHandler.emit('hallOfFameRefresh');
       PMAEventHandler.emit('spiralAbyssRefresh');
+      PMAEventHandler.emit('quotesRefresh');
     }, 1000 * 5);
   },
 });
