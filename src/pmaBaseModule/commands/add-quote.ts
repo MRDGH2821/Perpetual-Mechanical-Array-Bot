@@ -5,7 +5,7 @@ import { DBQuotes } from '../../botTypes/types';
 import { COLORS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import { addQuote } from '../../lib/QuotesManager';
-import { StaffCheck } from '../../lib/Utilities';
+import { PMAEventHandler, StaffCheck } from '../../lib/Utilities';
 
 export default new InteractionCommand({
   name: 'add-quote',
@@ -107,14 +107,19 @@ export default new InteractionCommand({
     return StaffCheck.isCtxStaff(ctx, true);
   },
   async run(ctx, args: { quote_gif_reason?: string; type?: DBQuotes; trigger_refresh?: boolean }) {
-    await addQuote(args.type!, args.quote_gif_reason!, args.trigger_refresh);
+    await addQuote(args.type!, args.quote_gif_reason!);
 
     const embed: SimpleEmbed = {
       color: COLORS.EMBED_COLOR,
       title: '**Quote/Gif/Reason added!**',
-      description: `Your quote/gif/reason was successfully added\n\nYour input: ${args.quote_gif_reason}\n\nInput for: ${args.type}\n\nWill trigger refresh: ${args.trigger_refresh}`,
+      description: `Your quote/gif/reason was successfully added\n\n**Your input:** ${args.quote_gif_reason}\n**Input for:** ${args.type}\n**Will trigger refresh:** ${args.trigger_refresh}`,
+      footer: {
+        text: "The bot doesn't validate GIF links. Please contact MRDGH2821 if you did a mistake",
+      },
     };
-
+    if (args.trigger_refresh) {
+      PMAEventHandler.emit('quotesRefresh', true);
+    }
     await ctx.editOrRespond({
       embed,
     });

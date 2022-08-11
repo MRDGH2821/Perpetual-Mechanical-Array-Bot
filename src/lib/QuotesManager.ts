@@ -1,9 +1,9 @@
 import { BaseCollection } from 'detritus-utils';
+// eslint-disable-next-line import/no-cycle
 import { DBQuotes, DBQuotesCollection } from '../botTypes/types';
 import db from './Firestore';
-import { PMAEventHandler } from './Utilities';
 
-export const DBquotes = <DBQuotesCollection> new BaseCollection();
+export const DBquotes = new BaseCollection() as DBQuotesCollection;
 
 export async function getDBQuotes(option: DBQuotes): Promise<string[]> {
   return new Promise((res) => {
@@ -39,16 +39,13 @@ export function getQuotes(option: DBQuotes): string[] {
   // throw new Error(`No quotes/GIFs/reasons exist for "${option}"`);
 }
 
-export async function addQuote(option: DBQuotes, quote: string, triggerRefresh: boolean = true) {
-  const newArray = await getQuotes(option);
+export async function addQuote(option: DBQuotes, quote: string) {
+  const newArray = getQuotes(option);
   newArray.push(quote);
   const data = { array: newArray };
   await db.collection('quotes-gifs-reasons').doc(option).set(data, {
     merge: true,
   });
-  if (triggerRefresh) {
-    PMAEventHandler.emit('quotesRefresh', true);
-  }
 }
 
 // console.log(await getQuotes('RNGMuteQuotes'));
