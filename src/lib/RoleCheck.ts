@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
 import { BaseCollection } from 'detritus-client/lib/collections';
 import { MessageComponentButtonStyles, MessageFlags } from 'detritus-client/lib/constants';
 import { InteractionContext } from 'detritus-client/lib/interaction';
@@ -16,18 +15,18 @@ let userTarget: Member;
 let totalExp = 0;
 let embedDescription = '';
 
+const resultEmbed: SimpleEmbed = {
+  color: COLORS.EMBED_COLOR,
+  title: '**Roles successfully rewarded!**',
+  description: '',
+};
+
 function resetToDefault() {
   localCopyRoles = [];
   totalExp = 0;
   embedDescription = '';
   resultEmbed.description = '';
 }
-
-const resultEmbed: SimpleEmbed = {
-  color: COLORS.EMBED_COLOR,
-  title: '**Roles successfully rewarded!**',
-  description: '',
-};
 
 export function initialiseSwitcher(selectedRoles: string[], target: Member) {
   let filteredRoles = selectedRoles;

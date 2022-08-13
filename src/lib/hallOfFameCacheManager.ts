@@ -77,9 +77,7 @@ export async function setHallOfFameData(
   await getHallOfFameData(element).then(async (entries) => {
     // console.log(entries);
 
-    // eslint-disable-next-line no-restricted-syntax
     for (const entry of entries) {
-      // eslint-disable-next-line no-await-in-loop
       const userC = await getUser(entry.userID, SClient);
       // console.log('User: ', userC);
       if (entry.crowns === crownQuantity) {

@@ -94,9 +94,7 @@ export async function setLeaderboardData(
   await getLeaderboardData(dmgCategory, typeCategory).then(async (entries) => {
     // console.log(entries);
 
-    // eslint-disable-next-line no-restricted-syntax
     for (const entry of entries) {
-      // eslint-disable-next-line no-await-in-loop
       const userC = await getUser(entry.userID, SClient);
       // console.log('User: ', userC);
       collection.set(entry.userID, { user: userC, data: entry });
@@ -225,7 +223,7 @@ export async function leaderboardViewGenerate(
   const embeds: SimpleEmbed[] = [];
 
   let rank = 1;
-  /* jscpd:ignore-start */
+
   chunks.forEach((chunk) => {
     const props = categoryProps(dmgCategory);
     const embed: SimpleEmbed = {
@@ -245,7 +243,7 @@ export async function leaderboardViewGenerate(
     });
     embeds.push(embed);
   });
-  /* jscpd:ignore-end */
+
   return embeds;
 }
 

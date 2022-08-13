@@ -1,7 +1,7 @@
 import { Colors, Snowflake } from 'detritus-client/lib/constants';
-// eslint-disable-next-line import/no-cycle
+
 import { DBQuotes, ElementDamageCategories, ELEMENTS } from '../botTypes/types';
-// eslint-disable-next-line import/no-cycle
+
 import { getQuotes } from './QuotesManager';
 
 function formatEmoji(EmojiSnowflake: Snowflake) {

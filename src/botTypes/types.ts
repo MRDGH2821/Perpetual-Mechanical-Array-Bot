@@ -1,6 +1,6 @@
 import { Member, User } from 'detritus-client/lib/structures';
 import { BaseCollection } from 'detritus-utils';
-// eslint-disable-next-line import/no-cycle
+
 import { COLORS, ICONS, TravelerTypes } from '../lib/Constants';
 
 export type CategoryProp = {

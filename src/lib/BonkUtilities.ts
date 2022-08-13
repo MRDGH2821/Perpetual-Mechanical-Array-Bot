@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import { EMOJIS } from './Constants';
 import { getQuotes } from './QuotesManager';
 

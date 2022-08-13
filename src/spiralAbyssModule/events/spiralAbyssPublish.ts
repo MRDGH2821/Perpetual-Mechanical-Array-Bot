@@ -28,11 +28,9 @@ export default new BotEvent({
       };
       console.log(webhookDB);
       const webhook = await SClient.rest.fetchWebhook(webhookDB.webhookID);
-      // eslint-disable-next-line no-restricted-syntax
+
       for (const embeds of publishEmbeds) {
-        // eslint-disable-next-line no-restricted-syntax
         for (const embed of embeds) {
-          // eslint-disable-next-line no-await-in-loop
           await webhook
             .createMessage({
               embed,

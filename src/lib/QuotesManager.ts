@@ -1,5 +1,4 @@
 import { BaseCollection } from 'detritus-utils';
-// eslint-disable-next-line import/no-cycle
 import { DBQuotes, DBQuotesCollection } from '../botTypes/types';
 import db from './Firestore';
 
