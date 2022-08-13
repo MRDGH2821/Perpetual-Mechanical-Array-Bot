@@ -13,7 +13,7 @@ import { ElementsArr } from './Constants';
 import db from './Firestore';
 import { chunkArray, elementProps, getUser } from './Utilities';
 
-const totalCrownUsers = 26;
+const totalCrownUsers = 20;
 
 export const hallOfFameCache = {
   anemo: {
