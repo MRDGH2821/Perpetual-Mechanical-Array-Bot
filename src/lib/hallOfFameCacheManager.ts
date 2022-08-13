@@ -224,3 +224,56 @@ export async function hallOfFameViewGenerate(
 export function isHoFRefreshComplete(): boolean {
   return process.env.HALL_OF_FAME_READY === 'true';
 }
+
+export async function publishHoFNames(
+  element: ELEMENTS,
+  quantity: 'one' | 'two' | 'three',
+): Promise<SimpleEmbed[]> {
+  let HoFSubCache: typeof hallOfFameCache.anemo.one;
+  if (element === 'unaligned') {
+    HoFSubCache = hallOfFameCache.unaligned.one;
+  } else {
+    const eleCache = await accessElementCache(element);
+    HoFSubCache = eleCache[quantity]!;
+  }
+  const props = elementProps(element);
+  return new Promise((res, rej) => {
+    if (!HoFSubCache) {
+      rej(new Error(`${element} - ${quantity} crown(s) cache not ready`));
+    }
+
+    const groupCache = HoFSubCache.clone();
+
+    const chunks = chunkArray(groupCache.toArray(), totalCrownUsers);
+
+    const embeds: SimpleEmbed[] = [];
+
+    chunks.forEach((chunk) => {
+      let value = '';
+
+      const embed: SimpleEmbed = {
+        title: `**${props.name}** ${props.emoji}`,
+        color: props.color,
+        thumbnail: { url: props.icon },
+        description: `${props.crown} \nCrowns used: ${quantity}\n\n`,
+        timestamp: new Date().toISOString(),
+        fields: [],
+        footer: {
+          text: `${chunks.indexOf(chunk) + 1} of ${chunks.length}`,
+        },
+      };
+
+      chunk.forEach((cacheData) => {
+        value = `${value}\n${cacheData.user.mention}\`${cacheData.user.tag}\``;
+      });
+      embed.fields?.push({
+        name: '\u200b',
+        value: `${value}\n-`,
+      });
+
+      embeds.push(embed);
+    });
+
+    res(embeds);
+  });
+}

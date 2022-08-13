@@ -139,5 +139,17 @@ export default new InteractionCommand({
         });
       },
     },
+    {
+      name: 'publish',
+      description: 'Publishes the names of crown role holders',
+      type: ApplicationCommandOptionTypes.SUB_COMMAND,
+      async run(ctx) {
+        PMAEventHandler.emit('hallOfFamePublish');
+        await ctx.editOrRespond({
+          content: 'Hall of Fame will be published soon',
+          flags: MessageFlags.EPHEMERAL,
+        });
+      },
+    },
   ],
 });
