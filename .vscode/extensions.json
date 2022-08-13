@@ -1,15 +1,18 @@
 {
   "recommendations": [
-    "streetsidesoftware.code-spell-checker",
-    "mikestead.dotenv",
-    "cschlosser.doxdocgen",
-    "editorconfig.editorconfig",
-    "irongeek.vscode-env",
-    "dbaeumer.vscode-eslint",
-    "howardzuo.vscode-npm-dependency",
+    "AquaSecurityOfficial.trivy-vulnerability-scanner",
+    "Bridgecrew.checkov",
     "christian-kohler.path-intellisense",
+    "cschlosser.doxdocgen",
+    "dbaeumer.vscode-eslint",
+    "editorconfig.editorconfig",
     "esbenp.prettier-vscode",
+    "glavin001.unibeautify-vscode",
+    "howardzuo.vscode-npm-dependency",
+    "irongeek.vscode-env",
+    "mikestead.dotenv",
+    "PatrykPeszko.vscode-proselint",
     "ryanlaws.toggle-case",
-    "glavin001.unibeautify-vscode"
+    "streetsidesoftware.code-spell-checker"
   ]
 }
