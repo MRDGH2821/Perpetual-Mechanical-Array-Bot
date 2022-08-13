@@ -8,9 +8,9 @@ export default class BotEvent {
 
   once?: boolean = false;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   listener(...args: any): any {
     console.log(`"${this.event}" listener ready!`);
+    console.log('Args provided:', args);
   }
 
   constructor(data: BotEventOptions) {
