@@ -1,4 +1,4 @@
-import { ShardClient } from 'detritus-client';
+import { getShardClient } from '../../lib/BotClientExtracted';
 import BotEvent from '../../lib/BotEvent';
 import db from '../../lib/Firestore';
 import { publishSANames } from '../../lib/spiralAbyssCacheManager';
@@ -7,7 +7,8 @@ import { Debugging } from '../../lib/Utilities';
 export default new BotEvent({
   event: 'spiralAbyssPublish',
   on: true,
-  async listener({ SClient }: { SClient: ShardClient; deleteCache: boolean; clearDB: boolean }) {
+  async listener() {
+    const SClient = getShardClient();
     try {
       const publishConquerorEmb = await publishSANames('Abyssal Conqueror');
       const publishTravelerEmb = await publishSANames('Abyssal Traveler');
