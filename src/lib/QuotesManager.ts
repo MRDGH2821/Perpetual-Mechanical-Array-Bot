@@ -5,7 +5,7 @@ import db from './Firestore';
 
 export const DBquotes = new BaseCollection() as DBQuotesCollection;
 
-export async function getDBQuotes(option: DBQuotes): Promise<string[]> {
+async function getDBQuotes(option: DBQuotes): Promise<string[]> {
   return new Promise((res) => {
     let quotesArray: string[] = [];
     db.collection('quotes-gifs-reasons')

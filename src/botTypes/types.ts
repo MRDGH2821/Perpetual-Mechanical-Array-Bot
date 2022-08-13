@@ -18,8 +18,6 @@ export type ElementProp = {
   emoji: string;
 };
 
-export type DamageType = 'skill' | 'n5';
-
 export type GroupCategoryType = 'open' | 'solo';
 
 export type ELEMENTS =
@@ -39,13 +37,6 @@ export type ElementDamageCategories =
   | 'electro-dmg-skill'
   | 'uni-dmg-n5';
 
-export type HallOfFameCategories =
-  | 'anemo-crown'
-  | 'geo-crown'
-  | 'electro-crown'
-  | 'unaligned-crown'
-  | 'spiral-abyss-current';
-
 export type LeaderboardDBOptions = {
   elementCategory: ElementDamageCategories;
   proof: string;
@@ -60,7 +51,7 @@ export type SetLeaderboardOptions = {
   typeCategory: GroupCategoryType;
 };
 
-export type LeaderboardCacheObject = { user: User; data: LeaderboardDBOptions };
+type LeaderboardCacheObject = { user: User; data: LeaderboardDBOptions };
 
 export type LeaderboardElementGroupCacheType = BaseCollection<User['id'], LeaderboardCacheObject>;
 
@@ -71,7 +62,7 @@ export type LeaderboardElementCacheType = {
 
 export type HallOfFameDBOptions = { crowns: 1 | 2 | 3; userID: User['id'] };
 
-export type HallOfFameCacheObject = { user: User; data: HallOfFameDBOptions };
+type HallOfFameCacheObject = { user: User; data: HallOfFameDBOptions };
 
 export type HallOfFameCrownQuantityCacheType = BaseCollection<User['id'], HallOfFameCacheObject>;
 
@@ -146,7 +137,7 @@ export type TravelerCommandProp = {
   guide: string;
 };
 
-export type GIFCategories =
+type GIFCategories =
   | 'bonkGifs'
   | 'hornyBonkGifs'
   | 'selfHornyBonkGifs'
@@ -154,14 +145,14 @@ export type GIFCategories =
   | 'FBIGifs'
   | 'TikTokGifs';
 
-export type ReasonCategories =
+type ReasonCategories =
   | 'crowdSourcedBonkReasons'
   | 'crowdSourcedHornyBonkReasons'
   | 'RNGMuteReasons'
   | 'leaksMuteReasons'
   | 'banHammerReasons';
 
-export type QuoteCategories =
+type QuoteCategories =
   | 'abyssQuotes'
   | 'RNGMuteQuotes'
   | 'FBIQuotes'

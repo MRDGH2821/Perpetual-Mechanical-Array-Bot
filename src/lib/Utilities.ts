@@ -10,7 +10,6 @@ import {
   Channel, InteractionEditOrRespond, Member, User,
 } from 'detritus-client/lib/structures';
 import { ComponentActionRow, ComponentContext, PermissionTools } from 'detritus-client/lib/utils';
-import { BaseCollection } from 'detritus-utils';
 import EventEmitter from 'events';
 import https from 'https';
 import { random } from 'mathjs';
@@ -27,7 +26,6 @@ import {
   ElementDamageCategories,
   ElementProp,
   ELEMENTS,
-  HallOfFameCacheObject,
   JokeCategories,
   OneJokeFormat,
   TravelerCommandProp,
@@ -251,7 +249,7 @@ export function nadekoParse(embedString: string): NadekoParseResult {
   };
 }
 
-export function getAbyssQuote(): string {
+function getAbyssQuote(): string {
   return randomArrPick(Constants.ABYSS_QUOTES);
 }
 
@@ -285,28 +283,7 @@ export function chunkArray<T>(array: T[], size: number): T[][] {
   return result;
 }
 
-export function constructField<
-  T extends BaseCollection<User['id'], HallOfFameCacheObject>,
-  N extends number,
->(collection: T, maxLimit: N): string {
-  let str = '';
-
-  const selected: HallOfFameCacheObject[] = collection
-    .toArray()
-    .sort(() => Math.random() - 0.5)
-    .slice(0, maxLimit);
-
-  if (selected.length > 0) {
-    selected.forEach((data) => {
-      str = `${str}\n${data.user.mention} \`${data.user.tag}\``;
-    });
-  } else {
-    str = `${str}\n*No users found...*`;
-  }
-  return `${str}\n-`;
-}
-
-export function autoCompleteTech(
+function autoCompleteTech(
   inputVal: string,
   choiceArr: typeof AMC_TECHS['BURST_TECHS'],
 ): RequestTypes.CreateInteractionResponseInnerPayload['choices'] {
@@ -318,7 +295,7 @@ export function autoCompleteTech(
   }));
 }
 
-export function respondTech(
+function respondTech(
   inputTechId: string,
   choiceArr: typeof AMC_TECHS['BURST_TECHS'],
 ): InteractionEditOrRespond {

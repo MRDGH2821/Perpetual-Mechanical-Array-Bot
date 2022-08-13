@@ -54,7 +54,7 @@ export function getLBCacheObject() {
   return leaderboardCache;
 }
 
-export async function getLeaderboardData(
+async function getLeaderboardData(
   dmgCategory: ElementDamageCategories,
   groupType: GroupCategoryType,
   topEntries = 0,

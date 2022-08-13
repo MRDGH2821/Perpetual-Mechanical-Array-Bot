@@ -45,7 +45,7 @@ export function getHoFCacheObject() {
   return hallOfFameCache;
 }
 
-export async function getHallOfFameData(
+async function getHallOfFameData(
   element: ELEMENTS,
   topEntries = 0,
 ): Promise<HallOfFameDBOptions[]> {

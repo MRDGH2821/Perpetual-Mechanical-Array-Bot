@@ -119,7 +119,7 @@ export enum ChannelIds {
   RNG_MUTE = '1005733473434206250',
 }
 
-export namespace STAFF {
+namespace STAFF {
   export enum ADMIN {
     EMERITUS_KNIGHT = '930313822911217674',
     SERVER_ADMIN = '813605549907378186',
