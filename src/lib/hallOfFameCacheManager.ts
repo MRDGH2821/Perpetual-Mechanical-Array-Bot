@@ -11,9 +11,7 @@ import {
 import { getShardClient } from './BotClientExtracted';
 import { ElementsArr } from './Constants';
 import db from './Firestore';
-import {
-  chunkArray, constructField, elementProps, getUser,
-} from './Utilities';
+import { chunkArray, elementProps, getUser } from './Utilities';
 
 const totalCrownUsers = 26;
 
@@ -116,105 +114,6 @@ function accessElementCache(element: ELEMENTS): Promise<HallOfFameCrownCacheType
       }
     }
   });
-}
-
-export async function showcaseHallOfFameGenerate(element: ELEMENTS) {
-  const props = elementProps(element);
-
-  const hallOfFameEmbed: SimpleEmbed = {
-    title: `**${props.name}** ${props.emoji}`,
-    description: props.crown,
-    color: props.color,
-    thumbnail: { url: props.icon },
-    timestamp: new Date().toISOString(),
-    fields: [],
-  };
-
-  const fields = hallOfFameEmbed.fields!;
-
-  const cacheData = await accessElementCache(element);
-
-  if (!cacheData.two) {
-    hallOfFameEmbed.description = `${hallOfFameEmbed.description}\n\n${constructField(
-      cacheData.one,
-      totalCrownUsers,
-    )}`;
-    return hallOfFameEmbed;
-  }
-
-  fields.push({
-    name: '**Single Crowners**',
-    value: constructField(cacheData.one, totalCrownUsers),
-  });
-
-  if (cacheData.two) {
-    fields.push({
-      name: '**Double Crowners**',
-      value: constructField(cacheData.two, totalCrownUsers),
-    });
-  }
-
-  if (cacheData.three) {
-    fields.push({
-      name: '**Triple Crowners**',
-      value: constructField(cacheData.three, totalCrownUsers),
-    });
-  }
-
-  hallOfFameEmbed.fields?.concat(fields);
-  // Debugging.leafDebug(leaderboardEmbed, true);
-  return hallOfFameEmbed;
-}
-
-export async function hallOfFameViewGenerate(
-  element: ELEMENTS,
-  quantity: 'one' | 'two' | 'three',
-): Promise<SimpleEmbed[]> {
-  const elementCache = await accessElementCache(element);
-
-  const groupCache = elementCache[quantity];
-
-  if (!groupCache) {
-    throw new Error(`${element} traveler cannot have ${quantity} crowns`);
-  }
-
-  const chunks = chunkArray(groupCache.toArray(), 10);
-
-  const embeds: SimpleEmbed[] = [];
-
-  const props = elementProps(element);
-  /* jscpd:ignore-start */
-  chunks.forEach((chunk) => {
-    const embed: SimpleEmbed = {
-      title: `**${props.name}** ${props.emoji}`,
-      color: props.color,
-      thumbnail: { url: props.icon },
-      description: `${props.crown} \nCrowns used: ${quantity}\n\n`,
-      timestamp: new Date().toISOString(),
-      footer: {
-        text: `${chunks.indexOf(chunk) + 1} of ${chunks.length}`,
-      },
-    };
-
-    chunk.forEach((cacheData) => {
-      embed.description = `${embed.description}\n${cacheData.user.mention}\`${cacheData.user.tag}\``;
-    });
-    /* jscpd:ignore-end */
-    embeds.push(embed);
-  });
-
-  if (!embeds.at(0)) {
-    const embed: SimpleEmbed = {
-      title: `**${props.name}** ${props.emoji}`,
-      color: props.color,
-      thumbnail: { url: props.icon },
-      description: `No users found who used ${quantity} crown(s)...`,
-      timestamp: new Date().toISOString(),
-    };
-    embeds.push(embed);
-  }
-
-  return embeds;
 }
 
 /**

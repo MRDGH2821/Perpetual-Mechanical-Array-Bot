@@ -1,11 +1,10 @@
 import BotEvent from '../../lib/BotEvent';
 import { getHoFCacheObject, setHallOfFameData } from '../../lib/hallOfFameCacheManager';
-import { PMAEventHandler } from '../../lib/Utilities';
 
 export default new BotEvent({
   event: 'hallOfFameRefresh',
   on: true,
-  async listener(updateHallOfFame: boolean = false) {
+  async listener() {
     const HoFCache = getHoFCacheObject();
     process.env.HALL_OF_FAME_READY = 'false';
     console.log('Hall Of Fame Refresh Initiated');
@@ -86,11 +85,6 @@ export default new BotEvent({
       process.env.HALL_OF_FAME_READY = 'true';
       console.log('Hall Of Fame Refresh Complete');
       // Debugging.leafDebug(LCache, true);
-
-      if (updateHallOfFame) {
-        console.log('Sending Hall Of Fame update request');
-        PMAEventHandler.emit('hallOfFameUpdate');
-      }
     });
   },
 });

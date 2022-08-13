@@ -7,11 +7,7 @@ import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { Channel } from 'detritus-client/lib/structures';
 import { HALL_OF_FAME_ELEMENT_CHOICES } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
-import {
-  hallOfFameViewGenerate,
-  isHoFRefreshComplete,
-  showcaseHallOfFameGenerate,
-} from '../../lib/hallOfFameCacheManager';
+import { isHoFRefreshComplete, publishHoFNames } from '../../lib/hallOfFameCacheManager';
 import { PMAEventHandler, StaffCheck, viewPages } from '../../lib/Utilities';
 
 export default new InteractionCommand({
@@ -60,47 +56,21 @@ export default new InteractionCommand({
     /* jscpd:ignore-end */
     {
       name: 'refresh',
-      description: 'Refreshes Hall Of Fame cache & optionally updates Hall Of Fame channel',
+      description: 'Refreshes Hall Of Fame cache',
       type: ApplicationCommandOptionTypes.SUB_COMMAND,
-      options: [
-        {
-          name: 'update_hall_of_fame',
-          description: 'Should update Hall Of Fame after cache refresh? (default False)',
-          type: ApplicationCommandOptionTypes.BOOLEAN,
-          default: false,
-        },
-      ],
+
       onBeforeRun(ctx) {
         return StaffCheck.isCtxStaff(ctx, true);
       },
-      async run(ctx, args) {
-        PMAEventHandler.emit('hallOfFameRefresh', args.update_hall_of_fame);
+      async run(ctx) {
+        PMAEventHandler.emit('hallOfFameRefresh');
 
         ctx.editOrRespond({
-          content: `Refresh initiated, please wait for a while before using this command\nWill update Leaderboard? \`${args.update_hall_of_fame}\``,
+          content: 'Refresh initiated, please wait for a while before using this command\n',
         });
       },
     },
-    {
-      name: 'view_summary',
-      description: 'View individual hall of fame summary',
-      type: ApplicationCommandOptionTypes.SUB_COMMAND,
-      options: [
-        {
-          name: 'element',
-          description: 'Select Element',
-          type: ApplicationCommandOptionTypes.STRING,
-          required: true,
-          choices: HALL_OF_FAME_ELEMENT_CHOICES,
-        },
-      ],
-      async run(ctx, args) {
-        const embed = await showcaseHallOfFameGenerate(args.element);
-        await ctx.editOrRespond({
-          embed,
-        });
-      },
-    },
+
     {
       name: 'view',
       description: 'View Hall Of Fame',
@@ -131,7 +101,7 @@ export default new InteractionCommand({
           qty = 'one';
         }
 
-        const hallOfFameEmbeds = await hallOfFameViewGenerate(args.element, qty);
+        const hallOfFameEmbeds = await publishHoFNames(args.element, qty);
 
         await ctx.editOrRespond({
           embed: hallOfFameEmbeds[0],
