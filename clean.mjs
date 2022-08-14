@@ -1,23 +1,21 @@
-import {
-  existsSync, lstatSync, readdirSync, rmdirSync, unlinkSync,
-} from 'fs';
+import * as fs from 'fs';
 
 function deleteFolderRecursive(path) {
-  if (existsSync(path) && lstatSync(path).isDirectory()) {
-    readdirSync(path).forEach((file) => {
+  if (fs.existsSync(path) && fs.lstatSync(path).isDirectory()) {
+    fs.readdirSync(path).forEach((file) => {
       const curPath = `${path}/${file}`;
 
-      if (lstatSync(curPath).isDirectory()) {
+      if (fs.lstatSync(curPath).isDirectory()) {
         // recurse
         deleteFolderRecursive(curPath);
       } else {
         // delete file
-        unlinkSync(curPath);
+        fs.unlinkSync(curPath);
       }
     });
 
     console.log(`Deleting directory "${path}"...`);
-    rmdirSync(path);
+    fs.rmdirSync(path);
   }
 }
 
