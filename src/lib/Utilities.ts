@@ -7,7 +7,11 @@ import {
 } from 'detritus-client/lib/constants';
 import { InteractionCommand, InteractionContext } from 'detritus-client/lib/interaction';
 import {
-  Channel, InteractionEditOrRespond, Member, User,
+  Channel,
+  InteractionEditOrRespond,
+  Member,
+  User,
+  Webhook,
 } from 'detritus-client/lib/structures';
 import { ComponentActionRow, ComponentContext, PermissionTools } from 'detritus-client/lib/utils';
 import EventEmitter from 'events';
@@ -31,8 +35,10 @@ import {
   TravelerCommandProp,
 } from '../botTypes/types';
 import { getShardClient } from './BotClientExtracted';
+import BotEvent from './BotEvent';
 import * as Constants from './Constants';
 import EnvConfig from './EnvConfig';
+import db from './Firestore';
 import {
   AMC_PROPS, AMC_TECHS, EMC_PROPS, GMC_PROPS,
 } from './TravelerTechnologies';
@@ -255,6 +261,7 @@ function getAbyssQuote(): string {
 
 export function extractLinks(str: string) {
   return str.match(
+    // eslint-disable-next-line no-useless-escape
     /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/,
   );
 }
@@ -484,4 +491,56 @@ export async function freezeMuteUser(
       member?.removeRole(Constants.ROLE_IDS.OTHERS.FROZEN_RNG);
     }, duration);
   }
+}
+
+export function moduleChannelUpdate(
+  eventName: string,
+  webhookName: string,
+  webhookAvatar: Constants.ICONS,
+  DBpath: string,
+  triggerEvent?: string,
+) {
+  return new BotEvent({
+    event: eventName,
+    on: true,
+    async listener(newChannel: Channel) {
+      let finalWebhook: Webhook;
+      try {
+        const guildHooks = await newChannel.guild?.fetchWebhooks();
+        const pmaHooks = guildHooks?.filter((webhook) => webhook.user?.isMe || false);
+
+        const selectedWebhook = pmaHooks?.find((webhook) => webhook.name === webhookName);
+
+        selectedWebhook?.edit({
+          channelId: newChannel.id,
+          reason: `${webhookName} webhook channel changed`,
+          name: webhookName,
+          avatar: webhookAvatar,
+        });
+        if (!selectedWebhook) {
+          throw new Error('No webhooks found');
+        } else {
+          finalWebhook = selectedWebhook;
+        }
+      } catch (error) {
+        Debugging.leafDebug(error, true);
+
+        finalWebhook = await newChannel.createWebhook({
+          name: webhookName,
+          avatar: webhookAvatar,
+        });
+      }
+      await db
+        .collection(DBpath)
+        .doc('webhook')
+        .set({
+          webhookID: finalWebhook.id,
+          channelID: finalWebhook.channelId,
+        })
+        .then(() => console.log('Webhook details saved in database'));
+      if (triggerEvent) {
+        PMAEventHandler.emit(triggerEvent, finalWebhook);
+      }
+    },
+  });
 }
