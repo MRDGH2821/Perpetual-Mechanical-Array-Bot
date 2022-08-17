@@ -1,3 +1,4 @@
+import { sequentialPromises } from 'yaspr';
 import { SimpleEmbed } from '../../botTypes/interfaces';
 import { getShardClient } from '../../lib/BotClientExtracted';
 import BotEvent from '../../lib/BotEvent';
@@ -23,10 +24,12 @@ export default new BotEvent({
         await publishHoFNames('electro', 'two'),
         await publishHoFNames('electro', 'three'),
         await publishHoFNames('unaligned', 'one'),
-      ];
-      const webhookDB = (await (
-        await db.collection('hall-of-fame').doc('webhook').get()
-      ).data()) as { channelID: string; webhookID: string };
+      ].flat();
+
+      const webhookDB = (await db.collection('hall-of-fame').doc('webhook').get()).data() as {
+        channelID: string;
+        webhookID: string;
+      };
 
       const webhook = await SClient.rest.fetchWebhook(webhookDB.webhookID);
 
@@ -51,16 +54,13 @@ export default new BotEvent({
         embed: information,
       });
 
-      for (const embeds of allEmbeds) {
-        for (const embed of embeds) {
-          await webhook
-            .createMessage({
-              embed,
-            })
-            .then(() => console.log(`Sent ${embeds.indexOf(embed) + 1} of ${embeds.length}`))
-            .catch((err) => Debugging.leafDebug(err));
-        }
-      }
+      const sendWebhook = (embed: SimpleEmbed) => webhook
+        .createMessage({
+          embed,
+        })
+        .catch((err) => Debugging.leafDebug(err, true));
+
+      await sequentialPromises(allEmbeds, sendWebhook);
     } catch (err) {
       Debugging.leafDebug(err, true);
     }

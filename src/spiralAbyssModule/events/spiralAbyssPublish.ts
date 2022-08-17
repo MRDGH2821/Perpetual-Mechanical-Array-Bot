@@ -1,3 +1,5 @@
+import { sequentialPromises } from 'yaspr';
+import { SimpleEmbed } from '../../botTypes/interfaces';
 import { getShardClient } from '../../lib/BotClientExtracted';
 import BotEvent from '../../lib/BotEvent';
 import db from '../../lib/Firestore';
@@ -14,11 +16,11 @@ export default new BotEvent({
       const publishTravelerEmb = await publishSANames('Abyssal Traveler');
       const publishSovereignEmb = await publishSANames('Abyssal Sovereign');
 
-      const publishEmbeds = [publishConquerorEmb, publishTravelerEmb, publishSovereignEmb];
+      const publishEmbeds = [publishConquerorEmb, publishTravelerEmb, publishSovereignEmb].flat();
 
-      console.log('Conqueror clear boards: ', publishConquerorEmb.length);
-      console.log('Traveler clear boards: ', publishTravelerEmb.length);
-      console.log('Sovereign clear boards: ', publishSovereignEmb.length);
+      // console.log('Conqueror clear boards: ', publishConquerorEmb.length);
+      // console.log('Traveler clear boards: ', publishTravelerEmb.length);
+      // console.log('Sovereign clear boards: ', publishSovereignEmb.length);
 
       const webhookDB = (
         await db.collection('spiral-abyss-config').doc('webhook').get()
@@ -26,21 +28,18 @@ export default new BotEvent({
         channelID: string;
         webhookID: string;
       };
-      console.log(webhookDB);
+      // console.log(webhookDB);
       const webhook = await SClient.rest.fetchWebhook(webhookDB.webhookID);
 
-      for (const embeds of publishEmbeds) {
-        for (const embed of embeds) {
-          await webhook
-            .createMessage({
-              embed,
-            })
-            .then(() => console.log(`Sent ${embeds.indexOf(embed) + 1} of ${embeds.length}`))
-            .catch((err) => Debugging.leafDebug(err));
-        }
-      }
+      const sendWebhook = (embed: SimpleEmbed) => webhook
+        .createMessage({
+          embed,
+        })
+        .catch((err) => Debugging.leafDebug(err, true));
+
+      await sequentialPromises(publishEmbeds, sendWebhook);
     } catch (error) {
-      console.log(error);
+      Debugging.leafDebug(error, true);
     }
   },
 });
