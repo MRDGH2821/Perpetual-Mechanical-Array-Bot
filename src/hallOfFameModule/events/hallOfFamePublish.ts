@@ -42,7 +42,7 @@ export default new BotEvent({
           },
           {
             name: '**FAQs**',
-            value: `Q1. The number of crowns in my name is incorrect!\nA. Please send a new screenshot of your traveler's talent screen again at <#${ChannelIds.ROLE_APPLICATION}>. After approval, it will get auto updated!\n\nQ2. My name is not here...\nA. Due to Discord Embed's Character limit of total 6000, only limited entries are shown. You can still view your name via command`,
+            value: `Q1. The number of crowns in my name is incorrect!\nA. Please send a new screenshot of your traveler's talent screen again at <#${ChannelIds.ROLE_APPLICATION}>. After approval, it will get auto updated!`,
           },
         ],
       };
