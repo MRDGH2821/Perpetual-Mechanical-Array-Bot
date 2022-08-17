@@ -1,20 +1,22 @@
 import { ClusterClient, InteractionCommandClient } from 'detritus-client';
 import { GatewayIntents } from 'detritus-client-socket/lib/constants';
+import { InteractionCommand } from 'detritus-client/lib/interaction';
 import path from 'path';
 import { setClusterClient } from './lib/BotClientExtracted';
+import BotEvent from './lib/BotEvent';
 import EnvConfig from './lib/EnvConfig';
 import esmImporter from './lib/esmImporter';
 import { Debugging, PMAEventHandler } from './lib/Utilities';
 
 (async () => {
-  const botEvents = [
+  const botEvents: BotEvent[] = [
     await esmImporter(path.resolve(__dirname, './pmaBaseModule/events/')),
     await esmImporter(path.resolve(__dirname, './leaderboardModule/events/')),
     await esmImporter(path.resolve(__dirname, './hallOfFameModule/events/')),
     await esmImporter(path.resolve(__dirname, './spiralAbyssModule/events/')),
   ].flat();
 
-  const botCommands = [
+  const botCommands: InteractionCommand[] = [
     await esmImporter(path.resolve(__dirname, './pmaBaseModule/commands/')),
     await esmImporter(path.resolve(__dirname, './leaderboardModule/commands/')),
     await esmImporter(path.resolve(__dirname, './hallOfFameModule/commands/')),
@@ -46,6 +48,7 @@ import { Debugging, PMAEventHandler } from './lib/Utilities';
   botEvents.forEach((pmaEvent) => {
     if (pmaEvent.once) {
       clusterBot.once(pmaEvent.event, pmaEvent.listener);
+      PMAEventHandler.once(pmaEvent.event, pmaEvent.listener);
     } else {
       clusterBot.subscribe(pmaEvent.event, pmaEvent.listener);
       PMAEventHandler.on(pmaEvent.event, pmaEvent.listener);

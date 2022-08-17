@@ -34,6 +34,7 @@ export default new BotEvent({
       PMAEventHandler.emit('hallOfFameRefresh');
       PMAEventHandler.emit('spiralAbyssRefresh');
       PMAEventHandler.emit('quotesRefresh');
+      PMAEventHandler.emit('removeRNGFreezeMute');
     }, 1000 * 5);
   },
 });
