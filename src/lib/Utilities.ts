@@ -530,6 +530,41 @@ export async function freezeMuteUser(
             });
           });
       });
+
+    const dmChannel = await member.createOrGetDm();
+    setTimeout(() => {
+      dmChannel
+        .createMessage({
+          content: 'Click on Unmute button if you wish to be unmuted in 5 seconds.',
+          components: [
+            new ComponentActionRow().addButton({
+              label: 'Unmute me!',
+              async run(ctx) {
+                setTimeout(() => {
+                  member
+                    .edit({
+                      communicationDisabledUntil: null,
+                      reason: "Removed timeout on user's request (timed out by RNG luck)",
+                    })
+                    .catch(console.log);
+                  member.removeRole(Constants.ROLE_IDS.OTHERS.FROZEN_RNG, {
+                    reason: "Removed freeze mute role on user's request (muted by RNG luck)",
+                  });
+                }, 5000);
+
+                ctx.editOrRespond('Timeout/mute role will be successfully removed in 5 seconds.');
+              },
+            }),
+          ],
+        })
+        .then(() => console.log('Msg sent'))
+        .catch((err) => {
+          Debugging.leafDebug(err, true);
+          channel.createMessage(
+            `${member.mention} your DMs are closed, thus couldn't send you a message to unmute yourself`,
+          );
+        });
+    }, 5000);
   }
 }
 
