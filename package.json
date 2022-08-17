@@ -8,14 +8,14 @@
     "prestart": "npm run build",
     "start": "node out/index.js",
     "monitor": "nodemon src/index.ts --trace-warnings",
-    "lint": "eslint . --fix --ignore-path .gitignore ",
-    "pretty": "prettier . --write --ignore-path .gitignore",
+    "lint": "npx eslint . --fix --ignore-path .gitignore ",
+    "pretty": "npx prettier . --write --ignore-path .gitignore",
     "postpretty": "npm run lint",
     "pm2:prod": "pm2 startOrRestart pma-bot.config.cjs --env prod",
     "build": "tsc && tsc-alias",
     "emulator": "firebase emulators:start --import ./offline_db_beta --export-on-exit ./offline_db",
     "dev": "run-p -n emulator monitor",
-    "prelint:mega": "node clean.mjs megalinter-reports",
+    "prelint:mega": "node clean.mjs megalinter-reports && node clean.mjs tmp",
     "lint:mega": "npx mega-linter-runner@latest --flavor javascript"
   },
   "repository": {
