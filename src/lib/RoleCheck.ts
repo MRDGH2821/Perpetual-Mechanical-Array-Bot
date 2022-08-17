@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import { BaseCollection } from 'detritus-client/lib/collections';
 import { MessageComponentButtonStyles, MessageFlags } from 'detritus-client/lib/constants';
 import { InteractionContext } from 'detritus-client/lib/interaction';
