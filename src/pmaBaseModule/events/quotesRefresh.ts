@@ -1,5 +1,5 @@
 import BotEvent from '../../lib/BotEvent';
-import { botQuoteCategories } from '../../lib/Constants';
+import { botQuoteCategories } from '../../lib/DynamicConstants';
 import { getQuotes, setDBQuotes } from '../../lib/QuotesManager';
 import { Debugging } from '../../lib/Utilities';
 

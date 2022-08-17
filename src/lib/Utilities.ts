@@ -18,6 +18,7 @@ import EventEmitter from 'events';
 import https from 'https';
 import { random } from 'mathjs';
 import { titleCase } from 'title-case';
+import { CategoryProp, ElementProp } from '../botTypes/dynamicTypes';
 import {
   NadekoContent,
   NadekoEmbed,
@@ -26,9 +27,7 @@ import {
   TechArgs,
 } from '../botTypes/interfaces';
 import {
-  CategoryProp,
   ElementDamageCategories,
-  ElementProp,
   ELEMENTS,
   JokeCategories,
   OneJokeFormat,
@@ -37,6 +36,7 @@ import {
 import { getShardClient } from './BotClientExtracted';
 import BotEvent from './BotEvent';
 import * as Constants from './Constants';
+import { ABYSS_QUOTES } from './DynamicConstants';
 import EnvConfig from './EnvConfig';
 import db from './Firestore';
 import {
@@ -256,7 +256,7 @@ export function nadekoParse(embedString: string): NadekoParseResult {
 }
 
 function getAbyssQuote(): string {
-  return randomArrPick(Constants.ABYSS_QUOTES);
+  return randomArrPick(ABYSS_QUOTES);
 }
 
 export function extractLinks(str: string) {
