@@ -467,29 +467,69 @@ export async function freezeMuteUser(
   duration: number,
   reason: string,
 ) {
+  const pain1 = [Constants.EMOJIS.Aether_Pain1, Constants.EMOJIS.Lumine_Pain1];
+  const pain2 = [Constants.EMOJIS.Aether_Pain2, Constants.EMOJIS.Lumine_Pain2];
+
+  const painEmotes = `${randomArrPick(pain1)}${randomArrPick(pain2)}`;
+
   const RNG = random(0, 100);
   const seconds = duration / (1000 * 60);
+
+  const muteEmbed: SimpleEmbed = {
+    color: 0x5f929e,
+    title: `${member?.nick || member.username} has been frozen for ${seconds} minute(s)!`,
+    description: `${member?.mention} is now temporarily frozen (muted).\n\n**Reason**: ${reason}\n\nPlease use this time to take a break or be productive!`,
+    thumbnail: {
+      url: 'https://cdn.discordapp.com/attachments/804253204291387422/895916863345803284/Frozen_Skies.png',
+    },
+    footer: {
+      iconUrl:
+        'https://cdn.discordapp.com/icons/803424731474034709/a_ebc29957047bf6244f0b528c2acd7af9.png',
+      text: 'For any problems, file a ticket to contact the staff.',
+    },
+  };
   // console.log({ chance, RNG });
   if (RNG <= chance) {
-    member?.addRole(Constants.ROLE_IDS.OTHERS.FROZEN_RNG);
-    channel?.createMessage({
-      embed: {
-        color: 0x5f929e,
-        title: `${member?.nick || member.username} has been frozen for ${seconds} minute(s)!`,
-        description: `${member?.mention} is now temporarily frozen (muted).\n\n**Reason**: ${reason}\n\nPlease use this time to take a break or be productive!`,
-        thumbnail: {
-          url: 'https://cdn.discordapp.com/attachments/804253204291387422/895916863345803284/Frozen_Skies.png',
-        },
-        footer: {
-          iconUrl:
-            'https://cdn.discordapp.com/icons/803424731474034709/a_ebc29957047bf6244f0b528c2acd7af9.png',
-          text: 'For any problems, file a ticket to contact the staff.',
-        },
-      },
-    });
-    setTimeout(() => {
-      member?.removeRole(Constants.ROLE_IDS.OTHERS.FROZEN_RNG);
-    }, duration);
+    member
+      .edit({
+        communicationDisabledUntil: new Date(Date.now() + duration).toISOString(),
+        reason: `${reason} (muted by RNG)`,
+      })
+      .then(() => {
+        channel?.createMessage({
+          embed: muteEmbed,
+        });
+      })
+      .catch((err) => {
+        Debugging.leafDebug(err, true);
+        channel?.createMessage({
+          content: `Dammit, I cannot timeout ${
+            member.mention
+          }. ${painEmotes}\n\nHow about regular mute role? ${randomArrPick([
+            Constants.EMOJIS.PaimonThink,
+            Constants.EMOJIS.HmmTher,
+            Constants.EMOJIS.HmmMine,
+            '🤔',
+          ])}`,
+        });
+        member
+          .addRole(Constants.ROLE_IDS.OTHERS.FROZEN_RNG, {
+            reason: `${reason} (muted by RNG)`,
+          })
+          .then(() => {
+            channel.createMessage({
+              content: 'HAHA Take that!',
+              embed: muteEmbed,
+            });
+            setTimeout(() => member.removeRole(Constants.ROLE_IDS.OTHERS.FROZEN_RNG), duration);
+          })
+          .catch((error) => {
+            Debugging.leafDebug(error, true);
+            channel?.createMessage({
+              content: `Dammit, I cannot even mute by mute role ${painEmotes}`,
+            });
+          });
+      });
   }
 }
 
