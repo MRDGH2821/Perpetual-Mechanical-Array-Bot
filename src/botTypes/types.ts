@@ -1,23 +1,6 @@
 import { Member, User } from 'detritus-client/lib/structures';
 import { BaseCollection } from 'detritus-utils';
 
-import { COLORS, ICONS, TravelerTypes } from '../lib/Constants';
-
-export type CategoryProp = {
-  icon: ICONS;
-  name: TravelerTypes;
-  skill: string;
-  color: COLORS;
-};
-
-export type ElementProp = {
-  icon: ICONS;
-  name: string;
-  crown: string;
-  color: COLORS;
-  emoji: string;
-};
-
 export type GroupCategoryType = 'open' | 'solo';
 
 export type ELEMENTS =

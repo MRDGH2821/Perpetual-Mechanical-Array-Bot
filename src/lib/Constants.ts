@@ -1,8 +1,6 @@
 import { Colors, Snowflake } from 'detritus-client/lib/constants';
 
-import { DBQuotes, ElementDamageCategories, ELEMENTS } from '../botTypes/types';
-
-import { getQuotes } from './QuotesManager';
+import { ElementDamageCategories, ELEMENTS } from '../botTypes/types';
 
 function formatEmoji(EmojiSnowflake: Snowflake) {
   return `<:_:${EmojiSnowflake}>`;
@@ -103,6 +101,10 @@ export const EMOJIS = {
   smh: formatEmoji('866190698676355092'),
   LumineWoke: formatEmoji('809010967786160138'),
   PaimonThink: formatEmoji('853288230694944798'),
+  Aether_Pain1: formatEmoji('804189532718759956'),
+  Aether_Pain2: formatEmoji('804189554294128650'),
+  Lumine_Pain1: formatEmoji('839415679824429098'),
+  Lumine_Pain2: formatEmoji('839415680625016832'),
 };
 
 export enum ChannelIds {
@@ -228,22 +230,6 @@ const SPIRAL_ABYSS_ROLES = [
 
 export const ACH_ROLES = [REP_ROLES, OTHER_ROLES, CROWN_ROLES, SPIRAL_ABYSS_ROLES].flat();
 
-export const ABYSS_QUOTES = [
-  '*You stare into the abyss and you feel some presence staring over you*',
-  '*Darkness beseech upon the emptiness of the void, howling and yet nothing calls back*',
-  '*The path of the Copium ends here, Your journey has come to an end*',
-  '*The darkness breaks upon the dawning night, the night sky bleaks upon the emptiness*',
-  '*Well.. thats it folks*',
-  '*When you stare into the Abyss*\n*The Abyss stars back at you*',
-  'https://tenor.com/view/john-cena-cena-are-you-sure-are-you-sure-about-that-are-you-sure-about-that-meme-gif-23133134',
-  'https://tenor.com/view/staring-into-space-gif-8743533',
-  'https://tenor.com/view/stare-into-the-abyss-the-grinch-jim-carrey-how-the-grinch-stole-christmas-stare-into-nothingness-gif-18820322',
-  'https://tenor.com/view/cave-dive-darkness-leap-gif-5803442',
-  'https://tenor.com/view/full-bore-and-into-the-abyss-davy-jones-abyss-dark-bore-gif-22332324',
-]
-  .concat(getQuotes('abyssGifs'), getQuotes('abyssQuotes'))
-  .flat();
-
 export const LEADERBOARD_ELE_CATEGORY_CHOICES = <
   { name: string; value: ElementDamageCategories }[]
 >[
@@ -282,24 +268,4 @@ export const HALL_OF_FAME_ELEMENT_CHOICES = <{ name: string; value: ELEMENTS }[]
     name: 'Arbitrator of Fate (Unaligned)',
     value: 'unaligned',
   },
-];
-
-export const botQuoteCategories: DBQuotes[] = [
-  'FBIGifs',
-  'FBIQuotes',
-  'RNGMuteQuotes',
-  'RNGMuteReasons',
-  'TikTokGifs',
-  'TikTokQuotes',
-  'abyssGifs',
-  'abyssQuotes',
-  'banHammerReasons',
-  'bonkGifs',
-  'crowdSourcedBonkReasons',
-  'crowdSourcedHornyBonkReasons',
-  'hornyBonkGifs',
-  'leakQuotes',
-  'leaksMuteReasons',
-  'selfHornyBonkGifs',
-  'yoyoverseQuotes',
 ];
