@@ -17,27 +17,27 @@ const totalCrownUsers = 20;
 
 export const hallOfFameCache = {
   anemo: {
-    one: <HallOfFameCrownQuantityCacheType> new BaseCollection(),
-    two: <HallOfFameCrownQuantityCacheType> new BaseCollection(),
-    three: <HallOfFameCrownQuantityCacheType> new BaseCollection(),
+    one: new BaseCollection() as HallOfFameCrownQuantityCacheType,
+    two: new BaseCollection() as HallOfFameCrownQuantityCacheType,
+    three: new BaseCollection() as HallOfFameCrownQuantityCacheType,
   },
   geo: {
-    one: <HallOfFameCrownQuantityCacheType> new BaseCollection(),
-    two: <HallOfFameCrownQuantityCacheType> new BaseCollection(),
-    three: <HallOfFameCrownQuantityCacheType> new BaseCollection(),
+    one: new BaseCollection() as HallOfFameCrownQuantityCacheType,
+    two: new BaseCollection() as HallOfFameCrownQuantityCacheType,
+    three: new BaseCollection() as HallOfFameCrownQuantityCacheType,
   },
   electro: {
-    one: <HallOfFameCrownQuantityCacheType> new BaseCollection(),
-    two: <HallOfFameCrownQuantityCacheType> new BaseCollection(),
-    three: <HallOfFameCrownQuantityCacheType> new BaseCollection(),
+    one: new BaseCollection() as HallOfFameCrownQuantityCacheType,
+    two: new BaseCollection() as HallOfFameCrownQuantityCacheType,
+    three: new BaseCollection() as HallOfFameCrownQuantityCacheType,
   },
   dendro: {
-    one: <HallOfFameCrownQuantityCacheType> new BaseCollection(),
-    two: <HallOfFameCrownQuantityCacheType> new BaseCollection(),
-    three: <HallOfFameCrownQuantityCacheType> new BaseCollection(),
+    one: new BaseCollection() as HallOfFameCrownQuantityCacheType,
+    two: new BaseCollection() as HallOfFameCrownQuantityCacheType,
+    three: new BaseCollection() as HallOfFameCrownQuantityCacheType,
   },
   unaligned: {
-    one: <HallOfFameCrownQuantityCacheType> new BaseCollection(),
+    one: new BaseCollection() as HallOfFameCrownQuantityCacheType,
   },
 };
 
@@ -77,13 +77,13 @@ export async function setHallOfFameData(
   await getHallOfFameData(element).then(async (entries) => {
     // console.log(entries);
 
-    for (const entry of entries) {
-      const userC = await getUser(entry.userID, SClient);
-      // console.log('User: ', userC);
-      if (entry.crowns === crownQuantity) {
-        collection.set(entry.userID, { user: userC, data: entry });
-      }
-    }
+    await Promise.all(
+      entries.map(async (entry) => getUser(entry.userID, SClient).then((contestant) => {
+        if (entry.crowns === crownQuantity) {
+          collection.set(entry.userID, { user: contestant, data: entry });
+        }
+      })),
+    );
   });
 }
 

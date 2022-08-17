@@ -20,32 +20,32 @@ const totalRanks = 7;
 export const leaderboardCache = {
   anemo: {
     skill: {
-      open: <LeaderboardElementGroupCacheType> new BaseCollection(),
-      solo: <LeaderboardElementGroupCacheType> new BaseCollection(),
+      open: new BaseCollection() as LeaderboardElementGroupCacheType,
+      solo: new BaseCollection() as LeaderboardElementGroupCacheType,
     },
   },
   geo: {
     skill: {
-      open: <LeaderboardElementGroupCacheType> new BaseCollection(),
-      solo: <LeaderboardElementGroupCacheType> new BaseCollection(),
+      open: new BaseCollection() as LeaderboardElementGroupCacheType,
+      solo: new BaseCollection() as LeaderboardElementGroupCacheType,
     },
   },
   electro: {
     skill: {
-      open: <LeaderboardElementGroupCacheType> new BaseCollection(),
-      solo: <LeaderboardElementGroupCacheType> new BaseCollection(),
+      open: new BaseCollection() as LeaderboardElementGroupCacheType,
+      solo: new BaseCollection() as LeaderboardElementGroupCacheType,
     },
   },
   dendro: {
     skill: {
-      open: <LeaderboardElementGroupCacheType> new BaseCollection(),
-      solo: <LeaderboardElementGroupCacheType> new BaseCollection(),
+      open: new BaseCollection() as LeaderboardElementGroupCacheType,
+      solo: new BaseCollection() as LeaderboardElementGroupCacheType,
     },
   },
   uni: {
     n5: {
-      open: <LeaderboardElementGroupCacheType> new BaseCollection(),
-      solo: <LeaderboardElementGroupCacheType> new BaseCollection(),
+      open: new BaseCollection() as LeaderboardElementGroupCacheType,
+      solo: new BaseCollection() as LeaderboardElementGroupCacheType,
     },
   },
 };
@@ -93,12 +93,11 @@ export async function setLeaderboardData(
   const { collection, dmgCategory, typeCategory } = givenData;
   await getLeaderboardData(dmgCategory, typeCategory).then(async (entries) => {
     // console.log(entries);
-
-    for (const entry of entries) {
-      const userC = await getUser(entry.userID, SClient);
-      // console.log('User: ', userC);
-      collection.set(entry.userID, { user: userC, data: entry });
-    }
+    await Promise.all(
+      entries.map(async (entry) => getUser(entry.userID, SClient).then((contestant) => {
+        collection.set(entry.userID, { user: contestant, data: entry });
+      })),
+    );
   });
 }
 
