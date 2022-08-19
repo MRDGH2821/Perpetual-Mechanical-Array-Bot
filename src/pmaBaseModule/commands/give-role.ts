@@ -181,9 +181,8 @@ export default new InteractionCommand({
           {
             description: 'Crowned their Dendro Traveler',
             emoji:
-              EMOJIS_ARR.find(
-                (emoji) => emoji.id === Constants.EMOJIS.Dendro.match(/\d+/gm)![0],
-              ) || '🌳',
+              EMOJIS_ARR.find((emoji) => emoji.id === Constants.EMOJIS.Dendro.match(/\d+/gm)![0])
+              || '🌳',
             label: roles.get(Constants.ROLE_IDS.CROWN.DENDRO)?.name,
             value: Constants.ROLE_IDS.CROWN.DENDRO,
           },
