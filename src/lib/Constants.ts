@@ -151,7 +151,6 @@ export namespace ROLE_IDS {
     ARCHONS = '813613841488936971',
     WHALE = '804010525411246140',
     ANOTHER_TEST_SUBJECT = '984388373693210635',
-    FROZEN_MUTED = '806133418559143957',
     FROZEN_RNG = '1005767717812449291',
   }
 
@@ -265,7 +264,6 @@ export const LEADERBOARD_ELE_CATEGORY_CHOICES = <
     name: 'Universal: 5th normal Atk dmg',
     value: 'uni-dmg-n5',
   },
-
 ];
 
 export const HALL_OF_FAME_ELEMENT_CHOICES = <{ name: string; value: ELEMENTS }[]>[
