@@ -100,6 +100,8 @@ export default new BotEvent({
         `Just wait for next version/livestream${EMOJIS.smh}`,
         EMOJIS.Copium,
         EMOJIS.LumineCopium,
+        EMOJIS.iLumineati,
+        EMOJIS.Pairamid,
         `No leak mute for you ${EMOJIS.PepeKekPoint}`,
         '*Say that once again, I dare you**.***',
       ]

@@ -94,7 +94,8 @@ export const EMOJIS = {
   DvalinHYPE: formatEmoji('808591175640154142'),
   Copium: formatEmoji('897176156057518130'),
   LumineCopium: formatEmoji('821897404260417557'),
-
+  iLumineati: formatEmoji('1004994499312877598'),
+  Pairamid: formatEmoji('1008108212026880050'),
   smh: formatEmoji('866190698676355092'),
   LumineWoke: formatEmoji('809010967786160138'),
   PaimonThink: formatEmoji('853288230694944798'),
