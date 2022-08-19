@@ -27,6 +27,12 @@ export default new BotEvent({
       color: COLORS.ELECTRO,
     };
 
+    const dendroSkillBoard: SimpleEmbed = {
+      title: 'Dendro placeholder',
+      description: 'Will be updated soon',
+      color: COLORS.DENDRO,
+    };
+
     const uniSkillBoard: SimpleEmbed = {
       title: 'Universal placeholder',
       description: 'Will be updated soon',
@@ -72,6 +78,12 @@ export default new BotEvent({
 
     await webhook.createMessage({ embed: electroSkillBoard, wait: true }).then((message) => {
       db.collection('leaderboards').doc('electro-dmg-skill').set({
+        messageID: message?.id,
+      });
+    });
+
+    await webhook.createMessage({ embed: dendroSkillBoard, wait: true }).then((message) => {
+      db.collection('leaderboards').doc('dendro-dmg-skill').set({
         messageID: message?.id,
       });
     });

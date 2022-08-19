@@ -57,6 +57,21 @@ export default new BotEvent({
       }).then(() => console.log('Electro solo done')),
     );
 
+    // Dendro Refresh
+
+    promises.push(
+      setLeaderboardData({
+        collection: LCache.dendro.skill.open,
+        dmgCategory: 'dendro-dmg-skill',
+        typeCategory: 'open',
+      }).then(() => console.log('Dendro open done')),
+      setLeaderboardData({
+        collection: LCache.dendro.skill.solo,
+        dmgCategory: 'dendro-dmg-skill',
+        typeCategory: 'solo',
+      }).then(() => console.log('Dendro solo done')),
+    );
+
     // Universal n5 Refresh
 
     promises.push(

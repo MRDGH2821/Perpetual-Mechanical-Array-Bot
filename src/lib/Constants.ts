@@ -22,6 +22,7 @@ export const EleDmgCategoriesArr: ElementDamageCategories[] = [
   'anemo-dmg-skill',
   'geo-dmg-skill',
   'electro-dmg-skill',
+  'dendro-dmg-skill',
   'uni-dmg-n5',
 ];
 
@@ -50,6 +51,8 @@ export enum ICONS {
   CROSS_MARK = 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/282/cross-mark_274c.png',
   MASANORI = 'https://cdn.discordapp.com/attachments/825749528275189760/954657244157452348/250.png',
   TROPHY = 'https://whatemoji.org/wp-content/uploads/2020/07/Trophy-Emoji.png',
+  DENDRO = 'https://cdn.discordapp.com/emojis/803516669984505856.webp?size=128&quality=lossless',
+  RAZOR_GRASS_BLADE_AETHER = 'https://cdn.discordapp.com/emojis/995905335812427846.webp?size=128&quality=lossless',
 }
 
 export enum COLORS {
@@ -64,6 +67,7 @@ export enum COLORS {
   ERROR = 0xff0033,
   SUCCESS = 0x00c455,
   SPIRAL_ABYSS = 0x4d00f0,
+  DENDRO = 0x94fe00,
 }
 
 export const EMOJIS = {
@@ -244,9 +248,14 @@ export const LEADERBOARD_ELE_CATEGORY_CHOICES = <
     value: 'electro-dmg-skill',
   },
   {
+    name: 'Dendro: Razor grass Blade',
+    value: 'dendro-dmg-skill',
+  },
+  {
     name: 'Universal: 5th normal Atk dmg',
     value: 'uni-dmg-n5',
   },
+
 ];
 
 export const HALL_OF_FAME_ELEMENT_CHOICES = <{ name: string; value: ELEMENTS }[]>[

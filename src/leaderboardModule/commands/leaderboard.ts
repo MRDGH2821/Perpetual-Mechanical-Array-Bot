@@ -166,6 +166,9 @@ export default new InteractionCommand({
         } else if (/electro./gimu.test(dmgCategory)) {
           verifyEmb.color = COLORS.ELECTRO;
           verifyEmb.thumbnail = { url: randomSkillIcon('electro') };
+        } else if (/dendro./gimu.test(dmgCategory)) {
+          verifyEmb.color = COLORS.DENDRO;
+          verifyEmb.thumbnail = { url: randomSkillIcon('dendro') };
         } else if (/uni./gimu.test(dmgCategory)) {
           verifyEmb.color = COLORS.UNIVERSAL;
           verifyEmb.thumbnail = { url: ICONS.COPIUM };

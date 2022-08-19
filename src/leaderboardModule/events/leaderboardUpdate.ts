@@ -12,6 +12,7 @@ export default new BotEvent({
     const anemoSkillBoard = await showcaseLeaderboardGenerate('anemo-dmg-skill');
     const geoSkillBoard = await showcaseLeaderboardGenerate('geo-dmg-skill');
     const electroSkillBoard = await showcaseLeaderboardGenerate('electro-dmg-skill');
+    const dendroSkillBoard = await showcaseLeaderboardGenerate('dendro-dmg-skill');
     const uniSkillBoard = await showcaseLeaderboardGenerate('uni-dmg-n5');
 
     const leaderboardDB = db.collection('leaderboards');
@@ -19,6 +20,7 @@ export default new BotEvent({
     const anemoMsg = (await leaderboardDB.doc('anemo-dmg-skill').get()).data();
     const geoMsg = (await leaderboardDB.doc('geo-dmg-skill').get()).data();
     const electroMsg = (await leaderboardDB.doc('electro-dmg-skill').get()).data();
+    const dendroMsg = (await leaderboardDB.doc('dendro-dmg-skill').get()).data();
     const uniMsg = (await leaderboardDB.doc('uni-dmg-n5').get()).data();
     const webhookMsg = (await leaderboardDB.doc('webhook').get()).data() as {
       webhookID: string;
@@ -41,6 +43,12 @@ export default new BotEvent({
         .editMessage(electroMsg?.messageID, { embeds: [electroSkillBoard] })
         .catch((err) => {
           console.log('Electro leaderboard update failed');
+          Debugging.leafDebug(err, true);
+        }),
+      leaderboardHook
+        .editMessage(dendroMsg?.messageID, { embeds: [dendroSkillBoard] })
+        .catch((err) => {
+          console.log('Dendro leaderboard update failed');
           Debugging.leafDebug(err, true);
         }),
       leaderboardHook.editMessage(uniMsg?.messageID, { embeds: [uniSkillBoard] }).catch((err) => {

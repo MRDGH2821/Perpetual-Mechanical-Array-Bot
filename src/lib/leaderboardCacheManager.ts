@@ -119,6 +119,10 @@ function accessElementCache(
         resolve(leaderboardCache.electro.skill);
         break;
       }
+      case 'dendro': {
+        resolve(leaderboardCache.dendro.skill);
+        break;
+      }
       case 'uni': {
         resolve(leaderboardCache.uni.n5);
         break;

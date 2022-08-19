@@ -76,6 +76,10 @@ export function randomSkillIcon(element: ELEMENTS) {
       const icons = [Constants.ICONS.ELECTRO, Constants.ICONS.LIGHTENING_BLADE_AETHER];
       return randomArrPick(icons);
     }
+    case 'dendro': {
+      const icons = [Constants.ICONS.DENDRO, Constants.ICONS.RAZOR_GRASS_BLADE_AETHER];
+      return randomArrPick(icons);
+    }
     default: {
       const icons = [Constants.ICONS.VOID, Constants.ICONS.COPIUM];
       return randomArrPick(icons);
@@ -107,6 +111,14 @@ export function categoryProps(dmgCategory: ElementDamageCategories): CategoryPro
         name: Constants.TravelerTypes.ELECTRO,
         skill: 'Lightening Blade',
         color: Constants.COLORS.ELECTRO,
+      };
+    }
+    case 'dendro-dmg-skill': {
+      return {
+        icon: Constants.ICONS.RAZOR_GRASS_BLADE_AETHER,
+        name: Constants.TravelerTypes.DENDRO,
+        skill: 'Razor grass Blade',
+        color: Constants.COLORS.DENDRO,
       };
     }
     case 'uni-dmg-n5': {
