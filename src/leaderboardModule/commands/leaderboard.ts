@@ -264,7 +264,7 @@ export default new InteractionCommand({
         }
       },
     },
-    /* jscpd:ignore-start */
+
     {
       name: 'setup',
       description: 'Select channel where leaderboard updates will come',
@@ -292,7 +292,7 @@ export default new InteractionCommand({
         PMAEventHandler.emit('leaderboardChannelUpdate', setupChannel);
       },
     },
-    /* jscpd:ignore-end */
+
     {
       name: 'refresh',
       description: 'Refreshes leaderboard cache & optionally updates leaderboard channel',

@@ -25,7 +25,6 @@ export default new InteractionCommand({
     return isHoFRefreshComplete();
   },
   options: [
-    /* jscpd:ignore-start */
     {
       name: 'setup',
       description: 'Select channel where hall of fame updates will come',
@@ -53,7 +52,7 @@ export default new InteractionCommand({
         PMAEventHandler.emit('hallOfFameChannelUpdate', setupChannel);
       },
     },
-    /* jscpd:ignore-end */
+
     {
       name: 'refresh',
       description: 'Refreshes Hall Of Fame cache',

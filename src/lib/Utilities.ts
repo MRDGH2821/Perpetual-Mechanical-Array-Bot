@@ -339,7 +339,7 @@ export function viewPages(embeds: SimpleEmbed[]): ComponentActionRow {
       label: 'Previous',
       customId: 'previous',
       style: MessageComponentButtonStyles.SECONDARY,
-      /* jscpd:ignore-start */
+
       async run(btnCtx) {
         if (currentIndex >= 0) {
           currentIndex -= 1;
@@ -374,7 +374,6 @@ export function viewPages(embeds: SimpleEmbed[]): ComponentActionRow {
           });
         }
       },
-      /* jscpd:ignore-end */
     });
 
   return viewRow;

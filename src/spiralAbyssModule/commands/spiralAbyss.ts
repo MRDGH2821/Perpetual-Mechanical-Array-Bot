@@ -28,7 +28,6 @@ export default new InteractionCommand({
     return isSARefreshComplete();
   },
   options: [
-    /* jscpd:ignore-start */
     {
       name: 'setup',
       description: 'Select channel where Spiral Abyss updates will come',
@@ -56,7 +55,7 @@ export default new InteractionCommand({
         PMAEventHandler.emit('spiralAbyssChannelUpdate', setupChannel);
       },
     },
-    /* jscpd:ignore-end */
+
     {
       name: 'view',
       description: 'View individual leaderboard',
