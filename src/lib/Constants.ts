@@ -165,11 +165,13 @@ export namespace ROLE_IDS {
     MONDSTADT = '804595515437613077',
     LIYUE = '804595502960214026',
     INAZUMA = '809026481112088596',
+    SUMERU = '803429260316508172',
   }
   export enum CROWN {
     ANEMO = '815938264875532298',
     GEO = '816210137613205554',
     ELECTRO = '856509454970781696',
+    DENDRO = '947887879084998696',
     UNALIGNED = '859430358419243038',
   }
 }
@@ -187,6 +189,10 @@ const REP_ROLES = [
     name: 'Legend in Liyue 🚶🌏',
     value: ROLE_IDS.REPUTATION.LIYUE,
   },
+  {
+    name: 'Wise in Sumeru 🚶',
+    value: ROLE_IDS.REPUTATION.SUMERU,
+  },
 ];
 
 const CROWN_ROLES = [
@@ -201,6 +207,10 @@ const CROWN_ROLES = [
   {
     name: 'Herrscher of Wind 👑🌬️',
     value: ROLE_IDS.CROWN.ANEMO,
+  },
+  {
+    name: 'Raja of Evergreens',
+    value: ROLE_IDS.CROWN.DENDRO,
   },
   {
     name: 'Arbitrator of Fate 👑',
@@ -270,6 +280,10 @@ export const HALL_OF_FAME_ELEMENT_CHOICES = <{ name: string; value: ELEMENTS }[]
   {
     name: "Ten'nō of Thunder (Electro)",
     value: 'electro',
+  },
+  {
+    name: 'Raja of Evergreens (Dendro)',
+    value: 'dendro',
   },
   {
     name: 'Arbitrator of Fate (Unaligned)',

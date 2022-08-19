@@ -147,6 +147,13 @@ export default new InteractionCommand({
             value: Constants.ROLE_IDS.REPUTATION.INAZUMA,
           },
           {
+            default: target?.roles.has(Constants.ROLE_IDS.REPUTATION.SUMERU),
+            description: '100% Map + Subregions + Achievements + Max Reputation',
+            emoji: '🌴',
+            label: roles.get(Constants.ROLE_IDS.REPUTATION.SUMERU)?.name,
+            value: Constants.ROLE_IDS.REPUTATION.SUMERU,
+          },
+          {
             description: 'Crowned their Anemo Traveler',
             emoji:
               EMOJIS_ARR.find((emoji) => emoji.id === Constants.EMOJIS.Anemo.match(/\d+/gm)![0])
@@ -170,6 +177,15 @@ export default new InteractionCommand({
               ) || '⚡',
             label: roles.get(Constants.ROLE_IDS.CROWN.ELECTRO)?.name,
             value: Constants.ROLE_IDS.CROWN.ELECTRO,
+          },
+          {
+            description: 'Crowned their Dendro Traveler',
+            emoji:
+              EMOJIS_ARR.find(
+                (emoji) => emoji.id === Constants.EMOJIS.Dendro.match(/\d+/gm)![0],
+              ) || '🌳',
+            label: roles.get(Constants.ROLE_IDS.CROWN.DENDRO)?.name,
+            value: Constants.ROLE_IDS.CROWN.DENDRO,
           },
           {
             default: target?.roles.has(Constants.ROLE_IDS.CROWN.UNALIGNED),

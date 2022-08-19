@@ -265,7 +265,9 @@ const roleFunctions = new BaseCollection<string, Function>()
   .set(ROLE_IDS.CROWN.ANEMO, crownCheck)
   .set(ROLE_IDS.CROWN.GEO, crownCheck)
   .set(ROLE_IDS.CROWN.ELECTRO, crownCheck)
-  .set(ROLE_IDS.CROWN.UNALIGNED, nonEleCrownCheck);
+  .set(ROLE_IDS.CROWN.UNALIGNED, nonEleCrownCheck)
+  .set(ROLE_IDS.CROWN.DENDRO, crownCheck)
+  .set(ROLE_IDS.REPUTATION.SUMERU, reputationCheck);
 
 export function roleCheckSwitcher(
   ctx: InteractionContext | ComponentContext,

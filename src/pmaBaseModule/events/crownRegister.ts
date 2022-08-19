@@ -29,6 +29,10 @@ export default new BotEvent({
         collectionName = 'electro-crown';
         break;
       }
+      case ROLE_IDS.CROWN.DENDRO: {
+        collectionName = 'dendro-crown';
+        break;
+      }
       case ROLE_IDS.CROWN.UNALIGNED: {
         collectionName = 'unaligned-crown';
         break;
