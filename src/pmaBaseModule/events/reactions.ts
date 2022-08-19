@@ -58,7 +58,6 @@ export default new BotEvent({
 
     if (/\b(q+u+a+c+k{1,})\b|\b(h+o+n+k{1,})\b|🦆/gimu.test(msg)) {
       const emotes = [
-        EMOJIS.AetherNoU,
         EMOJIS.BoreasKek,
         EMOJIS.GoosetherConfuse,
         EMOJIS.FakeNooz,
@@ -77,9 +76,7 @@ export default new BotEvent({
         EMOJIS.AetherBonk,
         EMOJIS.AetherBruh,
         EMOJIS.AetherYikes,
-        EMOJIS.Keqing_No,
         EMOJIS.LumineMAD_REEE,
-        EMOJIS.AetherMAD_REEE,
         EMOJIS.LuminePanic,
         EMOJIS.TarouAngy,
         '🔞',
