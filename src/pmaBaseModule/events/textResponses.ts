@@ -103,7 +103,10 @@ export default new BotEvent({
         EMOJIS.iLumineati,
         EMOJIS.Pairamid,
         `No leak mute for you ${EMOJIS.PepeKekPoint}`,
-        '*Say that once again, I dare you**.***',
+        'Give up already',
+        'There are some uncles here, which do not give leaks',
+        'The leaks were coming via train, but a meteorite destroyed them',
+        '*Say that once again, I dare you.*',
       ]
         .concat(getQuotes('leakQuotes'))
         .flat();
