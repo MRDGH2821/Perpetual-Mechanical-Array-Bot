@@ -550,6 +550,8 @@ export async function freezeMuteUser(
           components: [
             new ComponentActionRow().addButton({
               label: 'Unmute me!',
+              custom_id: 'unmute_me_rng',
+              customId: 'unmute_me_rng',
               async run(ctx) {
                 setTimeout(() => {
                   member
@@ -568,7 +570,7 @@ export async function freezeMuteUser(
             }),
           ],
         })
-        .then(() => console.log('Msg sent'))
+        .then(() => console.log('Unmute Msg sent'))
         .catch((err) => {
           Debugging.leafDebug(err, true);
           channel.createMessage(
