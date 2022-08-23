@@ -1,5 +1,6 @@
 import { GatewayClientEvents } from 'detritus-client';
 import { ClientEvents } from 'detritus-client/lib/constants';
+import { InteractionDataComponent } from 'detritus-client/lib/structures';
 import BotEvent from '../../lib/BotEvent';
 import { ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
@@ -9,11 +10,10 @@ export default new BotEvent({
   on: true,
   async listener(payload: GatewayClientEvents.InteractionCreate) {
     const { interaction } = payload;
-
-    if (interaction.data!.customId === 'unmute_me_rng') {
-      const SClient = interaction.client.cluster?.shards.first()!;
-      const guild = SClient.guilds.get(EnvConfig.guildId);
-      const member = await guild?.fetchMember(interaction.userId);
+    const componentData = payload.interaction.data as InteractionDataComponent;
+    if (componentData.customId === 'unmute_me_rng') {
+      const SClient = interaction.client;
+      const member = await SClient.rest.fetchGuildMember(EnvConfig.guildId, interaction.userId);
 
       member
         .edit({
