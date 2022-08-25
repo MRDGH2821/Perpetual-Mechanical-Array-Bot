@@ -99,13 +99,14 @@ export default new InteractionCommand({
         if (args.element === 'unaligned') {
           qty = 'one';
         }
-
         const hallOfFameEmbeds = await publishHoFNames(args.element, qty);
-
+        await viewPages(hallOfFameEmbeds)(ctx);
+        /*
         await ctx.editOrRespond({
           embed: hallOfFameEmbeds[0],
           components: [viewPages(hallOfFameEmbeds)],
         });
+        */
       },
     },
     {

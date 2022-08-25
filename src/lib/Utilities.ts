@@ -329,7 +329,57 @@ function respondTech(
   };
 }
 
-export function viewPages(embeds: SimpleEmbed[]): ComponentActionRow {
+export function viewPages(embeds: SimpleEmbed[]): any {
+  return async function next(ctx: ComponentContext | InteractionContext, i = 0) {
+    return ctx.editOrRespond({
+      content: embeds[i] ? undefined : getAbyssQuote(),
+      embed: embeds[i],
+      components: [
+        new ComponentActionRow()
+          .addButton({
+            label: 'Previous',
+            emoji: '⬅️',
+            style: MessageComponentButtonStyles.SECONDARY,
+            run(btnCtx) {
+              next(btnCtx, i >= 0 ? i - 1 : i);
+            },
+          })
+          .addButton({
+            label: 'Next',
+            emoji: '➡️',
+            style: MessageComponentButtonStyles.PRIMARY,
+            run(btnCtx) {
+              next(btnCtx, i < embeds.length ? i + 1 : i);
+            },
+          }),
+        /*
+        {
+          type: 1,
+          components: [
+            {
+              type: 2,
+
+              // emoji: '⬅️',
+              label: 'Previous',
+              style: MessageComponentButtonStyles.SECONDARY,
+              run: (btnCtx: ComponentContext) => next(btnCtx, i >= 0 ? i - 1 : i),
+            },
+            {
+              type: 2,
+              //  emoji: '➡️',
+              label: 'Next',
+              style: MessageComponentButtonStyles.SECONDARY,
+              run: (btnCtx: ComponentContext) => next(btnCtx, i < embeds.length ? i + 1 : i),
+            },
+          ],
+        },
+*/
+      ],
+    });
+  };
+}
+
+export function viewPagesBkp(embeds: SimpleEmbed[]): ComponentActionRow {
   const totalEmbeds = embeds.length;
   let currentIndex = 0;
 

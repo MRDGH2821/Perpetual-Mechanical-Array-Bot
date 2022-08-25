@@ -387,11 +387,13 @@ export default new InteractionCommand({
           args.element_category!,
           args.type_category!,
         );
-
+        await viewPages(leaderboardEmbeds)(ctx);
+        /*
         await ctx.editOrRespond({
           embed: leaderboardEmbeds[0],
           components: [viewPages(leaderboardEmbeds)],
         });
+        */
       },
     },
   ],

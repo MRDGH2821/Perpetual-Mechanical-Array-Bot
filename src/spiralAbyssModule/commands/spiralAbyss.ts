@@ -85,11 +85,13 @@ export default new InteractionCommand({
 
       async run(ctx, args: { clear_type?: SpiralAbyssClearTypes }) {
         const SAEmbeds = await publishSANames(args.clear_type!);
-
+        await viewPages(SAEmbeds)(ctx);
+        /*
         await ctx.editOrRespond({
           embed: SAEmbeds[0],
           components: [viewPages(SAEmbeds)],
         });
+        */
       },
     },
     reset,
