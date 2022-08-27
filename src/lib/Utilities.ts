@@ -329,8 +329,8 @@ function respondTech(
   };
 }
 
-export function viewPages(embeds: SimpleEmbed[]): any {
-  return async function next(ctx: ComponentContext | InteractionContext, i = 0) {
+export function viewPages(embeds: SimpleEmbed[]):Function {
+  return async function next(ctx: ComponentContext | InteractionContext, i = 0): Promise<unknown> {
     return ctx.editOrRespond({
       content: embeds[i] ? undefined : getAbyssQuote(),
       embed: embeds[i],
