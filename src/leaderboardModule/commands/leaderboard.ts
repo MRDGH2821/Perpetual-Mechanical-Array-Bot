@@ -1,12 +1,10 @@
 import {
   ApplicationCommandOptionTypes,
-  ChannelTypes,
   InteractionCallbackTypes,
   MessageComponentButtonStyles,
   MessageFlags,
 } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
-import { Channel } from 'detritus-client/lib/structures';
 import { ComponentActionRow } from 'detritus-client/lib/utils';
 import { LeaderBoardArgs, SimpleEmbed } from '../../botTypes/interfaces';
 import {
@@ -27,6 +25,7 @@ import {
 import {
   Debugging,
   extractLinks,
+  moduleUpdatesSetup,
   PMAEventHandler,
   randomSkillIcon,
   StaffCheck,
@@ -264,35 +263,7 @@ export default new InteractionCommand({
         }
       },
     },
-
-    {
-      name: 'setup',
-      description: 'Select channel where leaderboard updates will come',
-      type: ApplicationCommandOptionTypes.SUB_COMMAND,
-      options: [
-        {
-          name: 'channel',
-          description: 'Select channel where leaderboard updates will come',
-          type: ApplicationCommandOptionTypes.CHANNEL,
-          required: true,
-          channelTypes: [ChannelTypes.GUILD_TEXT],
-        },
-      ],
-      onBeforeRun(ctx) {
-        return StaffCheck.isCtxStaff(ctx, true);
-      },
-      async run(ctx, args) {
-        const setupChannel = args.channel as Channel;
-
-        await ctx.editOrRespond({
-          content: `Selected channel: ${setupChannel.mention} `,
-          flags: MessageFlags.EPHEMERAL,
-        });
-
-        PMAEventHandler.emit('leaderboardChannelUpdate', setupChannel);
-      },
-    },
-
+    moduleUpdatesSetup('leaderboardChannelUpdate'),
     {
       name: 'refresh',
       description: 'Refreshes leaderboard cache & optionally updates leaderboard channel',
@@ -388,12 +359,6 @@ export default new InteractionCommand({
           args.type_category!,
         );
         await viewPages(leaderboardEmbeds)(ctx);
-        /*
-        await ctx.editOrRespond({
-          embed: leaderboardEmbeds[0],
-          components: [viewPages(leaderboardEmbeds)],
-        });
-        */
       },
     },
   ],

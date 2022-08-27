@@ -682,3 +682,52 @@ export function moduleChannelUpdate(
     },
   });
 }
+
+export function moduleUpdatesSetup(
+  moduleName: ModuleChannelUpdateCategories,
+): InteractionCommandOptionOptions {
+  let prop = '';
+
+  switch (moduleName) {
+    case 'hallOfFameChannelUpdate': {
+      prop = 'Hall of Fame';
+      break;
+    }
+    case 'leaderboardChannelUpdate': {
+      prop = 'Leaderboard';
+      break;
+    }
+    case 'spiralAbyssChannelUpdate': {
+      prop = 'Spiral Abyss';
+      break;
+    }
+
+    // no default
+  }
+  return {
+    name: 'setup',
+    description: `Select channel where ${prop} updates will come`,
+    type: ApplicationCommandOptionTypes.SUB_COMMAND,
+    options: [
+      {
+        name: 'channel',
+        description: `Select channel where ${prop} updates will come`,
+        type: ApplicationCommandOptionTypes.CHANNEL,
+        required: true,
+        channelTypes: [ChannelTypes.GUILD_TEXT],
+      },
+    ],
+    onBeforeRun(ctx) {
+      return StaffCheck.isCtxStaff(ctx, true);
+    },
+    async run(ctx, args) {
+      const setupChannel = args.channel as Channel;
+
+      await ctx.editOrRespond({
+        content: `Selected channel: ${setupChannel.mention} `,
+        flags: MessageFlags.EPHEMERAL,
+      });
+      PMAEventHandler.emit(moduleName, setupChannel);
+    },
+  };
+}

@@ -1,14 +1,11 @@
-import {
-  ApplicationCommandOptionTypes,
-  ChannelTypes,
-  MessageFlags,
-} from 'detritus-client/lib/constants';
+import { ApplicationCommandOptionTypes, MessageFlags } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
-import { Channel } from 'detritus-client/lib/structures';
 import { HALL_OF_FAME_ELEMENT_CHOICES } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import { isHoFRefreshComplete, publishHoFNames } from '../../lib/hallOfFameCacheManager';
-import { PMAEventHandler, StaffCheck, viewPages } from '../../lib/Utilities';
+import {
+  moduleUpdatesSetup, PMAEventHandler, StaffCheck, viewPages,
+} from '../../lib/Utilities';
 
 export default new InteractionCommand({
   name: 'hall-of-fame',
@@ -25,34 +22,7 @@ export default new InteractionCommand({
     return isHoFRefreshComplete();
   },
   options: [
-    {
-      name: 'setup',
-      description: 'Select channel where hall of fame updates will come',
-      type: ApplicationCommandOptionTypes.SUB_COMMAND,
-      options: [
-        {
-          name: 'channel',
-          description: 'Select channel where hall of fame updates will come',
-          type: ApplicationCommandOptionTypes.CHANNEL,
-          required: true,
-          channelTypes: [ChannelTypes.GUILD_TEXT],
-        },
-      ],
-      onBeforeRun(ctx) {
-        return StaffCheck.isCtxStaff(ctx, true);
-      },
-      async run(ctx, args) {
-        const setupChannel = args.channel as Channel;
-
-        await ctx.editOrRespond({
-          content: `Selected channel: ${setupChannel.mention} `,
-          flags: MessageFlags.EPHEMERAL,
-        });
-
-        PMAEventHandler.emit('hallOfFameChannelUpdate', setupChannel);
-      },
-    },
-
+    moduleUpdatesSetup('hallOfFameChannelUpdate'),
     {
       name: 'refresh',
       description: 'Refreshes Hall Of Fame cache',
@@ -101,12 +71,6 @@ export default new InteractionCommand({
         }
         const hallOfFameEmbeds = await publishHoFNames(args.element, qty);
         await viewPages(hallOfFameEmbeds)(ctx);
-        /*
-        await ctx.editOrRespond({
-          embed: hallOfFameEmbeds[0],
-          components: [viewPages(hallOfFameEmbeds)],
-        });
-        */
       },
     },
     {

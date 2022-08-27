@@ -147,3 +147,10 @@ type QuoteCategories =
 export type DBQuotes = GIFCategories | ReasonCategories | QuoteCategories;
 
 export type DBQuotesCollection = BaseCollection<DBQuotes, string[]>;
+
+export type ModuleChannelUpdateCategories =
+  | 'leaderboardChannelUpdate'
+  | 'hallOfFameChannelUpdate'
+  | 'spiralAbyssChannelUpdate';
+
+export type ModuleWebhookNames = 'Hall Of Fame' | 'Damage Leaderboard' | 'Spiral Abyss';
