@@ -64,6 +64,12 @@ export default new BotEvent({
 
     await webhook.createMessage({ embed: information });
 
+    await webhook.createMessage({ embed: uniSkillBoard, wait: true }).then((message) => {
+      db.collection('leaderboards').doc('uni-dmg-n5').set({
+        messageID: message?.id,
+      });
+    });
+
     await webhook.createMessage({ embed: anemoSkillBoard, wait: true }).then((message) => {
       db.collection('leaderboards').doc('anemo-dmg-skill').set({
         messageID: message?.id,
@@ -84,12 +90,6 @@ export default new BotEvent({
 
     await webhook.createMessage({ embed: dendroSkillBoard, wait: true }).then((message) => {
       db.collection('leaderboards').doc('dendro-dmg-skill').set({
-        messageID: message?.id,
-      });
-    });
-
-    await webhook.createMessage({ embed: uniSkillBoard, wait: true }).then((message) => {
-      db.collection('leaderboards').doc('uni-dmg-n5').set({
         messageID: message?.id,
       });
     });
