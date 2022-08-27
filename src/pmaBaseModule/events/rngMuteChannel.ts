@@ -1,3 +1,4 @@
+/* jscpd:ignore-start */
 import { GatewayClientEvents } from 'detritus-client';
 import { ClientEvents } from 'detritus-client/lib/constants';
 import BotEvent from '../../lib/BotEvent';
@@ -5,7 +6,7 @@ import { ChannelIds, EMOJIS } from '../../lib/Constants';
 import CoolDownManager from '../../lib/CoolDownManager';
 import { getQuotes } from '../../lib/QuotesManager';
 import { freezeMuteUser, randomArrPick } from '../../lib/Utilities';
-
+/* jscpd:ignore-end */
 const rngMuteICD = new CoolDownManager(1000);
 rngMuteICD.add('RNG_mute_ICD', 1000);
 export default new BotEvent({
