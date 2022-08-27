@@ -1,11 +1,16 @@
 import { RequestTypes } from 'detritus-client-rest';
 import {
   ApplicationCommandOptionTypes,
+  ChannelTypes,
   MessageComponentButtonStyles,
   MessageFlags,
   Permissions,
 } from 'detritus-client/lib/constants';
-import { InteractionCommand, InteractionContext } from 'detritus-client/lib/interaction';
+import {
+  InteractionCommand,
+  InteractionCommandOptionOptions,
+  InteractionContext,
+} from 'detritus-client/lib/interaction';
 import {
   Channel,
   InteractionEditOrRespond,
@@ -30,6 +35,8 @@ import {
   ElementDamageCategories,
   ELEMENTS,
   JokeCategories,
+  ModuleChannelUpdateCategories,
+  ModuleWebhookNames,
   OneJokeFormat,
   TravelerCommandProp,
 } from '../botTypes/types';
@@ -329,7 +336,7 @@ function respondTech(
   };
 }
 
-export function viewPages(embeds: SimpleEmbed[]):Function {
+export function viewPages(embeds: SimpleEmbed[]): Function {
   return async function next(ctx: ComponentContext | InteractionContext, i = 0): Promise<unknown> {
     return ctx.editOrRespond({
       content: embeds[i] ? undefined : getAbyssQuote(),
@@ -632,8 +639,8 @@ export async function freezeMuteUser(
 }
 
 export function moduleChannelUpdate(
-  eventName: string,
-  webhookName: string,
+  eventName: ModuleChannelUpdateCategories,
+  webhookName: ModuleWebhookNames,
   webhookAvatar: Constants.ICONS,
   DBpath: string,
   triggerEvent?: string,
@@ -644,20 +651,21 @@ export function moduleChannelUpdate(
     async listener(newChannel: Channel) {
       let finalWebhook: Webhook;
       try {
+        const { rest } = newChannel.client;
         const guildHooks = await newChannel.guild?.fetchWebhooks();
         const pmaHooks = guildHooks?.filter((webhook) => webhook.user?.isMe || false);
 
         const selectedWebhook = pmaHooks?.find((webhook) => webhook.name === webhookName);
-
-        selectedWebhook?.edit({
-          channelId: newChannel.id,
-          reason: `${webhookName} webhook channel changed`,
-          name: webhookName,
-          avatar: webhookAvatar,
-        });
         if (!selectedWebhook) {
           throw new Error('No webhooks found');
         } else {
+          await rest.editWebhook(selectedWebhook?.id, {
+            channelId: newChannel.id,
+            reason: `${webhookName} webhook channel changed`,
+            name: webhookName,
+            avatar: Buffer.from(await rest.get(webhookAvatar)),
+          });
+
           finalWebhook = selectedWebhook;
         }
       } catch (error) {
