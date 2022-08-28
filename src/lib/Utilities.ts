@@ -359,81 +359,9 @@ export function viewPages(embeds: SimpleEmbed[]): Function {
               next(btnCtx, i < embeds.length ? i + 1 : i);
             },
           }),
-        /*
-        {
-          type: 1,
-          components: [
-            {
-              type: 2,
-
-              // emoji: '⬅️',
-              label: 'Previous',
-              style: MessageComponentButtonStyles.SECONDARY,
-              run: (btnCtx: ComponentContext) => next(btnCtx, i >= 0 ? i - 1 : i),
-            },
-            {
-              type: 2,
-              //  emoji: '➡️',
-              label: 'Next',
-              style: MessageComponentButtonStyles.SECONDARY,
-              run: (btnCtx: ComponentContext) => next(btnCtx, i < embeds.length ? i + 1 : i),
-            },
-          ],
-        },
-*/
       ],
     });
   };
-}
-
-export function viewPagesBkp(embeds: SimpleEmbed[]): ComponentActionRow {
-  const totalEmbeds = embeds.length;
-  let currentIndex = 0;
-
-  const viewRow = new ComponentActionRow()
-    .addButton({
-      emoji: '⬅️',
-      label: 'Previous',
-      customId: 'previous',
-      style: MessageComponentButtonStyles.SECONDARY,
-
-      async run(btnCtx) {
-        if (currentIndex >= 0) {
-          currentIndex -= 1;
-          await btnCtx.editOrRespond({
-            embed: embeds[currentIndex],
-            components: [viewRow],
-          });
-        } else {
-          await btnCtx.editOrRespond({
-            content: getAbyssQuote(),
-            components: [viewRow],
-          });
-        }
-      },
-    })
-    .addButton({
-      emoji: '➡️',
-      label: 'Next',
-      customId: 'next',
-      style: MessageComponentButtonStyles.SECONDARY,
-      async run(btnCtx) {
-        if (currentIndex < totalEmbeds) {
-          currentIndex += 1;
-          await btnCtx.editOrRespond({
-            embed: embeds[currentIndex],
-            components: [viewRow],
-          });
-        } else {
-          await btnCtx.editOrRespond({
-            content: getAbyssQuote(),
-            components: [viewRow],
-          });
-        }
-      },
-    });
-
-  return viewRow;
 }
 
 export function travelerCommand(element: ELEMENTS) {
