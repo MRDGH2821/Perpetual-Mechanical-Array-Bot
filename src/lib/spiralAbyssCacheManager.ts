@@ -5,7 +5,7 @@ import { SpiralAbyssClearTypes } from '../botTypes/types';
 import { getShardClient } from './BotClientExtracted';
 import { COLORS, ICONS, ROLE_IDS } from './Constants';
 import EnvConfig from './EnvConfig';
-import { chunkArray } from './Utilities';
+import { publishEmbedBuilder } from './Utilities';
 
 const totalUsers = 20;
 
@@ -76,58 +76,20 @@ export function publishSANames(clearType: SpiralAbyssClearTypes): Promise<Simple
 
     const groupCache = SASubCache.clone();
 
-    const chunks = chunkArray(groupCache.toArray(), totalUsers);
+    const users = groupCache.toArray().map((cacheObj) => cacheObj.user);
     const date = new Date();
 
-    const embeds: SimpleEmbed[] = [];
+    const embed: SimpleEmbed = {
+      title: `**Spiral Abyss Clear Board: ${clearType}**`,
+      color: COLORS.SPIRAL_ABYSS,
+      thumbnail: { url: ICONS.SPIRAL_ABYSS },
+      description: `Cycle Details: \n${date.getDate() < 16 ? 'Waxing Phase' : 'Waning Phase'} (${
+        date.getMonth() + 1
+      }/${date.getFullYear()})`,
+      timestamp: new Date().toISOString(),
+      fields: [],
+    };
 
-    chunks.forEach((chunk) => {
-      let value = '';
-      const embed: SimpleEmbed = {
-        title: `**Spiral Abyss Clear Board: ${clearType}**`,
-        color: COLORS.SPIRAL_ABYSS,
-        thumbnail: { url: ICONS.SPIRAL_ABYSS },
-        description: `Cycle Details: \n${date.getDate() < 16 ? 'Waxing Phase' : 'Waning Phase'} (${
-          date.getMonth() + 1
-        }/${date.getFullYear()})`,
-        timestamp: new Date().toISOString(),
-        fields: [],
-        footer: {
-          text: `${chunks.indexOf(chunk) + 1} of ${chunks.length}`,
-        },
-      };
-      chunk.forEach((data) => {
-        value = `${value}\n${data.user.mention} - \`${data.user.tag}\``;
-      });
-      embed.fields?.push({
-        name: '\u200b',
-        value: `${value}\n-`,
-      });
-
-      embeds.push(embed);
-    });
-    if (!embeds.at(0)) {
-      const embed: SimpleEmbed = {
-        title: `**Spiral Abyss Clear Board: ${clearType}**`,
-        color: COLORS.SPIRAL_ABYSS,
-        thumbnail: { url: ICONS.SPIRAL_ABYSS },
-        description: `Cycle Details: \n${date.getDate() < 16 ? 'Waxing Phase' : 'Waning Phase'} (${
-          date.getMonth() + 1
-        }/${date.getFullYear()})`,
-        fields: [
-          {
-            name: '\u200b',
-            value: 'No users found who cleared spiral abyss this cycle...',
-          },
-        ],
-        timestamp: new Date().toISOString(),
-      };
-      embeds.push(embed);
-    }
-    if (embeds.length < 1) {
-      rej(new Error('Failed to build embeds'));
-    } else {
-      res(embeds);
-    }
+    publishEmbedBuilder(users, totalUsers, embed).then(res).catch(rej);
   });
 }

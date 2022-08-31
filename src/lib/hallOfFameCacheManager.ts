@@ -11,7 +11,7 @@ import {
 import { getShardClient } from './BotClientExtracted';
 import { ElementsArr } from './Constants';
 import db from './Firestore';
-import { chunkArray, elementProps, getUser } from './Utilities';
+import { elementProps, getUser, publishEmbedBuilder } from './Utilities';
 
 const totalCrownUsers = 20;
 
@@ -141,36 +141,17 @@ export async function publishHoFNames(
 
     const groupCache = HoFSubCache.clone();
 
-    const chunks = chunkArray(groupCache.toArray(), totalCrownUsers);
+    const users = groupCache.toArray().map((cacheObj) => cacheObj.user);
+    console.log('Building embeds for: ', { element, len: users.length });
+    const embed: SimpleEmbed = {
+      title: `**${props.name}** ${props.emoji}`,
+      color: props.color,
+      thumbnail: { url: props.icon },
+      description: `${props.crown} \nCrowns used: ${quantity}\n\n`,
+      timestamp: new Date().toISOString(),
+      fields: [],
+    };
 
-    const embeds: SimpleEmbed[] = [];
-
-    chunks.forEach((chunk) => {
-      let value = '';
-
-      const embed: SimpleEmbed = {
-        title: `**${props.name}** ${props.emoji}`,
-        color: props.color,
-        thumbnail: { url: props.icon },
-        description: `${props.crown} \nCrowns used: ${quantity}\n\n`,
-        timestamp: new Date().toISOString(),
-        fields: [],
-        footer: {
-          text: `${chunks.indexOf(chunk) + 1} of ${chunks.length}`,
-        },
-      };
-
-      chunk.forEach((cacheData) => {
-        value = `${value}\n${cacheData.user.mention}\`${cacheData.user.tag}\``;
-      });
-      embed.fields?.push({
-        name: '\u200b',
-        value: `${value}\n-`,
-      });
-
-      embeds.push(embed);
-    });
-
-    res(embeds);
+    publishEmbedBuilder(users, totalCrownUsers, embed).then(res).catch(rej);
   });
 }

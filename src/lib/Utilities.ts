@@ -34,6 +34,7 @@ import {
 import {
   ElementDamageCategories,
   ELEMENTS,
+  HallOfFameCacheObject,
   JokeCategories,
   ModuleChannelUpdateCategories,
   ModuleWebhookNames,
@@ -174,6 +175,15 @@ export function elementProps(element: ELEMENTS): ElementProp {
         crown: '*Got Electrocuted?*',
         color: Constants.COLORS.ELECTRO,
         emoji: Constants.EMOJIS.Electro,
+      };
+    }
+    case 'dendro': {
+      return {
+        icon: Constants.ICONS.RAZOR_GRASS_BLADE_AETHER,
+        name: 'Raja of Evergreens',
+        crown: '*feel the (razor) Grass!*',
+        color: Constants.COLORS.DENDRO,
+        emoji: Constants.EMOJIS.Dendro,
       };
     }
     case 'unaligned': {
@@ -338,6 +348,13 @@ function respondTech(
 
 export function viewPages(embeds: SimpleEmbed[]): Function {
   return async function next(ctx: ComponentContext | InteractionContext, i = 0): Promise<unknown> {
+    if (embeds.length < 1) {
+      return ctx.editOrRespond({
+        content: 'No users found for given category',
+        flags: MessageFlags.EPHEMERAL,
+      });
+    }
+
     return ctx.editOrRespond({
       content: embeds[i] ? undefined : getAbyssQuote(),
       embed: embeds[i],
@@ -666,4 +683,45 @@ export function moduleUpdatesSetup(
       PMAEventHandler.emit(moduleName, setupChannel);
     },
   };
+}
+
+export async function publishEmbedBuilder(
+  collectionArray: Member['user'][] | HallOfFameCacheObject['user'][],
+  totalUsers: number,
+  embedTemplate: SimpleEmbed,
+): Promise<SimpleEmbed[]> {
+  return new Promise((res, rej) => {
+    try {
+      const cacheCopy = collectionArray;
+
+      const chunks = chunkArray(cacheCopy, totalUsers);
+
+      const embeds: typeof embedTemplate[] = [];
+
+      chunks.forEach((chunk) => {
+        let value = '';
+        const embedClone = { ...embedTemplate };
+        embedClone.footer = {
+          text: `${chunks.indexOf(chunk) + 1} of ${chunks.length}`,
+        };
+        if (chunk.length === 0) {
+          value = 'No users found in this section...';
+        } else {
+          chunk.forEach((data) => {
+            value = `${value}\n${data.mention} - \`${data.tag}\``;
+          });
+        }
+        embedClone.fields?.push({
+          name: '\u200b',
+          value: `${value}\n-`,
+        });
+
+        embeds.push(embedClone);
+      });
+
+      res(embeds);
+    } catch (err) {
+      rej(err);
+    }
+  });
 }

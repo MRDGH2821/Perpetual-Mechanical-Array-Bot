@@ -46,7 +46,7 @@ export type LeaderboardElementCacheType = {
 
 export type HallOfFameDBOptions = { crowns: 1 | 2 | 3; userID: User['id'] };
 
-type HallOfFameCacheObject = { user: User; data: HallOfFameDBOptions };
+export type HallOfFameCacheObject = { user: User; data: HallOfFameDBOptions };
 
 export type HallOfFameCrownQuantityCacheType = BaseCollection<User['id'], HallOfFameCacheObject>;
 
