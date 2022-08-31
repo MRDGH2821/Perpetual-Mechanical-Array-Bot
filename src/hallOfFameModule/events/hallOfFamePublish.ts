@@ -23,6 +23,9 @@ export default new BotEvent({
         await publishHoFNames('electro', 'one'),
         await publishHoFNames('electro', 'two'),
         await publishHoFNames('electro', 'three'),
+        await publishHoFNames('dendro', 'one'),
+        await publishHoFNames('dendro', 'two'),
+        await publishHoFNames('dendro', 'three'),
         await publishHoFNames('unaligned', 'one'),
       ].flat();
 

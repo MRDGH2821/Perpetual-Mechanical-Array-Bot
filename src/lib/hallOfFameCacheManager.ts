@@ -102,6 +102,10 @@ function accessElementCache(element: ELEMENTS): Promise<HallOfFameCrownCacheType
         resolve(hallOfFameCache.electro);
         break;
       }
+      case 'dendro': {
+        resolve(hallOfFameCache.dendro);
+        break;
+      }
       case 'unaligned': {
         resolve(hallOfFameCache.unaligned);
         break;
