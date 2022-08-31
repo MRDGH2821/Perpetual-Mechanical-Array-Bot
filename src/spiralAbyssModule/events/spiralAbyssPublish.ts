@@ -3,7 +3,7 @@ import { SimpleEmbed } from '../../botTypes/interfaces';
 import { getShardClient } from '../../lib/BotClientExtracted';
 import BotEvent from '../../lib/BotEvent';
 import db from '../../lib/Firestore';
-import { publishSANames } from '../../lib/spiralAbyssCacheManager';
+import { publishSANames, setSpiralAbyssData } from '../../lib/spiralAbyssCacheManager';
 import { Debugging } from '../../lib/Utilities';
 
 export default new BotEvent({
@@ -11,6 +11,7 @@ export default new BotEvent({
   on: true,
   async listener() {
     const SClient = getShardClient();
+    await setSpiralAbyssData();
     try {
       const publishConquerorEmb = await publishSANames('Abyssal Conqueror');
       const publishTravelerEmb = await publishSANames('Abyssal Traveler');
