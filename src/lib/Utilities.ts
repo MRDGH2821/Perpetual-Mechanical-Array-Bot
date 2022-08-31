@@ -21,6 +21,7 @@ import {
 import { ComponentActionRow, ComponentContext, PermissionTools } from 'detritus-client/lib/utils';
 import EventEmitter from 'events';
 import https from 'https';
+import clone from 'just-clone';
 import { random } from 'mathjs';
 import { titleCase } from 'title-case';
 import { CategoryProp, ElementProp } from '../botTypes/dynamicTypes';
@@ -700,7 +701,7 @@ export async function publishEmbedBuilder(
 
       chunks.forEach((chunk) => {
         let value = '';
-        const embedClone = { ...embedTemplate };
+        const embedClone = clone(embedTemplate);
         embedClone.footer = {
           text: `${chunks.indexOf(chunk) + 1} of ${chunks.length}`,
         };
