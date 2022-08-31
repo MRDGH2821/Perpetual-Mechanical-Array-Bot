@@ -8,6 +8,7 @@ import { SpiralAbyssClearTypes } from '../../botTypes/types';
 import EnvConfig from '../../lib/EnvConfig';
 import { isSARefreshComplete, publishSANames } from '../../lib/spiralAbyssCacheManager';
 import { moduleUpdatesSetup, viewPages } from '../../lib/Utilities';
+import refresh from '../subcommands/refresh';
 import reset from '../subcommands/reset';
 
 export default new InteractionCommand({
@@ -60,5 +61,6 @@ export default new InteractionCommand({
       },
     },
     reset,
+    refresh,
   ],
 });
