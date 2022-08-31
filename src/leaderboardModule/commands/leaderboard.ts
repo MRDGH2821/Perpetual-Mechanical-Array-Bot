@@ -301,9 +301,6 @@ export default new InteractionCommand({
           choices: LEADERBOARD_ELE_CATEGORY_CHOICES,
         },
       ],
-      onBeforeRun(ctx) {
-        return StaffCheck.isCtxStaff(ctx, true);
-      },
       async run(ctx, args) {
         const emb = await showcaseLeaderboardGenerate(
           args.element_category as ElementDamageCategories,
