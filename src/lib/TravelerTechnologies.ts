@@ -110,6 +110,23 @@ export const EMC_TECHS = {
   ],
 };
 
+export const DMC_TECHS = {
+  BURST_TECHS: [
+    {
+      gif: 'https://tenor.com/view/aaaa-gif-22162888',
+      id: 'no_techs',
+      name: 'No Techs Found',
+    },
+  ],
+  SKILL_TECHS: [
+    {
+      gif: 'https://tenor.com/view/aaaa-gif-22162888',
+      id: 'no_techs',
+      name: 'No Techs Found',
+    },
+  ],
+};
+
 export const AMC_PROPS: TravelerCommandProp = {
   shortName: 'amc',
   name: 'Anemo Traveler',
@@ -153,4 +170,19 @@ export const EMC_PROPS: TravelerCommandProp = {
     techs: EMC_TECHS.BURST_TECHS,
   },
   guide: 'https://keqingmains.com/electro-traveler/',
+};
+
+export const DMC_PROPS: TravelerCommandProp = {
+  shortName: 'dmc',
+  name: 'Dendro Traveler',
+  element: 'dendro',
+  skill: {
+    name: 'razor_grass_blade',
+    techs: DMC_TECHS.SKILL_TECHS,
+  },
+  burst: {
+    name: 'surgent_manifestation ',
+    techs: DMC_TECHS.BURST_TECHS,
+  },
+  guide: 'https://keqingmains.com/dendro-traveler/',
 };

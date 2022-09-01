@@ -49,7 +49,7 @@ import { ABYSS_QUOTES } from './DynamicConstants';
 import EnvConfig from './EnvConfig';
 import db from './Firestore';
 import {
-  AMC_PROPS, AMC_TECHS, EMC_PROPS, GMC_PROPS,
+  AMC_PROPS, AMC_TECHS, DMC_PROPS, EMC_PROPS, GMC_PROPS,
 } from './TravelerTechnologies';
 
 export const PMAEventHandler = new EventEmitter();
@@ -398,7 +398,10 @@ export function travelerCommand(element: ELEMENTS) {
       selectedProp = EMC_PROPS;
       break;
     }
-
+    case 'dendro': {
+      selectedProp = DMC_PROPS;
+      break;
+    }
     default:
       throw new Error(`${element} props do not exist`);
   }
