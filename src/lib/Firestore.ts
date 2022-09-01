@@ -13,7 +13,7 @@ if (process.env.NODE_ENV !== 'development') {
   configs.sort();
 
   configs.filter((config) => {
-    const configPath = path.resolve(process.cwd(), __dirname, 'firebase-service-acc', config);
+    const configPath = path.resolve(process.cwd(), 'firebase-service-acc', config);
     const configContents = JSON.parse(fs.readFileSync(configPath).toString());
     // console.log(configContents);
     if (configContents.type === 'service_account') {
