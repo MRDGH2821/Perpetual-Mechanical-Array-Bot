@@ -1,6 +1,6 @@
 import { useCustomEnv } from 'use-custom-env';
 
-useCustomEnv('dev');
+useCustomEnv();
 
 if (process.env.CLIENT_ID === undefined) {
   throw new Error('Client ID not defined');
