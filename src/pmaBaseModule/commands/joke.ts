@@ -1,6 +1,7 @@
-import { ApplicationCommandOptionTypes, MessageFlags } from 'detritus-client/lib/constants';
+import { ApplicationCommandOptionTypes, MessageComponentButtonStyles, MessageFlags } from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { User } from 'detritus-client/lib/structures';
+import { ComponentActionRow } from 'detritus-client/lib/utils';
 import { SimpleEmbed } from '../../botTypes/interfaces';
 import { JokeCategories, OneJokeFormat } from '../../botTypes/types';
 import { COLORS } from '../../lib/Constants';
@@ -83,11 +84,18 @@ export default new InteractionCommand({
     }
 
     await ctx.editOrRespond({
-      content: `Selected type: ${args.category}\nSafe mode? ${args.safe_mode}`,
+      content: `Selected type: ${
+        args.category === 'Dark' && ctx.channel?.nsfw === false ? 'Any' : args.category
+      }\nSafe mode? ${ctx.channel?.nsfw ? args.safe_mode : true}`,
     });
 
     await ctx.channel?.createMessage({
       embed: processJoke(joke, ctx.user),
+      components: [new ComponentActionRow().addButton({
+        label: 'Submit a joke!',
+        style: MessageComponentButtonStyles.LINK,
+        url: 'https://jokeapi.dev/#submit',
+      })],
     });
 
     if ((args.safe_mode === false || args.category === 'Dark') && ctx.channel?.nsfw === false) {
