@@ -226,12 +226,12 @@ export default new InteractionCommand({
               {
                 name: '**/calc dmg_compare**',
                 value:
-                  'This command allows you to compare two sets based only on three factors, namely Attack, Crit Rate and Crit Damage. \nThis serves as a simple way to compare sets, but is not the only way to evaluate which set is better since other variables (such as external bonuses or buffs) can exist. \nIdeally, you would want a damage value above 4000 for main dps units, and well-invested units tend to reach 5000+ damage values.\n\n**Note:** Damage values might vary in-game.',
+                  'This command allows you to compare two sets based only on three factors, namely Attack, Crit Rate and Crit Damage. \nThis serves as a simple way to compare sets, but is not the only way to evaluate which set is better since other variables (such as external bonuses or buffs) can exist.\n\n**Note:** Damage values are arbitrary and don\'t reflect in-game performance.',
               },
               {
                 name: '**/calc damage**',
                 value:
-                  'This command allows you to calculate an estimated "damage" that you can achieve from three stats: Attack, Crit Rate and Crit Damage. \nIdeally, you would want a damage value above 4000 for main dps units, and well-invested units tend to reach 5000+ above damage values.\n\n**Note:** Damage values might vary in-game.',
+                  'This command allows you to calculate an estimated "damage" that you can achieve from three stats: Attack, Crit Rate and Crit Damage.\n\n**Note:** Damage values are arbitrary and don\'t reflect in-game performance.',
               },
             ],
           },
