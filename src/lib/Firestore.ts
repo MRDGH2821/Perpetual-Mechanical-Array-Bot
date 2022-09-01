@@ -6,7 +6,7 @@ import './EnvConfig';
 
 if (process.env.NODE_ENV !== 'development') {
   const configs = fs
-    .readdirSync('./src/lib/firebase-service-acc/')
+    .readdirSync('./firebase-service-acc/')
     .filter((file) => file.endsWith('.json'));
 
   console.log(configs);
