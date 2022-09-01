@@ -94,3 +94,4 @@ offline_db_beta/*
 report/*
 *.bak
 megalinter-reports/
+firebase-service-acc/*.json
