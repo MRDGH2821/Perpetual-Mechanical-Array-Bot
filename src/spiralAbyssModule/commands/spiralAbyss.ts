@@ -6,7 +6,11 @@ import {
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { SpiralAbyssClearTypes } from '../../botTypes/types';
 import EnvConfig from '../../lib/EnvConfig';
-import { isSARefreshComplete, publishSANames } from '../../lib/spiralAbyssCacheManager';
+import {
+  isSARefreshComplete,
+  publishSANames,
+  setSpiralAbyssData,
+} from '../../lib/spiralAbyssCacheManager';
 import { moduleUpdatesSetup, viewPages } from '../../lib/Utilities';
 import refresh from '../subcommands/refresh';
 import reset from '../subcommands/reset';
@@ -53,9 +57,18 @@ export default new InteractionCommand({
             },
           ],
         },
+        {
+          name: 'refresh',
+          description: 'Refresh before viewing (default: False)',
+          type: ApplicationCommandOptionTypes.BOOLEAN,
+          default: false,
+        },
       ],
 
-      async run(ctx, args: { clear_type?: SpiralAbyssClearTypes }) {
+      async run(ctx, args: { clear_type?: SpiralAbyssClearTypes; refresh?: false }) {
+        if (args.refresh) {
+          await setSpiralAbyssData();
+        }
         const SAEmbeds = await publishSANames(args.clear_type!);
         await viewPages(SAEmbeds)(ctx);
       },
