@@ -1,6 +1,6 @@
 # Firebase Service Account Directory
 
-[Firestore.ts](../Firestore.ts) scans the current directory, looking for first valid configuration file to connect to Firestore database.
+[Firestore.ts](../src/lib/Firestore.ts) scans the current directory, looking for first valid configuration file to connect to Firestore database.
 
 If the environment is set to `development` it will connect to firestore emulator.
 
