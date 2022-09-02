@@ -1,20 +1,22 @@
 {
   "name": "perpetual-mechanical-array-bot",
-  "version": "2.4.2",
+  "version": "3.0.0",
   "description": "Discord Bot for [Traveler Mains Server](https://discord.gg/RsdUnupKpj)",
   "main": "index.js",
   "private": true,
-  "type": "module",
   "scripts": {
-    "deploy": "node deploy-commands.js",
-    "prestart": "npm run deploy",
-    "predev": "npm run deploy",
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "lint": "eslint . --fix --ignore-path .gitignore ",
-    "pretty": "prettier . --write",
+    "prestart": "npm run build",
+    "start": "node out/index.js",
+    "monitor": "nodemon src/index.ts --trace-warnings",
+    "lint": "npx eslint . --fix --ignore-path .gitignore ",
+    "pretty": "npx prettier . --write --ignore-path .gitignore",
     "postpretty": "npm run lint",
-    "pm2:prod": "pm2 startOrRestart pma-bot.config.cjs --env prod"
+    "pm2:prod": "pm2 startOrRestart pma-bot.config.cjs --env prod",
+    "build": "tsc && tsc-alias",
+    "emulator": "firebase emulators:start --import ./offline_db_beta --export-on-exit ./offline_db",
+    "dev": "run-p -n emulator monitor",
+    "prelint:mega": "node clean.mjs megalinter-reports && node clean.mjs tmp",
+    "lint:mega": "npx mega-linter-runner@latest --flavor javascript"
   },
   "repository": {
     "type": "git",
@@ -28,25 +30,36 @@
   },
   "homepage": "https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot#readme",
   "dependencies": {
-    "@discordjs/builders": "^0.12.0",
-    "@ruinguard/core": "^2.0.4",
-    "custom-env": "^2.0.1",
-    "discord.js": "^13.6.0",
-    "dotenv": "^16.0.0",
-    "firebase-admin": "^10.0.2",
-    "mathjs": "^10.4.2",
-    "node-fetch": "2.6.7",
-    "progress": "^2.0.3"
+    "detritus-client": "^0.17.0-beta.16",
+    "detritus-client-rest": "^0.11.0-beta.4",
+    "detritus-client-socket": "^0.8.4-beta.2",
+    "detritus-utils": "^0.4.0",
+    "firebase-admin": "^11.0.1",
+    "just-clone": "^6.1.1",
+    "mathjs": "^11.1.0",
+    "progress": "^2.0.3",
+    "title-case": "^3.0.3",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.1.0",
+    "tslib": "^2.4.0",
+    "typescript": "^4.7.4",
+    "use-custom-env": "^0.1.2",
+    "yaspr": "^1.0.2"
   },
   "devDependencies": {
-    "eslint": "^8.12.0",
-    "eslint-config-mrdgh2821": "^2.1.0",
-    "prettier": "^2.6.1",
-    "prettier-config-mrdgh2821": "^2.1.0"
+    "@swc/core": "^1.2.246",
+    "@swc/helpers": "^0.4.11",
+    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "@typescript-eslint/parser": "^5.36.1",
+    "eslint": "^8.23.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.7.1",
+    "prettier-config-mrdgh2821": "^3.0.0",
+    "prettier-plugin-organize-imports": "^3.1.0",
+    "regenerator-runtime": "^0.13.9",
+    "tsc-alias": "^1.7.0"
   },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  }
+  "engineStrict": true
 }

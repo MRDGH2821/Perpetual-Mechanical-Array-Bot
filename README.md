@@ -10,7 +10,7 @@ Invite link - click [here](https://discord.com/api/oauth2/authorize?client_id=91
 
 ## Hosting
 
-Manage this bot using pm2!
+Manage this bot using pm2 _with ease._
 
 Install pm2 by using this command -
 

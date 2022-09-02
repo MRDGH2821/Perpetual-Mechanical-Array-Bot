@@ -80,10 +80,18 @@ config.js
 package-lock.json
 deploy-stats.txt
 
-.vscode/
 already-old/
 .env.prod
 .env.dev
 .env.*
-./lib/firebase-service-acc/*.json
-lib/firebase-service-acc/*.json
+./src/lib/firebase-service-acc/*.json
+src/lib/firebase-service-acc/*.json
+old-src/*
+out/*
+offline_db/*
+offline_db_beta/*
+.dependencygraph/*
+report/*
+*.bak
+megalinter-reports/
+firebase-service-acc/*.json

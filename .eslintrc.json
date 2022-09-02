@@ -1,10 +1,9 @@
 {
-  "extends": ["eslint-config-mrdgh2821"],
+  "extends": ["eslint-config-airbnb-base", "eslint-config-airbnb-typescript/base"],
   "parserOptions": {
-    "ecmaVersion": "latest",
-    "sourceType": "module"
+    "project": ["tsconfig.json", "tsconfig.eslint.json"]
   },
   "rules": {
-    "max-lines": "warn"
+    "no-console": "off"
   }
 }

@@ -1,0 +1,18 @@
+{
+  "recommendations": [
+    "AquaSecurityOfficial.trivy-vulnerability-scanner",
+    "Bridgecrew.checkov",
+    "christian-kohler.path-intellisense",
+    "cschlosser.doxdocgen",
+    "dbaeumer.vscode-eslint",
+    "editorconfig.editorconfig",
+    "esbenp.prettier-vscode",
+    "glavin001.unibeautify-vscode",
+    "howardzuo.vscode-npm-dependency",
+    "irongeek.vscode-env",
+    "mikestead.dotenv",
+    "PatrykPeszko.vscode-proselint",
+    "ryanlaws.toggle-case",
+    "streetsidesoftware.code-spell-checker"
+  ]
+}
