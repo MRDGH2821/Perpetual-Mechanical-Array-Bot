@@ -127,6 +127,10 @@ export default new InteractionCommand({
 
     logsChannel?.createMessage({
       embeds: [new Embed(confessEmbed).addField('**Unprocessed text**', args.confession!)],
+      file: {
+        filename: `Confession by ${ctx.user.tag} on ${new Date()}.txt`,
+        value: `Author: ${ctx.user.tag}\n\nConfession:\n${args.confession}\n\nMedia: \n ${args.image_link} ${args.image_upload}`,
+      },
     });
   },
 
