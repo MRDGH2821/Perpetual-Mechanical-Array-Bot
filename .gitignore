@@ -95,3 +95,4 @@ report/*
 *.bak
 megalinter-reports/
 firebase-service-acc/*.json
+.ignore/*
