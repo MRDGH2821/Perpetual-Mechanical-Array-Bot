@@ -125,13 +125,31 @@ export default new InteractionCommand({
       });
     }
 
-    logsChannel?.createMessage({
-      embeds: [new Embed(confessEmbed).addField('**Unprocessed text**', args.confession!)],
-      file: {
-        filename: `Confession by ${ctx.user.tag} on ${new Date()}.txt`,
-        value: `Author: ${ctx.user.tag}\n\nConfession:\n${args.confession}\n\nMedia: \n ${args.image_link} ${args.image_upload}`,
-      },
-    });
+    logsChannel
+      ?.createMessage({
+        embeds: [new Embed(confessEmbed)],
+      })
+      .catch((err) => {
+        Debugging.leafDebug(err, true);
+      });
+
+    logsChannel
+      ?.createMessage({
+        content: 'Confession Log',
+        files: [
+          {
+            filename: `Confession by ${ctx.user.tag} on ${new Date()}.txt`,
+            value: `Author: ${ctx.user.tag}\nID: ${ctx.user.id}\n\nRaw Confession:\n${
+              args.confession
+            }\n\nMedia: \n${args.image_link} \n${
+              args.image_upload
+            }\n\nProcessed Confession:\n${processConfession(args.confession!)}`,
+          },
+        ],
+      })
+      .catch((err) => {
+        Debugging.leafDebug(err, true);
+      });
   },
 
   onError(ctx, err) {
