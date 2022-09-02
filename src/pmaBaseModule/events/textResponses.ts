@@ -12,6 +12,8 @@ textResponseCD.add('FBI_ICD', 0);
 textResponseCD.add('TikTok_ICD', 0);
 textResponseCD.add('Leaks_ICD', 0);
 
+const muteChance = 15;
+
 export default new BotEvent({
   event: ClientEvents.MESSAGE_CREATE,
   async listener(payload: GatewayClientEvents.MessageCreate) {
@@ -47,6 +49,9 @@ export default new BotEvent({
         'https://tenor.com/view/priyam-raj-fbi-meme-fbi-open-up-fbi-gamer-gif-19628656',
         'https://tenor.com/view/dark-red-fbi-warning-gif-18254979',
         'You know what, I wonder if its actually NSA which spies or FBI :thinking:',
+        '*FBI is coming*',
+        '*FBI investigation commences*',
+        'Rick Astley was a part of F.B.I. ||(music band)||',
       ]
         .concat(getQuotes('FBIGifs'), getQuotes('FBIQuotes'))
         .flat();
@@ -102,11 +107,41 @@ export default new BotEvent({
         EMOJIS.LumineCopium,
         EMOJIS.iLumineati,
         EMOJIS.Pairamid,
+        EMOJIS.iLumineati + EMOJIS.Pairasmol,
         `No leak mute for you ${EMOJIS.PepeKekPoint}`,
         'Give up already',
         'There are some uncles here, which do not give leaks',
         'The leaks were coming via train, but a meteorite destroyed them',
         '*Say that once again, I dare you.*',
+        'The leaks were coming via a package, but it got stolen',
+        "Don't ask here, ask somewhere else for leaks",
+        'Need leaks?\n\nLearn how to do Data mining',
+        '*Why need leaks, when you can become beta tester?*',
+        'amber top is good site and so is honey hunter for leaks',
+        `Did you know that mentioning the forbidden word (||leaks||) has ${muteChance}% chance of muting you?`,
+        'Did you know that the mute duration is 1 min (if you get lucky)?',
+        'Did you know that for triggering mute, there is a cool down of 18000 milliseconds?',
+        `Go to <#${ChannelIds.RNG_MUTE}> if you wanna get muted, there's 2 layers of RNG to beat`,
+        'The real leaks were the friends we made along the way',
+        `Leaks were gonna come via courier. \nI heard his van crashed & he himself got hospitalised ${EMOJIS.Aether_Pain1}`,
+        'Leaks were being transmitted via satellite, but coronal mas ejection destroyed those satellites!!!',
+        'The leaks for that were coming via submarine, but that drowned, ran out of fuel & oxygen!!!',
+        'Leaks were coming by carrier plane, but the plane got destroyed!!!',
+        'Leaks were stolen. You gotta steal them back!',
+        "Leaks are leaks even if fake, which some people don't understand",
+        'Check Pins',
+        '*Never gonna give you leaks*',
+        '*Never gonna let you leak*',
+        '*Never gonna run around & leak you*',
+        '*Never gonna make you leak*',
+        '*Never gonna say leaks*',
+        '*Never gonna tell a leak & hurt you*',
+        '*Never gonna give you up*',
+        '*Never gonna let you down*',
+        '*Never gonna run around and desert you*',
+        '*Never gonna make you cry*',
+        '*Never gonna say goodbye*',
+        '*Never gonna tell a lie and hurt you*',
       ]
         .concat(getQuotes('leakQuotes'))
         .flat();
@@ -119,7 +154,7 @@ export default new BotEvent({
       freezeMuteUser(
         message.member!,
         message.channel!,
-        15,
+        muteChance,
         1000 * 60,
         randomArrPick(leakMuteReasons),
       );
@@ -131,6 +166,7 @@ export default new BotEvent({
         `Did somebody mention Yoyoverse? ${EMOJIS.LumineWoke}\nIts CEO is <@476219631539847188>`,
         `Someone's showing interest in Yoyoverse <@476219631539847188>, maybe Hire them? ${EMOJIS.PaimonThink}`,
         'You might wanna take a look here <@476219631539847188>',
+        'Did you know that saying yoyoverse pings <@476219631539847188>?',
       ]
         .concat(getQuotes('yoyoverseQuotes'))
         .flat();

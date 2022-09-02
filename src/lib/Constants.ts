@@ -2,8 +2,8 @@ import { Colors, Snowflake } from 'detritus-client/lib/constants';
 
 import { ElementDamageCategories, ELEMENTS } from '../botTypes/types';
 
-function formatEmoji(EmojiSnowflake: Snowflake) {
-  return `<:_:${EmojiSnowflake}>`;
+function formatEmoji(EmojiSnowflake: Snowflake, EmojiName = '_') {
+  return `<:${EmojiName}:${EmojiSnowflake}>`;
 }
 
 export enum TravelerTypes {
@@ -76,7 +76,7 @@ export const EMOJIS = {
   BoreasKek: formatEmoji('829620211190595605'),
   AetherBonk: formatEmoji('821169357765345291'),
   LuminePadoru: formatEmoji('912033737280192562'),
-  PepeKekPoint: formatEmoji('1003564950633054248'),
+  PepeKekPoint: formatEmoji('1003564950633054248', 'PepeKekPoint'),
   GoosetherConfuse: formatEmoji('907307618677178368'),
   FakeNooz: formatEmoji('865259265471152138'),
   pepeduck: formatEmoji('907293876073680946'),
@@ -107,6 +107,8 @@ export const EMOJIS = {
   Aether_Pain2: formatEmoji('804189554294128650'),
   Lumine_Pain1: formatEmoji('839415679824429098'),
   Lumine_Pain2: formatEmoji('839415680625016832'),
+  LumineNice: formatEmoji('822436572736520212', 'LumineNice'),
+  Pairasmol: formatEmoji('1010238883872657448', 'Pairasmol'),
 };
 
 export enum ChannelIds {
