@@ -16,8 +16,8 @@ If you wish to run this bot follow the given steps.
 
 #### Firestore
 
-1. Create a new [Firebase](https://console.firebase.google.com/) project 
-2. Download [Firebase admin key](https://firebase.google.com/docs/admin/setup#initialize-sdk) 
+1. Create a new [Firebase](https://console.firebase.google.com/) project
+2. Download [Firebase admin key](https://firebase.google.com/docs/admin/setup#initialize-sdk)
 3. Copy that key into [`firebase-service-acc`](./firebase-service-acc/) folder
 
 #### Discord Bot Token
@@ -35,25 +35,29 @@ Execute the following:
 ```sh
 npm install
 ```
-This will install the dependencies
 
+This will install the dependencies
 
 ```sh
 npm run build
 ```
+
 This will transpile Typescript code to Javascript code
 
 ### Install Docker
 
 #### Method 1
 
-The best way is to install & start [Docker Desktop](https://www.docker.com/) 
+The best way is to install & start [Docker Desktop](https://www.docker.com/)
+
 #### Method 2
 
 For headless install (or where there is no GUI available for e.g. Virtual Private Server Environments)
 
 1. Install [Docker Engine](https://docs.docker.com/engine/install/)
-2. Install [Docker Compose](https://docs.docker.com/compose/install/) 
+2. Install [Docker Compose](https://docs.docker.com/compose/install/)
+
+_You may also refer this outdated [guide](https://www.howtogeek.com/devops/how-to-install-docker-and-docker-compose-on-linux/)_
 
 ### Run
 
