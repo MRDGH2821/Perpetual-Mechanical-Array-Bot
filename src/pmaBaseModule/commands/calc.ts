@@ -226,7 +226,7 @@ export default new InteractionCommand({
               {
                 name: '**/calc dmg_compare**',
                 value:
-                  'This command allows you to compare two sets based only on three factors, namely Attack, Crit Rate and Crit Damage. \nThis serves as a simple way to compare sets, but is not the only way to evaluate which set is better since other variables (such as external bonuses or buffs) can exist.\n\n**Note:** Damage values are arbitrary and don\'t reflect in-game performance.',
+                  "This command allows you to compare two sets based only on three factors, namely Attack, Crit Rate and Crit Damage. \nThis serves as a simple way to compare sets, but is not the only way to evaluate which set is better since other variables (such as external bonuses or buffs) can exist.\n\n**Note:** Damage values are arbitrary and don't reflect in-game performance.",
               },
               {
                 name: '**/calc damage**',

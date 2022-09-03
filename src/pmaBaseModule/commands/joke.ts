@@ -1,4 +1,8 @@
-import { ApplicationCommandOptionTypes, MessageComponentButtonStyles, MessageFlags } from 'detritus-client/lib/constants';
+import {
+  ApplicationCommandOptionTypes,
+  MessageComponentButtonStyles,
+  MessageFlags,
+} from 'detritus-client/lib/constants';
 import { InteractionCommand } from 'detritus-client/lib/interaction';
 import { User } from 'detritus-client/lib/structures';
 import { ComponentActionRow } from 'detritus-client/lib/utils';
@@ -91,11 +95,13 @@ export default new InteractionCommand({
 
     await ctx.channel?.createMessage({
       embed: processJoke(joke, ctx.user),
-      components: [new ComponentActionRow().addButton({
-        label: 'Submit a joke!',
-        style: MessageComponentButtonStyles.LINK,
-        url: 'https://jokeapi.dev/#submit',
-      })],
+      components: [
+        new ComponentActionRow().addButton({
+          label: 'Submit a joke!',
+          style: MessageComponentButtonStyles.LINK,
+          url: 'https://jokeapi.dev/#submit',
+        }),
+      ],
     });
 
     if ((args.safe_mode === false || args.category === 'Dark') && ctx.channel?.nsfw === false) {
