@@ -18,7 +18,8 @@
     "strictNullChecks": true,
     "target": "ESNext",
     "resolveJsonModule": true,
-    "watch": false
+    "watch": false,
+    "removeComments":true
   },
   "ts-node": {
     "require": ["tsconfig-paths/register"],
