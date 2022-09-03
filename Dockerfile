@@ -1,13 +1,15 @@
-FROM node:lts
+FROM node:lts-slim
 
-WORKDIR /pma_bot
+ENV NODE_ENV=production
+
+WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+COPY ./firebase-service-acc ./firebase-service-acc
 
-COPY . .
+RUN npm install --omit=dev
 
-RUN npm run build
+COPY ./out ./out
 
-CMD ["npm", "start"]
+CMD ["node", "./out/index.js"]
