@@ -210,7 +210,7 @@ const CROWN_ROLES = [
     value: ROLE_IDS.CROWN.ANEMO,
   },
   {
-    name: 'Raja of Evergreens',
+    name: 'Raja of Evergreens 👑🌲',
     value: ROLE_IDS.CROWN.DENDRO,
   },
   {
