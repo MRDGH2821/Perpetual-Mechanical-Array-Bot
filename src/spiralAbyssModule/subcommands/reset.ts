@@ -145,7 +145,7 @@ const reset: InteractionCommandOptionOptions = {
 
             ctx.channels.get(ChannelIds.SPIRAL_ABYSS)?.createMessage({
               content: args.announce_with_ping
-                ? `<@${ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR}> <@${ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER}> <@${ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN}>`
+                ? `<@&${ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR}> <@&${ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER}> <@&${ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN}>`
                 : '** **',
               embed: announceEmb,
             });
