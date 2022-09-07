@@ -306,7 +306,7 @@ export default new InteractionCommand({
           args.element_category as ElementDamageCategories,
         );
 
-        ctx.editOrRespond({
+        await ctx.editOrRespond({
           embed: emb,
         });
       },

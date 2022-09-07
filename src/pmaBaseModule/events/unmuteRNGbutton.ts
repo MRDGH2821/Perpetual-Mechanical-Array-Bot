@@ -15,17 +15,17 @@ export default new BotEvent({
       const SClient = interaction.client;
       const member = await SClient.rest.fetchGuildMember(EnvConfig.guildId, interaction.userId);
 
-      member
+      await member
         .edit({
           communicationDisabledUntil: null,
           reason: "Removed timeout on user's request (timed out by RNG luck)",
         })
         .catch(console.log);
-      member.removeRole(ROLE_IDS.OTHERS.FROZEN_RNG, {
+      await member.removeRole(ROLE_IDS.OTHERS.FROZEN_RNG, {
         reason: "Removed freeze mute role on user's request (muted by RNG luck)",
       });
 
-      interaction.editOrRespond({
+      await interaction.editOrRespond({
         content: 'Timeout/mute role successfully removed.',
         components: [],
       });

@@ -508,19 +508,19 @@ export async function freezeMuteUser(
   };
   // console.log({ chance, RNG });
   if (RNG <= chance) {
-    member
+    await member
       .edit({
         communicationDisabledUntil: new Date(Date.now() + duration).toISOString(),
         reason: `${reason} (muted by RNG)`,
       })
-      .then(() => {
-        channel?.createMessage({
+      .then(async () => {
+        await channel?.createMessage({
           embed: muteEmbed,
         });
       })
-      .catch((err) => {
+      .catch(async (err) => {
         Debugging.leafDebug(err, true);
-        channel?.createMessage({
+        await channel?.createMessage({
           content: `Dammit, I cannot timeout ${
             member.mention
           }. ${painEmotes}\n\nHow about regular mute role? ${randomArrPick([
@@ -530,28 +530,28 @@ export async function freezeMuteUser(
             '🤔',
           ])}`,
         });
-        member
+        await member
           .addRole(Constants.ROLE_IDS.OTHERS.FROZEN_RNG, {
             reason: `${reason} (muted by RNG)`,
           })
-          .then(() => {
-            channel.createMessage({
+          .then(async () => {
+            await channel.createMessage({
               content: 'HAHA Take that!',
               embed: muteEmbed,
             });
             setTimeout(() => member.removeRole(Constants.ROLE_IDS.OTHERS.FROZEN_RNG), duration);
           })
-          .catch((error) => {
+          .catch(async (error) => {
             Debugging.leafDebug(error, true);
-            channel?.createMessage({
+            await channel?.createMessage({
               content: `Dammit, I cannot even mute by mute role ${painEmotes}`,
             });
           });
       });
 
     const dmChannel = await member.createOrGetDm();
-    setTimeout(() => {
-      dmChannel
+    setTimeout(async () => {
+      await dmChannel
         .createMessage({
           content: 'Click on Unmute button if you wish to be unmuted in 5 seconds.',
           components: [
@@ -560,28 +560,30 @@ export async function freezeMuteUser(
               custom_id: 'unmute_me_rng',
               customId: 'unmute_me_rng',
               async run(ctx) {
-                setTimeout(() => {
-                  member
+                setTimeout(async () => {
+                  await member
                     .edit({
                       communicationDisabledUntil: null,
                       reason: "Removed timeout on user's request (timed out by RNG luck)",
                     })
                     .catch(console.log);
-                  member.removeRole(Constants.ROLE_IDS.OTHERS.FROZEN_RNG, {
+                  await member.removeRole(Constants.ROLE_IDS.OTHERS.FROZEN_RNG, {
                     reason: "Removed freeze mute role on user's request (muted by RNG luck)",
                   });
                 }, 5000);
 
-                ctx.editOrRespond('Timeout/mute role will be successfully removed in 5 seconds.');
+                await ctx.editOrRespond(
+                  'Timeout/mute role will be successfully removed in 5 seconds.',
+                );
               },
             }),
           ],
         })
         .then(() => console.log('Unmute Msg sent'))
-        .catch((err) => {
+        .catch(async (err) => {
           Debugging.leafDebug(err, true);
-          channel.createMessage(
-            `${member.mention} your DMs are closed, thus couldn't send you a message to unmute yourself`,
+          await channel.createMessage(
+            `${member.mention} your DMs are closed, thus couldn't send you a message by which you can unmute yourself`,
           );
         });
     }, 5000);
