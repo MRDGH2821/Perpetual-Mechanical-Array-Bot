@@ -96,3 +96,4 @@ report/*
 megalinter-reports/
 firebase-service-acc/*.json
 .ignore/*
+nodemon.json
