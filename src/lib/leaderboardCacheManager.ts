@@ -144,44 +144,46 @@ function constructRanks(
   let topPeople = '';
 
   const groupTitle = groupType.charAt(0).toUpperCase() + groupType.slice(1);
-  groupCache.every((dataCache) => {
-    topPeople = `${topPeople}\n${rank}. \`${dataCache.user.tag}\` - [${dataCache.data.score}](${dataCache.data.proof})`;
-    if (groupCache.size > totalRanks) {
-      if (rank === totalRanks) {
+  groupCache
+    .sort((a, b) => b.data.score - a.data.score)
+    .every((dataCache) => {
+      topPeople = `${topPeople}\n${rank}. \`${dataCache.user.tag}\` - [${dataCache.data.score}](${dataCache.data.proof})`;
+      if (groupCache.size > totalRanks) {
+        if (rank === totalRanks) {
+          const field = {
+            inline: true,
+            name: `**${groupTitle} Category Top 1-${totalRanks}**`,
+            value: `${topPeople} \n-`,
+          };
+          fields.push(field);
+          topPeople = '';
+        } else if (rank === totalRanks * 2 || rank === groupCache.size) {
+          const field = {
+            inline: true,
+            name: `**${groupTitle} Category Top ${totalRanks + 1}-${totalRanks * 2}**`,
+            value: `${topPeople} \n-`,
+          };
+          fields.push(field);
+          // fields.push({ name: '\u200b', value: dashLines });
+          topPeople = '';
+          return false;
+        }
+      }
+      if (rank === groupCache.size) {
         const field = {
-          inline: true,
           name: `**${groupTitle} Category Top 1-${totalRanks}**`,
-          value: `${topPeople} \n-`,
-        };
-        fields.push(field);
-        topPeople = '';
-      } else if (rank === totalRanks * 2 || rank === groupCache.size) {
-        const field = {
-          inline: true,
-          name: `**${groupTitle} Category Top ${totalRanks + 1}-${totalRanks * 2}**`,
           value: `${topPeople} \n-`,
         };
         fields.push(field);
         // fields.push({ name: '\u200b', value: dashLines });
         topPeople = '';
+
         return false;
       }
-    }
-    if (rank === groupCache.size) {
-      const field = {
-        name: `**${groupTitle} Category Top 1-${totalRanks}**`,
-        value: `${topPeople} \n-`,
-      };
-      fields.push(field);
-      // fields.push({ name: '\u200b', value: dashLines });
-      topPeople = '';
 
-      return false;
-    }
-
-    rank += 1;
-    return true;
-  });
+      rank += 1;
+      return true;
+    });
   return fields;
 }
 
@@ -221,7 +223,10 @@ export async function leaderboardViewGenerate(
 
   const groupCache = elementCache[groupType].clone();
 
-  const chunks = chunkArray(groupCache.toArray(), 10);
+  const chunks = chunkArray(
+    groupCache.sort((a, b) => b.data.score - a.data.score),
+    10,
+  );
 
   const embeds: SimpleEmbed[] = [];
 
