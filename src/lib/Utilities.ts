@@ -359,6 +359,7 @@ export function viewPages(embeds: SimpleEmbed[]): Function {
     return ctx.editOrRespond({
       content: embeds[i] ? undefined : getAbyssQuote(),
       embed: embeds[i],
+      flags: MessageFlags.EPHEMERAL,
       components: [
         new ComponentActionRow()
           .addButton({
