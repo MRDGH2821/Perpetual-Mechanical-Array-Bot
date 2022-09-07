@@ -71,6 +71,26 @@ export default new BotEvent({
       }).then(() => console.log('Electro three crowns done')),
     );
 
+    // Dendro Refresh
+
+    promises.push(
+      setHallOfFameData({
+        collection: HoFCache.dendro.one,
+        element: 'dendro',
+        crownQuantity: 1,
+      }).then(() => console.log('Dendro one crown done')),
+      setHallOfFameData({
+        collection: HoFCache.dendro.two,
+        element: 'dendro',
+        crownQuantity: 2,
+      }).then(() => console.log('Dendro two crowns done')),
+      setHallOfFameData({
+        collection: HoFCache.dendro.three,
+        element: 'dendro',
+        crownQuantity: 3,
+      }).then(() => console.log('Dendro three crowns done')),
+    );
+
     // Unaligned Refresh
 
     promises.push(
