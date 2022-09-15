@@ -157,8 +157,8 @@ export namespace ROLE_IDS {
   }
 
   export enum SpiralAbyss {
-    ABYSSAL_CONQUEROR = '804225878685908992',
-    ABYSSAL_TRAVELER = '886988485356040242',
+    ABYSSAL_TRAVELER = '804225878685908992',
+    ABYSSAL_CONQUEROR = '886988485356040242',
     ABYSSAL_SOVEREIGN = '928517469751115786',
   }
 
@@ -228,12 +228,12 @@ const OTHER_ROLES = [
 
 const SPIRAL_ABYSS_ROLES = [
   {
-    name: 'Abyssal Conqueror 🌀',
-    value: ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR,
-  },
-  {
     name: 'Abyssal Traveler 😎',
     value: ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER,
+  },
+  {
+    name: 'Abyssal Conqueror 🌀',
+    value: ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR,
   },
   {
     name: 'Abyssal Sovereign ⚔️',

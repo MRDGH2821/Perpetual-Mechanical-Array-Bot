@@ -122,17 +122,18 @@ const reset: InteractionCommandOptionOptions = {
               description: `Enemy Lineup has changed which means Spiral abyss roles are up for grabs!\nSubmit in-game screenshot or Hoyolab profile link or Hoyolab screenshot at <#${ChannelIds.ROLE_APPLICATION}> as a proof to get the role!\n\nRequirements for obtaining respective roles:`,
               fields: [
                 {
-                  name: 'Abyssal Conqueror',
-                  value: 'Clear Spiral Abyss 36/36 & get all achievements\nTotal exp: `250`',
+                  name: 'Abyssal Traveler',
+                  value: 'Complete Spiral Abyss 36/36 stars with Traveler\nTotal exp: `500`',
                 },
                 {
-                  name: 'Abyssal Traveler',
-                  value: 'Above requirements + Clear Floor 12 using Traveler\nTotal exp: `500`',
+                  name: 'Abyssal Conqueror',
+                  value:
+                    'Above requirements + using at least three different Traveler elements*.\nTotal exp: `1500`',
                 },
                 {
                   name: 'Abyssal Sovereign',
                   value:
-                    'Above requirements + Clear Floor 12 using 3 distinct traveler teams (elements can be same) or 3 different traveler elements (teams can be same)\nTotal exp: `5000`',
+                    'Complete 36/36 stars with at least four different elements & four different teams with no overlap between teammates*.\nTotal exp: `5000`',
                 },
                 {
                   name: '\u200B',
@@ -141,6 +142,9 @@ const reset: InteractionCommandOptionOptions = {
                     : '*No roles were removed nor any animals were hurt in this process.*',
                 },
               ],
+              footer: {
+                text: `*Needs video proof at <#${ChannelIds.ROLE_APPLICATION}>`,
+              },
             };
 
             ctx.channels.get(ChannelIds.SPIRAL_ABYSS)?.createMessage({

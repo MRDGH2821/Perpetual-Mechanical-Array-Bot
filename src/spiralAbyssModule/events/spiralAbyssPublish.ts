@@ -13,11 +13,11 @@ export default new BotEvent({
     const SClient = getShardClient();
     await setSpiralAbyssData();
     try {
-      const publishConquerorEmb = await publishSANames('Abyssal Conqueror');
       const publishTravelerEmb = await publishSANames('Abyssal Traveler');
+      const publishConquerorEmb = await publishSANames('Abyssal Conqueror');
       const publishSovereignEmb = await publishSANames('Abyssal Sovereign');
 
-      const publishEmbeds = [publishConquerorEmb, publishTravelerEmb, publishSovereignEmb].flat();
+      const publishEmbeds = [publishTravelerEmb, publishConquerorEmb, publishSovereignEmb].flat();
 
       // console.log('Conqueror clear boards: ', publishConquerorEmb.length);
       // console.log('Traveler clear boards: ', publishTravelerEmb.length);

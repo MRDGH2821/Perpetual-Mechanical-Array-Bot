@@ -36,8 +36,8 @@ export function initialiseSwitcher(selectedRoles: string[], target: Member) {
       (role) => role !== ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER
         && role !== ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR,
     );
-  } else if (selectedRoles.includes(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER)) {
-    filteredRoles = selectedRoles.filter((role) => role !== ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR);
+  } else if (selectedRoles.includes(ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR)) {
+    filteredRoles = selectedRoles.filter((role) => role !== ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER);
   }
 
   toGiveRoles.push(...filteredRoles);
@@ -108,9 +108,9 @@ async function abyssRoleCheck(
   const abyssRole = SArole;
 
   const conditionals = {
-    exp: 250,
-    notes: 'Cleared 36/36',
-    role: ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR,
+    exp: 500,
+    notes: 'Cleared 36/36 with Traveler',
+    role: ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER,
   };
 
   const result: AfterRoleCheck = {
@@ -125,13 +125,13 @@ async function abyssRoleCheck(
       console.log('Adding sovereign');
       return target.addRole(ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN);
     }
-    if (beforeRemoval.traveler || newRoleID === ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER) {
-      console.log('Adding traveler');
-      return target.addRole(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER);
-    }
     if (beforeRemoval.conqueror || newRoleID === ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR) {
       console.log('Adding conqueror');
       return target.addRole(ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR);
+    }
+    if (beforeRemoval.traveler || newRoleID === ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER) {
+      console.log('Adding traveler');
+      return target.addRole(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER);
     }
 
     return new Promise((res) => {
@@ -140,13 +140,13 @@ async function abyssRoleCheck(
   }
   if (SArole === ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN) {
     conditionals.exp = 5000;
-    conditionals.notes = 'Cleared with 3 distinct traveler teams/elements';
+    conditionals.notes = 'Cleared with 4 different Traveler elements with 4 different teams with no overlap between teammates';
     conditionals.role = ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN;
   }
 
-  if (SArole === ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER) {
-    conditionals.exp = 500;
-    conditionals.notes = 'Cleared floor 12 with traveler';
+  if (SArole === ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR) {
+    conditionals.exp = 1500;
+    conditionals.notes = 'Cleared with 3 different traveler elements';
     conditionals.role = ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER;
   }
 
@@ -184,7 +184,7 @@ async function abyssRoleCheck(
   const abyssRoleEmbed: SimpleEmbed = {
     title: '**Cleared Spiral Abyss?**',
     color: COLORS.EMBED_COLOR,
-    description: `Did <@${target.id}> satisfy the condition: \n> ${conditionals.notes}`,
+    description: `Did <@${target.id}> satisfy the condition: \n\n> ${conditionals.notes}`,
   };
 
   await ctx.editOrRespond({
@@ -256,8 +256,8 @@ async function crownCheck(
 
 const roleFunctions = new BaseCollection<string, Function>()
   .set(ROLE_IDS.OTHERS.WHALE, whaleRoleCheck)
-  .set(ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR, abyssRoleCheck)
   .set(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER, abyssRoleCheck)
+  .set(ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR, abyssRoleCheck)
   .set(ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN, abyssRoleCheck)
   .set(ROLE_IDS.REPUTATION.MONDSTADT, reputationCheck)
   .set(ROLE_IDS.REPUTATION.LIYUE, reputationCheck)

@@ -28,10 +28,10 @@ export function setSpiralAbyssData() {
 
       const roleMembers = (roleId: string) => SClient.roles.get(EnvConfig.guildId, roleId)?.members;
 
-      SACache.abyssalConqueror = roleMembers(SARoles.ABYSSAL_CONQUEROR) || new BaseCollection();
-      console.log('Abyssal Conqueror done');
       SACache.abyssalTraveler = roleMembers(SARoles.ABYSSAL_TRAVELER) || new BaseCollection();
       console.log('Abyssal Traveler done');
+      SACache.abyssalConqueror = roleMembers(SARoles.ABYSSAL_CONQUEROR) || new BaseCollection();
+      console.log('Abyssal Conqueror done');
       SACache.abyssalSovereign = roleMembers(SARoles.ABYSSAL_SOVEREIGN) || new BaseCollection();
       console.log('Abyssal Sovereign done');
 
@@ -53,12 +53,12 @@ export function isSARefreshComplete(): boolean {
 export function publishSANames(clearType: SpiralAbyssClearTypes): Promise<SimpleEmbed[]> {
   let SASubCache: typeof spiralAbyssCache.abyssalConqueror;
   switch (clearType) {
-    case 'Abyssal Conqueror': {
-      SASubCache = spiralAbyssCache.abyssalConqueror;
-      break;
-    }
     case 'Abyssal Traveler': {
       SASubCache = spiralAbyssCache.abyssalTraveler;
+      break;
+    }
+    case 'Abyssal Conqueror': {
+      SASubCache = spiralAbyssCache.abyssalConqueror;
       break;
     }
     case 'Abyssal Sovereign': {
