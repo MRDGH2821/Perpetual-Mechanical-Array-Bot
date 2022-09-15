@@ -390,4 +390,20 @@ export default new InteractionCommand({
       },
     },
   ],
+
+  onRunError(ctx, args, error) {
+    ctx.editOrRespond({
+      content: 'An error occurred',
+      files: [
+        {
+          value: `${error}`,
+          filename: 'Leaderboard command error.txt',
+        },
+        {
+          value: args,
+          filename: 'Leaderboard command args.json',
+        },
+      ],
+    });
+  },
 });
