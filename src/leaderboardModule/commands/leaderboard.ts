@@ -18,6 +18,7 @@ import {
 import EnvConfig from '../../lib/EnvConfig';
 import db from '../../lib/Firestore';
 import {
+  getLBScore,
   isLBRefreshComplete,
   leaderboardViewGenerate,
   showcaseLeaderboardGenerate,
@@ -89,9 +90,39 @@ export default new InteractionCommand({
           required: true,
         },
       ],
-      onBeforeRun(ctx, args: LeaderBoardArgs) {
+      async onBeforeRun(ctx, args: LeaderBoardArgs) {
+        const oldScore = await getLBScore(
+          args.element_category!,
+          args.type_category!,
+          args.contestant?.id!,
+        );
+
+        if (oldScore.data.score > args.score!) {
+          await ctx.editOrRespond({
+            embed: {
+              color: COLORS.ERROR,
+              title: '***Higher score detected!**',
+              thumbnail: { url: ICONS.CROSS_MARK },
+              description:
+                'A higher score for same contestant was detected in leaderboard thus rejecting submission.',
+              fields: [
+                {
+                  name: 'Score in Leaderboard',
+                  value: `[${oldScore.data.score}](${oldScore.data.proof})`,
+                },
+                {
+                  name: 'Score input',
+                  value: `[${args.score}](${args.proof_link})`,
+                },
+              ],
+            },
+          });
+
+          return false;
+        }
+
         if (args.contestant?.bot === true || !args.proof_link?.includes(ChannelIds.SHOWCASE)) {
-          ctx.editOrRespond({
+          await ctx.editOrRespond({
             embed: {
               color: COLORS.ERROR,
               title: '**ERROR!**',
