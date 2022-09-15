@@ -97,10 +97,10 @@ async function abyssRoleCheck(
   };
   console.log(beforeRemoval);
   async function removeRoles() {
-    console.log('Roles removed');
     await target.removeRole(ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR);
     await target.removeRole(ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN);
     await target.removeRole(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER);
+    console.log('Roles removed');
   }
 
   removeRoles();
