@@ -191,7 +191,7 @@ const REP_ROLES = [
     value: ROLE_IDS.REPUTATION.LIYUE,
   },
   {
-    name: 'Wise in Sumeru 🚶',
+    name: 'Scholarly in Sumeru 🚶🤓',
     value: ROLE_IDS.REPUTATION.SUMERU,
   },
 ];
