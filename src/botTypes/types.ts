@@ -35,7 +35,7 @@ export type SetLeaderboardOptions = {
   typeCategory: GroupCategoryType;
 };
 
-type LeaderboardCacheObject = { user: User; data: LeaderboardDBOptions };
+export type LeaderboardCacheObject = { user: User; data: LeaderboardDBOptions };
 
 export type LeaderboardElementGroupCacheType = BaseCollection<User['id'], LeaderboardCacheObject>;
 

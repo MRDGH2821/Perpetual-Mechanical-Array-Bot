@@ -5,6 +5,7 @@ import {
   ElementDamageCategories,
   ELEMENTS,
   GroupCategoryType,
+  LeaderboardCacheObject,
   LeaderboardDBOptions,
   LeaderboardElementCacheType,
   LeaderboardElementGroupCacheType,
@@ -132,6 +133,31 @@ function accessElementCache(
         break;
       }
     }
+  });
+}
+
+export function getLBScore(
+  dmgCategory: ElementDamageCategories,
+  groupType: GroupCategoryType,
+  contestantID: LeaderboardDBOptions['userID'],
+): Promise<LeaderboardCacheObject> {
+  return new Promise((res, rej) => {
+    accessElementCache(dmgCategory)
+      .then((leaderboard) => {
+        const group = leaderboard[groupType];
+        const scoreData = group.get(contestantID);
+
+        if (scoreData) {
+          res(scoreData);
+        } else {
+          rej(
+            new Error(
+              `Score not found. Args provided: ${{ dmgCategory, groupType, contestantID }}`,
+            ),
+          );
+        }
+      })
+      .catch(rej);
   });
 }
 
