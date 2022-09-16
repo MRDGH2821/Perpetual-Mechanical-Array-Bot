@@ -49,6 +49,12 @@ export default new InteractionCommand({
             ctx.respond({ choices });
           },
         },
+        {
+          name: 'proof_link',
+          description: 'Provide message link as proof',
+          type: ApplicationCommandOptionTypes.STRING,
+          default: false,
+        },
       ],
       async run(ctx, args: GiveRoleArgs) {
         const selectedRoles = [args.role!];
@@ -59,7 +65,7 @@ export default new InteractionCommand({
             flags: MessageFlags.EPHEMERAL,
           });
         }
-        initialiseSwitcher(selectedRoles as string[], args.user!);
+        initialiseSwitcher(selectedRoles as string[], args.user!, args.proof_link);
         return roleCheckSwitcher(ctx, {
           exp: -1,
           notes: 'none',
@@ -77,6 +83,12 @@ export default new InteractionCommand({
           description: 'Select user',
           type: ApplicationCommandOptionTypes.USER,
           required: true,
+        },
+        {
+          name: 'proof_link',
+          description: 'Provide message link as proof',
+          type: ApplicationCommandOptionTypes.STRING,
+          default: false,
         },
       ],
       async run(ctx, args: GiveRoleArgs) {
@@ -235,7 +247,7 @@ export default new InteractionCommand({
           async run(menuCtx) {
             const selectedRoles = menuCtx.data.values!;
 
-            initialiseSwitcher(selectedRoles, args.user!);
+            initialiseSwitcher(selectedRoles, args.user!, args.proof_link);
             roleCheckSwitcher(menuCtx, {
               exp: -1,
               notes: 'none',

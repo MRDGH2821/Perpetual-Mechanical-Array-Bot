@@ -6,7 +6,7 @@ import { Member } from 'detritus-client/lib/structures';
 import { ComponentActionRow, ComponentContext } from 'detritus-client/lib/utils';
 import { AfterRoleCheck, SimpleEmbed } from '../botTypes/interfaces';
 import { COLORS, ROLE_IDS } from './Constants';
-import { PMAEventHandler } from './Utilities';
+import { Debugging, PMAEventHandler } from './Utilities';
 
 const toGiveRoles: string[] = [];
 const awardedRoles: string[] = [];
@@ -15,6 +15,7 @@ let localCopyRoles: string[] = [];
 let userTarget: Member;
 let totalExp = 0;
 let embedDescription = '';
+let proofLink: string | undefined = '';
 
 const resultEmbed: SimpleEmbed = {
   color: COLORS.EMBED_COLOR,
@@ -27,9 +28,10 @@ function resetToDefault() {
   totalExp = 0;
   embedDescription = '';
   resultEmbed.description = '';
+  proofLink = '';
 }
 
-export function initialiseSwitcher(selectedRoles: string[], target: Member) {
+export function initialiseSwitcher(selectedRoles: string[], target: Member, messageLink?: string) {
   let filteredRoles = selectedRoles;
   if (selectedRoles.includes(ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN)) {
     filteredRoles = selectedRoles.filter(
@@ -44,6 +46,7 @@ export function initialiseSwitcher(selectedRoles: string[], target: Member) {
   localCopyRoles.push(...filteredRoles);
   userTarget = target;
   resultEmbed.description += `The following roles have been assigned to <@${userTarget.id}>:\n`;
+  proofLink = messageLink;
 }
 
 function reputationCheck(
@@ -305,7 +308,13 @@ export function roleCheckSwitcher(
         content:
           'Copy paste that command. And a message by <@485962834782453762> should come up like [this](https://i.imgur.com/yQvOAzZ.png)',
       });
-
+      if (totalExp > 0 && proofLink && proofLink.length > 10) {
+        const idsInMsg = proofLink.match(/\d+/gm);
+        const proofMsg = await ctx.client.rest.fetchMessage(idsInMsg?.at(1)!, idsInMsg?.at(2)!);
+        proofMsg.react('✅').catch((err) => {
+          Debugging.leafDebug(err, true);
+        });
+      }
       resetToDefault();
     });
 }
