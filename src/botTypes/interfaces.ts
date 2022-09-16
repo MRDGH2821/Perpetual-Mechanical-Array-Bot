@@ -48,6 +48,7 @@ export interface LeaderBoardArgs extends ParsedArgs {
   type_category?: 'solo' | 'open';
   score?: number;
   proof_link?: string;
+  force_update?: boolean;
 }
 
 export interface EchoArgs extends ParsedArgs {

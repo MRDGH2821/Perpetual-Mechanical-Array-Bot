@@ -140,22 +140,12 @@ export function getLBScore(
   dmgCategory: ElementDamageCategories,
   groupType: GroupCategoryType,
   contestantID: LeaderboardDBOptions['userID'],
-): Promise<LeaderboardCacheObject> {
+): Promise<LeaderboardCacheObject | undefined> {
   return new Promise((res, rej) => {
     accessElementCache(dmgCategory)
       .then((leaderboard) => {
         const group = leaderboard[groupType];
-        const scoreData = group.get(contestantID);
-
-        if (scoreData) {
-          res(scoreData);
-        } else {
-          rej(
-            new Error(
-              `Score not found. Args provided: ${{ dmgCategory, groupType, contestantID }}`,
-            ),
-          );
-        }
+        res(group.get(contestantID));
       })
       .catch(rej);
   });

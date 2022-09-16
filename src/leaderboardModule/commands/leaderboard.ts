@@ -89,19 +89,36 @@ export default new InteractionCommand({
           type: ApplicationCommandOptionTypes.STRING,
           required: true,
         },
+        {
+          name: 'force_update',
+          description: 'Update the score forcefully even if lower (default false)',
+          type: ApplicationCommandOptionTypes.BOOLEAN,
+          default: false,
+        },
       ],
       async onBeforeRun(ctx, args: LeaderBoardArgs) {
+        if (args.contestant?.bot === true || !args.proof_link?.includes(ChannelIds.SHOWCASE)) {
+          await ctx.editOrRespond({
+            embed: {
+              color: COLORS.ERROR,
+              title: '**ERROR!**',
+              thumbnail: { url: ICONS.CROSS_MARK },
+              description: `Make sure the contestant is not a bot. \nAnd the proof link is from <#${ChannelIds.SHOWCASE}>\n\n**Contestant**: ${args.contestant?.mention} ${args.contestant?.tag} \n**Category**: ${args.element_category} \n**Group**: ${args.type_category} \n**Score (i.e. Dmg value)**: ${args.score} \n\n**Proof**: \n${args.proof_link}`,
+            },
+          });
+          return false;
+        }
+
         const oldScore = await getLBScore(
           args.element_category!,
           args.type_category!,
           args.contestant?.id!,
         );
-
-        if (oldScore.data.score > args.score!) {
+        if (args.force_update === false && oldScore && oldScore.data.score > args.score!) {
           await ctx.editOrRespond({
             embed: {
               color: COLORS.ERROR,
-              title: '***Higher score detected!**',
+              title: '**Higher score detected!**',
               thumbnail: { url: ICONS.CROSS_MARK },
               description:
                 'A higher score for same contestant was detected in leaderboard thus rejecting submission.',
@@ -118,18 +135,6 @@ export default new InteractionCommand({
             },
           });
 
-          return false;
-        }
-
-        if (args.contestant?.bot === true || !args.proof_link?.includes(ChannelIds.SHOWCASE)) {
-          await ctx.editOrRespond({
-            embed: {
-              color: COLORS.ERROR,
-              title: '**ERROR!**',
-              thumbnail: { url: ICONS.CROSS_MARK },
-              description: `Make sure the contestant is not a bot. \nAnd the proof link is from <#${ChannelIds.SHOWCASE}>\n\n**Contestant**: ${args.contestant?.mention} ${args.contestant?.tag} \n**Category**: ${args.element_category} \n**Group**: ${args.type_category} \n**Score (i.e. Dmg value)**: ${args.score} \n\n**Proof**: \n${args.proof_link}`,
-            },
-          });
           return false;
         }
         return true;
@@ -214,6 +219,20 @@ export default new InteractionCommand({
             emoji: '👍',
             style: MessageComponentButtonStyles.SUCCESS,
             async run(btnCtx) {
+              const oldScore = await getLBScore(
+                dmgCategory,
+                args.type_category!,
+                args.contestant?.id!,
+              );
+              if (oldScore) {
+                verifyEmb.fields?.push({
+                  name: '**Previous Score**',
+                  value: `[${oldScore.data.score}](${oldScore.data.proof}) \nAn increase of ${
+                    args.score! - oldScore.data.score
+                  }`,
+                });
+              }
+
               verifyEmb.thumbnail = { url: ICONS.CHECK_MARK };
               verifyEmb.title = '**Submission Accepted!**';
               verifyEmb.color = COLORS.SUCCESS;
