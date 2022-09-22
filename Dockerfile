@@ -16,4 +16,6 @@ RUN useradd pma-bot
 
 USER pma-bot
 
+HEALTHCHECK NONE
+
 CMD ["node", "./out/index.js"]
