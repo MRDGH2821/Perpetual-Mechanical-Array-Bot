@@ -12,4 +12,8 @@ RUN npm install --omit=dev
 
 COPY ./out ./out
 
+RUN useradd pma-bot
+
+USER pma-bot
+
 CMD ["node", "./out/index.js"]
