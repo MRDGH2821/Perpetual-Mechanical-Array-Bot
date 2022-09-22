@@ -164,6 +164,7 @@ export default new InteractionCommand({
 
           const attURL = attachments.first()?.url;
           verifyEmb.image = { url: attURL };
+          const oldScore = await getLBScore(dmgCategory, args.type_category!, args.contestant?.id!);
 
           Debugging.leafDebug(attachments);
           verifyEmb.fields?.push(
@@ -186,6 +187,14 @@ export default new InteractionCommand({
               }\nLink 2: ${attachments.first()?.proxyUrl || 'Failed to get attachment url'}`,
             },
           );
+          if (oldScore) {
+            verifyEmb.fields?.push({
+              name: '**Previous Score**',
+              value: `[${oldScore.data.score}](${oldScore.data.proof}) \nAn increase of ${
+                Number(args.score!) - Number(oldScore.data.score)
+              }`,
+            });
+          }
         } catch (err) {
           console.error(err);
           Debugging.leafDebug(err);
@@ -219,20 +228,6 @@ export default new InteractionCommand({
             emoji: '👍',
             style: MessageComponentButtonStyles.SUCCESS,
             async run(btnCtx) {
-              const oldScore = await getLBScore(
-                dmgCategory,
-                args.type_category!,
-                args.contestant?.id!,
-              );
-              if (oldScore) {
-                verifyEmb.fields?.push({
-                  name: '**Previous Score**',
-                  value: `[${oldScore.data.score}](${oldScore.data.proof}) \nAn increase of ${
-                    args.score! - oldScore.data.score
-                  }`,
-                });
-              }
-
               verifyEmb.thumbnail = { url: ICONS.CHECK_MARK };
               verifyEmb.title = '**Submission Accepted!**';
               verifyEmb.color = COLORS.SUCCESS;
