@@ -78,4 +78,5 @@ If you wish to do some modifications & not want to go through docker follow the 
 npm run monitor
 ```
 
-In case of error 403, you may have to kick out the bot, generate new invite link with bot & application.command scope, invite back the bot & run the command again.
+In case of error 401 or 403, you may have to kick out the bot, generate new invite link with bot & application.command scope, invite back the bot & run the command again.
+Another solution is to check if the token is set correctly or not. Use `console.log(<token variable>)` to check how token looks. Remove any extra quotation marks at start & end of the token.
