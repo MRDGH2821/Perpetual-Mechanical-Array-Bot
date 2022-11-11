@@ -66,3 +66,16 @@ After Docker is installed, run the following command to start the bot.
 ```sh
 npm run docker:prod
 ```
+
+## Testing (Development environment)
+
+If you wish to do some modifications & not want to go through docker follow the given steps:
+
+1. Complete the pre-requisites except docker part, as listed in [Hosting section](#hosting-production-environment)
+2. Run:
+
+```sh
+npm run monitor
+```
+
+In case of error 403, you may have to kick out the bot, generate new invite link with bot & application.command scope, invite back the bot & run the command again.
