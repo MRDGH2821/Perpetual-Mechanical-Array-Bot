@@ -109,6 +109,8 @@ export const EMOJIS = {
   Lumine_Pain2: formatEmoji('839415680625016832'),
   LumineNice: formatEmoji('822436572736520212', 'LumineNice'),
   Pairasmol: formatEmoji('1010238883872657448', 'Pairasmol'),
+  GoldenAranaraSmile: formatEmoji('1024189925811306526', 'GoldenAranaraSmile'),
+  GoldenAranaraWave: formatEmoji('1024191817438203944', 'GoldenAranaraWave'),
 };
 
 export enum ChannelIds {

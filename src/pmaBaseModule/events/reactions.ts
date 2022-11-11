@@ -106,5 +106,11 @@ export default new BotEvent({
 
       reactEmoji(randomArrPick(emotes));
     }
+
+    if (/a+r+a+n+a+r+a+/gimu.test(msg)) {
+      const emotes = [EMOJIS.GoldenAranaraSmile, EMOJIS.GoldenAranaraWave];
+
+      reactEmoji(randomArrPick(emotes));
+    }
   },
 });
