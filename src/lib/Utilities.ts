@@ -35,7 +35,6 @@ import {
 import {
   ElementDamageCategories,
   ELEMENTS,
-  HallOfFameCacheObject,
   JokeCategories,
   ModuleChannelUpdateCategories,
   ModuleWebhookNames,
@@ -693,7 +692,7 @@ export function moduleUpdatesSetup(
 }
 
 export async function publishEmbedBuilder(
-  collectionArray: Member['user'][] | HallOfFameCacheObject['user'][],
+  collectionArray: Member['user']['id'][],
   totalUsers: number,
   embedTemplate: SimpleEmbed,
 ): Promise<SimpleEmbed[]> {
@@ -715,7 +714,7 @@ export async function publishEmbedBuilder(
           value = 'No users found in this section...';
         } else {
           chunk.forEach((data) => {
-            value = `${value}\n${data.mention} - \`${data.tag}\``;
+            value = `${value}\n<@${data}>`;
           });
         }
         embedClone.fields?.push({

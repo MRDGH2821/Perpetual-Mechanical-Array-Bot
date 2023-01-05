@@ -76,7 +76,7 @@ export function publishSANames(clearType: SpiralAbyssClearTypes): Promise<Simple
 
     const groupCache = SASubCache.clone();
 
-    const users = groupCache.toArray().map((cacheObj) => cacheObj.user);
+    const users = groupCache.toArray().map((cacheObj) => cacheObj.user.id);
     const date = new Date();
 
     const embed: SimpleEmbed = {

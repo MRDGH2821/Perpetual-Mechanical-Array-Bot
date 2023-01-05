@@ -1,4 +1,3 @@
-import { ShardClient } from 'detritus-client';
 import { BaseCollection } from 'detritus-utils';
 import { SimpleEmbed } from '../botTypes/interfaces';
 import {
@@ -8,10 +7,9 @@ import {
   HallOfFameDBOptions,
   SetHallOfFameOptions,
 } from '../botTypes/types';
-import { getShardClient } from './BotClientExtracted';
 import { ElementsArr } from './Constants';
 import db from './Firestore';
-import { elementProps, getUser, publishEmbedBuilder } from './Utilities';
+import { elementProps, publishEmbedBuilder } from './Utilities';
 
 const totalCrownUsers = 20;
 
@@ -69,20 +67,17 @@ async function getHallOfFameData(
   });
 }
 
-export async function setHallOfFameData(
-  givenData: SetHallOfFameOptions,
-  SClient: ShardClient = getShardClient(),
-) {
+export async function setHallOfFameData(givenData: SetHallOfFameOptions) {
   const { collection, element, crownQuantity } = givenData;
   await getHallOfFameData(element).then(async (entries) => {
     // console.log(entries);
 
     await Promise.all(
-      entries.map(async (entry) => getUser(entry.userID, SClient).then((contestant) => {
+      entries.map(async (entry) => {
         if (entry.crowns === crownQuantity) {
-          collection.set(entry.userID, { user: contestant, data: entry });
+          collection.set(entry.userID, { user: entry.userID, data: entry });
         }
-      })),
+      }),
     );
   });
 }

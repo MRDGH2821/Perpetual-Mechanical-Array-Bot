@@ -35,7 +35,7 @@ export type SetLeaderboardOptions = {
   typeCategory: GroupCategoryType;
 };
 
-export type LeaderboardCacheObject = { user: User; data: LeaderboardDBOptions };
+export type LeaderboardCacheObject = { user: User['id']; data: LeaderboardDBOptions };
 
 export type LeaderboardElementGroupCacheType = BaseCollection<User['id'], LeaderboardCacheObject>;
 
@@ -46,7 +46,7 @@ export type LeaderboardElementCacheType = {
 
 export type HallOfFameDBOptions = { crowns: 1 | 2 | 3; userID: User['id'] };
 
-export type HallOfFameCacheObject = { user: User; data: HallOfFameDBOptions };
+export type HallOfFameCacheObject = { user: User['id']; data: HallOfFameDBOptions };
 
 export type HallOfFameCrownQuantityCacheType = BaseCollection<User['id'], HallOfFameCacheObject>;
 

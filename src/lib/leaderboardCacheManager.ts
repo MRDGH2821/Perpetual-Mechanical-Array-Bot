@@ -1,4 +1,3 @@
-import { ShardClient } from 'detritus-client';
 import { BaseCollection } from 'detritus-utils';
 import { SimpleEmbed } from '../botTypes/interfaces';
 import {
@@ -11,10 +10,9 @@ import {
   LeaderboardElementGroupCacheType,
   SetLeaderboardOptions,
 } from '../botTypes/types';
-import { getShardClient } from './BotClientExtracted';
 import { EleDmgCategoriesArr } from './Constants';
 import db from './Firestore';
-import { categoryProps, chunkArray, getUser } from './Utilities';
+import { categoryProps, chunkArray } from './Utilities';
 
 const totalRanks = 7;
 
@@ -87,17 +85,14 @@ async function getLeaderboardData(
   });
 }
 
-export async function setLeaderboardData(
-  givenData: SetLeaderboardOptions,
-  SClient: ShardClient = getShardClient(),
-) {
+export async function setLeaderboardData(givenData: SetLeaderboardOptions) {
   const { collection, dmgCategory, typeCategory } = givenData;
   await getLeaderboardData(dmgCategory, typeCategory).then(async (entries) => {
     // console.log(entries);
     await Promise.all(
-      entries.map(async (entry) => getUser(entry.userID, SClient).then((contestant) => {
-        collection.set(entry.userID, { user: contestant, data: entry });
-      })),
+      entries.map(async (entry) => {
+        collection.set(entry.userID, { user: entry.userID, data: entry });
+      }),
     );
   });
 }
@@ -163,7 +158,7 @@ function constructRanks(
   groupCache
     .sort((a, b) => b.data.score - a.data.score)
     .every((dataCache) => {
-      topPeople = `${topPeople}\n${rank}. \`${dataCache.user.tag}\` - [${dataCache.data.score}](${dataCache.data.proof})`;
+      topPeople = `${topPeople}\n${rank}. <@${dataCache.user}> - [${dataCache.data.score}](${dataCache.data.proof})`;
       if (groupCache.size > totalRanks) {
         if (rank === totalRanks) {
           const field = {
@@ -262,7 +257,7 @@ export async function leaderboardViewGenerate(
     };
 
     chunk.forEach((cacheData) => {
-      embed.description = `${embed.description}\n${rank}.\`${cacheData.user.tag}\` - [${cacheData.data.score}](${cacheData.data.proof})`;
+      embed.description = `${embed.description}\n${rank}.<@${cacheData.user}> - [${cacheData.data.score}](${cacheData.data.proof})`;
       rank += 1;
     });
     embeds.push(embed);
