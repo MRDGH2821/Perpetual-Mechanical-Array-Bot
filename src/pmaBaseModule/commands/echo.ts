@@ -17,8 +17,21 @@ export default new InteractionCommand({
   onBeforeRun(ctx) {
     return StaffCheck.isCtxStaff(ctx, true);
   },
-  onRunError(ctx, args, err) {
-    Debugging.leafDebug(err, true);
+  onRunError(ctx, args, error) {
+    Debugging.leafDebug(error, true);
+    ctx.editOrRespond({
+      content: 'An error occurred',
+      files: [
+        {
+          value: `${error}`,
+          filename: 'Echo command error.txt',
+        },
+        {
+          value: JSON.stringify(args),
+          filename: 'Echo command args.json',
+        },
+      ],
+    });
   },
   options: [
     {
@@ -108,7 +121,7 @@ export default new InteractionCommand({
           content: `An error occurred\n\nError: ${error}`,
           file: {
             filename: 'Input_Provided.json',
-            value: args.embed,
+            value: JSON.stringify(args),
           },
         });
       },

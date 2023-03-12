@@ -271,10 +271,16 @@ export default new InteractionCommand({
         color: Constants.COLORS.ERROR,
         description: `An error occurred, error details in the file.\nInput: ${args}`,
       },
-      file: {
-        value: `${error}`,
-        filename: 'Give-Role-Error.txt',
-      },
+      files: [
+        {
+          value: `${error}`,
+          filename: 'Give-Role-Error.txt',
+        },
+        {
+          value: JSON.stringify(args),
+          filename: 'Args_provided.json',
+        },
+      ],
     });
   },
 });

@@ -369,6 +369,12 @@ export default new InteractionCommand({
               },
             ],
           },
+          files: [
+            {
+              value: JSON.stringify(args),
+              filename: 'Leaderboard Score summary command args.json',
+            },
+          ],
         });
       },
     },
@@ -414,7 +420,7 @@ export default new InteractionCommand({
           filename: 'Leaderboard command error.txt',
         },
         {
-          value: args,
+          value: JSON.stringify(args),
           filename: 'Leaderboard command args.json',
         },
       ],
