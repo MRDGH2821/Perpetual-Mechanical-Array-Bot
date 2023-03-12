@@ -143,8 +143,11 @@ export default new InteractionCommand({
         const dmgCategory = args.element_category!;
 
         const msgIds = args.proof_link?.match(/\d+/gm)!;
-        const leaderBoardChannel = ctx.guild?.channels.get(ChannelIds.SHOWCASE);
-        const proofMsg = await leaderBoardChannel!.fetchMessage(msgIds[msgIds.length - 1]);
+        const leaderBoardChannel = (await ctx.guild?.channels.get(ChannelIds.SHOWCASE))
+          || (await ctx.rest.fetchChannel(msgIds[1]));
+
+        const proofMsg = (await leaderBoardChannel.fetchMessage(msgIds[msgIds.length - 1]))
+          || (await ctx.rest.fetchMessage(msgIds[1], msgIds[2]));
 
         const verifyEmb: SimpleEmbed = {
           title: '**Entry Verification**',
