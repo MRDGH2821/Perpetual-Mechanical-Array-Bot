@@ -1,14 +1,16 @@
 {
+  "$schema": "https://raw.githubusercontent.com/sapphiredev/cli/main/templates/schemas/.sapphirerc.scheme.json",
   "projectLanguage": "ts",
   "locations": {
     "base": "src",
     "arguments": "arguments",
     "commands": "commands",
     "listeners": "listeners",
-    "preconditions": "preconditions"
+    "preconditions": "preconditions",
+    "autocomplete": "InteractionHandlers/autocomplete"
   },
   "customFileTemplates": {
-    "enabled": false,
-    "location": ""
+    "enabled": true,
+    "location": "templates"
   }
 }
