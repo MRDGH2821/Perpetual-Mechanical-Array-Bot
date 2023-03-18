@@ -75,29 +75,6 @@ typings/
 # FuseBox cache
 .fusebox/
 
-config.json
-config.js
-package-lock.json
-deploy-stats.txt
-
-already-old/
-.env.prod
-.env.dev
-.env.*
-./src/lib/firebase-service-acc/*.json
-src/lib/firebase-service-acc/*.json
-old-src/*
-out/*
-offline_db/*
-offline_db_beta/*
-.dependencygraph/*
-report/*
-*.bak
-megalinter-reports/
-firebase-service-acc/*.json
-.ignore/*
-nodemon.json
-
 # Ignore a blackhole and the folder for development
 node_modules/
 .vs/
@@ -128,3 +105,27 @@ package-lock.json
 .env.development.local
 .env.test.local
 .env.production.local
+
+
+config.json
+config.js
+package-lock.json
+deploy-stats.txt
+
+already-old/
+.env.prod
+.env.dev
+.env.*
+./src/lib/firebase-service-acc/*.json
+src/lib/firebase-service-acc/*.json
+old-src/*
+out/*
+offline_db/*
+offline_db_beta/*
+.dependencygraph/*
+report/*
+*.bak
+megalinter-reports/
+firebase-service-acc/*.json
+.ignore/*
+nodemon.json
