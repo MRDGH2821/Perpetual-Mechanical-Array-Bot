@@ -1,0 +1,68 @@
+{
+    "category": "commands"
+}
+---
+import { Subcommand } from '@sapphire/plugin-subcommands';
+import EnvConfig from '../lib/EnvConfig';
+import type { JSONCmd } from '../typeDefs/typeDefs';
+
+const cmdDef: JSONCmd = {
+  name: '{{name}}',
+  description: 'Guild command with sub commands',
+  options: [
+    {
+      type: 1,
+      name: 'cmd1',
+      description: 'command 1',
+    },
+    {
+      type: 1,
+      name: 'cmd2',
+      description: 'command 2',
+    },
+    {
+      type: 1,
+      name: 'cmd3',
+      description: 'command 3',
+    },
+  ],
+};
+export default class UserCommand extends Subcommand {
+  public constructor(context: Subcommand.Context, options: Subcommand.Options) {
+    super(context, {
+      ...options,
+      name: cmdDef.name,
+      description: cmdDef.description,
+
+      subcommands: [
+        {
+          name: cmdDef.options![0].name,
+          type: 'method',
+          chatInputRun(interaction) {
+            return interaction.reply({ content: 'Hello this is cmd1!' });
+          },
+        },
+        {
+          name: cmdDef.options![1].name,
+          type: 'method',
+          chatInputRun(interaction) {
+            return interaction.reply({ content: 'Hello this is cmd2!' });
+          },
+        },
+        {
+          name: cmdDef.options![2].name,
+          type: 'method',
+          chatInputRun(interaction) {
+            return interaction.reply({ content: 'Hello this is cmd3!' });
+          },
+        },
+      ],
+    });
+  }
+
+  public override registerApplicationCommands(registry: Subcommand.Registry) {
+    registry.registerChatInputCommand(cmdDef, {
+      guildIds: [EnvConfig.guildId],
+    });
+  }
+}

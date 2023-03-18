@@ -1,0 +1,29 @@
+{
+  "category": "commands"
+}
+---
+import { ApplyOptions } from '@sapphire/decorators';
+import { Command } from '@sapphire/framework';
+import EnvConfig from '../lib/EnvConfig';
+
+@ApplyOptions<Command.Options>({
+  name: '{{name}}',
+  description: 'A guild slash command',
+})
+export default class UserCommand extends Command {
+  public override registerApplicationCommands(registry: Command.Registry) {
+    registry.registerChatInputCommand(
+      (builder) =>
+        builder //
+          .setName(this.name)
+          .setDescription(this.description),
+      {
+        guildIds: [EnvConfig.guildId],
+      },
+    );
+  }
+
+  public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
+    return interaction.reply({ content: 'Hello world!' });
+  }
+}
