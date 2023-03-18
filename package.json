@@ -23,7 +23,8 @@
     "@sapphire/utilities": "^3.11.0",
     "colorette": "^2.0.19",
     "discord-api-types": "^0.37.36",
-    "discord.js": "^14.7.1"
+    "discord.js": "^14.7.1",
+    "firebase-admin": "^11.5.0"
   },
   "devDependencies": {
     "@sapphire/prettier-config": "^1.4.5",
