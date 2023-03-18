@@ -3,7 +3,6 @@ import type { Logger } from '@sapphire/plugin-logger';
 import { logSuccessCommand } from '../../../lib/utils';
 
 export default class UserListener extends Listener {
-  
   public run(payload: ChatInputCommandSuccessPayload) {
     logSuccessCommand(payload);
   }

@@ -13,7 +13,6 @@ export default class UserEvent extends Listener {
     this.printStoreDebugInformation();
   }
 
-  
   private printBanner() {
     const success = green('+');
 
