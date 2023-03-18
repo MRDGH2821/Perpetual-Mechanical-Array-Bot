@@ -22,6 +22,7 @@
     "@sapphire/plugin-logger": "^3.0.1",
     "@sapphire/utilities": "^3.11.0",
     "colorette": "^2.0.19",
+    "discord-api-types": "^0.37.36",
     "discord.js": "^14.7.1"
   },
   "devDependencies": {
