@@ -2,7 +2,6 @@ import type { Events, MessageCommandDeniedPayload } from '@sapphire/framework';
 import { Listener, UserError } from '@sapphire/framework';
 
 export default class UserEvent extends Listener<typeof Events.MessageCommandDenied> {
-  // eslint-disable-next-line class-methods-use-this
   public async run(
     { context, message: content }: UserError,
     { message }: MessageCommandDeniedPayload,

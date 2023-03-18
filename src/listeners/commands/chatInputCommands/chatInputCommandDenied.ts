@@ -3,7 +3,6 @@ import type { ChatInputCommandDeniedPayload, Events } from '@sapphire/framework'
 import { Listener, UserError } from '@sapphire/framework';
 
 export default class UserEvent extends Listener<typeof Events.ChatInputCommandDenied> {
-  // eslint-disable-next-line class-methods-use-this
   public async run(
     { context, message: content }: UserError,
     { interaction }: ChatInputCommandDeniedPayload,

@@ -3,7 +3,6 @@ import type { Logger } from '@sapphire/plugin-logger';
 import { logSuccessCommand } from '../../../lib/utils';
 
 export default class UserListener extends Listener {
-  // eslint-disable-next-line class-methods-use-this
   public run(payload: ContextMenuCommandSuccessPayload) {
     logSuccessCommand(payload);
   }

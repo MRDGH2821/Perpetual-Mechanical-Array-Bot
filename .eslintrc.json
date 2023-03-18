@@ -1,9 +1,22 @@
 {
-  "extends": ["eslint-config-airbnb-ts-prettier"],
+  "extends": [
+    "eslint-config-airbnb-ts-prettier"
+  ],
   "parserOptions": {
-    "project": ["tsconfig.json", "tsconfig.eslint.json"]
+    "project": [
+      "tsconfig.json",
+      "tsconfig.eslint.json"
+    ]
   },
   "rules": {
-    "no-console": "off"
+    "no-console": "off",
+    "class-methods-use-this": [
+      "error",
+      {
+        "exceptMethods": [
+          "chatInputRun", "run", "printBanner"
+        ]
+      }
+    ]
   }
 }
