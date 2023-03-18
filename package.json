@@ -1,65 +1,45 @@
 {
-  "name": "perpetual-mechanical-array-bot",
-  "version": "3.5.1",
-  "description": "Discord Bot for [Traveler Mains Server](https://discord.gg/RsdUnupKpj)",
-  "main": "index.js",
-  "private": true,
-  "scripts": {
-    "prestart": "npm run build",
-    "start": "node ./out/index.js",
-    "monitor": "nodemon -r dotenv/config src/index.ts --trace-warnings",
-    "lint": "npx eslint . --fix --ignore-path .gitignore ",
-    "pretty": "npx prettier . --write --ignore-path .gitignore",
-    "postpretty": "npm run lint",
-    "build": "tsc && tsc-alias",
-    "emulator": "firebase emulators:start --import ./offline_db_beta --export-on-exit ./offline_db",
-    "dev": "run-p -n emulator monitor",
-    "prelint:mega": "node clean.mjs megalinter-reports && node clean.mjs tmp",
-    "lint:mega": "npx mega-linter-runner@latest --flavor javascript",
-    "predocker:prod": "npm install && npm run build",
-    "docker:prod": "docker compose up -d --build"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot.git"
-  },
-  "keywords": [],
-  "author": "MRDGH2821",
-  "license": "Unlicence",
-  "bugs": {
-    "url": "https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot/issues"
-  },
-  "homepage": "https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot#readme",
-  "dependencies": {
-    "detritus-client": "^0.17.0-beta.16",
-    "detritus-client-rest": "^0.11.0-beta.4",
-    "detritus-client-socket": "^0.8.4-beta.2",
-    "detritus-utils": "^0.4.0",
-    "firebase-admin": "^11.5.0",
-    "just-clone": "^6.2.0",
-    "mathjs": "^11.6.0",
-    "title-case": "^3.0.3",
-    "tslib": "^2.5.0",
-    "typescript": "^4.9.5",
-    "yaspr": "^1.0.2"
-  },
-  "devDependencies": {
-    "@swc/core": "^1.3.39",
-    "@swc/helpers": "^0.4.14",
-    "@typescript-eslint/eslint-plugin": "^5.54.1",
-    "@typescript-eslint/parser": "^5.54.1",
-    "dotenv": "^16.0.3",
-    "eslint": "^8.36.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-airbnb-typescript": "^17.0.0",
-    "npm-run-all": "^4.1.5",
-    "prettier": "^2.8.4",
-    "prettier-config-mrdgh2821": "^3.0.0",
-    "prettier-plugin-organize-imports": "^3.2.2",
-    "regenerator-runtime": "^0.13.11",
-    "ts-node": "^10.9.1",
-    "tsc-alias": "^1.8.3",
-    "tsconfig-paths": "^4.1.2"
-  },
-  "engineStrict": true
+	"name": "perpetual-mechanical-array-bot",
+	"version": "3.5.1",
+	"description": "Discord Bot for [Traveler Mains Server](https://discord.gg/RsdUnupKpj)",
+	"main": "dist/index.js",
+	"private": true,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot.git"
+	},
+	"keywords": [],
+	"author": "MRDGH2821",
+	"license": "Unlicence",
+	"bugs": {
+		"url": "https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot/issues"
+	},
+	"homepage": "https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot#readme",
+	"dependencies": {
+		"@sapphire/decorators": "^6.0.0",
+		"@sapphire/discord.js-utilities": "6.0.3",
+		"@sapphire/framework": "^4.2.1",
+		"@sapphire/plugin-logger": "^3.0.1",
+		"@sapphire/utilities": "^3.11.0",
+		"@skyra/env-utilities": "^1.1.0",
+		"colorette": "^2.0.19",
+		"discord.js": "^14.7.1"
+	},
+	"devDependencies": {
+		"@sapphire/prettier-config": "^1.4.5",
+		"@sapphire/ts-config": "^3.3.4",
+		"@types/node": "^18.15.0",
+		"@types/ws": "^8.5.4",
+		"prettier": "^2.8.4",
+		"tsc-watch": "^6.0.0",
+		"typescript": "^4.9.5"
+	},
+	"scripts": {
+		"build": "tsc",
+		"watch": "tsc -w",
+		"start": "node dist/index.js",
+		"dev": "npm run build && npm run start",
+		"watch:start": "tsc-watch --onSuccess \"npm run start\"",
+		"format": "prettier --write \"src/\""
+	}
 }
