@@ -1,5 +1,5 @@
 import { LogLevel, SapphireClient } from '@sapphire/framework';
-import { GatewayIntentBits } from 'discord.js';
+import { Client, GatewayIntentBits } from 'discord.js';
 import './lib/setup';
 
 const client = new SapphireClient({
@@ -17,6 +17,38 @@ const client = new SapphireClient({
   loadMessageCommandListeners: true,
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+async function deleteAllCommands() {
+  const bot = new Client({
+    defaultPrefix: 'pma!',
+    caseInsensitiveCommands: true,
+    logger: {
+      level: LogLevel.Debug,
+    },
+    intents: [
+      GatewayIntentBits.DirectMessages,
+      GatewayIntentBits.GuildMessages,
+      GatewayIntentBits.Guilds,
+      GatewayIntentBits.MessageContent,
+    ],
+    loadMessageCommandListeners: true,
+  });
+  await bot.login(process.env.DISCORD_TOKEN);
+
+  const { rest } = bot;
+
+  console.log('Login Successful');
+  const { GUILD_ID, CLIENT_ID } = process.env;
+  await rest
+    .put(`/applications/${CLIENT_ID!}/guilds/${GUILD_ID!}/commands`, { body: [] })
+    .then(() => console.log('Deleted guild commands'));
+  await rest
+    .put(`/applications/${CLIENT_ID!}/commands`, { body: [] })
+    .then(() => console.log('Deleted global commands'));
+
+  process.exit(0);
+}
+
 const main = async () => {
   try {
     client.logger.info('Logging in');
@@ -30,3 +62,5 @@ const main = async () => {
 };
 
 main();
+
+// deleteAllCommands()
