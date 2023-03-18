@@ -4,7 +4,7 @@ import { ButtonStyle, ComponentType } from 'discord-api-types/v10';
 import { User, userMention } from 'discord.js';
 import { COLORS } from '../../lib/Constants';
 
-const pkg = require('../../package.json');
+const pkg = require('../../../package.json');
 
 const deps = Object.entries(pkg.dependencies)
   .map(([depName, depVer]) => `${depName}: ${depVer}`)
