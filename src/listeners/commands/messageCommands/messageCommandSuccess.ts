@@ -3,13 +3,14 @@ import { Listener, LogLevel } from '@sapphire/framework';
 import type { Logger } from '@sapphire/plugin-logger';
 import { logSuccessCommand } from '../../../lib/utils';
 
-export class UserEvent extends Listener {
-	public run(payload: MessageCommandSuccessPayload) {
-		logSuccessCommand(payload);
-	}
+export default class UserEvent extends Listener {
+  // eslint-disable-next-line class-methods-use-this
+  public run(payload: MessageCommandSuccessPayload) {
+    logSuccessCommand(payload);
+  }
 
-	public onLoad() {
-		this.enabled = (this.container.logger as Logger).level <= LogLevel.Debug;
-		return super.onLoad();
-	}
+  public onLoad() {
+    this.enabled = (this.container.logger as Logger).level <= LogLevel.Debug;
+    return super.onLoad();
+  }
 }

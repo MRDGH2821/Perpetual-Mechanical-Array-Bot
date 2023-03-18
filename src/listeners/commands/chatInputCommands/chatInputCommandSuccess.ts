@@ -2,13 +2,14 @@ import { ChatInputCommandSuccessPayload, Listener, LogLevel } from '@sapphire/fr
 import type { Logger } from '@sapphire/plugin-logger';
 import { logSuccessCommand } from '../../../lib/utils';
 
-export class UserListener extends Listener {
-	public run(payload: ChatInputCommandSuccessPayload) {
-		logSuccessCommand(payload);
-	}
+export default class UserListener extends Listener {
+  // eslint-disable-next-line class-methods-use-this
+  public run(payload: ChatInputCommandSuccessPayload) {
+    logSuccessCommand(payload);
+  }
 
-	public onLoad() {
-		this.enabled = (this.container.logger as Logger).level <= LogLevel.Debug;
-		return super.onLoad();
-	}
+  public onLoad() {
+    this.enabled = (this.container.logger as Logger).level <= LogLevel.Debug;
+    return super.onLoad();
+  }
 }
