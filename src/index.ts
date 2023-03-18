@@ -1,8 +1,21 @@
 import { LogLevel, SapphireClient } from '@sapphire/framework';
+import { getRootData } from '@sapphire/pieces';
+import type { ClientOptions } from 'discord.js';
 import { GatewayIntentBits } from 'discord.js';
+import { join } from 'node:path';
 import './lib/setup';
 
-const client = new SapphireClient({
+class CustomClient extends SapphireClient {
+  private rootData = getRootData();
+
+  public constructor(options: ClientOptions) {
+    super(options);
+
+    this.stores.registerPath(join(this.rootData.root, 'baseBot'));
+  }
+}
+
+const client = new CustomClient({
   defaultPrefix: '!',
   caseInsensitiveCommands: true,
   logger: {
