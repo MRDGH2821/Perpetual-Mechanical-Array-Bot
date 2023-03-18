@@ -1,7 +1,7 @@
 import { Subcommand } from '@sapphire/plugin-subcommands';
-import EnvConfig from '../lib/EnvConfig';
+import EnvConfig from '../../lib/EnvConfig';
 import { AMC_PROPS } from '../lib/TravelerTechnologies';
-import type { JSONCmd } from '../typeDefs/typeDefs';
+import type { JSONCmd } from '../../typeDefs/typeDefs';
 
 const cmdDef: JSONCmd = {
   name: 'amc',

@@ -1,4 +1,4 @@
-import type { TravelerTechProp } from '../typeDefs/typeDefs';
+import type { TravelerTechProp } from '../../typeDefs/typeDefs';
 
 export const AMC_TECHS = {
   BURST_TECHS: [
