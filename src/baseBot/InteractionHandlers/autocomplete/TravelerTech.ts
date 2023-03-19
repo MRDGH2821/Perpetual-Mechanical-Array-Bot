@@ -20,8 +20,10 @@ export default class TravelerTechAutocompleteHandler extends InteractionHandler 
 
   public override async parse(interaction: AutocompleteInteraction) {
     // Get the focussed (current) option
-    const focusedOption = interaction.options.getFocused();
-    interaction.client.logger.debug(focusedOption);
+    const focused = interaction.options.getFocused(true);
+    interaction.client.logger.debug(focused);
+
+    const focusedOption = focused.name;
 
     const cmdName = interaction.options.getSubcommand(true);
 
