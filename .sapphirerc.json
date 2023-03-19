@@ -7,7 +7,8 @@
     "commands": "commands",
     "listeners": "listeners",
     "preconditions": "preconditions",
-    "autocomplete": "interaction-handlers"
+    "autocomplete": "interaction-handlers/autocomplete",
+    "interaction-handlers": "interaction-handlers"
   },
   "customFileTemplates": {
     "enabled": true,
