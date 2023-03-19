@@ -3,11 +3,10 @@ import {
   ApplicationCommandOptionData,
   ApplicationCommandOptionType,
   ChatInputCommandInteraction,
-  MessageFlags,
 } from 'discord.js';
 import EnvConfig from '../../lib/EnvConfig';
-import type { DamageType, ELEMENTS, JSONCmd } from '../../typeDefs/typeDefs';
-import { findElementProp, findTech } from '../lib/TravelerTechnologies';
+import type { ELEMENTS, JSONCmd } from '../../typeDefs/typeDefs';
+import { findElementProp, findTech, isSkill } from '../lib/TravelerTechnologies';
 
 function APIsubCommandBuilder(element: ELEMENTS): ApplicationCommandOptionData {
   const eleProp = findElementProp(element);
@@ -106,29 +105,37 @@ export default class UserCommand extends Subcommand {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  public runCmd(interaction: ChatInputCommandInteraction) {
+  public async runCmd(interaction: ChatInputCommandInteraction) {
+    const message = await interaction.deferReply({
+      fetchReply: true,
+    });
+
     const element = interaction.options.getSubcommandGroup(true);
     const subCommand = interaction.options.getSubcommand(true);
     const eleProp = findElementProp(element as ELEMENTS);
     if (subCommand === 'guide') {
       return interaction.reply({ content: eleProp.guide });
     }
-    const techId = interaction.options.getString('tech');
+    interaction.client.logger.debug('Obtaining tech input');
+    const techId = interaction.options.getString('tech', true);
+
+    interaction.client.logger.debug('Searching for tech');
     const tech = findTech({
       element: element as ELEMENTS,
-      type: subCommand as DamageType,
-      id: techId!,
+      type: isSkill(subCommand) ? 'skill' : 'burst',
+      id: techId,
     });
+    interaction.client.logger.debug(tech);
+
     if (tech) {
       const { gif } = tech;
-      return interaction.reply({
+      return message.edit({
         content: gif,
       });
     }
 
-    return interaction.reply({
+    return message.edit({
       content: `Invalid tech name entered. (Got ${techId})`,
-      flags: MessageFlags.Ephemeral,
     });
   }
 
