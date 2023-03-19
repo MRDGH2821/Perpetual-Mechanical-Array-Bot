@@ -16,9 +16,11 @@ export type ELEMENTS =
 export type TravelerTechProp = {
   shortName: string;
   name: string;
+  description: string;
   element: ELEMENTS;
   skill: {
     name: string;
+    description: string;
     techs: {
       gif: string;
       id: string;
@@ -27,6 +29,7 @@ export type TravelerTechProp = {
   };
   burst: {
     name: string;
+    description: string;
     techs: {
       gif: string;
       id: string;
