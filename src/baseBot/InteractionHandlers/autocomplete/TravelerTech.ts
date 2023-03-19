@@ -69,7 +69,7 @@ export default class TravelerTechAutocompleteHandler extends InteractionHandler 
       return this.some(
         choices.map((choice) => ({
           name: choice.name,
-          value: choice.gif,
+          value: choice.id,
         })),
       );
     }
