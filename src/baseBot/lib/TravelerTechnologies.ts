@@ -205,3 +205,47 @@ export const DMC_PROPS: TravelerTechProp = {
   },
   guide: 'https://keqingmains.com/dendro-traveler/',
 };
+
+const availableProps: {
+  [x in ELEMENTS]?: TravelerTechProp;
+} = {
+  anemo: AMC_PROPS,
+  geo: GMC_PROPS,
+  electro: EMC_PROPS,
+  dendro: DMC_PROPS,
+};
+type FindTechArgs = {
+  element: ELEMENTS;
+  type: DamageType;
+  id: KitTechnology['id'];
+};
+type FindPropArgs = Omit<FindTechArgs, 'id'>;
+export function findKitProp(options: FindPropArgs): KitProp | undefined {
+  const { element, type } = options;
+  const prop = availableProps[element];
+
+  if (prop) {
+    return prop[type];
+  }
+
+  throw new Error(`Props for ${element}-${type} does not exist`, {
+    cause: `${element} is not released, thus no props`,
+  });
+}
+
+export function findTech(options: FindTechArgs) {
+  const kit = findKitProp(options);
+
+  return kit?.techs.find((tech) => tech.id.includes(options.id));
+}
+
+export function findElementProp(element: ELEMENTS) {
+  const eleProp = availableProps[element];
+  if (eleProp) {
+    return eleProp;
+  }
+
+  throw new Error(`Element props for ${element} does not exist`, {
+    cause: `${element} is not released, thus no props`,
+  });
+}
