@@ -25,7 +25,7 @@ If you wish to run this bot follow the given steps.
 1. Create a new [bot](https://discord.com/developers/applications)
 2. Make a copy of [`sample.env`](./sample.env) file & rename it to `.env`
 3. Copy Application ID & paste into `CLIENT_ID` field
-4. Copy Token (from `Bot` page) & paste into `TOKEN` field
+4. Copy Token (from `Bot` page) & paste into `DISCORD_TOKEN` field
 5. Copy Server ID & paste into `GUILD_ID` field
 
 #### Code preparation
@@ -64,7 +64,7 @@ _You may also refer this outdated [guide](https://www.howtogeek.com/devops/how-t
 After Docker is installed, run the following command to start the bot.
 
 ```sh
-npm run docker:prod
+docker compose
 ```
 
 ## Testing (Development environment)
@@ -75,7 +75,7 @@ If you wish to do some modifications & not want to go through docker follow the 
 2. Run:
 
 ```sh
-npm run monitor
+npm run watch:start
 ```
 
 In case of error 401 or 403, you may have to kick out the bot, generate new invite link with bot & application.command scope, invite back the bot & run the command again.
