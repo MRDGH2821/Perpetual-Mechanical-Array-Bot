@@ -18,3 +18,7 @@ export enum COLORS {
   SPIRAL_ABYSS = 0x4d00f0,
   DENDRO = 0x94fe00,
 }
+
+export enum ChannelIds {
+  ARCHIVES = '806110144110919730',
+}
