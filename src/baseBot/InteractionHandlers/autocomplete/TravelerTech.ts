@@ -67,10 +67,12 @@ export default class TravelerTechAutocompleteHandler extends InteractionHandler 
 
     if (choices) {
       return this.some(
-        choices.map((choice) => ({
-          name: choice.name,
-          value: choice.id,
-        })),
+        choices
+          .map((choice) => ({
+            name: choice.name,
+            value: choice.id,
+          }))
+          .slice(0, 24),
       );
     }
     return this.none();
