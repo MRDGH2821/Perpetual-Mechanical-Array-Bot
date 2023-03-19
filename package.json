@@ -17,7 +17,7 @@
   "homepage": "https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot#readme",
   "dependencies": {
     "@sapphire/decorators": "^6.0.0",
-    "@sapphire/discord.js-utilities": "6.0.3",
+    "@sapphire/discord.js-utilities": "6.0.4",
     "@sapphire/framework": "^4.2.2",
     "@sapphire/pieces": "^3.6.1",
     "@sapphire/plugin-logger": "^3.0.1",
@@ -31,7 +31,7 @@
   "devDependencies": {
     "@sapphire/prettier-config": "^1.4.5",
     "@sapphire/ts-config": "^3.3.4",
-    "@types/node": "^18.15.0",
+    "@types/node": "^18.15.3",
     "@types/ws": "^8.5.4",
     "dotenv": "^16.0.3",
     "eslint-config-airbnb-ts-prettier": "^1.0.1",
