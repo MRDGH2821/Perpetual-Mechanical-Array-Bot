@@ -214,6 +214,18 @@ const availableProps: {
   electro: EMC_PROPS,
   dendro: DMC_PROPS,
 };
+
+export const SKILL_NAMES = Object.values(availableProps).map((prop) => prop.skill.name);
+
+export const BURST_NAMES = Object.values(availableProps).map((prop) => prop.burst.name);
+
+export function isSkill(input: string) {
+  return !!SKILL_NAMES.find((name) => name.toLowerCase().includes(input.toLowerCase()));
+}
+export function isBurst(input: string) {
+  return !!BURST_NAMES.find((name) => name.toLowerCase().includes(input.toLowerCase()));
+}
+
 type FindTechArgs = {
   element: ELEMENTS;
   type: DamageType;
