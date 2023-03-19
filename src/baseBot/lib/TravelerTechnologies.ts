@@ -240,9 +240,8 @@ export function findKitProp(options: FindPropArgs): KitProp {
     const kitProp = prop[type];
     if (kitProp) {
       return kitProp;
-    } 
+    }
     throw new Error(`Invalid damage type: ${type}\nAllowed types: 'skill', 'burst'`);
-    
   }
 
   throw new Error(`Props for ${element}-${type} does not exist`, {
@@ -251,9 +250,7 @@ export function findKitProp(options: FindPropArgs): KitProp {
 }
 
 export function findTech(options: FindTechArgs) {
-  console.log(options);
   const kit = findKitProp(options);
-
   return kit.techs.find((tech) => tech.id.toLowerCase().includes(options.id.toLowerCase()));
 }
 
