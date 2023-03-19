@@ -23,9 +23,9 @@ export default class TravelerTechAutocompleteHandler extends InteractionHandler 
   public override async parse(interaction: AutocompleteInteraction) {
     // Get the focussed (current) option
     const focused = interaction.options.getFocused();
-    interaction.client.logger.debug(focused);
+    interaction.client.logger.debug({ focused });
 
-    const focusedOption = focused;
+    const focusedOption = focused.toLowerCase();
 
     const cmdName = interaction.options.getSubcommand(true);
 
@@ -33,42 +33,58 @@ export default class TravelerTechAutocompleteHandler extends InteractionHandler 
 
     switch (cmdName) {
       case AMC_PROPS.skill.name: {
-        choices = AMC_PROPS.skill.techs.filter((tech) => tech.name.includes(focusedOption));
+        choices = AMC_PROPS.skill.techs.filter((tech) =>
+          tech.name.toLowerCase().includes(focusedOption),
+        );
         break;
       }
       case AMC_PROPS.burst.name: {
-        choices = AMC_PROPS.burst.techs.filter((tech) => tech.name.includes(focusedOption));
+        choices = AMC_PROPS.burst.techs.filter((tech) =>
+          tech.name.toLowerCase().includes(focusedOption),
+        );
         break;
       }
       case GMC_PROPS.skill.name: {
-        choices = GMC_PROPS.skill.techs.filter((tech) => tech.name.includes(focusedOption));
+        choices = GMC_PROPS.skill.techs.filter((tech) =>
+          tech.name.toLowerCase().includes(focusedOption),
+        );
         break;
       }
       case GMC_PROPS.burst.name: {
-        choices = GMC_PROPS.burst.techs.filter((tech) => tech.name.includes(focusedOption));
+        choices = GMC_PROPS.burst.techs.filter((tech) =>
+          tech.name.toLowerCase().includes(focusedOption),
+        );
         break;
       }
       case EMC_PROPS.skill.name: {
-        choices = EMC_PROPS.skill.techs.filter((tech) => tech.name.includes(focusedOption));
+        choices = EMC_PROPS.skill.techs.filter((tech) =>
+          tech.name.toLowerCase().includes(focusedOption),
+        );
         break;
       }
       case EMC_PROPS.burst.name: {
-        choices = EMC_PROPS.burst.techs.filter((tech) => tech.name.includes(focusedOption));
+        choices = EMC_PROPS.burst.techs.filter((tech) =>
+          tech.name.toLowerCase().includes(focusedOption),
+        );
         break;
       }
       case DMC_PROPS.skill.name: {
-        choices = DMC_PROPS.skill.techs.filter((tech) => tech.name.includes(focusedOption));
+        choices = DMC_PROPS.skill.techs.filter((tech) =>
+          tech.name.toLowerCase().includes(focusedOption),
+        );
         break;
       }
       case DMC_PROPS.burst.name: {
-        choices = DMC_PROPS.burst.techs.filter((tech) => tech.name.includes(focusedOption));
+        choices = DMC_PROPS.burst.techs.filter((tech) =>
+          tech.name.toLowerCase().includes(focusedOption),
+        );
         break;
       }
       default: {
         choices = undefined;
       }
     }
-    interaction.client.logger.debug({ choices }, 2);
+    interaction.client.logger.debug({ choices });
     if (choices) {
       return this.some(
         choices

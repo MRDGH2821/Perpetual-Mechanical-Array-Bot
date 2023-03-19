@@ -234,9 +234,10 @@ export function findKitProp(options: FindPropArgs): KitProp | undefined {
 }
 
 export function findTech(options: FindTechArgs) {
+  console.log(options);
   const kit = findKitProp(options);
 
-  return kit?.techs.find((tech) => tech.id.includes(options.id));
+  return kit.techs.find((tech) => tech.id.toLowerCase().includes(options.id.toLowerCase()));
 }
 
 export function findElementProp(element: ELEMENTS) {
