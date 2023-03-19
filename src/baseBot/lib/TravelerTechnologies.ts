@@ -232,12 +232,17 @@ type FindTechArgs = {
   id: KitTechnology['id'];
 };
 type FindPropArgs = Omit<FindTechArgs, 'id'>;
-export function findKitProp(options: FindPropArgs): KitProp | undefined {
+export function findKitProp(options: FindPropArgs): KitProp {
   const { element, type } = options;
   const prop = availableProps[element];
 
   if (prop) {
-    return prop[type];
+    const kitProp = prop[type];
+    if (kitProp) {
+      return kitProp;
+    } 
+    throw new Error(`Invalid damage type: ${type}\nAllowed types: 'skill', 'burst'`);
+    
   }
 
   throw new Error(`Props for ${element}-${type} does not exist`, {
