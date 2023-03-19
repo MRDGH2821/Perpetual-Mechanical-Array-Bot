@@ -1,12 +1,15 @@
 import { InteractionHandler, InteractionHandlerTypes, PieceContext } from '@sapphire/framework';
 import type { AutocompleteInteraction } from 'discord.js';
-import { AMC_PROPS, DMC_PROPS, EMC_PROPS, GMC_PROPS } from '../../lib/TravelerTechnologies';
+import type { KitTechnology } from '../../typeDefs/typeDefs';
+import { AMC_PROPS, DMC_PROPS, EMC_PROPS, GMC_PROPS } from '../lib/TravelerTechnologies';
 
 export default class TravelerTechAutocompleteHandler extends InteractionHandler {
   public constructor(ctx: PieceContext, options: InteractionHandler.Options) {
     super(ctx, {
       ...options,
       interactionHandlerType: InteractionHandlerTypes.Autocomplete,
+      enabled: true,
+      name: 'TravelerTechAutoComplete',
     });
   }
 
@@ -14,20 +17,19 @@ export default class TravelerTechAutocompleteHandler extends InteractionHandler 
     interaction: AutocompleteInteraction,
     result: InteractionHandler.ParseResult<this>,
   ) {
-    // @ts-ignore
     return interaction.respond(result);
   }
 
   public override async parse(interaction: AutocompleteInteraction) {
     // Get the focussed (current) option
-    const focused = interaction.options.getFocused(true);
+    const focused = interaction.options.getFocused();
     interaction.client.logger.debug(focused);
 
-    const focusedOption = focused.name;
+    const focusedOption = focused;
 
     const cmdName = interaction.options.getSubcommand(true);
 
-    let choices: typeof AMC_PROPS.skill.techs | undefined;
+    let choices: KitTechnology[] | undefined;
 
     switch (cmdName) {
       case AMC_PROPS.skill.name: {
@@ -66,7 +68,7 @@ export default class TravelerTechAutocompleteHandler extends InteractionHandler 
         choices = undefined;
       }
     }
-
+    interaction.client.logger.debug({ choices }, 2);
     if (choices) {
       return this.some(
         choices
