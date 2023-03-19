@@ -3,6 +3,7 @@ import {
   ApplicationCommandOptionData,
   ApplicationCommandOptionType,
   ChatInputCommandInteraction,
+  MessageFlags,
 } from 'discord.js';
 import EnvConfig from '../../lib/EnvConfig';
 import type { ELEMENTS, JSONCmd } from '../../typeDefs/typeDefs';
@@ -106,10 +107,6 @@ export default class UserCommand extends Subcommand {
 
   // eslint-disable-next-line class-methods-use-this
   public async runCmd(interaction: ChatInputCommandInteraction) {
-    const message = await interaction.deferReply({
-      fetchReply: true,
-    });
-
     const element = interaction.options.getSubcommandGroup(true);
     const subCommand = interaction.options.getSubcommand(true);
     const eleProp = findElementProp(element as ELEMENTS);
@@ -129,13 +126,14 @@ export default class UserCommand extends Subcommand {
 
     if (tech) {
       const { gif } = tech;
-      return message.edit({
+      return interaction.reply({
         content: gif,
       });
     }
 
-    return message.edit({
-      content: `Invalid tech name entered. (Got ${techId})`,
+    return interaction.reply({
+      content: `Invalid tech name entered. (Got \`${techId}\`)`,
+      flags: MessageFlags.Ephemeral,
     });
   }
 
