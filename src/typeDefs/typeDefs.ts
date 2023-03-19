@@ -13,28 +13,29 @@ export type ELEMENTS =
   | 'unaligned'
   | 'uni';
 
+export type KitTechnology = {
+  gif: string;
+  id: string;
+  name: string;
+};
+
+export type TravelerKitTechs = {
+  SKILL_TECHS: KitTechnology[];
+  BURST_TECHS: KitTechnology[];
+};
+
+export type KitProp = {
+  name: string;
+  description: string;
+  techs: KitTechnology[];
+};
+
+export type DamageType = 'skill' | 'burst';
+
 export type TravelerTechProp = {
   shortName: string;
   name: string;
   description: string;
   element: ELEMENTS;
-  skill: {
-    name: string;
-    description: string;
-    techs: {
-      gif: string;
-      id: string;
-      name: string;
-    }[];
-  };
-  burst: {
-    name: string;
-    description: string;
-    techs: {
-      gif: string;
-      id: string;
-      name: string;
-    }[];
-  };
   guide: string;
-};
+} & Record<DamageType, KitProp>;

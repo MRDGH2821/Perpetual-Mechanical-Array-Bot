@@ -1,6 +1,13 @@
-import type { TravelerTechProp } from '../../typeDefs/typeDefs';
+import type {
+  DamageType,
+  ELEMENTS,
+  KitProp,
+  KitTechnology,
+  TravelerKitTechs,
+  TravelerTechProp,
+} from '../../typeDefs/typeDefs';
 
-export const AMC_TECHS = {
+export const AMC_TECHS: TravelerKitTechs = {
   BURST_TECHS: [
     {
       gif: 'https://i.imgur.com/v2OWCkz.mp4',
@@ -26,7 +33,7 @@ export const AMC_TECHS = {
     },
   ],
 };
-export const GMC_TECHS = {
+export const GMC_TECHS: TravelerKitTechs = {
   BURST_TECHS: [
     {
       gif: 'https://www.reddit.com/r/Genshin_Impact/comments/raxz1e/a_cool_thing_you_can_do_with_geo_travelers/',
@@ -93,7 +100,7 @@ export const GMC_TECHS = {
   ],
 };
 
-export const EMC_TECHS = {
+export const EMC_TECHS: TravelerKitTechs = {
   BURST_TECHS: [
     {
       gif: 'https://www.reddit.com/r/Genshin_Impact/comments/oqphhp/a_cool_thing_you_can_do_with_electro_travelers/',
@@ -110,7 +117,7 @@ export const EMC_TECHS = {
   ],
 };
 
-export const DMC_TECHS = {
+export const DMC_TECHS: TravelerKitTechs = {
   BURST_TECHS: [
     {
       gif: 'https://tenor.com/view/aaaa-gif-22162888',
