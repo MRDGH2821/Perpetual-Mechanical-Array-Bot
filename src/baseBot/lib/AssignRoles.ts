@@ -448,11 +448,11 @@ export default class AssignRoles {
         },
       })
       .then(async () => {
-        await this.#ctx.reply({
+        await this.#ctx.followUp({
           flags: MessageFlags.Ephemeral,
           content: `>award ${this.#member.id} ${totalExp}`,
         });
-        await this.#ctx.reply({
+        await this.#ctx.followUp({
           flags: MessageFlags.Ephemeral,
           content:
             'Copy paste that command. And a message by <@485962834782453762> should come up like [this](https://i.imgur.com/yQvOAzZ.png)',
