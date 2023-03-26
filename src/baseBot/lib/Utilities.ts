@@ -1,3 +1,4 @@
+import { MessageLinkRegex } from '@sapphire/discord.js-utilities';
 import { APIInteractionGuildMember, GuildMember } from 'discord.js';
 import EventEmitter from 'events';
 import { STAFF_ARRAY } from '../../lib/Constants';
@@ -30,3 +31,13 @@ export function isStaff(member: GuildMember | APIInteractionGuildMember): boolea
 }
 
 export const PMAEventHandler = new EventEmitter();
+
+export function guildMessageIDsExtractor(link: string) {
+  const matches = link.match(MessageLinkRegex)!;
+
+  return {
+    guildId: matches[0],
+    channelId: matches[1],
+    messageId: matches[2],
+  };
+}
