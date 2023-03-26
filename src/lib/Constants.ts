@@ -39,6 +39,17 @@ export enum ICONS {
 
 export enum ChannelIds {
   ARCHIVES = '806110144110919730',
+  CONFESSIONS = '938763983551356928',
+  BOT_SPAM = '804253204291387422',
+  COMMAND_CENTER = '803488949254225960',
+  MUSIC_BOT_SPAM = '803534858189668372',
+  PING_CELESTIA = '841941486034878464',
+  SHOWCASE = '876121506680287263',
+  ROLE_APPLICATION = '804590144052002817',
+  SPIRAL_ABYSS = '804183774589485126',
+  LEAKS_DISCUSSION = '803949792349650964',
+  RNG_MUTE = '1005733473434206250',
+  ARENA_OF_VOTERS = '897042006679883796',
 }
 
 export namespace ROLE_IDS {
@@ -90,9 +101,9 @@ namespace STAFF {
 }
 
 export const STAFF_ARRAY: string[] = [
-  Object.values(STAFF.ADMIN).map((id) => id.toString()),
-  Object.values(STAFF.HELPERS).map((id) => id.toString()),
-  Object.values(STAFF.MODS).map((id) => id.toString()),
+  Object.values(STAFF.ADMIN).map(String),
+  Object.values(STAFF.HELPERS).map(String),
+  Object.values(STAFF.MODS).map(String),
 ].flat();
 
 export const EMPTY_STRING = '\u200B';
@@ -125,13 +136,13 @@ export const EMOJIS = {
   LuminePanic: formatEmoji('814883112998666241'),
   TarouAngy: formatEmoji('854040153555468329'),
   Anemo: formatEmoji('803516622772895764', 'Anemo'),
-  Geo: formatEmoji('803516612430135326','Geo'),
+  Geo: formatEmoji('803516612430135326', 'Geo'),
   Electro: formatEmoji('803516644923146260', 'Electro'),
   Dendro: formatEmoji('803516669984505856', 'Dendro'),
-  Hydro: formatEmoji('803516313782714378','Hydro'),
-  Pyro: formatEmoji('803516441424822303','Pyro'),
-  Cryo: formatEmoji('803516632735154177','Cryo'),
-  Void: formatEmoji('983370274227499050','Void'),
+  Hydro: formatEmoji('803516313782714378', 'Hydro'),
+  Pyro: formatEmoji('803516441424822303', 'Pyro'),
+  Cryo: formatEmoji('803516632735154177', 'Cryo'),
+  Void: formatEmoji('983370274227499050', 'Void'),
   DullBlade: formatEmoji('861628955697741844'),
   DvalinHYPE: formatEmoji('808591175640154142'),
   Copium: formatEmoji('897176156057518130'),
@@ -150,3 +161,69 @@ export const EMOJIS = {
   GoldenAranaraSmile: formatEmoji('1024189925811306526', 'GoldenAranaraSmile'),
   GoldenAranaraWave: formatEmoji('1024191817438203944', 'GoldenAranaraWave'),
 };
+
+const REP_ROLES = [
+  {
+    name: 'Megastar in Mondstadt 🚶🌬️',
+    value: ROLE_IDS.REPUTATION.MONDSTADT,
+  },
+  {
+    name: 'Illustrious in Inazuma 🚶⛈️',
+    value: ROLE_IDS.REPUTATION.INAZUMA,
+  },
+  {
+    name: 'Legend in Liyue 🚶🌏',
+    value: ROLE_IDS.REPUTATION.LIYUE,
+  },
+  {
+    name: 'Scholarly in Sumeru 🚶🤓',
+    value: ROLE_IDS.REPUTATION.SUMERU,
+  },
+];
+
+const CROWN_ROLES = [
+  {
+    name: "Ten'nō of Thunder 👑⛈️",
+    value: ROLE_IDS.CROWN.ELECTRO,
+  },
+  {
+    name: 'Jūnzhǔ of Earth 👑🌏',
+    value: ROLE_IDS.CROWN.GEO,
+  },
+  {
+    name: 'Herrscher of Wind 👑🌬️',
+    value: ROLE_IDS.CROWN.ANEMO,
+  },
+  {
+    name: 'Raja of Evergreens 👑🌲',
+    value: ROLE_IDS.CROWN.DENDRO,
+  },
+  {
+    name: 'Arbitrator of Fate 👑',
+    value: ROLE_IDS.CROWN.UNALIGNED,
+  },
+];
+
+const OTHER_ROLES = [
+  {
+    name: 'Affluent Adventurer 💰',
+    value: ROLE_IDS.OTHERS.WHALE,
+  },
+];
+
+const SPIRAL_ABYSS_ROLES = [
+  {
+    name: 'Abyssal Traveler 😎',
+    value: ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER,
+  },
+  {
+    name: 'Abyssal Conqueror 🌀',
+    value: ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR,
+  },
+  {
+    name: 'Abyssal Sovereign ⚔️',
+    value: ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN,
+  },
+];
+
+export const ACHIEVEMENT_ROLES = [REP_ROLES, OTHER_ROLES, CROWN_ROLES, SPIRAL_ABYSS_ROLES].flat();
