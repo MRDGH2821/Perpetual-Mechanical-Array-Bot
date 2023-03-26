@@ -63,9 +63,9 @@ export default class AssignRoles {
 
     if (options.selectedRolesIDs.includes(ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN)) {
       const denyList = [
-        ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR.toString(),
-        ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER.toString(),
-      ];
+        ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR,
+        ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER,
+      ].map(String);
       filteredRoles = options.selectedRolesIDs.filter((id) => !denyList.includes(id));
     } else if (options.selectedRolesIDs.includes(ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR)) {
       filteredRoles = options.selectedRolesIDs.filter(
@@ -81,7 +81,7 @@ export default class AssignRoles {
   }
 
   #awardReputationRoles() {
-    const systemRoles = Object.values(ROLE_IDS.REPUTATION).map((role) => role.toString());
+    const systemRoles = Object.values(ROLE_IDS.REPUTATION).map(String);
     const repRoles = this.#selectedRoleIDs.filter((id) => systemRoles.includes(id));
 
     this.#member.roles.add(repRoles, 'Completed regional exploration & achievements').then(() => {
@@ -230,7 +230,7 @@ export default class AssignRoles {
   }
 
   async #awardElementalCrownRoles() {
-    const systemRoles = Object.values(ROLE_IDS.CROWN).map((role) => role.toString());
+    const systemRoles = Object.values(ROLE_IDS.CROWN).map(String);
     const crownRoles = this.#selectedRoleIDs.filter((id) => {
       if (id === ROLE_IDS.CROWN.UNALIGNED) {
         return false;
