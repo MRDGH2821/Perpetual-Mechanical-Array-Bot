@@ -23,7 +23,7 @@ import { guildMessageIDsExtractor, isStaff } from '../lib/Utilities';
 const cmdDef: JSONCmd = {
   name: 'give-role',
   description: 'Gives role to selected user',
-  defaultMemberPermissions: 'ManageRoles',
+  defaultMemberPermissions: PermissionFlagsBits.ManageRoles,
   options: [
     {
       type: 1,
@@ -76,8 +76,8 @@ export default class UserCommand extends Subcommand {
       ...options,
       name: cmdDef.name,
       description: cmdDef.description,
-      requiredUserPermissions: 'ManageRoles',
-      requiredClientPermissions: 'ManageRoles',
+      requiredUserPermissions: PermissionFlagsBits.ManageRoles,
+      requiredClientPermissions: PermissionFlagsBits.ManageRoles,
       preconditions: ['ModOnly'],
       subcommands: [
         {
@@ -236,7 +236,7 @@ export default class UserCommand extends Subcommand {
       {
         default: memberRoles.has(ROLE_IDS.CROWN.UNALIGNED),
         description: 'Crowned their Unaligned Traveler',
-        emoji: EMOJIS.Void || '👑',
+        emoji: pickRandom(['👑', '✨']),
         label: roles.get(ROLE_IDS.CROWN.UNALIGNED)?.name || 'Unaligned Crown Role',
         value: ROLE_IDS.CROWN.UNALIGNED,
       },
