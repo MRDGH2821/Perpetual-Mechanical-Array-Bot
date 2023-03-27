@@ -1,7 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
-import { ApplicationCommandOptionType } from 'discord-api-types';
-import { AttachmentBuilder } from 'discord.js';
+import { ApplicationCommandOptionType, AttachmentBuilder } from 'discord.js';
 import { COLORS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import { addQuote } from '../../lib/QuotesManager';
