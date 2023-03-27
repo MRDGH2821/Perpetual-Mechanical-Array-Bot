@@ -1,5 +1,5 @@
-import type { ChatInputApplicationCommandData } from 'discord.js';
-import { Collection } from 'discord.js';
+import type { ChatInputApplicationCommandData, GuildMember, Collection } from 'discord.js';
+import type { ROLE_IDS } from '../lib/Constants';
 
 export type JSONCmd = ChatInputApplicationCommandData;
 
@@ -65,3 +65,9 @@ type QuoteCategory =
 export type DBQuotes = GIFCategory | ReasonCategory | QuoteCategory;
 
 export type DBQuotesCollection = Collection<DBQuotes, string[]>;
+
+export type CrownRegisterArgs = {
+  quantity: number;
+  target: GuildMember;
+  crownID: ROLE_IDS.CROWN;
+};

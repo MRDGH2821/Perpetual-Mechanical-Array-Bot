@@ -12,6 +12,7 @@ import {
 } from 'discord.js';
 import { sequentialPromises } from 'yaspr';
 import { COLORS, EMPTY_STRING, ROLE_IDS } from '../../lib/Constants';
+import type { CrownRegisterArgs } from '../../typeDefs/typeDefs';
 import { arrayIntersection, isStaff, PMAEventHandler } from './Utilities';
 
 type AssignRoleOptions = {
@@ -125,6 +126,11 @@ export default class AssignRoles {
   #awardUnalignedCrownRole() {
     const { UNALIGNED } = ROLE_IDS.CROWN;
     this.#member.roles.add(UNALIGNED, 'Crowned The Traveler').then(() => {
+      AssignRoles.registerCrown({
+        crownID: UNALIGNED,
+        quantity: 1,
+        target: this.#member,
+      });
       this.#assignStats.push({
         exp: 30000,
         notes: 'Paid attention in the game!',
@@ -134,7 +140,11 @@ export default class AssignRoles {
     });
   }
 
-  async #awardElementalCrownRole(roleID: ROLE_IDS.CROWN | string): Promise<RoleAssignStats> {
+  static registerCrown(args: CrownRegisterArgs) {
+    PMAEventHandler.emit('CrownRegister', args);
+  }
+
+  async #awardElementalCrownRole(roleID: ROLE_IDS.CROWN): Promise<RoleAssignStats> {
     const props: {
       color: COLORS;
       emoji: CrownEmoji;
@@ -209,10 +219,10 @@ export default class AssignRoles {
               range(1, quantity, 1).forEach((number) => {
                 exp *= number;
               });
-              PMAEventHandler.emit('CrownButtonListener', {
+              AssignRoles.registerCrown({
+                crownID: roleID,
                 quantity,
                 target: this.#member,
-                crownID: roleID,
               });
               this.#member.roles.add(roleID).then(() => {
                 res({
