@@ -1,5 +1,5 @@
-import { EMOJIS } from './Constants';
-import { getQuotes } from './QuotesManager';
+import { EMOJIS } from '../../lib/Constants';
+import { getQuotes } from '../../lib/QuotesManager';
 
 export default class BonkUtilities {
   message = '';
@@ -186,5 +186,14 @@ export default class BonkUtilities {
    */
   bonkHornyReason(): string {
     return this.#allHornyReasons[Math.floor(Math.random() * this.#allHornyReasons.length)];
+  }
+
+  /**
+   * selects a random reason (including normal & horny both) to bonk
+   * @function bonkAnyReason
+   * @returns {string} - a random reason to bonk
+   */
+  bonkAnyReason(): string {
+    return this.#allReasons[Math.floor(Math.random() * this.#allReasons.length)];
   }
 }
