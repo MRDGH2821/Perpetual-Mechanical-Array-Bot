@@ -13,10 +13,12 @@ import EnvConfig from '../lib/EnvConfig';
 export default class UserCommand extends Command {
   public override registerApplicationCommands(registry: Command.Registry) {
     registry.registerChatInputCommand(
-      (builder) =>
-        builder //
-          .setName(this.name)
-          .setDescription(this.description),
+      {
+        name: this.name,
+        description: this.description,
+        dm_permission: false,
+        dmPermission: false,
+      },
       {
         guildIds: [EnvConfig.guildId],
       },
