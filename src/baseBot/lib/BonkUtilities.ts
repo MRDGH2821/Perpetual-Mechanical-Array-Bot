@@ -109,7 +109,7 @@ export default class BonkUtilities {
 
   #allNonHornyReasons = this.#reasons.concat(this.#crowdSourcedReasons);
 
-  #allReasons = this.#allNonHornyReasons.concat(this.#allHornyReasons);
+  allReasons = this.#allNonHornyReasons.concat(this.#allHornyReasons);
 
   /**
    * checks whether given msg is horny or not
@@ -194,6 +194,6 @@ export default class BonkUtilities {
    * @returns {string} - a random reason to bonk
    */
   bonkAnyReason(): string {
-    return this.#allReasons[Math.floor(Math.random() * this.#allReasons.length)];
+    return this.allReasons[Math.floor(Math.random() * this.allReasons.length)];
   }
 }
