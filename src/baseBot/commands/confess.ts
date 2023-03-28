@@ -7,7 +7,7 @@ import EnvConfig from '../../lib/EnvConfig';
   name: 'confess',
   description: 'Wanna confess something?',
 })
-export default class UserCommand extends Command {
+export default class GuildCommand extends Command {
   public override registerApplicationCommands(registry: Command.Registry) {
     registry.registerChatInputCommand(
       {

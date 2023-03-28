@@ -4,6 +4,7 @@ import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
   MessageFlags,
+  PermissionFlagsBits,
   time,
 } from 'discord.js';
 import EnvConfig from '../../lib/EnvConfig';
@@ -31,6 +32,8 @@ const autoresponseChoices = [
 const cmdDef: JSONCmd = {
   name: 'autoresponse',
   description: 'Autoresponse settings',
+  dmPermission: false,
+  defaultMemberPermissions: [PermissionFlagsBits.ManageMessages, PermissionFlagsBits.ManageGuild],
   type: ApplicationCommandType.ChatInput,
   options: [
     {
@@ -70,7 +73,7 @@ const cmdDef: JSONCmd = {
   ],
 };
 
-export default class UserCommand extends Subcommand {
+export default class GuildCommand extends Subcommand {
   public constructor(context: Subcommand.Context, options: Subcommand.Options) {
     super(context, {
       ...options,

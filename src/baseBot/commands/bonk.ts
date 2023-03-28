@@ -11,7 +11,7 @@ import BonkUtilities from '../lib/BonkUtilities';
   name: 'bonk',
   description: 'Bonk a member!',
 })
-export default class UserCommand extends Command {
+export default class GuildCommand extends Command {
   public override registerApplicationCommands(registry: Command.Registry) {
     registry.registerChatInputCommand(
       {

@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
-import { ApplicationCommandOptionType, AttachmentBuilder } from 'discord.js';
+import { ApplicationCommandOptionType, AttachmentBuilder, PermissionFlagsBits } from 'discord.js';
 import { COLORS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import { addQuote } from '../../lib/QuotesManager';
@@ -10,12 +10,15 @@ import type { DBQuotes } from '../../typeDefs/typeDefs';
   name: 'add-quote',
   description: 'Adds a quote/gif/reason among various things in bot',
 })
-export default class UserCommand extends Command {
+export default class GuildCommand extends Command {
   public override registerApplicationCommands(registry: Command.Registry) {
     registry.registerChatInputCommand(
       {
         name: this.name,
         description: this.description,
+        dm_permission: false,
+        dmPermission: false,
+        defaultMemberPermissions: [PermissionFlagsBits.ManageMessages],
         options: [
           {
             type: ApplicationCommandOptionType.String,
