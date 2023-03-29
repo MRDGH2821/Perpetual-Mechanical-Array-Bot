@@ -1,5 +1,6 @@
 {
   "name": "perpetual-mechanical-array-bot",
+  "packageManager": "yarn@3.5.0",
   "version": "3.5.1",
   "description": "Discord Bot for [Traveler Mains Server](https://discord.gg/RsdUnupKpj)",
   "main": "dist/index.js",

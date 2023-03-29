@@ -10,6 +10,7 @@
     "mikestead.dotenv",
     "PatrykPeszko.vscode-proselint",
     "ryanlaws.toggle-case",
-    "streetsidesoftware.code-spell-checker"
+    "streetsidesoftware.code-spell-checker",
+    "arcanis.vscode-zipfs"
   ]
 }

@@ -130,3 +130,4 @@ firebase-service-acc/*.json
 .ignore/*
 nodemon.json
 pnpm-lock.*
+.yarn
