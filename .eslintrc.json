@@ -8,7 +8,13 @@
     "class-methods-use-this": [
       "error",
       {
-        "exceptMethods": ["chatInputRun", "run", "printBanner", "registerApplicationCommands", "autocompleteRun"]
+        "exceptMethods": [
+          "chatInputRun",
+          "run",
+          "printBanner",
+          "registerApplicationCommands",
+          "autocompleteRun"
+        ]
       }
     ]
   }
