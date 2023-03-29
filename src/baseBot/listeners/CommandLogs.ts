@@ -5,11 +5,15 @@ import { ChannelIds, COLORS } from '../../lib/Constants';
 
 @ApplyOptions<ListenerOptions>({
   name: 'CommandLogs',
-  event: Events.InteractionCreate,
+  event: Events.ChatInputCommandFinish,
 })
-export default class CommandLogs extends Listener<typeof Events.InteractionCreate> {
+export default class CommandLogs extends Listener<typeof Events.ChatInputCommandFinish> {
   public async run(interaction: Interaction) {
     if (!interaction.isChatInputCommand()) {
+      return;
+    }
+
+    if (!interaction.guild) {
       return;
     }
 
@@ -19,6 +23,18 @@ export default class CommandLogs extends Listener<typeof Events.InteractionCreat
 
     if (!logChannel?.isTextBased()) {
       throw new Error('Cannot fetch log channel');
+    }
+
+    const subCommand = {
+      cmd: 'none',
+      group: 'none',
+    };
+
+    try {
+      subCommand.group = interaction.options.getSubcommandGroup() || 'none';
+      subCommand.cmd = interaction.options.getSubcommand() || 'none';
+    } catch (e) {
+      interaction.client.logger.info('There are no sub commands in this guild command');
     }
 
     logChannel.send({
@@ -33,13 +49,9 @@ export default class CommandLogs extends Listener<typeof Events.InteractionCreat
           thumbnail: {
             url: user.displayAvatarURL(),
           },
-          description: `${user} \`${user.username}\` in ${
-            interaction.channel
-          } triggered an interaction.\n\n**Command:** ${
-            interaction.commandName
-          }\n**Sub Command Group:** ${interaction.options.getSubcommandGroup()}\nSub Command: ${interaction.options.getSubcommand()}`,
+          description: `${user} \`${user.username}\` in ${interaction.channel} triggered an interaction.\n\n**Command:** ${interaction.commandName}\n**Sub Command Group:** ${subCommand.group}\n**Sub Command:** ${subCommand.cmd}`,
 
-          timestamp: interaction.createdTimestamp.toString(),
+          timestamp: new Date(interaction.createdTimestamp).toISOString(),
           footer: {
             text: `ID: ${interaction.user.id}`,
           },
