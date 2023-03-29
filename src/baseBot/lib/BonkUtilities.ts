@@ -1,5 +1,5 @@
 import { EMOJIS } from '../../lib/Constants';
-import { getQuotes } from '../../lib/QuotesManager';
+import { getQuotes } from './QuotesManager';
 
 export default class BonkUtilities {
   message = '';

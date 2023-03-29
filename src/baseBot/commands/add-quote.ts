@@ -3,7 +3,7 @@ import { Command } from '@sapphire/framework';
 import { ApplicationCommandOptionType, AttachmentBuilder, PermissionFlagsBits } from 'discord.js';
 import { COLORS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
-import { addQuote } from '../../lib/QuotesManager';
+import { addQuote } from '../lib/QuotesManager';
 import type { DBQuotes } from '../../typeDefs/typeDefs';
 
 @ApplyOptions<Command.Options>({
