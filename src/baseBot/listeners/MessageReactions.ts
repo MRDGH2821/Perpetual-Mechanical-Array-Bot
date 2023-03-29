@@ -77,9 +77,20 @@ export default class MessageReactions extends Listener<typeof Events.MessageCrea
     const { content } = message;
     const { logger } = message.client;
 
-    function reactEmoji(emoji: EmojiIdentifierResolvable) {
+    async function reactEmoji(emoji: EmojiIdentifierResolvable) {
+      const getEmojiId = () => {
+        if (Object.values(EMOJIS).map(String).includes(emoji.toString())) {
+          const matches = emoji.toString().match(/\d{17,21}/);
+
+          return matches![0];
+        }
+        return null;
+      };
+      const emojiId = getEmojiId();
+      const emote = emojiId ? await message.guild?.emojis.fetch(emojiId) : emoji;
+
       try {
-        message.react(emoji);
+        message.react(emote || emoji);
       } catch (e) {
         logger.warn(`Emoji ${emoji} is not a valid emoji, or the bot doesn't have access to it.`);
       }
