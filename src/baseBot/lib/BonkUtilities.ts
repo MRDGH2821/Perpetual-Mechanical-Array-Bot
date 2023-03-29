@@ -117,8 +117,8 @@ export default class BonkUtilities {
    * @param {string} msg - the message to test against
    * @returns {boolean} - is the msg horny type?
    */
-  isHorny(msg: string): boolean {
-    const checkMsg = msg || this.message;
+  isHorny(msg: string = this.message): boolean {
+    const checkMsg = msg;
     const notHorny = /(n+(o|u)+t*)\s((h+o+r+n+(y|i)+)|(s+e+g+s+)|(s+e+x+))/gimu.test(checkMsg);
     const reallyHorny =
       /\bh+o+r+n+(y|i){1,}\b/gimu.test(checkMsg) ||
