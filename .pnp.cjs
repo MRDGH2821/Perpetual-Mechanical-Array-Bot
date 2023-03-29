@@ -34,6 +34,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@sapphire/pieces", "npm:3.6.1"],\
             ["@sapphire/plugin-logger", "npm:3.0.1"],\
             ["@sapphire/plugin-subcommands", "npm:4.0.0"],\
+            ["@sapphire/ratelimits", "npm:2.4.6"],\
             ["@sapphire/time-utilities", "npm:1.7.9"],\
             ["@sapphire/ts-config", "npm:3.3.4"],\
             ["@sapphire/utilities", "npm:3.11.0"],\
@@ -4329,6 +4330,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@sapphire/pieces", "npm:3.6.1"],\
             ["@sapphire/plugin-logger", "npm:3.0.1"],\
             ["@sapphire/plugin-subcommands", "npm:4.0.0"],\
+            ["@sapphire/ratelimits", "npm:2.4.6"],\
             ["@sapphire/time-utilities", "npm:1.7.9"],\
             ["@sapphire/ts-config", "npm:3.3.4"],\
             ["@sapphire/utilities", "npm:3.11.0"],\
