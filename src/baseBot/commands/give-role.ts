@@ -1,12 +1,13 @@
 /* eslint-disable class-methods-use-this */
-import type { ChatInputOrContextMenuCommandInteraction } from '@sapphire/discord.js-utilities';
+import {
+  ChatInputOrContextMenuCommandInteraction,
+  isGuildMember,
+} from '@sapphire/discord.js-utilities';
 import { Subcommand } from '@sapphire/plugin-subcommands';
 import { pickRandom } from '@sapphire/utilities';
 import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
-  CacheType,
-  ChatInputCommandInteraction,
   ComponentType,
   GuildMember,
   Message,
@@ -309,9 +310,14 @@ export default class GuildCommand extends Subcommand {
     return selectedRoles;
   }
 
-  public async getDetails(interaction: ChatInputCommandInteraction<CacheType>) {
-    let member = interaction.options.getMember('member') as GuildMember;
+  public async getDetails(interaction: Subcommand.ChatInputCommandInteraction) {
+    await interaction.deferReply();
+    let member = interaction.options.getMember('member');
     const proofLink = interaction.options.getString('proof_link');
+
+    if (!member || !isGuildMember(member)) {
+      throw new Error('Cannot fetch Member');
+    }
 
     member = await member.fetch(true);
     if (!member) {
