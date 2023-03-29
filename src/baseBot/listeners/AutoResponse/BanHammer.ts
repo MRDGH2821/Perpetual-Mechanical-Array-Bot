@@ -16,7 +16,7 @@ export default class BanHammerResponse extends Listener<typeof Events.MessageCre
 
   public run(message: Message) {
     const { content } = message;
-    message.client.logger.debug(content);
+    // message.client.logger.debug(content);
     if (
       /b+a+n+h+a+m+m+e+r{1,}/gimu.test(content) &&
       message.member?.permissions.has('BanMembers')
