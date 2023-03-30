@@ -1,9 +1,9 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener, ListenerOptions } from '@sapphire/framework';
 import { pickRandom } from '@sapphire/utilities';
-import type { Message } from 'discord.js';
+import type { Message, TextChannel } from 'discord.js';
 import { getQuotes } from '../../lib/QuotesManager';
-import { checkBoolean } from '../../lib/Utilities';
+import { checkBoolean, freezeMuteUser } from '../../lib/Utilities';
 import CoolDownManager from '../../../lib/CoolDownManager';
 import { ChannelIds } from '../../../lib/Constants';
 
@@ -53,7 +53,17 @@ export default class LeakMuteResponse extends Listener<typeof Events.MessageCrea
           .send({
             content: pickRandom(LeakMuteResponse.LeakQuotes),
           })
-          .then(() => {
+          .then(async () => {
+            if (!channel.isTextBased()) {
+              return;
+            }
+            await freezeMuteUser({
+              chance: 99,
+              channel: channel as TextChannel,
+              duration: 1000 * 60,
+              member: message.member!,
+              reason: pickRandom(LeakMuteResponse.LeakReasons),
+            });
             rateLimit.add('Leaks_ICD', 3000);
           })
           .catch(console.debug);
