@@ -1,6 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, Store } from '@sapphire/framework';
 import { blue, gray, green, magenta, magentaBright, white, yellow } from 'colorette';
+import { setClient } from '../lib/ClientExtractor';
 
 const dev = process.env.NODE_ENV !== 'production';
 
@@ -11,6 +12,8 @@ export default class UserEvent extends Listener {
   public run() {
     this.printBanner();
     this.printStoreDebugInformation();
+
+    setClient(this.container.client)
   }
 
   private printBanner() {
