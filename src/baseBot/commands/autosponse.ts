@@ -3,9 +3,8 @@ import { Time } from '@sapphire/time-utilities';
 import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
-  MessageFlags,
-  PermissionFlagsBits,
-  time,
+  MessageFlags, PermissionsBitField,
+  time
 } from 'discord.js';
 import EnvConfig from '../../lib/EnvConfig';
 import type { JSONCmd } from '../../typeDefs/typeDefs';
@@ -28,12 +27,11 @@ const autoresponseChoices = [
     value: 'YOYOVERSE',
   },
 ];
-
 const cmdDef: JSONCmd = {
   name: 'autoresponse',
   description: 'Autoresponse settings',
   dmPermission: false,
-  defaultMemberPermissions: [PermissionFlagsBits.ManageMessages, PermissionFlagsBits.ManageGuild],
+  defaultMemberPermissions: new PermissionsBitField(['ManageMessages', 'ManageGuild']).bitfield,
   type: ApplicationCommandType.ChatInput,
   options: [
     {
@@ -46,6 +44,7 @@ const cmdDef: JSONCmd = {
           description: 'Select which auto response to disable',
           type: ApplicationCommandOptionType.String,
           choices: autoresponseChoices,
+          required: true,
         },
         {
           name: 'duration',
@@ -67,6 +66,7 @@ const cmdDef: JSONCmd = {
           description: 'Select which auto response to enable',
           type: ApplicationCommandOptionType.String,
           choices: autoresponseChoices,
+          required: true,
         },
       ],
     },
@@ -102,7 +102,10 @@ export default class GuildCommand extends Subcommand {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  public chatRun(interaction: Subcommand.ChatInputCommandInteraction) {
+  public async chatRun(interaction: Subcommand.ChatInputCommandInteraction) {
+    await interaction.deferReply({
+      ephemeral: true,
+    });
     const name = interaction.options.getString('name', true);
     const hours = interaction.options.getInteger('duration') || 24;
     const subCommand = interaction.options.getSubcommand(true);
@@ -118,9 +121,11 @@ export default class GuildCommand extends Subcommand {
       )} \n\nDo note that if the bot restarts, it will be enabled again irrespective of given duration`
       : `\`${name} autoresponse is now enabled.\``;
 
-    interaction.reply({
+    await interaction.editReply({
       content,
-      flags: MessageFlags.Ephemeral,
+      options: {
+        flags: MessageFlags.Ephemeral,
+      },
     });
 
     setTimeout(() => {
