@@ -6,6 +6,7 @@ import {
   ActionRowBuilder,
   APIInteractionGuildMember,
   ButtonBuilder,
+  ButtonStyle,
   GuildMember,
   TextChannel,
 } from 'discord.js';
@@ -131,6 +132,7 @@ export async function freezeMuteUser(options: FreezeOptions) {
               components: [
                 new ButtonBuilder({
                   label: 'Unmute Me!',
+                  style: ButtonStyle.Secondary,
                 }).setCustomId('unmute_me_rng'),
               ],
             }),
