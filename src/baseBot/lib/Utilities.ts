@@ -41,3 +41,10 @@ export function guildMessageIDsExtractor(link: string) {
     messageId: matches[2],
   };
 }
+
+export function checkBoolean(str: string | null | undefined) {
+  if (str) {
+    return str.toLowerCase() === 'true';
+  }
+  return false;
+}
