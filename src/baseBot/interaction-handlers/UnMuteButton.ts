@@ -18,13 +18,17 @@ export default class UnMuteButton extends InteractionHandler {
   }
 
   public async run(interaction: ButtonInteraction) {
+    await interaction.deferUpdate();
+
     const guild = await interaction.client.guilds.fetch(EnvConfig.guildId);
     const member = await guild.members.fetch(interaction.user);
-    const { logger } = interaction.client;
-    const unMuteReason = "Removed freeze mute role on user's request (muted by RNG luck)";
-    await member.roles.remove(ROLE_IDS.OTHERS.FROZEN_RNG, unMuteReason).catch(logger.debug);
-    await member.disableCommunicationUntil(0, unMuteReason).catch(logger.debug);
 
+    console.debug('removing roles/timeout');
+    const unMuteReason = "Removed freeze mute role on user's request (muted by RNG luck)";
+    await member.roles.remove(ROLE_IDS.OTHERS.FROZEN_RNG, unMuteReason).catch(console.debug);
+    await member.disableCommunicationUntil(null, unMuteReason).catch(console.debug);
+
+    console.debug('editing msg');
     await interaction.editReply({
       content: 'Timeout/mute role is successfully removed',
       components: [],
