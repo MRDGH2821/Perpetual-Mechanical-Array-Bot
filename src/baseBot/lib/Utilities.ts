@@ -86,67 +86,68 @@ export async function freezeMuteUser(options: FreezeOptions) {
       text: 'For any problems, file a ticket to contact the staff.',
     },
   };
-  if (RNG <= chance) {
-    await member
-      .edit({
-        communicationDisabledUntil: new Date(Date.now() + duration).toISOString(),
-        reason: `${reason} (muted by RNG)`,
-      })
-      .then(async () => {
-        await channel.send({
-          embeds: [muteEmbed],
-        });
-      })
-      .catch(async (err) => {
-        logger.debug(err);
+  if (RNG > chance) {
+    return;
+  }
+  await member
+    .edit({
+      communicationDisabledUntil: new Date(Date.now() + duration).toISOString(),
+      reason: `${reason} (muted by RNG)`,
+    })
+    .then(async () => {
+      await channel.send({
+        embeds: [muteEmbed],
+      });
+    })
+    .catch(async (err) => {
+      logger.debug(err);
 
-        await channel.send({
-          content: `Dammit, I cannot timeout ${member}. ${painEmotes}\n\nHow about regular mute role? ${pickRandom(
-            [EMOJIS.PaimonThink, EMOJIS.HmmMine, EMOJIS.HmmTher, '🤔'],
-          )}`,
-        });
-
-        await member.roles
-          .add(ROLE_IDS.OTHERS.FROZEN_RNG, `${reason} (muted by RNG)`)
-          .then(async () => {
-            await channel.send({
-              content: 'HAHA Take that!',
-              embeds: [muteEmbed],
-            });
-          })
-          .catch(async (assignErr) => {
-            logger.debug(assignErr);
-            await channel.send({
-              content: `Dammit, I cannot eve mute by mute role ${painEmotes}`,
-            });
-          });
+      await channel.send({
+        content: `Dammit, I cannot timeout ${member}. ${painEmotes}\n\nHow about regular mute role? ${pickRandom(
+          [EMOJIS.PaimonThink, EMOJIS.HmmMine, EMOJIS.HmmTher, '🤔'],
+        )}`,
       });
 
-    await setTimeout(5 * Time.Second);
-    await member.createDM(true).then((dmChannel) => {
-      dmChannel
-        .send({
-          content: 'Click on Unmute button if you wish to be unmuted',
-          components: [
-            new ActionRowBuilder<ButtonBuilder>({
-              components: [
-                new ButtonBuilder({
-                  label: 'Unmute Me!',
-                  style: ButtonStyle.Secondary,
-                }).setCustomId('unmute_me_rng'),
-              ],
-            }),
-          ],
-        })
-        .then(() => {
-          logger.info(`Unmute message sent to ${member.user.username}`);
-        })
-        .catch(async (err) => {
-          logger.debug(err);
+      await member.roles
+        .add(ROLE_IDS.OTHERS.FROZEN_RNG, `${reason} (muted by RNG)`)
+        .then(async () => {
           await channel.send({
-            content: `${member} your DMs are closed, thus couldn't send you a message by which you can unmute yourself`,
+            content: 'HAHA Take that!',
+            embeds: [muteEmbed],
+          });
+        })
+        .catch(async (assignErr) => {
+          logger.debug(assignErr);
+          await channel.send({
+            content: `Dammit, I cannot eve mute by mute role ${painEmotes}`,
           });
         });
     });
-  }
+
+  await setTimeout(5 * Time.Second);
+  await member.createDM(true).then((dmChannel) => {
+    dmChannel
+      .send({
+        content: 'Click on Unmute button if you wish to be unmuted',
+        components: [
+          new ActionRowBuilder<ButtonBuilder>({
+            components: [
+              new ButtonBuilder({
+                label: 'Unmute Me!',
+                style: ButtonStyle.Secondary,
+              }).setCustomId('unmute_me_rng'),
+            ],
+          }),
+        ],
+      })
+      .then(() => {
+        logger.info(`Unmute message sent to ${member.user.username}`);
+      })
+      .catch(async (err) => {
+        logger.debug(err);
+        await channel.send({
+          content: `${member} your DMs are closed, thus couldn't send you a message by which you can unmute yourself`,
+        });
+      });
+  });
 }
