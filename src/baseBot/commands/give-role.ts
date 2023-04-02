@@ -294,7 +294,9 @@ export default class GuildCommand extends Subcommand {
         await msg
           .awaitMessageComponent({
             componentType: ComponentType.StringSelect,
-            filter(i) {
+            dispose: true,
+            async filter(i) {
+              await i.deferUpdate();
               if (i.member) {
                 return isStaff(i.member);
               }
