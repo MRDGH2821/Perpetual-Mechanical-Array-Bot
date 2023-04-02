@@ -70,6 +70,24 @@
     "eslint-plugin-react-hooks": "*"
   },
   "dependenciesMeta": {
+    "eslint@8.37.0": {
+      "unplugged": true
+    },
+    "eslint-config-airbnb-ts-prettier@1.0.1": {
+      "unplugged": true
+    },
+    "eslint-plugin-import@2.27.5": {
+      "unplugged": true
+    },
+    "eslint-plugin-jsx-a11y@6.7.1": {
+      "unplugged": true
+    },
+    "eslint-plugin-react@7.32.2": {
+      "unplugged": true
+    },
+    "eslint-plugin-react-hooks@4.6.0": {
+      "unplugged": true
+    },
     "prettier@2.8.4": {
       "unplugged": true
     },
