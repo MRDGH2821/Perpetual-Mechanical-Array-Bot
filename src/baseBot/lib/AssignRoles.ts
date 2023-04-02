@@ -18,7 +18,7 @@ import { arrayIntersection, isStaff, PMAEventHandler } from './Utilities';
 type AssignRoleOptions = {
   member: GuildMember;
   selectedRolesIDs: string[];
-  message: Message;
+  message: Message | null | undefined;
   interaction: ChatInputOrContextMenuCommandInteraction;
 };
 
@@ -51,7 +51,7 @@ export default class AssignRoles {
 
   #embedDescription: string;
 
-  #proofMessage: Message;
+  #proofMessage: AssignRoleOptions['message'];
 
   readonly #selectedRoleIDs: string[];
 
@@ -154,6 +154,10 @@ export default class AssignRoles {
 
   static registerCrown(args: CrownRegisterArgs) {
     PMAEventHandler.emit('CrownRegister', args);
+  }
+
+  #reactEmoji(emoji: string) {
+    return this.#proofMessage?.react(emoji);
   }
 
   async #awardElementalCrownRole(roleID: ROLE_IDS.CROWN): Promise<RoleAssignStats> {
@@ -449,7 +453,7 @@ export default class AssignRoles {
         stat.exp
       })\n`;
       this.#embedDescription += line;
-      this.#proofMessage.react(stat.emoji);
+      this.#reactEmoji(stat.emoji);
     });
 
     this.#embedDescription += `\n**Total exp:** ${totalExp}`;
@@ -480,7 +484,7 @@ export default class AssignRoles {
             'Copy paste that command. And a message by <@485962834782453762> should come up like [this](https://i.imgur.com/yQvOAzZ.png)',
         });
 
-        this.#proofMessage.react('✅');
+        this.#reactEmoji('✅');
       });
   }
 }
