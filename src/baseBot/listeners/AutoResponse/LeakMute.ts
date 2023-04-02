@@ -13,7 +13,7 @@ rateLimit.add('Leaks_ICD', 3000);
 const muteChance = 15;
 
 @ApplyOptions<ListenerOptions>({
-  enabled: checkBoolean(process.env.AUTORESPONSE_FBI),
+  enabled: checkBoolean(process.env.AUTORESPONSE_LEAKS),
   event: Events.MessageCreate,
   name: 'Leaks Autoresponse',
 })

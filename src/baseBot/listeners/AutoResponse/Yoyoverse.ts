@@ -9,7 +9,7 @@ import CoolDownManager from '../../../lib/CoolDownManager';
 const rateLimit = new CoolDownManager(3000);
 rateLimit.add('Yoyoverse_ICD', 3000);
 @ApplyOptions<ListenerOptions>({
-  enabled: checkBoolean(process.env.AUTORESPONSE_FBI),
+  enabled: checkBoolean(process.env.AUTORESPONSE_YOYOVERSE),
   event: Events.MessageCreate,
   name: 'Yoyoverse Autoresponse',
 })

@@ -5,14 +5,13 @@ import type { Message, TextChannel } from 'discord.js';
 import { ChannelIds, EMOJIS, ROLE_IDS } from '../../../lib/Constants';
 import CoolDownManager from '../../../lib/CoolDownManager';
 import { getQuotes } from '../../lib/QuotesManager';
-import { checkBoolean, freezeMuteUser } from '../../lib/Utilities';
+import { freezeMuteUser } from '../../lib/Utilities';
 
 const muteChance = 10;
 const muteMinutes = [1, 2, 3, 4, 5, 10];
 const rateLimit = new CoolDownManager(1000);
 rateLimit.add('RNG_ICD', 1000);
 @ApplyOptions<ListenerOptions>({
-  enabled: checkBoolean(process.env.AUTORESPONSE_FBI),
   event: Events.MessageCreate,
   name: 'Leaks Autoresponse',
 })

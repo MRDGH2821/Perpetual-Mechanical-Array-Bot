@@ -7,12 +7,12 @@ import { checkBoolean } from '../../lib/Utilities';
 const rateLimit = new CoolDownManager(3000);
 rateLimit.add('Baguette_ICD', 3000);
 @ApplyOptions<ListenerOptions>({
-  enabled: checkBoolean(process.env.AUTORESPONSE_FBI),
+  enabled: checkBoolean(process.env.AUTORESPONSE_BAGUETTE),
   event: Events.MessageCreate,
   name: 'LTF Autoresponse',
 })
 export default class BaguetteResponse extends Listener<typeof Events.MessageCreate> {
-  private static LTF = userMention('476219631539847188');
+  private static LTF = userMention('823564960671072336');
 
   public run(message: Message) {
     const { content } = message;
