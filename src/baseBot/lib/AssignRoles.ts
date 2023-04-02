@@ -81,51 +81,53 @@ export default class AssignRoles {
     this.#embedDescription = `The following roles have been assigned to ${this.#member}:\n`;
   }
 
-  #awardReputationRoles() {
+  async #awardReputationRoles() {
     const systemRoles = Object.values(ROLE_IDS.REPUTATION).map(String);
     const repRoles = this.#selectedRoleIDs.filter((id) => systemRoles.includes(id));
 
-    this.#member.roles.add(repRoles, 'Completed regional exploration & achievements').then(() => {
-      repRoles.forEach((role) => {
-        let emoji: RegionEmoji = '🤔';
+    await this.#member.roles
+      .add(repRoles, 'Completed regional exploration & achievements')
+      .then(() => {
+        repRoles.forEach((role) => {
+          let emoji: RegionEmoji = '🤔';
 
-        switch (role) {
-          case ROLE_IDS.REPUTATION.MONDSTADT: {
-            emoji = '🕊️';
-            break;
-          }
-          case ROLE_IDS.REPUTATION.LIYUE: {
-            emoji = '⚖️';
-            break;
-          }
-          case ROLE_IDS.REPUTATION.INAZUMA: {
-            emoji = '⛩️';
-            break;
-          }
-          case ROLE_IDS.REPUTATION.SUMERU: {
-            emoji = '🌴';
-            break;
-          }
+          switch (role) {
+            case ROLE_IDS.REPUTATION.MONDSTADT: {
+              emoji = '🕊️';
+              break;
+            }
+            case ROLE_IDS.REPUTATION.LIYUE: {
+              emoji = '⚖️';
+              break;
+            }
+            case ROLE_IDS.REPUTATION.INAZUMA: {
+              emoji = '⛩️';
+              break;
+            }
+            case ROLE_IDS.REPUTATION.SUMERU: {
+              emoji = '🌴';
+              break;
+            }
 
-          default: {
-            emoji = '🤔';
-            break;
+            default: {
+              emoji = '🤔';
+              break;
+            }
           }
-        }
-        this.#assignStats.push({
-          exp: 250,
-          notes: 'none',
-          role,
-          emoji,
+          this.#assignStats.push({
+            exp: 250,
+            notes: 'none',
+            role,
+            emoji,
+          });
         });
       });
-    });
   }
 
-  #awardWhaleRole() {
+  async #awardWhaleRole() {
     const { WHALE } = ROLE_IDS.OTHERS;
     const WhaleEmojis: WhaleEmoji[] = ['🐋', '🐳', '💰'];
-    this.#member.roles.add(WHALE, 'Spent some excess dollars in game....').then(() => {
+    await this.#member.roles.add(WHALE, 'Spent some excess dollars in game....').then(() => {
       this.#assignStats.push({
         exp: 250,
         notes: 'none',
@@ -135,9 +137,9 @@ export default class AssignRoles {
     });
   }
 
-  #awardUnalignedCrownRole() {
+  async #awardUnalignedCrownRole() {
     const { UNALIGNED } = ROLE_IDS.CROWN;
-    this.#member.roles.add(UNALIGNED, 'Crowned The Traveler').then(() => {
+    await this.#member.roles.add(UNALIGNED, 'Crowned The Traveler').then(() => {
       AssignRoles.registerCrown({
         crownID: UNALIGNED,
         quantity: 1,
@@ -156,7 +158,7 @@ export default class AssignRoles {
     PMAEventHandler.emit('CrownRegister', args);
   }
 
-  #reactEmoji(emoji: string) {
+  async #reactEmoji(emoji: string) {
     return this.#proofMessage?.react(emoji);
   }
 
@@ -425,23 +427,23 @@ export default class AssignRoles {
   }
 
   async awardRoles() {
-    if (this.#hasSelectedRolesFrom(Object.values(ROLE_IDS.REPUTATION))) {
-      this.#awardReputationRoles();
+    if (this.#hasSelectedRolesFrom(Object.values(ROLE_IDS.REPUTATION).map(String))) {
+      await this.#awardReputationRoles();
     }
 
     if (this.#hasSelectedRole(ROLE_IDS.OTHERS.WHALE)) {
-      this.#awardWhaleRole();
+      await this.#awardWhaleRole();
     }
 
     if (this.#hasSelectedRole(ROLE_IDS.CROWN.UNALIGNED)) {
-      this.#awardUnalignedCrownRole();
+      await this.#awardUnalignedCrownRole();
     }
 
-    if (this.#hasSelectedRolesFrom(Object.values(ROLE_IDS.CROWN))) {
+    if (this.#hasSelectedRolesFrom(Object.values(ROLE_IDS.CROWN).map(String))) {
       await this.#awardElementalCrownRoles();
     }
 
-    if (this.#hasSelectedRolesFrom(Object.values(ROLE_IDS.SpiralAbyss))) {
+    if (this.#hasSelectedRolesFrom(Object.values(ROLE_IDS.SpiralAbyss).map(String))) {
       await this.#awardSpiralAbyssRole();
     }
 
