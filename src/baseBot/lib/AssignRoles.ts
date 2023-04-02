@@ -10,7 +10,6 @@ import {
   MessageFlags,
   roleMention,
 } from 'discord.js';
-import { sequentialPromises } from 'yaspr';
 import { COLORS, EMPTY_STRING, ROLE_IDS } from '../../lib/Constants';
 import type { CrownRegisterArgs } from '../../typeDefs/typeDefs';
 import { arrayIntersection, isStaff, PMAEventHandler } from './Utilities';
@@ -204,6 +203,7 @@ export default class AssignRoles {
         }).setCustomId(`crown_${this.#member.id}_3`),
       ]);
 
+      this.#ctx.client.logger.debug(JSON.stringify({ roleID }, null, 2));
       this.#ctx
         .editReply({
           embeds: [
@@ -220,8 +220,8 @@ export default class AssignRoles {
             fetchReply: true,
           },
         })
-        .then((msg) => {
-          msg
+        .then(async (msg) => {
+          await msg
             .awaitMessageComponent({
               filter(i) {
                 if (i.member) {
@@ -264,12 +264,15 @@ export default class AssignRoles {
         return false;
       }
       return systemRoles.includes(id);
-    });
+    }) as ROLE_IDS.CROWN[];
+    const results: RoleAssignStats[] = [];
 
-    const results: RoleAssignStats[] = await sequentialPromises(
-      crownRoles,
-      this.#awardElementalCrownRole,
-    );
+    // eslint-disable-next-line no-restricted-syntax
+    for (const roleId of crownRoles) {
+      // eslint-disable-next-line no-await-in-loop
+      const result = await this.#awardElementalCrownRole(roleId);
+      results.push(result);
+    }
 
     this.#assignStats.push(...results);
   }
