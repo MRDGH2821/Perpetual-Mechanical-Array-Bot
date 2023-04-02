@@ -105,7 +105,7 @@ export default class GuildCommand extends Subcommand {
     registry.registerContextMenuCommand(
       (builder) => {
         builder
-          .setName('Give Role')
+          .setName('Give Roles')
           .setType(ApplicationCommandType.Message)
           .setDMPermission(false)
           .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles);
@@ -359,6 +359,7 @@ export default class GuildCommand extends Subcommand {
   public override async contextMenuRun(interaction: Subcommand.ContextMenuCommandInteraction) {
     await interaction.deferReply({
       fetchReply: true,
+      ephemeral: true,
     });
     if (!interaction.isMessageContextMenuCommand()) return;
     const message = interaction.targetMessage;
