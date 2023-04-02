@@ -68,5 +68,16 @@
     "eslint-plugin-jsx-a11y": "*",
     "eslint-plugin-react": "*",
     "eslint-plugin-react-hooks": "*"
+  },
+  "dependenciesMeta": {
+    "prettier@2.8.4": {
+      "unplugged": true
+    },
+    "prettier-config-mrdgh2821@3.0.0": {
+      "unplugged": true
+    },
+    "prettier-plugin-organize-imports@3.2.2": {
+      "unplugged": true
+    }
   }
 }
