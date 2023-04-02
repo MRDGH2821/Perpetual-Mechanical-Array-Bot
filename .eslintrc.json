@@ -3,6 +3,7 @@
   "parserOptions": {
     "project": ["tsconfig.json", "tsconfig.eslint.json"]
   },
+  "ignorePatterns": ["./.pnp.*"],
   "rules": {
     "no-console": "off",
     "class-methods-use-this": [
