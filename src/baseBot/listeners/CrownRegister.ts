@@ -49,14 +49,13 @@ export default class UserEvent extends Listener {
       crowns: quantity,
       userID: args.target.id,
     };
-    const { logger } = args.target.client;
     await db
       .collection(collectionName)
       .doc(crownData.userID)
       .set(crownData)
       .then(() => {
-        logger.info(`Crown data added in ${collectionName}!`);
+        this.container.logger.debug(`Crown data added in ${collectionName}!`);
       })
-      .catch(logger.fatal);
+      .catch(console.debug);
   }
 }
