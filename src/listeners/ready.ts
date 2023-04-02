@@ -13,7 +13,7 @@ export default class UserEvent extends Listener {
     this.printBanner();
     this.printStoreDebugInformation();
 
-    setClient(this.container.client)
+    setClient(this.container.client);
   }
 
   private printBanner() {

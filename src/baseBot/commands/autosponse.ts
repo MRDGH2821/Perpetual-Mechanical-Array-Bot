@@ -3,8 +3,9 @@ import { Time } from '@sapphire/time-utilities';
 import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
-  MessageFlags, PermissionsBitField,
-  time
+  MessageFlags,
+  PermissionsBitField,
+  time,
 } from 'discord.js';
 import EnvConfig from '../../lib/EnvConfig';
 import type { JSONCmd } from '../../typeDefs/typeDefs';
