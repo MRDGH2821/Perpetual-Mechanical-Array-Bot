@@ -409,7 +409,7 @@ export default class AssignRoles {
             if (clearType === 'conqueror') {
               conditionals.exp = 1500;
               conditionals.notes = 'Cleared with 3 different traveler elements';
-              conditionals.role = ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER;
+              conditionals.role = ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR;
               conditionals.emoji = '🌀';
             }
 
