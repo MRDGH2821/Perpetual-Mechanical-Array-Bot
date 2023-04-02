@@ -62,16 +62,11 @@ export default class RNGMuteResponse extends Listener<typeof Events.MessageCreat
     .flat();
 
   public run(message: Message) {
-    const { content } = message;
-    console.debug(content);
-
     if (message.channelId !== ChannelIds.RNG_MUTE) {
-      console.debug('Skipping non rng-mute chat');
       return;
     }
 
     if (message.author.bot) {
-      console.debug('Skipping bot msg');
       return;
     }
     try {

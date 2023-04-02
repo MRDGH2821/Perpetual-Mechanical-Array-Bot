@@ -72,20 +72,16 @@ export default class LeakMuteResponse extends Listener<typeof Events.MessageCrea
 
   public run(message: Message) {
     const { content } = message;
-    console.debug(content);
 
     if (message.channelId !== ChannelIds.LEAKS_DISCUSSION) {
-      console.debug('Skipping non leaks chat');
       return;
     }
 
     if (!content.toLowerCase().includes('leak')) {
-      console.debug('Skipping a non leak msg');
       return;
     }
 
     if (message.author.bot) {
-      console.debug('Skipping bot msg');
       return;
     }
     try {

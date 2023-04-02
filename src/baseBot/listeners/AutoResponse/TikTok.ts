@@ -26,20 +26,16 @@ export default class TikTokResponse extends Listener<typeof Events.MessageCreate
 
   public run(message: Message) {
     const { content } = message;
-    console.debug(content);
 
     if (message.channelId === '840268374621945906') {
-      console.debug('Skipping TC chat');
       return;
     }
 
     if (!content.toLowerCase().includes('tiktok')) {
-      console.debug('Skipping a non TikTok msg');
       return;
     }
 
     if (message.author.bot) {
-      console.debug('Skipping bot msg');
       return;
     }
     try {

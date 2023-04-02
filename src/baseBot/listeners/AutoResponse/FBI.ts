@@ -34,17 +34,14 @@ export default class FBIResponse extends Listener<typeof Events.MessageCreate> {
     console.debug(content);
 
     if (message.channelId === '840268374621945906') {
-      console.debug('Skipping TC chat');
       return;
     }
 
     if (!content.toLowerCase().includes('fbi')) {
-      console.debug('Skipping a non fbi msg');
       return;
     }
 
     if (message.author.bot) {
-      console.debug('Skipping bot msg');
       return;
     }
     try {

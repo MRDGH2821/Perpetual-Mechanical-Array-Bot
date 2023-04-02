@@ -19,17 +19,14 @@ export default class BaguetteResponse extends Listener<typeof Events.MessageCrea
     console.debug(content);
 
     if (message.channelId === '840268374621945906') {
-      console.debug('Skipping TC chat');
       return;
     }
 
     if (!content.toLowerCase().includes('baguette')) {
-      console.debug('Skipping a non baguette msg');
       return;
     }
 
     if (message.author.bot) {
-      console.debug('Skipping bot msg');
       return;
     }
     try {
