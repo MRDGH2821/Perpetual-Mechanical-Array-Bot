@@ -223,13 +223,15 @@ export default class AssignRoles {
         .then(async (msg) => {
           await msg
             .awaitMessageComponent({
-              filter(i) {
+              async filter(i) {
+                await i.deferUpdate();
                 if (i.member) {
                   return isStaff(i.member);
                 }
                 return false;
               },
               componentType: ComponentType.Button,
+              dispose: true,
             })
             .then((btnCtx) => {
               const quantity = parseInt(btnCtx.customId.at(-1) || '1', 10);
@@ -364,10 +366,11 @@ export default class AssignRoles {
           fetchReply: true,
         },
       })
-      .then((msg) => {
-        msg
+      .then(async (msg) => {
+        await msg
           .awaitMessageComponent({
-            filter(i) {
+            async filter(i) {
+              await i.deferUpdate();
               if (i.member) {
                 return isStaff(i.member);
               }
