@@ -21,9 +21,9 @@ export default class TravelerTechAutocompleteHandler extends InteractionHandler 
   }
 
   public override async parse(interaction: AutocompleteInteraction) {
-    // Get the focussed (current) option
+    // Get the focused (current) option
     const focused = interaction.options.getFocused();
-    interaction.client.logger.debug({ focused });
+    // interaction.client.logger.debug({ focused });
 
     const focusedOption = focused.toLowerCase();
 
@@ -84,7 +84,7 @@ export default class TravelerTechAutocompleteHandler extends InteractionHandler 
         choices = undefined;
       }
     }
-    interaction.client.logger.debug({ choices });
+    // interaction.client.logger.debug({ choices });
     if (choices) {
       return this.some(
         choices
