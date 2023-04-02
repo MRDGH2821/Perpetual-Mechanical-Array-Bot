@@ -12,6 +12,7 @@ class CustomClient extends SapphireClient {
     super(options);
 
     this.stores.registerPath(join(this.rootData.root, 'baseBot'));
+    this.stores.registerPath(join(this.rootData.root, 'hallOfFame'));
   }
 }
 
