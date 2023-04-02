@@ -86,12 +86,12 @@ export default class GuildCommand extends Subcommand {
         {
           name: cmdDef.options![0].name,
           type: 'method',
-          chatInputRun: 'getDetails',
+          chatInputRun: 'chatInputGet',
         },
         {
           name: cmdDef.options![1].name,
           type: 'method',
-          chatInputRun: 'getDetails',
+          chatInputRun: 'chatInputGet',
         },
       ],
     });
@@ -310,7 +310,7 @@ export default class GuildCommand extends Subcommand {
     return selectedRoles;
   }
 
-  public async getDetails(interaction: Subcommand.ChatInputCommandInteraction) {
+  public async chatInputGet(interaction: Subcommand.ChatInputCommandInteraction) {
     await interaction.deferReply();
     let member = interaction.options.getMember('member');
     const proofLink = interaction.options.getString('proof_link');
@@ -345,10 +345,6 @@ export default class GuildCommand extends Subcommand {
     if (interaction.options.getSubcommand() === 'multi') {
       const moreRoles = await this.selectRoles(interaction, member);
       selectedRoles.push(...moreRoles);
-    }
-
-    if (!message) {
-      throw new Error('Cannot fetch Message');
     }
 
     return new AssignRoles({
