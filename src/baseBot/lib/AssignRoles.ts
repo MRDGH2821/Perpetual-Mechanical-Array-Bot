@@ -388,12 +388,13 @@ export default class AssignRoles {
               emoji: '😎',
             };
 
-            const result: RoleAssignStats = {
+            let result: RoleAssignStats = {
               exp: 0,
               notes: 'none',
               role: '',
               emoji: '🤔',
             };
+
             if (clearType === 'not_satisfied') {
               await restoreRoles('none', this.#member);
               return;
@@ -413,11 +414,11 @@ export default class AssignRoles {
               conditionals.emoji = '🌀';
             }
 
-            result.exp = conditionals.exp;
-            result.notes = conditionals.notes;
-            result.role = conditionals.role;
-            this.#member.roles.add(result.role).then(async (member) => {
+            result = conditionals;
+            await this.#member.roles.add(result.role).then(async (member) => {
               this.#assignStats.push(result);
+
+              await this.#member.roles.remove(Object.values(SpiralAbyss), 'Removing old roles');
               await restoreRoles(conditionals.role, member);
             });
           });
