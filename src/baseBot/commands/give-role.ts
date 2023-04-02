@@ -281,7 +281,8 @@ export default class GuildCommand extends Subcommand {
                 options: optionsArr,
               })
                 .setCustomId('selected_roles')
-                .setMinValues(1),
+                .setMinValues(1)
+                .setMaxValues(optionsArr.length),
             ],
           },
         ],
@@ -289,8 +290,8 @@ export default class GuildCommand extends Subcommand {
           fetchReply: true,
         },
       })
-      .then((msg) => {
-        msg
+      .then(async (msg) => {
+        await msg
           .awaitMessageComponent({
             componentType: ComponentType.StringSelect,
             filter(i) {
