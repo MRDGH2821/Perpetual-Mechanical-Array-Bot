@@ -88,17 +88,29 @@ export default class AssignRoles {
     this.#member.roles.add(repRoles, 'Completed regional exploration & achievements').then(() => {
       repRoles.forEach((role) => {
         let emoji: RegionEmoji = '🤔';
-        if (role === ROLE_IDS.REPUTATION.MONDSTADT) {
-          emoji = '🕊️';
-        }
-        if (role === ROLE_IDS.REPUTATION.LIYUE) {
-          emoji = '⚖️';
-        }
-        if (role === ROLE_IDS.REPUTATION.INAZUMA) {
-          emoji = '⛩️';
-        }
-        if (role === ROLE_IDS.REPUTATION.SUMERU) {
-          emoji = '🌴';
+
+        switch (role) {
+          case ROLE_IDS.REPUTATION.MONDSTADT: {
+            emoji = '🕊️';
+            break;
+          }
+          case ROLE_IDS.REPUTATION.LIYUE: {
+            emoji = '⚖️';
+            break;
+          }
+          case ROLE_IDS.REPUTATION.INAZUMA: {
+            emoji = '⛩️';
+            break;
+          }
+          case ROLE_IDS.REPUTATION.SUMERU: {
+            emoji = '🌴';
+            break;
+          }
+
+          default: {
+            emoji = '🤔';
+            break;
+          }
         }
         this.#assignStats.push({
           exp: 250,
