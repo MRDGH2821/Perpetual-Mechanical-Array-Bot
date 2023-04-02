@@ -15,9 +15,16 @@ rateLimit.add('FBI_ICD', 3000);
 })
 export default class FBIResponse extends Listener<typeof Events.MessageCreate> {
   static FBIQuotes = [
-    'You know what, I wonder if its actually NSA which spies or FBI :thinking:',
-    'https://tenor.com/view/traffic-fbi-open-up-raid-gif-13450966',
+    '*FBI investigation commences*',
     '*FBI is coming*',
+    'Did you know FBI stands for Faraway Buddy Insideyourdevice ?',
+    'https://tenor.com/view/chicken-fbi-skeptic-chicken-funny-gif-14153035',
+    'https://tenor.com/view/dark-red-fbi-warning-gif-18254979',
+    'https://tenor.com/view/fbi-swat-busted-police-open-up-gif-16928811',
+    'https://tenor.com/view/priyam-raj-fbi-meme-fbi-open-up-fbi-gamer-gif-19628656',
+    'https://tenor.com/view/traffic-fbi-open-up-raid-gif-13450966',
+    'Rick Astley was a part of F.B.I. ||(music band)||',
+    'You know what, I wonder if its actually NSA which spies or FBI :thinking:',
   ]
     .concat(getQuotes('FBIGifs'), getQuotes('FBIQuotes'))
     .flat();

@@ -16,9 +16,10 @@ rateLimit.add('TikTok_ICD', 3000);
 })
 export default class TikTokResponse extends Listener<typeof Events.MessageCreate> {
   static TikTokQuotes = [
-    'Somebody mentioned TikTok?!?!?!??!?!??!\n\n*Dies of cringe*',
-    'https://tenor.com/view/tiktok-tiktok-cringe-watermark-tiktok-watermark-watermark-cringe-gif-22182993',
+    'Do this\n https://tenor.com/view/tiktok-tiktokbad-bad-trash-garbage-gif-21041014',
     'https://cdn.discordapp.com/attachments/803459900180004904/1005441017375367208/image0.gif',
+    'https://tenor.com/view/tiktok-tiktok-cringe-watermark-tiktok-watermark-watermark-cringe-gif-22182993',
+    'Somebody mentioned TikTok?!?!?!??!? \n\n*Dies of cringe*',
   ]
     .concat(getQuotes('TikTokGifs'), getQuotes('TikTokQuotes'))
     .flat();
