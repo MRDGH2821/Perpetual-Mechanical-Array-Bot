@@ -1,6 +1,6 @@
 import { Logger } from '@sapphire/plugin-logger';
 import { range } from '@sapphire/utilities';
-import { Collection, User } from 'discord.js';
+import { Collection, Embed, User } from 'discord.js';
 import { sequentialPromises } from 'yaspr';
 import { checkBoolean } from '../../baseBot/lib/Utilities';
 import db from '../../lib/Firestore';
@@ -115,5 +115,16 @@ export default class HallOfFameCache {
     const validElements = Object.keys(this.#cache) as ELEMENTS[];
 
     await sequentialPromises(validElements, this.prepareSubCache);
+  }
+
+  static async generateEmbeds(element: ELEMENTS, quantity: CrownQuantity) {
+    return new Promise((res, rej) => {
+      const collection = this.#accessCache(element, quantity);
+
+      logger.debug('Building embeds for: ', {
+        element,
+        length: Object.keys(collection).length,
+      });
+    });
   }
 }
