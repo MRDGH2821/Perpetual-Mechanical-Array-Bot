@@ -97,5 +97,8 @@
     "prettier-plugin-organize-imports@3.2.2": {
       "unplugged": true
     }
+  },
+  "optionalDependencies": {
+    "@sapphire/cli": "^1.4.0"
   }
 }
