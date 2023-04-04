@@ -2,6 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 import type { ForumChannel } from 'discord.js';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
+import db from '../../lib/Firestore';
 
 @ApplyOptions<ListenerOptions>({
   emitter: PMAEventHandler,
@@ -9,5 +10,22 @@ import { PMAEventHandler } from '../../baseBot/lib/Utilities';
   name: 'Hall of Fame Channel Setup',
 })
 export default class UserEvent extends Listener {
-  public run(forumChannel: ForumChannel) {}
+  public async run(forumChannel: ForumChannel) {
+    const { logger } = this.container;
+    logger.debug(`Got ${forumChannel}`);
+
+    await db
+      .collection('hall-of-fame-config')
+      .doc('channel')
+      .set(
+        { forumId: forumChannel.id },
+        {
+          merge: true,
+        },
+      )
+      .then(() => {
+        logger.debug(`Forum channel registered in database for Hall Of Fame`);
+      })
+      .catch(logger.error);
+  }
 }
