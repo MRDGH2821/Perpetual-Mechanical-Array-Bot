@@ -109,14 +109,19 @@ export default class HallOfFameCache {
         logger.debug(`Skipping ${element}-${qty}`);
       }
     });
-
     logger.debug(`Cache for ${element} is ready`);
   }
 
   static async prepareCache() {
     const validElements = Object.keys(this.#cache) as ELEMENTS[];
 
-    await sequentialPromises(validElements, this.#prepareSubCache);
+    // await sequentialPromises(validElements, this.#prepareSubCache);
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const ele of validElements) {
+      // eslint-disable-next-line no-await-in-loop
+      await this.#prepareSubCache(ele);
+    }
   }
 
   static generateEmbeds(element: ELEMENTS, quantity: CrownQuantity): Promise<APIEmbed[]> {
