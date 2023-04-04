@@ -1,10 +1,12 @@
 import { Logger } from '@sapphire/plugin-logger';
 import { range } from '@sapphire/utilities';
-import { Collection, Embed, User } from 'discord.js';
+import { APIEmbed, Collection, User } from 'discord.js';
 import { sequentialPromises } from 'yaspr';
 import { checkBoolean } from '../../baseBot/lib/Utilities';
 import db from '../../lib/Firestore';
+import { getUser, publishEmbedsGenerator } from '../../lib/utils';
 import type { ELEMENTS } from '../../typeDefs/typeDefs';
+import { crownProps } from './Utilities';
 
 type CrownQuantity = 1 | 2 | 3;
 type DBHallOfFameData = {
@@ -118,6 +120,7 @@ export default class HallOfFameCache {
   }
 
   static async generateEmbeds(element: ELEMENTS, quantity: CrownQuantity) {
+    const props = crownProps(element);
     return new Promise((res, rej) => {
       const collection = this.#accessCache(element, quantity);
 
@@ -125,6 +128,32 @@ export default class HallOfFameCache {
         element,
         length: Object.keys(collection).length,
       });
+
+      const embed: APIEmbed = {
+        title: `**${props.name}** ${props.emoji}`,
+        color: props.color,
+        thumbnail: {
+          url: props.icon,
+        },
+        description: `${props.description}\nCrowns used: ${quantity}\n\n`,
+        timestamp: new Date().toISOString(),
+        fields: [],
+      };
+
+      sequentialPromises(
+        collection.map((data) => data.userID),
+        getUser,
+      )
+        .then((users) => {
+          publishEmbedsGenerator({
+            users,
+            embedTemplate: embed,
+            usersPerPage: this.#usersPerPage,
+          })
+            .then(res)
+            .catch(rej);
+        })
+        .catch(rej);
     });
   }
 }
