@@ -95,7 +95,7 @@ export default class HallOfFameCache {
     return subCache;
   }
 
-  static async prepareSubCache(element: ELEMENTS) {
+  static async #prepareSubCache(element: ELEMENTS) {
     const hofData = await this.#fetchDB(element);
     range(1, 3, 1).forEach((qty) => {
       try {
@@ -116,10 +116,10 @@ export default class HallOfFameCache {
   static async prepareCache() {
     const validElements = Object.keys(this.#cache) as ELEMENTS[];
 
-    await sequentialPromises(validElements, this.prepareSubCache);
+    await sequentialPromises(validElements, this.#prepareSubCache);
   }
 
-  static async generateEmbeds(element: ELEMENTS, quantity: CrownQuantity) {
+  static generateEmbeds(element: ELEMENTS, quantity: CrownQuantity): Promise<APIEmbed[]> {
     const props = crownProps(element);
     return new Promise((res, rej) => {
       const collection = this.#accessCache(element, quantity);
