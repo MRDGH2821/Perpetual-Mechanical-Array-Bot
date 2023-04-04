@@ -1,5 +1,6 @@
 import { Subcommand } from '@sapphire/plugin-subcommands';
 import { ApplicationCommandOptionType, ChannelType, MessageFlags } from 'discord.js';
+import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import EnvConfig from '../../lib/EnvConfig';
 import type { JSONCmd } from '../../typeDefs/typeDefs';
 
@@ -57,7 +58,27 @@ export default class UserCommand extends Subcommand {
           name: cmdDef.options![1].name,
           type: 'method',
           chatInputRun(interaction) {
-            return interaction.reply({ content: 'Hall of Fame will be published soon.' });
+            return interaction.reply({
+              content: 'Hall of Fame will be published soon.',
+              flags: MessageFlags.Ephemeral,
+            });
+          },
+        },
+        {
+          name: cmdDef.options![2].name,
+          type: 'method',
+          chatInputRun(interaction) {
+            const forumChannel = interaction.options.getChannel<ChannelType.GuildForum>(
+              'forum_channel',
+              true,
+              [ChannelType.GuildForum],
+            );
+
+            PMAEventHandler.emit('HoFRefresh', forumChannel);
+            return interaction.reply({
+              content: `Hall of Fame updates will now arrive in ${forumChannel}`,
+              flags: MessageFlags.Ephemeral,
+            });
           },
         },
       ],
