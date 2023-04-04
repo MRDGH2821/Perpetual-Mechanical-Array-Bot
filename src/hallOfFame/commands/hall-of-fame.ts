@@ -23,12 +23,12 @@ const cmdDef: JSONCmd = {
         {
           name: 'crown_quantity',
           description: 'Select Crown Quantity',
-          type: ApplicationCommandOptionType.String,
+          type: ApplicationCommandOptionType.Integer,
           required: true,
           choices: [
-            { name: 'One (1)', value: 'one' },
-            { name: 'Two (2)', value: 'two' },
-            { name: 'Three (3)', value: 'three' },
+            { name: 'One (1)', value: 1 },
+            { name: 'Two (2)', value: 2 },
+            { name: 'Three (3)', value: 3 },
           ],
         },
       ],
