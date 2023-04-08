@@ -20,10 +20,16 @@ LINTER_RULES_PATH: .
 PRINT_ALPACA: false
 
 PRE_COMMANDS:
-  - command: 'npm ci'
+  - command: 'corepack enable'
+    cwd: 'workspace'
+  - command: 'corepack prepare yarn@stable --activate'
+    cwd: 'workspace'
+  - command: 'yarn install'
     cwd: 'workspace'
 POST_COMMANDS:
-  - command: 'npm run pretty'
+  - command: 'yarn run format'
+    cwd: 'workspace'
+  - command: 'yarn run lint'
     cwd: 'workspace'
 IGNORE_GITIGNORED_FILES: true
 
