@@ -6,7 +6,9 @@
     ".vscode",
     "megalinter",
     "package-lock.json",
-    "report"
+    "report",
+    "**/.yarn/**",
+    "yarn.lock"
   ],
   "language": "en,en-GB,en-US",
   "noConfigSearch": true,
