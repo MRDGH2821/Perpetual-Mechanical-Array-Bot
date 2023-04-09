@@ -8,9 +8,11 @@
     "howardzuo.vscode-npm-dependency",
     "irongeek.vscode-env",
     "mikestead.dotenv",
-    "PatrykPeszko.vscode-proselint",
+    "patrykpeszko.vscode-proselint",
     "ryanlaws.toggle-case",
     "streetsidesoftware.code-spell-checker",
-    "arcanis.vscode-zipfs"
+    "arcanis.vscode-zipfs",
+    "exiasr.hadolint",
+    "davidanson.vscode-markdownlint"
   ]
 }

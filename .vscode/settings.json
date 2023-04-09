@@ -4,5 +4,14 @@
     "**/.pnp.*": true
   },
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "npm.packageManager": "yarn"
+  "npm.packageManager": "yarn",
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "json",
+    "jsonc",
+    "json5",
+    "typescript",
+    "typescriptreact"
+  ]
 }
