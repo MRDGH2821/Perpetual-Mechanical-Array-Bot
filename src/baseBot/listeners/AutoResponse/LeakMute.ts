@@ -2,10 +2,10 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener, ListenerOptions } from '@sapphire/framework';
 import { pickRandom } from '@sapphire/utilities';
 import type { Message, TextChannel } from 'discord.js';
+import { ChannelIds, EMOJIS } from '../../../lib/Constants';
+import CoolDownManager from '../../../lib/CoolDownManager';
 import { getQuotes } from '../../lib/QuotesManager';
 import { checkBoolean, freezeMuteUser } from '../../lib/Utilities';
-import CoolDownManager from '../../../lib/CoolDownManager';
-import { ChannelIds, EMOJIS } from '../../../lib/Constants';
 
 const rateLimit = new CoolDownManager(3000);
 rateLimit.add('Leaks_ICD', 3000);

@@ -1,6 +1,6 @@
 import { Collection } from 'discord.js';
-import type { DBQuotes, DBQuotesCollection } from '../../typeDefs/typeDefs';
 import db from '../../lib/Firestore';
+import type { DBQuotes, DBQuotesCollection } from '../../typeDefs/typeDefs';
 
 export const DBquotes = new Collection() as DBQuotesCollection;
 

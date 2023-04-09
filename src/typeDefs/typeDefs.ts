@@ -1,4 +1,4 @@
-import type { ChatInputApplicationCommandData, GuildMember, Collection } from 'discord.js';
+import type { ChatInputApplicationCommandData, Collection, GuildMember } from 'discord.js';
 import type { ROLE_IDS } from '../lib/Constants';
 
 export type JSONCmd = ChatInputApplicationCommandData;

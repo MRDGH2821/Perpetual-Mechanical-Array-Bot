@@ -2,9 +2,9 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener, ListenerOptions } from '@sapphire/framework';
 import { pickRandom } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
+import CoolDownManager from '../../../lib/CoolDownManager';
 import { getQuotes } from '../../lib/QuotesManager';
 import { checkBoolean } from '../../lib/Utilities';
-import CoolDownManager from '../../../lib/CoolDownManager';
 
 const rateLimit = new CoolDownManager(3000);
 rateLimit.add('FBI_ICD', 3000);
