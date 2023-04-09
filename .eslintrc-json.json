@@ -24,5 +24,6 @@
         "jsonSyntax": "JSON5"
       }
     }
-  ]
+  ],
+  "$schema": "https://json.schemastore.org/eslintrc"
 }
