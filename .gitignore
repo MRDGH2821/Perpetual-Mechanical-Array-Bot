@@ -84,11 +84,16 @@ node_modules/
 # Yarn files
 .yarn/install-state.gz
 .yarn/build-state.yml
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 
 # Environment variables
 .DS_Store
-
-dist/
 
 # Ignore the config file (contains sensitive information such as tokens)
 config.ts
@@ -105,6 +110,10 @@ package-lock.json
 .env.development.local
 .env.test.local
 .env.production.local
+.env.prod
+.env.dev
+.env.*
+
 
 
 config.json
@@ -113,9 +122,6 @@ package-lock.json
 deploy-stats.txt
 
 already-old/
-.env.prod
-.env.dev
-.env.*
 ./src/lib/firebase-service-acc/*.json
 src/lib/firebase-service-acc/*.json
 old-src/*
@@ -130,6 +136,5 @@ firebase-service-acc/*.json
 .ignore/*
 nodemon.json
 pnpm-lock.*
-.yarn/cache
-.yarn/unplugged
+dist/
 _unzipped.yarn
