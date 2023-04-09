@@ -2,18 +2,13 @@
 FROM node:lts-alpine AS builder
 WORKDIR /app
 
-RUN apk update && apk add bash curl npm && rm -rf /var/cache/apk/*
+RUN apk update && apk add bash=~5 curl=~7 npm=~9 --no-cache && corepack enable && corepack prepare yarn@stable --activate && yarn set version berry
 
-# Download node-prune
-RUN curl -sf https://gobinaries.com/tj/node-prune | sh
-
-COPY package*.json ./
-RUN npm i
 COPY . .
 
-RUN npm prune --production
-RUN /usr/local/bin/node-prune
+RUN yarn install
 
+RUN yarn run build && yarn prod-install /app/build && cp -r dist /app/build
 
 # Minimalistic image
 FROM node:lts-slim
@@ -21,9 +16,8 @@ WORKDIR /app
 
 COPY ./firebase-service-acc ./firebase-service-acc
 COPY package*.json ./
-RUN npm install --omit=dev
 
-COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/build .
 
 RUN useradd pma-bot
 
@@ -31,4 +25,4 @@ USER pma-bot
 
 HEALTHCHECK NONE
 
-ENTRYPOINT [ "npm", "start" ]
+ENTRYPOINT [ "yarn", "start" ]
