@@ -1,5 +1,5 @@
 {
-  "extends": ["eslint-config-airbnb-ts-prettier"],
+  "extends": ["eslint-config-airbnb-ts-prettier", ".eslintrc-json.json"],
   "parserOptions": {
     "project": ["tsconfig.json", "tsconfig.eslint.json"]
   },

@@ -1005,7 +1005,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn@npm:^8.8.0":
+"acorn@npm:^8.5.0, acorn@npm:^8.8.0":
   version: 8.8.2
   resolution: "acorn@npm:8.8.2"
   bin:
@@ -1817,6 +1817,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-plugin-jsonc@npm:^2.7.0":
+  version: 2.7.0
+  resolution: "eslint-plugin-jsonc@npm:2.7.0"
+  dependencies:
+    "@eslint-community/eslint-utils": ^4.2.0
+    jsonc-eslint-parser: ^2.0.4
+    natural-compare: ^1.4.0
+  peerDependencies:
+    eslint: ">=6.0.0"
+  checksum: d5426d69f4279b0fd95943afaa2f583900640f2c12a88bdf34cc1e7f571f8f821fb45edac7fe56fa0474ac62214faedb4b8239b28c003a5b0808e4395d08df12
+  languageName: node
+  linkType: hard
+
 "eslint-plugin-jsx-a11y@npm:^6.6.1, eslint-plugin-jsx-a11y@npm:^6.7.1":
   version: 6.7.1
   resolution: "eslint-plugin-jsx-a11y@npm:6.7.1"
@@ -1897,7 +1910,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-visitor-keys@npm:^3.3.0, eslint-visitor-keys@npm:^3.4.0":
+"eslint-visitor-keys@npm:^3.0.0, eslint-visitor-keys@npm:^3.3.0, eslint-visitor-keys@npm:^3.4.0":
   version: 3.4.0
   resolution: "eslint-visitor-keys@npm:3.4.0"
   checksum: 33159169462d3989321a1ec1e9aaaf6a24cc403d5d347e9886d1b5bfe18ffa1be73bdc6203143a28a606b142b1af49787f33cff0d6d0813eb5f2e8d2e1a6043c
@@ -2968,6 +2981,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jsonc-eslint-parser@npm:^2.0.4":
+  version: 2.2.0
+  resolution: "jsonc-eslint-parser@npm:2.2.0"
+  dependencies:
+    acorn: ^8.5.0
+    eslint-visitor-keys: ^3.0.0
+    espree: ^9.0.0
+    semver: ^7.3.5
+  checksum: aac6509850ba8a893956e00d862d488de9c7f32a352d612f361f43635b3a3426c2ed8b457bdef8188d4ea210b2d7ebcab225caef2d445a92c30cb9be7bb9b8ef
+  languageName: node
+  linkType: hard
+
 "jsonwebtoken@npm:^9.0.0":
   version: 9.0.0
   resolution: "jsonwebtoken@npm:9.0.0"
@@ -3665,6 +3690,7 @@ __metadata:
     eslint: ^8.38.0
     eslint-config-airbnb-ts-prettier: ^1.0.1
     eslint-plugin-import: ^2.27.5
+    eslint-plugin-jsonc: ^2.7.0
     eslint-plugin-jsx-a11y: ^6.7.1
     eslint-plugin-react: ^7.32.2
     eslint-plugin-react-hooks: ^4.6.0
@@ -4055,7 +4081,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.1.2, semver@npm:^7.3.7, semver@npm:^7.3.8":
+"semver@npm:^7.1.2, semver@npm:^7.3.5, semver@npm:^7.3.7, semver@npm:^7.3.8":
   version: 7.3.8
   resolution: "semver@npm:7.3.8"
   dependencies:
