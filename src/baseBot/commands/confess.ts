@@ -203,6 +203,9 @@ export default class GuildCommand extends Command {
       await interaction
         .awaitModalSubmit({
           time: 3 * Time.Minute,
+          async filter(itx) {
+            return itx.customId === 'confess_modal';
+          },
         })
         .then((modalCtx) => {
           const confessionReply = modalCtx.fields.getTextInputValue('confession_reply');
