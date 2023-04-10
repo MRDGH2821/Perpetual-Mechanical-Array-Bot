@@ -27,6 +27,10 @@ const autoresponseChoices = [
     name: 'Yoyoverse',
     value: 'YOYOVERSE',
   },
+  {
+    name: 'Baguette',
+    value: 'BAGUETTE',
+  },
 ];
 const cmdDef: JSONCmd = {
   name: 'autoresponse',
