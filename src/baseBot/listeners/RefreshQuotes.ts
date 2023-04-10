@@ -1,6 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Listener, ListenerOptions, Logger, LogLevel } from '@sapphire/framework';
+import { Listener, ListenerOptions } from '@sapphire/framework';
 import { QUOTE_CATEGORIES } from '../../lib/DynamicConstants';
+import { customLogger } from '../../lib/utils';
 import QuotesManager from '../lib/QuotesManager';
 import { PMAEventHandler } from '../lib/Utilities';
 
@@ -12,7 +13,7 @@ import { PMAEventHandler } from '../lib/Utilities';
 })
 export default class UserEvent extends Listener {
   public async run() {
-    const logger = new Logger(LogLevel.None);
+    const logger = customLogger;
     const promises: Promise<void>[] = [];
     logger.info('Refreshing quotes');
     QUOTE_CATEGORIES.forEach((category) => {

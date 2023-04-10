@@ -6,6 +6,7 @@ import {
   MessageFlags,
 } from 'discord.js';
 import EnvConfig from '../../lib/EnvConfig';
+import { customLogger } from '../../lib/utils';
 import type { ELEMENTS, JSONCmd } from '../../typeDefs/typeDefs';
 import { findElementProp, findTech, isSkill } from '../lib/TravelerTechnologies';
 
@@ -104,6 +105,7 @@ export default class UserCommand extends Subcommand {
     });
   }
 
+  // eslint-disable-next-line class-methods-use-this
   public async runCmd(interaction: ChatInputCommandInteraction) {
     const element = interaction.options.getSubcommandGroup(true);
     const subCommand = interaction.options.getSubcommand(true);
@@ -111,16 +113,16 @@ export default class UserCommand extends Subcommand {
     if (subCommand === 'guide') {
       return interaction.reply({ content: eleProp.guide });
     }
-    this.container.logger.debug('Obtaining tech input');
+    customLogger.debug('Obtaining tech input');
     const techId = interaction.options.getString('tech', true);
 
-    this.container.logger.debug('Searching for tech');
+    customLogger.debug('Searching for tech');
     const tech = findTech({
       element: element as ELEMENTS,
       type: isSkill(subCommand) ? 'skill' : 'burst',
       id: techId,
     });
-    this.container.logger.debug(tech);
+    customLogger.debug(tech);
 
     if (tech) {
       const { gif } = tech;

@@ -2,6 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, ListenerOptions } from '@sapphire/framework';
 import { ROLE_IDS } from '../../lib/Constants';
 import db from '../../lib/Firestore';
+import { customLogger } from '../../lib/utils';
 import type { CrownRegisterArgs } from '../../typeDefs/typeDefs';
 import { PMAEventHandler } from '../lib/Utilities';
 
@@ -54,7 +55,7 @@ export default class UserEvent extends Listener {
       .doc(crownData.userID)
       .set(crownData)
       .then(() => {
-        this.container.logger.debug(`Crown data added in ${collectionName}!`);
+        customLogger.debug(`Crown data added in ${collectionName}!`);
       })
       .catch(console.debug);
   }

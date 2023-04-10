@@ -3,6 +3,7 @@ import { Events, Listener, ListenerOptions } from '@sapphire/framework';
 import { pickRandom } from '@sapphire/utilities';
 import type { EmojiIdentifierResolvable, Message } from 'discord.js';
 import { EMOJIS } from '../../lib/Constants';
+import { customLogger } from '../../lib/utils';
 import BonkUtilities from '../lib/BonkUtilities';
 
 @ApplyOptions<ListenerOptions>({
@@ -75,7 +76,7 @@ export default class MessageReactions extends Listener<typeof Events.MessageCrea
 
   public run(message: Message) {
     const { content } = message;
-    const { logger } = message.client;
+    const logger = customLogger;
 
     async function reactEmoji(emoji: EmojiIdentifierResolvable) {
       const getEmojiId = () => {

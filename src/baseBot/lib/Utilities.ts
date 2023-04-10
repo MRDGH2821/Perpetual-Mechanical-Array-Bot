@@ -13,6 +13,7 @@ import {
 import EventEmitter from 'events';
 import { setTimeout } from 'timers/promises';
 import { EMOJIS, ROLE_IDS, STAFF_ARRAY } from '../../lib/Constants';
+import { customLogger } from '../../lib/utils';
 
 export function arrayIntersection<T>(arr1: T[], arr2: T[]) {
   return arr1.filter((value) => arr2.includes(value));
@@ -71,7 +72,7 @@ export async function freezeMuteUser(options: FreezeOptions) {
   const pain1 = [EMOJIS.Aether_Pain1, EMOJIS.Lumine_Pain1];
   const pain2 = [EMOJIS.Aether_Pain2, EMOJIS.Lumine_Pain2];
   const { member, duration, reason, chance, channel } = options;
-  const { logger } = member.client;
+  const logger = customLogger;
   const painEmotes = `${pickRandom(pain1)}${pickRandom(pain2)}`;
   const RNG = randomInt(0, 100);
 

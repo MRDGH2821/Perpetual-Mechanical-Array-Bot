@@ -11,6 +11,7 @@ import {
   roleMention,
 } from 'discord.js';
 import { COLORS, EMPTY_STRING, ROLE_IDS } from '../../lib/Constants';
+import { customLogger } from '../../lib/utils';
 import type { CrownRegisterArgs } from '../../typeDefs/typeDefs';
 import { arrayIntersection, isStaff, PMAEventHandler } from './Utilities';
 
@@ -203,7 +204,7 @@ export default class AssignRoles {
         }).setCustomId(`crown_${this.#member.id}_3`),
       ]);
 
-      this.#ctx.client.logger.debug(JSON.stringify({ roleID }, null, 2));
+      customLogger.debug(JSON.stringify({ roleID }, null, 2));
       this.#ctx
         .editReply({
           embeds: [

@@ -3,6 +3,7 @@ import { Listener, ListenerOptions } from '@sapphire/framework';
 import type { ForumChannel } from 'discord.js';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import db from '../../lib/Firestore';
+import { customLogger } from '../../lib/utils';
 
 @ApplyOptions<ListenerOptions>({
   emitter: PMAEventHandler,
@@ -11,7 +12,7 @@ import db from '../../lib/Firestore';
 })
 export default class UserEvent extends Listener {
   public async run(forumChannel: ForumChannel) {
-    const { logger } = this.container;
+    const logger = customLogger;
     logger.debug(`Got ${forumChannel}`);
 
     await db

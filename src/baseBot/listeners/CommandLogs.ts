@@ -2,6 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener, ListenerOptions } from '@sapphire/framework';
 import type { Interaction } from 'discord.js';
 import { ChannelIds, COLORS } from '../../lib/Constants';
+import { customLogger } from '../../lib/utils';
 
 @ApplyOptions<ListenerOptions>({
   name: 'CommandLogs',
@@ -34,7 +35,7 @@ export default class CommandLogs extends Listener<typeof Events.ChatInputCommand
       subCommand.group = interaction.options.getSubcommandGroup() || 'none';
       subCommand.cmd = interaction.options.getSubcommand() || 'none';
     } catch (e) {
-      this.container.logger.info('There are no sub commands in this guild command');
+      customLogger.info('There are no sub commands in this guild command');
     }
 
     logChannel.send({
