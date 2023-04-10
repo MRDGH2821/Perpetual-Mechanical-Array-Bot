@@ -88,7 +88,7 @@ export default class GuildCommand extends Command {
       url = isTargetSelf ? bonk.selfHornyBonkGif() : bonk.hornyBonkGif();
     }
 
-    const description = `\`${target}\` You have been bonked!\nReason: ${reason}`;
+    const description = `\`${target.user.tag}\` You have been bonked!\nReason: ${reason}`;
 
     return interaction.reply({
       content: pingTarget ? target.toString() : undefined,

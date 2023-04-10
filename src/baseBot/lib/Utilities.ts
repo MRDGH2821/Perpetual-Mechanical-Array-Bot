@@ -77,7 +77,7 @@ export async function freezeMuteUser(options: FreezeOptions) {
 
   const muteEmbed = {
     color: 0x5f929e,
-    title: `${member.nickname || member.displayName || member.user.username}`,
+    title: `${member.nickname || member.displayName || member.user.tag}`,
     description: `${member.toString()} is now temporarily frozen (muted).\n\n**Reason**: ${reason}\n\nPlease use this time to take a break or be productive!`,
     thumbnail: {
       url: 'https://cdn.discordapp.com/attachments/804253204291387422/895916863345803284/Frozen_Skies.png',
@@ -141,7 +141,7 @@ export async function freezeMuteUser(options: FreezeOptions) {
         ],
       })
       .then(() => {
-        logger.info(`Unmute message sent to ${member.user.username}`);
+        logger.info(`Unmute message sent to ${member.user.tag}`);
       })
       .catch(async (err) => {
         logger.debug(err);

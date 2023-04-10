@@ -93,7 +93,7 @@ export function publishEmbedsGenerator(
           value = '*No users found in this section...*';
         } else {
           chunk.forEach((user) => {
-            value = `${value}\n${user} - \`${user.username}\``;
+            value = `${value}\n${user} - \`${user.tag}\``;
           });
         }
 

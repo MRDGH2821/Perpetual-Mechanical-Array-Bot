@@ -105,7 +105,7 @@ export default class GuildCommand extends Command {
     const confessEmbed: APIEmbed = {
       title: anonEmbed.title,
       author: {
-        name: confessor.nickname || confessor.user.username,
+        name: confessor.nickname || confessor.user.tag,
         icon_url: confessor.displayAvatarURL(),
         url: `https://discord.com/users/${confessor.user.id}`,
       },
@@ -117,7 +117,7 @@ export default class GuildCommand extends Command {
         url: confessor.displayAvatarURL(),
       },
       footer: {
-        text: `by - ${confessor.user.username}`,
+        text: `by - ${confessor.user.tag}`,
       },
     };
 
@@ -146,13 +146,13 @@ export default class GuildCommand extends Command {
         embeds: [confessEmbed],
         files: [
           new AttachmentBuilder(
-            `Author: ${confessor.user.username}\nID: ${
+            `Author: ${confessor.user.tag}\nID: ${
               confessor.user.id
             }\n\nRaw Confession:\n${confession}\n\nMedia: \n${imageLink} \n${imageAttachment}\n\nProcessed Confession:\n${GuildCommand.processConfession(
               confession,
             )}`,
             {
-              name: `Confession by ${confessor.user.username} on ${new Date()}.txt`,
+              name: `Confession by ${confessor.user.tag} on ${new Date()}.txt`,
             },
           ),
         ],

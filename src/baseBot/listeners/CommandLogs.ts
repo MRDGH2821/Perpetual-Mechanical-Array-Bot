@@ -42,14 +42,14 @@ export default class CommandLogs extends Listener<typeof Events.ChatInputCommand
         {
           title: '**Interaction Log**',
           author: {
-            name: user.username,
+            name: user.tag,
             icon_url: user.displayAvatarURL(),
           },
           color: COLORS.EMBED_COLOR,
           thumbnail: {
             url: user.displayAvatarURL(),
           },
-          description: `${user} \`${user.username}\` in ${interaction.channel} triggered an interaction.\n\n**Command:** ${interaction.commandName}\n**Sub Command Group:** ${subCommand.group}\n**Sub Command:** ${subCommand.cmd}`,
+          description: `${user} \`${user.tag}\` in ${interaction.channel} triggered an interaction.\n\n**Command:** ${interaction.commandName}\n**Sub Command Group:** ${subCommand.group}\n**Sub Command:** ${subCommand.cmd}`,
 
           timestamp: new Date(interaction.createdTimestamp).toISOString(),
           footer: {
