@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { isGuildMember } from '@sapphire/discord.js-utilities';
-import { Command } from '@sapphire/framework';
+import { Command, container } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import {
   ActionRowBuilder,
@@ -22,7 +22,6 @@ import {
 } from 'discord.js';
 import { ChannelIds, COLORS, ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
-import { customLogger } from '../../lib/utils';
 
 type SendConfessionArgs = {
   confession: string;
@@ -239,7 +238,7 @@ export default class GuildCommand extends Command {
             flags: MessageFlags.Ephemeral,
           });
         })
-        .catch(this.container.logger.error);
+        .catch(console.error);
     } else {
       await interaction.reply({
         content: 'Cannot reply to random message outside confession channel',
@@ -270,7 +269,7 @@ export default class GuildCommand extends Command {
       shouldSkipMultiline,
       imageAttachment,
       imageLink,
-    }).catch(customLogger.error);
+    }).catch(container.logger.error);
 
     return interaction.reply({
       content: `Confession sent!\nCheck out ${channelMention(ChannelIds.CONFESSIONS)}`,
@@ -357,14 +356,13 @@ export default class GuildCommand extends Command {
       throw new Error('Archives channel could not be fetched');
     }
 
-    const logger = customLogger;
     await confessChannel
       .send({
         content: shouldPingArchons ? roleMention(ROLE_IDS.OTHERS.ARCHONS) : undefined,
         embeds: [isAnon ? anonEmbed : confessEmbed],
         components,
       })
-      .catch(logger.error);
+      .catch(console.error);
 
     await logChannel
       .send({
@@ -387,6 +385,8 @@ export default class GuildCommand extends Command {
         ],
         components,
       })
-      .catch(logger.error);
+      .catch(console.error);
+
+    container.logger.debug('Imported version works');
   }
 }

@@ -1,9 +1,8 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Command } from '@sapphire/framework';
+import { Command, container } from '@sapphire/framework';
 import { ApplicationCommandOptionType, AttachmentBuilder, PermissionFlagsBits } from 'discord.js';
 import { COLORS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
-import { customLogger } from '../../lib/utils';
 import type { DBQuotes } from '../../typeDefs/typeDefs';
 import QuotesManager from '../lib/QuotesManager';
 
@@ -129,7 +128,7 @@ export default class GuildCommand extends Command {
         });
       })
       .catch((err) => {
-        customLogger.error(err);
+        container.logger.error(err);
         interaction.reply({
           embeds: [
             {

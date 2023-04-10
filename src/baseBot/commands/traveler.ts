@@ -1,3 +1,4 @@
+import { container } from '@sapphire/pieces';
 import { Subcommand, SubcommandMapping } from '@sapphire/plugin-subcommands';
 import {
   ApplicationCommandOptionData,
@@ -6,7 +7,6 @@ import {
   MessageFlags,
 } from 'discord.js';
 import EnvConfig from '../../lib/EnvConfig';
-import { customLogger } from '../../lib/utils';
 import type { ELEMENTS, JSONCmd } from '../../typeDefs/typeDefs';
 import { findElementProp, findTech, isSkill } from '../lib/TravelerTechnologies';
 
@@ -113,16 +113,16 @@ export default class UserCommand extends Subcommand {
     if (subCommand === 'guide') {
       return interaction.reply({ content: eleProp.guide });
     }
-    customLogger.debug('Obtaining tech input');
+    container.logger.debug('Obtaining tech input');
     const techId = interaction.options.getString('tech', true);
 
-    customLogger.debug('Searching for tech');
+    container.logger.debug('Searching for tech');
     const tech = findTech({
       element: element as ELEMENTS,
       type: isSkill(subCommand) ? 'skill' : 'burst',
       id: techId,
     });
-    customLogger.debug(tech);
+    container.logger.debug(tech);
 
     if (tech) {
       const { gif } = tech;

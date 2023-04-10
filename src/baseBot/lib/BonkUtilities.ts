@@ -1,5 +1,5 @@
+import { container } from '@sapphire/pieces';
 import { EMOJIS } from '../../lib/Constants';
-import { customLogger } from '../../lib/utils';
 import QuotesManager from './QuotesManager';
 
 export default class BonkUtilities {
@@ -119,14 +119,13 @@ export default class BonkUtilities {
    * @returns {boolean} - is the msg horny type?
    */
   isHorny(msg: string = this.message): boolean {
-    const checkMsg = msg;
-    const notHorny = /(n+(o|u)+t*)\s((h+o+r+n+(y|i)+)|(s+e+g+s+)|(s+e+x+))/gimu.test(checkMsg);
+    const notHorny = /(n+(o|u)+t*)\s((h+o+r+n+(y|i)+)|(s+e+g+s+)|(s+e+x+))/gimu.test(msg);
     const reallyHorny =
-      /\bh+o+r+n+(y|i){1,}\b/gimu.test(checkMsg) ||
-      /\bs+e+g+s{1,}\b/gimu.test(checkMsg) ||
-      /\bs+e+x{1,}\b/gimu.test(checkMsg);
+      /\bh+o+r+n+(y|i){1,}\b/gimu.test(msg) ||
+      /\bs+e+g+s{1,}\b/gimu.test(msg) ||
+      /\bs+e+x{1,}\b/gimu.test(msg);
     if (reallyHorny && !notHorny) {
-      customLogger.info('Horny msg detected!');
+      container.logger.info('Horny msg detected!');
     }
     return reallyHorny && !notHorny;
   }
@@ -137,7 +136,7 @@ export default class BonkUtilities {
    * @returns {string} - a random bonk gif link
    */
   bonkGif(): string {
-    customLogger.info('Random bonk gif selected');
+    container.logger.info('Random bonk gif selected');
     return this.#bonkGifs[Math.floor(Math.random() * this.#bonkGifs.length)];
   }
 
@@ -147,7 +146,7 @@ export default class BonkUtilities {
    * @returns {string} - a random horny bonk gif link
    */
   hornyBonkGif(): string {
-    customLogger.info('Random horny bonk gif selected');
+    container.logger.info('Random horny bonk gif selected');
     return this.#hornyBonkGifs[Math.floor(Math.random() * this.#hornyBonkGifs.length)];
   }
 
@@ -157,7 +156,7 @@ export default class BonkUtilities {
    * @returns {string} - a random self horny bonk gif link
    */
   selfHornyBonkGif(): string {
-    customLogger.info('Random self horny bonk gif selected');
+    container.logger.info('Random self horny bonk gif selected');
     return this.#selfHornyBonkGifs[Math.floor(Math.random() * this.#selfHornyBonkGifs.length)];
   }
 
@@ -167,7 +166,7 @@ export default class BonkUtilities {
    * @returns {string} - a random gif from complete collection
    */
   randomBonkGif(): string {
-    customLogger.info('Random bonk gif from complete collection selected');
+    container.logger.info('Random bonk gif from complete collection selected');
     return this.#allBonkGifs[Math.floor(Math.random() * this.#allBonkGifs.length)];
   }
 

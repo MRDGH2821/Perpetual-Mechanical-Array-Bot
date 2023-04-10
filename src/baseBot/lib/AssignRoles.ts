@@ -1,4 +1,5 @@
 import type { ChatInputOrContextMenuCommandInteraction } from '@sapphire/discord.js-utilities';
+import { container } from '@sapphire/pieces';
 import { pickRandom, range } from '@sapphire/utilities';
 import {
   ActionRowBuilder,
@@ -11,7 +12,6 @@ import {
   roleMention,
 } from 'discord.js';
 import { COLORS, EMPTY_STRING, ROLE_IDS } from '../../lib/Constants';
-import { customLogger } from '../../lib/utils';
 import type { CrownRegisterArgs } from '../../typeDefs/typeDefs';
 import { arrayIntersection, isStaff, PMAEventHandler } from './Utilities';
 
@@ -204,7 +204,7 @@ export default class AssignRoles {
         }).setCustomId(`crown_${this.#member.id}_3`),
       ]);
 
-      customLogger.debug(JSON.stringify({ roleID }, null, 2));
+      container.logger.debug(JSON.stringify({ roleID }, null, 2));
       this.#ctx
         .editReply({
           embeds: [
