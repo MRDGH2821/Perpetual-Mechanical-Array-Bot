@@ -95,7 +95,6 @@ export default class UserCommand extends Subcommand {
       ...options,
       name: cmdDef.name,
       description: cmdDef.description,
-
       subcommands: [
         subCommandGroupMaker('anemo'),
         subCommandGroupMaker('geo'),
@@ -105,7 +104,6 @@ export default class UserCommand extends Subcommand {
     });
   }
 
-  // eslint-disable-next-line class-methods-use-this
   public async runCmd(interaction: ChatInputCommandInteraction) {
     const element = interaction.options.getSubcommandGroup(true);
     const subCommand = interaction.options.getSubcommand(true);
@@ -113,16 +111,16 @@ export default class UserCommand extends Subcommand {
     if (subCommand === 'guide') {
       return interaction.reply({ content: eleProp.guide });
     }
-    interaction.client.logger.debug('Obtaining tech input');
+    this.container.logger.debug('Obtaining tech input');
     const techId = interaction.options.getString('tech', true);
 
-    interaction.client.logger.debug('Searching for tech');
+    this.container.logger.debug('Searching for tech');
     const tech = findTech({
       element: element as ELEMENTS,
       type: isSkill(subCommand) ? 'skill' : 'burst',
       id: techId,
     });
-    interaction.client.logger.debug(tech);
+    this.container.logger.debug(tech);
 
     if (tech) {
       const { gif } = tech;

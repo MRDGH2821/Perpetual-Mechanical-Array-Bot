@@ -5,6 +5,7 @@ import {
   type ContextMenuCommandSuccessPayload,
   type MessageCommandSuccessPayload,
 } from '@sapphire/framework';
+import { Logger } from '@sapphire/plugin-logger';
 import { deepClone } from '@sapphire/utilities';
 import { cyan } from 'colorette';
 import type { APIEmbed, APIUser, Guild, User } from 'discord.js';
@@ -109,3 +110,5 @@ export function publishEmbedsGenerator(
     }
   });
 }
+
+export const customLogger = new Logger();

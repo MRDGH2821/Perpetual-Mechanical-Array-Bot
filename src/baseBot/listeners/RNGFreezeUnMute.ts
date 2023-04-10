@@ -24,6 +24,6 @@ export default class UserEvent extends Listener<typeof Events.ShardReady> {
       length += 1;
     });
 
-    guild.client.logger.info(`Unmuted ${length} users`);
+    this.container.logger.info(`Unmuted ${length} users`);
   }
 }
