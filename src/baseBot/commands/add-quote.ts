@@ -4,7 +4,7 @@ import { ApplicationCommandOptionType, AttachmentBuilder, PermissionFlagsBits } 
 import { COLORS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import type { DBQuotes } from '../../typeDefs/typeDefs';
-import { addQuote } from '../lib/QuotesManager';
+import QuotesManager from '../lib/QuotesManager';
 
 @ApplyOptions<Command.Options>({
   name: 'add-quote',
@@ -115,7 +115,7 @@ export default class GuildCommand extends Command {
   public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
     const quote = interaction.options.getString('quote_gif_reason', true);
     const quoteType = interaction.options.getString('type', true) as DBQuotes;
-    addQuote(quoteType, quote)
+    QuotesManager.add(quoteType, quote)
       .then(() => {
         interaction.reply({
           embeds: [

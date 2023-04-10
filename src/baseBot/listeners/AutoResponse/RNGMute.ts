@@ -4,7 +4,7 @@ import { pickRandom } from '@sapphire/utilities';
 import type { Message, TextChannel } from 'discord.js';
 import { ChannelIds, EMOJIS, ROLE_IDS } from '../../../lib/Constants';
 import CoolDownManager from '../../../lib/CoolDownManager';
-import { getQuotes } from '../../lib/QuotesManager';
+import QuotesManager from '../../lib/QuotesManager';
 import { freezeMuteUser } from '../../lib/Utilities';
 
 const muteChance = 10;
@@ -54,11 +54,11 @@ export default class RNGMuteResponse extends Listener<typeof Events.MessageCreat
     '*Never gonna say "muted"*',
     '*Never gonna tell a lie and mute you*',
   ]
-    .concat(getQuotes('RNGMuteQuotes'))
+    .concat(QuotesManager.getQuotes('RNGMuteQuotes'))
     .flat();
 
   static RNGMuteReasons = ['Spoke the forbidden word ||leak||']
-    .concat(getQuotes('RNGMuteReasons'))
+    .concat(QuotesManager.getQuotes('RNGMuteReasons'))
     .flat();
 
   public run(message: Message) {

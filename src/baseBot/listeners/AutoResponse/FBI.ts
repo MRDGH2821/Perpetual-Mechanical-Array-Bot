@@ -3,7 +3,7 @@ import { Events, Listener, ListenerOptions } from '@sapphire/framework';
 import { pickRandom } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
 import CoolDownManager from '../../../lib/CoolDownManager';
-import { getQuotes } from '../../lib/QuotesManager';
+import QuotesManager from '../../lib/QuotesManager';
 import { checkBoolean } from '../../lib/Utilities';
 
 const rateLimit = new CoolDownManager(3000);
@@ -26,7 +26,7 @@ export default class FBIResponse extends Listener<typeof Events.MessageCreate> {
     'Rick Astley was a part of F.B.I. ||(music band)||',
     'You know what, I wonder if its actually NSA which spies or FBI :thinking:',
   ]
-    .concat(getQuotes('FBIGifs'), getQuotes('FBIQuotes'))
+    .concat(QuotesManager.getQuotes('FBIGifs'), QuotesManager.getQuotes('FBIQuotes'))
     .flat();
 
   public run(message: Message) {

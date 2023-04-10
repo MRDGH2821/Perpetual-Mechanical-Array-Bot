@@ -4,7 +4,7 @@ import { Time } from '@sapphire/time-utilities';
 import { pickRandom } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
 import CoolDownManager from '../../../lib/CoolDownManager';
-import { getQuotes } from '../../lib/QuotesManager';
+import QuotesManager from '../../lib/QuotesManager';
 import { checkBoolean } from '../../lib/Utilities';
 
 const rateLimit = new CoolDownManager(3000);
@@ -21,7 +21,7 @@ export default class TikTokResponse extends Listener<typeof Events.MessageCreate
     'https://tenor.com/view/tiktok-tiktok-cringe-watermark-tiktok-watermark-watermark-cringe-gif-22182993',
     'Somebody mentioned TikTok?!?!?!??!? \n\n*Dies of cringe*',
   ]
-    .concat(getQuotes('TikTokGifs'), getQuotes('TikTokQuotes'))
+    .concat(QuotesManager.getQuotes('TikTokGifs'), QuotesManager.getQuotes('TikTokQuotes'))
     .flat();
 
   public run(message: Message) {

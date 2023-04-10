@@ -1,5 +1,6 @@
 import { EMOJIS } from '../../lib/Constants';
-import { getQuotes } from './QuotesManager';
+import { customLogger } from '../../lib/utils';
+import QuotesManager from './QuotesManager';
 
 export default class BonkUtilities {
   message = '';
@@ -37,7 +38,7 @@ export default class BonkUtilities {
     'https://c.tenor.com/onXBTwunE5kAAAAC/riamu-idolmaster.gif',
     'https://c.tenor.com/rRO7BFsBdd8AAAAC/genshin-impact-noelle.gif',
   ]
-    .concat(getQuotes('bonkGifs'))
+    .concat(QuotesManager.getQuotes('bonkGifs'))
     .flat();
 
   #hornyBonkGifs = [
@@ -59,13 +60,13 @@ export default class BonkUtilities {
     'https://c.tenor.com/G5mrFLtLJxgAAAAd/bonk-horny.gif',
     'https://c.tenor.com/S5v-oX_rN8QAAAAC/pramanix-arknights.gif',
   ]
-    .concat(getQuotes('hornyBonkGifs'))
+    .concat(QuotesManager.getQuotes('hornyBonkGifs'))
     .flat();
 
   #selfHornyBonkGifs = this.#hornyBonkGifs
     .concat(
       ['https://c.tenor.com/_qREHP6VgcwAAAAC/telepurte-bonk.gif'],
-      getQuotes('selfHornyBonkGifs'),
+      QuotesManager.getQuotes('selfHornyBonkGifs'),
     )
     .flat();
 
@@ -82,7 +83,7 @@ export default class BonkUtilities {
   ];
 
   #crowdSourcedReasons = ['"Ratio" - <@462747685242273792>', '"Git Gud" - <@440081484855115776>']
-    .concat(getQuotes('crowdSourcedBonkReasons'))
+    .concat(QuotesManager.getQuotes('crowdSourcedBonkReasons'))
     .flat();
 
   #hornyReasons = [
@@ -102,7 +103,7 @@ export default class BonkUtilities {
     '"Do better" - <@621330211220226049>',
     '"You suck" - <@505390548232699906>',
   ]
-    .concat(getQuotes('crowdSourcedHornyBonkReasons'))
+    .concat(QuotesManager.getQuotes('crowdSourcedHornyBonkReasons'))
     .flat();
 
   #allHornyReasons = this.#hornyReasons.concat(this.#crowdSourcedHornyReasons);
@@ -125,7 +126,7 @@ export default class BonkUtilities {
       /\bs+e+g+s{1,}\b/gimu.test(checkMsg) ||
       /\bs+e+x{1,}\b/gimu.test(checkMsg);
     if (reallyHorny && !notHorny) {
-      console.log('Horny msg detected!');
+      customLogger.info('Horny msg detected!');
     }
     return reallyHorny && !notHorny;
   }
@@ -136,7 +137,7 @@ export default class BonkUtilities {
    * @returns {string} - a random bonk gif link
    */
   bonkGif(): string {
-    console.log('Random bonk gif selected');
+    customLogger.info('Random bonk gif selected');
     return this.#bonkGifs[Math.floor(Math.random() * this.#bonkGifs.length)];
   }
 
@@ -146,7 +147,7 @@ export default class BonkUtilities {
    * @returns {string} - a random horny bonk gif link
    */
   hornyBonkGif(): string {
-    console.log('Random horny bonk gif selected');
+    customLogger.info('Random horny bonk gif selected');
     return this.#hornyBonkGifs[Math.floor(Math.random() * this.#hornyBonkGifs.length)];
   }
 
@@ -156,7 +157,7 @@ export default class BonkUtilities {
    * @returns {string} - a random self horny bonk gif link
    */
   selfHornyBonkGif(): string {
-    console.log('Random self horny bonk gif selected');
+    customLogger.info('Random self horny bonk gif selected');
     return this.#selfHornyBonkGifs[Math.floor(Math.random() * this.#selfHornyBonkGifs.length)];
   }
 
@@ -166,7 +167,7 @@ export default class BonkUtilities {
    * @returns {string} - a random gif from complete collection
    */
   randomBonkGif(): string {
-    console.log('Random bonk gif from complete collection selected');
+    customLogger.info('Random bonk gif from complete collection selected');
     return this.#allBonkGifs[Math.floor(Math.random() * this.#allBonkGifs.length)];
   }
 

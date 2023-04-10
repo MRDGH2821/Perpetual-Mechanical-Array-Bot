@@ -2,49 +2,50 @@ import { Collection } from 'discord.js';
 import db from '../../lib/Firestore';
 import type { DBQuotes, DBQuotesCollection } from '../../typeDefs/typeDefs';
 
-export const DBquotes = new Collection() as DBQuotesCollection;
+export default class QuotesManager {
+  static #DBquotes = new Collection() as DBQuotesCollection;
 
-async function getDBQuotes(option: DBQuotes): Promise<string[]> {
-  return new Promise((res) => {
-    let quotesArray: string[] = [];
-    db.collection('quotes-gifs-reasons')
-      .doc(option)
-      .get()
-      .then((docSnap) => {
-        const data = docSnap.data();
-        if (data) {
-          quotesArray = data.array as unknown as string[];
-          res(quotesArray);
-        } else {
-          res([]);
-        }
-        // rej(new Error(`No quotes/GIFs/reasons exist for "${option}"`));
-      });
-  });
-}
-
-export async function setDBQuotes(option: DBQuotes) {
-  const quotesArray = await getDBQuotes(option);
-  DBquotes.set(option, quotesArray);
-}
-
-export function getQuotes(option: DBQuotes): string[] {
-  const quotesArray = DBquotes.get(option);
-
-  if (quotesArray) {
-    return quotesArray;
+  static async #fetchDBQuotes(option: DBQuotes): Promise<string[]> {
+    return new Promise((res) => {
+      let quotesArray: string[] = [];
+      db.collection('quotes-gifs-reasons')
+        .doc(option)
+        .get()
+        .then((docSnap) => {
+          const data = docSnap.data();
+          if (data) {
+            quotesArray = data.array as unknown as string[];
+            res(quotesArray);
+          } else {
+            res([]);
+          }
+          // rej(new Error(`No quotes/GIFs/reasons exist for "${option}"`));
+        });
+    });
   }
-  return [];
-  // throw new Error(`No quotes/GIFs/reasons exist for "${option}"`);
-}
 
-export async function addQuote(option: DBQuotes, quote: string) {
-  const newArray = getQuotes(option);
-  newArray.push(quote);
-  const data = { array: newArray };
-  await db.collection('quotes-gifs-reasons').doc(option).set(data, {
-    merge: true,
-  });
-}
+  static async prepareCache(option: DBQuotes) {
+    const quotesArray = await this.#fetchDBQuotes(option);
+    this.#DBquotes.set(option, quotesArray);
+  }
 
+  static getQuotes(option: DBQuotes): string[] {
+    const quotesArray = this.#DBquotes.get(option);
+
+    if (quotesArray) {
+      return quotesArray;
+    }
+    return [];
+    // throw new Error(`No quotes/GIFs/reasons exist for "${option}"`);
+  }
+
+  static async add(option: DBQuotes, quote: string) {
+    const newArray = this.getQuotes(option);
+    newArray.push(quote);
+    const data = { array: newArray };
+    await db.collection('quotes-gifs-reasons').doc(option).set(data, {
+      merge: true,
+    });
+  }
+}
 // console.log(await getQuotes('RNGMuteQuotes'));

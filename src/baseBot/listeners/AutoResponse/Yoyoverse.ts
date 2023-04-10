@@ -3,7 +3,7 @@ import { Events, Listener, ListenerOptions } from '@sapphire/framework';
 import { pickRandom } from '@sapphire/utilities';
 import { Message, userMention } from 'discord.js';
 import CoolDownManager from '../../../lib/CoolDownManager';
-import { getQuotes } from '../../lib/QuotesManager';
+import QuotesManager from '../../lib/QuotesManager';
 import { checkBoolean } from '../../lib/Utilities';
 
 const rateLimit = new CoolDownManager(3000);
@@ -17,7 +17,7 @@ export default class YoyoverseResponse extends Listener<typeof Events.MessageCre
   private static pelon = userMention('476219631539847188');
 
   static YoyoverseQuotes = [`Did you know that saying yoyoverse pings ${YoyoverseResponse.pelon}`]
-    .concat(getQuotes('yoyoverseQuotes'))
+    .concat(QuotesManager.getQuotes('yoyoverseQuotes'))
     .flat();
 
   public run(message: Message) {

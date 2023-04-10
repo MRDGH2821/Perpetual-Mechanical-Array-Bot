@@ -4,7 +4,7 @@ import { pickRandom } from '@sapphire/utilities';
 import type { Message, TextChannel } from 'discord.js';
 import { ChannelIds, EMOJIS } from '../../../lib/Constants';
 import CoolDownManager from '../../../lib/CoolDownManager';
-import { getQuotes } from '../../lib/QuotesManager';
+import QuotesManager from '../../lib/QuotesManager';
 import { checkBoolean, freezeMuteUser } from '../../lib/Utilities';
 
 const rateLimit = new CoolDownManager(3000);
@@ -63,11 +63,11 @@ export default class LeakMuteResponse extends Listener<typeof Events.MessageCrea
     '*Never gonna say goodbye*',
     '*Never gonna tell a lie and hurt you*',
   ]
-    .concat(getQuotes('leakQuotes'))
+    .concat(QuotesManager.getQuotes('leakQuotes'))
     .flat();
 
   static LeakReasons = ['Spoke the forbidden word ||leak||']
-    .concat(getQuotes('leaksMuteReasons'))
+    .concat(QuotesManager.getQuotes('leaksMuteReasons'))
     .flat();
 
   public run(message: Message) {

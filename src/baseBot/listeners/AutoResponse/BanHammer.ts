@@ -2,7 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener, ListenerOptions } from '@sapphire/framework';
 import { pickRandom } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
-import { getQuotes } from '../../lib/QuotesManager';
+import QuotesManager from '../../lib/QuotesManager';
 
 @ApplyOptions<ListenerOptions>({
   enabled: true,
@@ -11,7 +11,7 @@ import { getQuotes } from '../../lib/QuotesManager';
 })
 export default class BanHammerResponse extends Listener<typeof Events.MessageCreate> {
   static banHammerQuotes = ['Who are we banning today? :smirk:']
-    .concat(getQuotes('banHammerReasons'))
+    .concat(QuotesManager.getQuotes('banHammerReasons'))
     .flat();
 
   public run(message: Message) {
