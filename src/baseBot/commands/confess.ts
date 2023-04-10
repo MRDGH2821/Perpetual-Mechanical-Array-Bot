@@ -372,16 +372,20 @@ export default class GuildCommand extends Command {
         embeds: [confessEmbed],
         files: [
           new AttachmentBuilder(
-            `Author: ${confessor.user.tag}\nID: ${
-              confessor.user.id
-            }\n\nRaw Confession:\n${confession}\n\nMedia: \n${imageLink} \n${imageAttachment}\n\nProcessed Confession:\n${GuildCommand.processConfession(
-              confession,
-            )}`,
+            Buffer.from(
+              `Author: ${confessor.user.tag}\nID: ${
+                confessor.user.id
+              }\n\nRaw Confession:\n${confession}\n\nMedia: \n${imageLink} \n${imageAttachment}\n\nProcessed Confession:\n${GuildCommand.processConfession(
+                confession,
+              )}`,
+              'utf8',
+            ),
             {
               name: `Confession by ${confessor.user.tag} on ${new Date()}.txt`,
             },
           ),
         ],
+        components,
       })
       .catch(logger.error);
   }
