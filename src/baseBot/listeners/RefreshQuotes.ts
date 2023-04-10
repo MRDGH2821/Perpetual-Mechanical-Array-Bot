@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, ListenerOptions, Logger, LogLevel } from '@sapphire/framework';
 import { QUOTE_CATEGORIES } from '../../lib/DynamicConstants';
-import { setDBQuotes } from '../lib/QuotesManager';
+import QuotesManager from '../lib/QuotesManager';
 import { PMAEventHandler } from '../lib/Utilities';
 
 @ApplyOptions<ListenerOptions>({
@@ -16,7 +16,7 @@ export default class UserEvent extends Listener {
     const promises: Promise<void>[] = [];
     logger.info('Refreshing quotes');
     QUOTE_CATEGORIES.forEach((category) => {
-      const promise = setDBQuotes(category)
+      const promise = QuotesManager.prepareCache(category)
         .then(() => {
           logger.info(`Quotes refreshed from ${category}`);
         })
