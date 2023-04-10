@@ -22,8 +22,8 @@ const client = new CustomClient({
   caseInsensitiveCommands: true,
   logger: {
     level: LogLevel.Debug,
-    depth:2,
-    instance: customLogger
+    depth: 2,
+    instance: customLogger,
   },
   intents: [
     GatewayIntentBits.DirectMessages,
