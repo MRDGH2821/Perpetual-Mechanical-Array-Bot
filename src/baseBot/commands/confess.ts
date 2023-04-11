@@ -1,11 +1,12 @@
-import { ApplyOptions } from '@sapphire/decorators';
 import { isGuildMember } from '@sapphire/discord.js-utilities';
 import { Command, container } from '@sapphire/framework';
+import { Subcommand } from '@sapphire/plugin-subcommands';
 import { Time } from '@sapphire/time-utilities';
 import {
   ActionRowBuilder,
   APIEmbed,
   ApplicationCommandOptionType,
+  ApplicationCommandSubCommandData,
   ApplicationCommandType,
   Attachment,
   AttachmentBuilder,
@@ -14,7 +15,6 @@ import {
   channelMention,
   ComponentType,
   GuildMember,
-  hyperlink,
   Message,
   MessageFlags,
   roleMention,
@@ -22,6 +22,8 @@ import {
 } from 'discord.js';
 import { ChannelIds, COLORS, ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
+import type { JSONCmd } from '../../typeDefs/typeDefs';
+import { guildMessageIDsExtractor } from '../lib/Utilities';
 
 type SendConfessionArgs = {
   confession: string;
@@ -36,57 +38,74 @@ type SendConfessionArgs = {
   };
 };
 
-@ApplyOptions<Command.Options>({
-  name: 'confess',
-  description: 'Wanna confess something?',
-})
-export default class GuildCommand extends Command {
+const subCmdOpt: ApplicationCommandSubCommandData['options'] = [
+  {
+    name: 'confession',
+    description: 'Enter your confession!',
+    required: true,
+    type: ApplicationCommandOptionType.String,
+  },
+  {
+    name: 'anonymous',
+    description: 'Post as Anonymous? (default: False)',
+    type: ApplicationCommandOptionType.Boolean,
+  },
+  {
+    name: 'ping_archons',
+    description: 'Notify Archons? (default: False)',
+    type: ApplicationCommandOptionType.Boolean,
+  },
+  {
+    name: 'image_upload',
+    description: 'Upload an Image',
+    type: ApplicationCommandOptionType.Attachment,
+  },
+  {
+    name: 'image_link',
+    description: 'Input image link',
+    type: ApplicationCommandOptionType.String,
+  },
+  {
+    name: 'skip_multiline',
+    description: 'Skip parsing multiline (default: False)',
+    type: ApplicationCommandOptionType.Boolean,
+  },
+];
+
+const cmdDef: JSONCmd = {
+  name: 'confession',
+  description: 'Wanna confess?',
+  dmPermission: false,
+  type: ApplicationCommandType.ChatInput,
+  options: [
+    {
+      type: ApplicationCommandOptionType.Subcommand,
+      name: 'new',
+      description: 'Wanna confess?',
+      options: subCmdOpt,
+    },
+    {
+      type: ApplicationCommandOptionType.Subcommand,
+      name: 'reply',
+      description: 'Wanna reply to confession with confession?',
+      options: [
+        {
+          name: 'message_link',
+          description: 'Message link of the OG confession you want to reply to',
+          type: ApplicationCommandOptionType.String,
+          required: true,
+        },
+        ...subCmdOpt,
+      ],
+    },
+  ],
+};
+
+export default class GuildCommand extends Subcommand {
   public override registerApplicationCommands(registry: Command.Registry) {
-    registry.registerChatInputCommand(
-      {
-        name: this.name,
-        description: this.description,
-        dm_permission: false,
-        dmPermission: false,
-        type: ApplicationCommandType.ChatInput,
-        options: [
-          {
-            name: 'confession',
-            description: 'Enter your confession!',
-            required: true,
-            type: ApplicationCommandOptionType.String,
-          },
-          {
-            name: 'anonymous',
-            description: 'Post as Anonymous? (default: False)',
-            type: ApplicationCommandOptionType.Boolean,
-          },
-          {
-            name: 'ping_archons',
-            description: 'Notify Archons? (default: False)',
-            type: ApplicationCommandOptionType.Boolean,
-          },
-          {
-            name: 'image_upload',
-            description: 'Upload an Image',
-            type: ApplicationCommandOptionType.Attachment,
-          },
-          {
-            name: 'image_link',
-            description: 'Input image link',
-            type: ApplicationCommandOptionType.String,
-          },
-          {
-            name: 'skip_multiline',
-            description: 'Skip parsing multiline (default: False)',
-            type: ApplicationCommandOptionType.Boolean,
-          },
-        ],
-      },
-      {
-        guildIds: [EnvConfig.guildId],
-      },
-    );
+    registry.registerChatInputCommand(cmdDef, {
+      guildIds: [EnvConfig.guildId],
+    });
 
     registry.registerContextMenuCommand(
       {
@@ -248,6 +267,9 @@ export default class GuildCommand extends Command {
   }
 
   public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
+    await interaction.deferReply({
+      ephemeral: true,
+    });
     const confession = interaction.options.getString('confession', true);
     const shouldSkipMultiline = interaction.options.getBoolean('skip_multiline') || false;
     const isAnon = interaction.options.getBoolean('anonymous') || false;
@@ -255,10 +277,35 @@ export default class GuildCommand extends Command {
     const imageAttachment = interaction.options.getAttachment('image_upload');
     const imageLink = interaction.options.getString('image_link');
 
+    const ogConfessionLink = interaction.options.getString('message_link');
+
     const confessor = interaction.member;
 
     if (!isGuildMember(confessor)) {
-      throw new Error('Cannot fetch Member');
+      await interaction.editReply('Cannot fetch Member');
+      return;
+    }
+
+    let reply: SendConfessionArgs['reply'];
+    if (ogConfessionLink) {
+      const ids = guildMessageIDsExtractor(ogConfessionLink);
+      container.logger.debug({ ids });
+
+      const channel = await interaction.guild?.channels.fetch(ChannelIds.CONFESSIONS);
+      if (!channel?.isTextBased()) {
+        await interaction.editReply('Cannot fetch confession channel');
+        return;
+      }
+
+      const message = await channel.messages.fetch(ids.messageId);
+      if (!message) {
+        await interaction.editReply('Cannot fetch original confession message');
+        return;
+      }
+
+      reply = {
+        originalMessage: message,
+      };
     }
 
     this.sendConfession({
@@ -269,11 +316,11 @@ export default class GuildCommand extends Command {
       shouldSkipMultiline,
       imageAttachment,
       imageLink,
+      reply,
     }).catch(container.logger.error);
 
-    return interaction.reply({
+    await interaction.editReply({
       content: `Confession sent!\nCheck out ${channelMention(ChannelIds.CONFESSIONS)}`,
-      flags: MessageFlags.Ephemeral,
     });
   }
 
@@ -289,17 +336,19 @@ export default class GuildCommand extends Command {
       reply,
     } = options;
 
-    let description = shouldSkipMultiline ? confession : GuildCommand.processConfession(confession);
+    const description = shouldSkipMultiline
+      ? confession
+      : GuildCommand.processConfession(confession);
     let components;
+    let title = '**A New Confession!**';
+
     if (reply) {
       const OGConfessEmbed = reply.originalMessage.embeds[0];
 
       const OGAuthor = OGConfessEmbed.author?.name || 'Anonymous';
 
-      const OGConfession = hyperlink('See here', reply.originalMessage.url);
+      title = `Replying to ${OGAuthor}`;
 
-      const newDescription = `\`${OGAuthor}\` says: ${OGConfession}\n\nReply:\n`;
-      description = newDescription + description;
       components = [
         new ActionRowBuilder<ButtonBuilder>().addComponents([
           new ButtonBuilder()
@@ -315,7 +364,7 @@ export default class GuildCommand extends Command {
     };
 
     const anonEmbed: APIEmbed = {
-      title: '**A New Confession!**',
+      title,
       author: {
         name: 'Anonymous',
       },
@@ -355,14 +404,23 @@ export default class GuildCommand extends Command {
     if (!logChannel?.isTextBased()) {
       throw new Error('Archives channel could not be fetched');
     }
-
-    await confessChannel
-      .send({
-        content: shouldPingArchons ? roleMention(ROLE_IDS.OTHERS.ARCHONS) : undefined,
-        embeds: [isAnon ? anonEmbed : confessEmbed],
-        components,
-      })
-      .catch(container.logger.error);
+    if (reply) {
+      await reply.originalMessage
+        .reply({
+          content: shouldPingArchons ? roleMention(ROLE_IDS.OTHERS.ARCHONS) : undefined,
+          embeds: [isAnon ? anonEmbed : confessEmbed],
+          components,
+        })
+        .catch(container.logger.error);
+    } else {
+      await confessChannel
+        .send({
+          content: shouldPingArchons ? roleMention(ROLE_IDS.OTHERS.ARCHONS) : undefined,
+          embeds: [isAnon ? anonEmbed : confessEmbed],
+          components,
+        })
+        .catch(container.logger.error);
+    }
 
     await logChannel
       .send({
