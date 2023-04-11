@@ -9,6 +9,7 @@ export type CrownProp = {
   description: string;
   color: COLORS;
   emoji: ValueOf<typeof EMOJIS>;
+  plural: string;
 };
 
 export function crownProps(element: ELEMENTS): CrownProp {
@@ -25,6 +26,7 @@ They went extra mile to crown Unaligned Traveler in Archon Quest Chapter 2: Prol
 `,
         color: COLORS.UNALIGNED,
         emoji: EMOJIS.Void,
+        plural: 'Arbitrators of Fate',
       };
     case 'anemo':
       return {
@@ -33,6 +35,7 @@ They went extra mile to crown Unaligned Traveler in Archon Quest Chapter 2: Prol
         description: '*Prepare to grt blown away!*',
         color: COLORS.ANEMO,
         emoji: EMOJIS.Anemo,
+        plural: 'Herrscher of Wind',
       };
     case 'geo':
       return {
@@ -41,6 +44,7 @@ They went extra mile to crown Unaligned Traveler in Archon Quest Chapter 2: Prol
         description: '*Shock waves underneath your feet!*',
         color: COLORS.GEO,
         emoji: EMOJIS.Geo,
+        plural: 'Jūnzhǔ of Earth',
       };
     case 'electro':
       return {
@@ -49,6 +53,7 @@ They went extra mile to crown Unaligned Traveler in Archon Quest Chapter 2: Prol
         description: '*Got Electrocuted?*',
         color: COLORS.ELECTRO,
         emoji: EMOJIS.Electro,
+        plural: "Ten'nōs of Thunder",
       };
     case 'dendro':
       return {
@@ -57,6 +62,7 @@ They went extra mile to crown Unaligned Traveler in Archon Quest Chapter 2: Prol
         description: '*Feel the (razor) Grass!*',
         color: COLORS.DENDRO,
         emoji: EMOJIS.Dendro,
+        plural: 'Rajas of Evergreens',
       };
     default: {
       throw new Error(`Props for ${element} does not exist`);
