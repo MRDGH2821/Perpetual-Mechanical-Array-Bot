@@ -48,9 +48,9 @@ export function guildMessageIDsExtractor(link: string) {
   const matches = link.match(MessageLinkRegex)!;
 
   return {
-    guildId: matches[0],
-    channelId: matches[1],
-    messageId: matches[2],
+    guildId: matches[1],
+    channelId: matches[2],
+    messageId: matches[3],
   };
 }
 
