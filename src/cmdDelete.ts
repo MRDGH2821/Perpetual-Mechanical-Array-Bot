@@ -1,6 +1,5 @@
 import { LogLevel } from '@sapphire/framework';
 import { Client, GatewayIntentBits } from 'discord.js';
-import { customLogger } from './lib/utils';
 
 async function deleteAllCommands() {
   const bot = new Client({
@@ -9,7 +8,6 @@ async function deleteAllCommands() {
     logger: {
       level: LogLevel.Debug,
       depth: 2,
-      instance: customLogger,
     },
     intents: [
       GatewayIntentBits.DirectMessages,

@@ -1,9 +1,10 @@
+import { container } from '@sapphire/pieces';
 import { range } from '@sapphire/utilities';
 import { APIEmbed, Collection, User } from 'discord.js';
 import { sequentialPromises } from 'yaspr';
 import { checkBoolean } from '../../baseBot/lib/Utilities';
 import db from '../../lib/Firestore';
-import { customLogger, getUser, publishEmbedsGenerator } from '../../lib/utils';
+import { getUser, publishEmbedsGenerator } from '../../lib/utils';
 import type { ELEMENTS } from '../../typeDefs/typeDefs';
 import { crownProps } from './Utilities';
 
@@ -19,7 +20,7 @@ type SubCache = { 1: DataCollection } & Partial<Record<CrownQuantity, DataCollec
 
 type CacheType = Partial<Record<ELEMENTS, SubCache>>;
 
-const logger = customLogger;
+const { logger } = container;
 
 export default class HallOfFameCache {
   static #usersPerPage = 20;

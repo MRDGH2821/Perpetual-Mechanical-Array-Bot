@@ -1,8 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Events, Listener, ListenerOptions } from '@sapphire/framework';
+import { container, Events, Listener, ListenerOptions } from '@sapphire/framework';
 import { ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
-import { customLogger } from '../../lib/utils';
 
 @ApplyOptions<ListenerOptions>({
   enabled: true,
@@ -24,6 +23,6 @@ export default class UserEvent extends Listener<typeof Events.ShardReady> {
       member.roles.remove(freezeRNGRole, 'Bot restarted, cannot have them muted for long duration');
       length += 1;
     });
-    customLogger.info(`Unmuted ${length} users`);
+    container.logger.info(`Unmuted ${length} users`);
   }
 }

@@ -1,7 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Listener, ListenerOptions } from '@sapphire/framework';
+import { container, Listener, ListenerOptions } from '@sapphire/framework';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
-import { customLogger } from '../../lib/utils';
 import HallOfFameCache from '../lib/HallOfFameCache';
 
 @ApplyOptions<ListenerOptions>({
@@ -13,7 +12,7 @@ import HallOfFameCache from '../lib/HallOfFameCache';
 export default class UserEvent extends Listener {
   public run() {
     HallOfFameCache.prepareCache().then(() => {
-      customLogger.debug('Hall of Fame Cache Ready!');
+      container.logger.debug('Hall of Fame Cache Ready!');
       process.env.HALL_OF_FAME_READY = 'true';
     });
   }

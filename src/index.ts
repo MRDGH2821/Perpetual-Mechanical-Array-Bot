@@ -4,7 +4,6 @@ import type { ClientOptions } from 'discord.js';
 import { GatewayIntentBits } from 'discord.js';
 import { join } from 'node:path';
 import './lib/setup';
-import { customLogger } from './lib/utils';
 
 class CustomClient extends SapphireClient {
   private rootData = getRootData();
@@ -23,7 +22,6 @@ const client = new CustomClient({
   logger: {
     level: LogLevel.Debug,
     depth: 2,
-    instance: customLogger,
   },
   intents: [
     GatewayIntentBits.DirectMessages,
