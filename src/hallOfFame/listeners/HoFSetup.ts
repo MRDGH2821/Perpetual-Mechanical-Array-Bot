@@ -11,7 +11,7 @@ import db from '../../lib/Firestore';
 })
 export default class UserEvent extends Listener {
   public async run(forumChannel: ForumChannel) {
-    const {logger} = container;
+    const { logger } = container;
     logger.debug(`Got ${forumChannel}`);
 
     await db

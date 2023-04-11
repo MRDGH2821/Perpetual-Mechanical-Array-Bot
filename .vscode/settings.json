@@ -5,10 +5,5 @@
   },
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "npm.packageManager": "yarn",
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact"
-  ]
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"]
 }
