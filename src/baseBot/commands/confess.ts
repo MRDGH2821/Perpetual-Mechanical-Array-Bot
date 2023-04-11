@@ -362,7 +362,7 @@ export default class GuildCommand extends Command {
         embeds: [isAnon ? anonEmbed : confessEmbed],
         components,
       })
-      .catch(console.error);
+      .catch(container.logger.error);
 
     await logChannel
       .send({
@@ -385,8 +385,6 @@ export default class GuildCommand extends Command {
         ],
         components,
       })
-      .catch(console.error);
-
-    container.logger.debug('Imported version works');
+      .catch(container.logger.error);
   }
 }
