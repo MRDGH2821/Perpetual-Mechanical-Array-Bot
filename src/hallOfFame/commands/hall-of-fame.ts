@@ -41,6 +41,7 @@ export default class UserCommand extends Subcommand {
       ...options,
       name: cmdDef.name,
       description: cmdDef.description,
+      preconditions:['HoFCacheCheck'],
       subcommands: [
         {
           name: cmdDef.options![0].name,
