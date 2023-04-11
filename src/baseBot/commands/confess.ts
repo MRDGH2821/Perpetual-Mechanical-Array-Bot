@@ -22,6 +22,7 @@ import {
 } from 'discord.js';
 import { ChannelIds, COLORS, ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
+import { serverLogChannel } from '../../lib/utils';
 import type { JSONCmd } from '../../typeDefs/typeDefs';
 import { guildMessageIDsExtractor } from '../lib/Utilities';
 
@@ -395,15 +396,12 @@ export default class GuildCommand extends Subcommand {
 
     const confessChannel = await this.container.client.channels.fetch(ChannelIds.CONFESSIONS);
 
-    const logChannel = await this.container.client.channels.fetch(ChannelIds.ARCHIVES);
+    const logChannel = await serverLogChannel();
 
     if (!confessChannel?.isTextBased()) {
       throw new Error('Confession channel could not be fetched');
     }
 
-    if (!logChannel?.isTextBased()) {
-      throw new Error('Archives channel could not be fetched');
-    }
     if (reply) {
       await reply.originalMessage
         .reply({

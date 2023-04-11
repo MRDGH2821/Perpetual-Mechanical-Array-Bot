@@ -1,7 +1,8 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { container, Events, Listener, ListenerOptions } from '@sapphire/framework';
 import type { Interaction } from 'discord.js';
-import { ChannelIds, COLORS } from '../../lib/Constants';
+import { COLORS } from '../../lib/Constants';
+import { serverLogChannel } from '../../lib/utils';
 
 @ApplyOptions<ListenerOptions>({
   name: 'CommandLogs',
@@ -19,11 +20,7 @@ export default class CommandLogs extends Listener<typeof Events.ChatInputCommand
 
     const { user } = interaction;
 
-    const logChannel = await interaction.guild?.channels.fetch(ChannelIds.ARCHIVES);
-
-    if (!logChannel?.isTextBased()) {
-      throw new Error('Cannot fetch log channel');
-    }
+    const logChannel = await serverLogChannel();
 
     const subCommand = {
       cmd: 'none',

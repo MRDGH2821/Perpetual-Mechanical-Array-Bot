@@ -9,7 +9,8 @@ import { deepClone } from '@sapphire/utilities';
 import { cyan } from 'colorette';
 import type { APIEmbed, APIUser, Guild, User } from 'discord.js';
 import { getClient } from './ClientExtractor';
-import { EMPTY_STRING } from './Constants';
+import { ChannelIds, EMPTY_STRING } from './Constants';
+import EnvConfig from './EnvConfig';
 
 function getShardInfo(id: number) {
   return `[${cyan(id.toString())}]`;
@@ -108,4 +109,16 @@ export function publishEmbedsGenerator(
       rej(e);
     }
   });
+}
+
+export async function serverLogChannel() {
+  const tvmServer = await container.client.guilds.fetch(EnvConfig.guildId);
+
+  const logChannel = await tvmServer.channels.fetch(ChannelIds.ARCHIVES);
+
+  if (!logChannel?.isTextBased()) {
+    throw new Error('Cannot fetch log channel');
+  }
+
+  return logChannel;
 }
