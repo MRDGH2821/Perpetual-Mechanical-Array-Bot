@@ -26,7 +26,6 @@ They went extra mile to crown Unaligned Traveler in Archon Quest Chapter 2: Prol
         color: COLORS.UNALIGNED,
         emoji: EMOJIS.Void,
       };
-
     case 'anemo':
       return {
         icon: ICONS.PALM_VORTEX_AETHER,
@@ -38,16 +37,15 @@ They went extra mile to crown Unaligned Traveler in Archon Quest Chapter 2: Prol
     case 'geo':
       return {
         icon: ICONS.STARFELL_SWORD_LUMINE,
-        name: 'Junzhu of Earth',
+        name: 'Jūnzhǔ of Earth',
         description: '*Shock waves underneath your feet!*',
         color: COLORS.GEO,
         emoji: EMOJIS.Geo,
       };
-
     case 'electro':
       return {
         icon: ICONS.LIGHTENING_BLADE_AETHER,
-        name: "Ten'no of Thunder",
+        name: "Ten'nō of Thunder",
         description: '*Got Electrocuted?*',
         color: COLORS.ELECTRO,
         emoji: EMOJIS.Electro,
