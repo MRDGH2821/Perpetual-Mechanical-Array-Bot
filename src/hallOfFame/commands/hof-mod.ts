@@ -47,6 +47,7 @@ export default class UserCommand extends Subcommand {
           name: cmdDef.options![0].name,
           type: 'method',
           chatInputRun(interaction) {
+            PMAEventHandler.emit('HoFRefresh');
             return interaction.reply({
               content:
                 'Refresh initiated, please wait for a while before using hall of fame commands!',
@@ -75,7 +76,7 @@ export default class UserCommand extends Subcommand {
               [ChannelType.GuildForum],
             );
 
-            PMAEventHandler.emit('HoFRefresh', forumChannel);
+            PMAEventHandler.emit('HoFSetup', forumChannel);
             return interaction.reply({
               content: `Hall of Fame updates will now arrive in ${forumChannel}`,
               flags: MessageFlags.Ephemeral,
