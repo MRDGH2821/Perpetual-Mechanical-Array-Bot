@@ -124,7 +124,11 @@ export default class HallOfFameCache {
     }
   }
 
-  static generateEmbeds(element: ELEMENTS, quantity: CrownQuantity): Promise<APIEmbed[]> {
+  static generateEmbeds(
+    element: ELEMENTS,
+    quantity: CrownQuantity,
+    usersPerPage = this.#usersPerPage,
+  ): Promise<APIEmbed[]> {
     const props = crownProps(element);
     return new Promise((res, rej) => {
       const collection = this.#accessCache(element, quantity);
@@ -153,7 +157,7 @@ export default class HallOfFameCache {
           publishEmbedsGenerator({
             users,
             embedTemplate: embed,
-            usersPerPage: this.#usersPerPage,
+            usersPerPage,
           })
             .then(res)
             .catch(rej);
