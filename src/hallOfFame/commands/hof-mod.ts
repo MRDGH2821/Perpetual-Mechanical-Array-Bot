@@ -58,6 +58,7 @@ export default class UserCommand extends Subcommand {
           name: cmdDef.options![1].name,
           type: 'method',
           chatInputRun(interaction) {
+            PMAEventHandler.emit('HoFPublish');
             return interaction.reply({
               content: 'Hall of Fame will be published soon.',
               flags: MessageFlags.Ephemeral,
