@@ -1,6 +1,5 @@
 import type { ELEMENTS } from '../../typeDefs/typeDefs';
 
-export const stuff = '';
 export const HALL_OF_FAME_ELEMENT_CHOICES = <{ name: string; value: ELEMENTS }[]>[
   {
     name: 'Herrscher of Wind (Anemo)',
@@ -23,3 +22,5 @@ export const HALL_OF_FAME_ELEMENT_CHOICES = <{ name: string; value: ELEMENTS }[]
     value: 'unaligned',
   },
 ];
+
+export const RELEASED_ELEMENTS: ELEMENTS[] = ['anemo', 'geo', 'electro', 'dendro', 'unaligned'];
