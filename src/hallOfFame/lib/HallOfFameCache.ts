@@ -131,7 +131,7 @@ export default class HallOfFameCache {
 
       logger.debug('Building embeds for: ', {
         element,
-        length: Object.keys(collection).length,
+        length: collection.size,
       });
 
       const embed: APIEmbed = {
