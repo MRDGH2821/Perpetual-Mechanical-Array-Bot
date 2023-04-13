@@ -182,8 +182,11 @@ export async function viewPages(embeds: APIEmbed[]) {
     return msg
       .awaitMessageComponent({
         componentType: ComponentType.Button,
-        dispose: true,
         time: Time.Minute,
+        async filter(itx) {
+          await itx.deferUpdate();
+          return itx.user.id === ctx.user.id;
+        },
       })
       .then((button) => {
         if (button.customId === 'go_next') {
