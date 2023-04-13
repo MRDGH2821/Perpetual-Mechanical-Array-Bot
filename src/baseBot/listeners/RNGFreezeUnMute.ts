@@ -9,7 +9,7 @@ import EnvConfig from '../../lib/EnvConfig';
   name: 'RNGFreezeUnmute',
   once: true,
 })
-export default class UserEvent extends Listener<typeof Events.ShardReady> {
+export default class RNGFreezeUnMuteEvent extends Listener<typeof Events.ShardReady> {
   public async run() {
     const guild = await this.container.client.guilds.fetch(EnvConfig.guildId);
 

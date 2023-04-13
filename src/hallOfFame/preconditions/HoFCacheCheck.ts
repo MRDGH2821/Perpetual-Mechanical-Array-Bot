@@ -1,7 +1,7 @@
 import { Precondition } from '@sapphire/framework';
 import HallOfFameCache from '../lib/HallOfFameCache';
 
-export default class UserPrecondition extends Precondition {
+export default class HoFCacheCheck extends Precondition {
   public override chatInputRun() {
     return HallOfFameCache.isCacheReady()
       ? this.ok()

@@ -232,7 +232,7 @@ type FindTechArgs = {
   id: KitTechnology['id'];
 };
 type FindPropArgs = Omit<FindTechArgs, 'id'>;
-export function findKitProp(options: FindPropArgs): KitProp {
+export function getKitProp(options: FindPropArgs): KitProp {
   const { element, type } = options;
   const prop = availableProps[element];
 
@@ -249,12 +249,12 @@ export function findKitProp(options: FindPropArgs): KitProp {
   });
 }
 
-export function findTech(options: FindTechArgs) {
-  const kit = findKitProp(options);
+export function getTech(options: FindTechArgs) {
+  const kit = getKitProp(options);
   return kit.techs.find((tech) => tech.id.toLowerCase().includes(options.id.toLowerCase()));
 }
 
-export function findElementProp(element: ELEMENTS) {
+export function getElementProp(element: ELEMENTS) {
   const eleProp = availableProps[element];
   if (eleProp) {
     return eleProp;

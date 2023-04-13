@@ -35,7 +35,7 @@ const cmdDef: JSONCmd = {
     },
   ],
 };
-export default class UserCommand extends Subcommand {
+export default class GuildCommand extends Subcommand {
   public constructor(context: Subcommand.Context, options: Subcommand.Options) {
     super(context, {
       ...options,

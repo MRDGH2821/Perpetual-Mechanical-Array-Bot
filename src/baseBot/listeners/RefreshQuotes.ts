@@ -10,7 +10,7 @@ import { PMAEventHandler } from '../lib/Utilities';
   event: 'RefreshQuotes',
   enabled: true,
 })
-export default class UserEvent extends Listener {
+export default class RefreshQuotesEvent extends Listener {
   public async run() {
     const { logger } = container;
     const promises: Promise<void>[] = [];

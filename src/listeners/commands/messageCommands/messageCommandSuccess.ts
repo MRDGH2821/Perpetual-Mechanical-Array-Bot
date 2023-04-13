@@ -3,7 +3,7 @@ import { Listener, LogLevel } from '@sapphire/framework';
 import type { Logger } from '@sapphire/plugin-logger';
 import { logSuccessCommand } from '../../../lib/utils';
 
-export default class UserEvent extends Listener {
+export default class MessageCommandSuccessEvent extends Listener {
   public run(payload: MessageCommandSuccessPayload) {
     logSuccessCommand(payload);
   }

@@ -9,7 +9,7 @@ import HallOfFameCache from '../lib/HallOfFameCache';
   event: 'HoFRefresh',
   name: 'Hall of Fame Cache Refresher',
 })
-export default class UserEvent extends Listener {
+export default class HoFRefresh extends Listener {
   public run() {
     HallOfFameCache.prepareCache().then(() => {
       container.logger.debug('Hall of Fame Cache Ready!');

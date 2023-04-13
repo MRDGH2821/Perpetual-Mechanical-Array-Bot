@@ -12,7 +12,7 @@ import {
   roleMention,
 } from 'discord.js';
 import { COLORS, EMPTY_STRING, ROLE_IDS } from '../../lib/Constants';
-import type { CrownRegisterArgs } from '../../typeDefs/typeDefs';
+import type { RegisterCrownArgs } from '../../typeDefs/typeDefs';
 import { arrayIntersection, isStaff, PMAEventHandler } from './Utilities';
 
 type AssignRoleOptions = {
@@ -154,8 +154,8 @@ export default class AssignRoles {
     });
   }
 
-  static registerCrown(args: CrownRegisterArgs) {
-    PMAEventHandler.emit('CrownRegister', args);
+  static registerCrown(args: RegisterCrownArgs) {
+    PMAEventHandler.emit('RegisterCrown', args);
   }
 
   async #reactEmoji(emoji: string) {

@@ -141,7 +141,7 @@ function getAbyssQuote() {
   return pickRandom(ABYSS_QUOTES);
 }
 
-export async function viewPages(embeds: APIEmbed[]) {
+export async function viewBook(book: APIEmbed[]) {
   return async function next(
     ctx: ChatInputCommandInteraction | ButtonInteraction,
     i = 0,
@@ -150,14 +150,14 @@ export async function viewPages(embeds: APIEmbed[]) {
       await ctx.deferReply();
     }
 
-    if (embeds.length < 1) {
+    if (book.length < 1) {
       return ctx.editReply({
         content: 'No users found for given category',
       });
     }
     const msg = await ctx.editReply({
-      content: embeds[i] ? undefined : getAbyssQuote(),
-      embeds: [embeds[i]],
+      content: book[i] ? undefined : getAbyssQuote(),
+      embeds: [book[i]],
       options: {
         flags: MessageFlags.Ephemeral,
       },
@@ -190,7 +190,7 @@ export async function viewPages(embeds: APIEmbed[]) {
       })
       .then((button) => {
         if (button.customId === 'go_next') {
-          return next(button, i < embeds.length ? i + 1 : i);
+          return next(button, i < book.length ? i + 1 : i);
         }
         return next(button, i >= 0 ? i - 1 : i);
       });

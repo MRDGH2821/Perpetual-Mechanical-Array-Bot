@@ -1,7 +1,7 @@
 import { Subcommand } from '@sapphire/plugin-subcommands';
 import { ApplicationCommandOptionType } from 'discord.js';
 import EnvConfig from '../../lib/EnvConfig';
-import { viewPages } from '../../lib/utils';
+import { viewBook } from '../../lib/utils';
 import type { ELEMENTS, JSONCmd } from '../../typeDefs/typeDefs';
 import { HALL_OF_FAME_ELEMENT_CHOICES } from '../lib/Constants';
 import HallOfFameCache from '../lib/HallOfFameCache';
@@ -37,7 +37,7 @@ const cmdDef: JSONCmd = {
     },
   ],
 };
-export default class UserCommand extends Subcommand {
+export default class GuildCommand extends Subcommand {
   public constructor(context: Subcommand.Context, options: Subcommand.Options) {
     super(context, {
       ...options,
@@ -56,7 +56,7 @@ export default class UserCommand extends Subcommand {
             });
             const embeds = await HallOfFameCache.generateEmbeds(element, qty, 10);
 
-            const pager = await viewPages(embeds);
+            const pager = await viewBook(embeds);
 
             return pager(interaction);
           },

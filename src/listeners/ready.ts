@@ -7,7 +7,7 @@ import { setClient } from '../lib/ClientExtractor';
 const dev = process.env.NODE_ENV !== 'production';
 
 @ApplyOptions<Listener.Options>({ once: true })
-export default class UserEvent extends Listener {
+export default class ReadyEvent extends Listener {
   private readonly style = dev ? yellow : blue;
 
   public run() {

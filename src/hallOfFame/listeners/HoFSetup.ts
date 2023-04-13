@@ -9,7 +9,7 @@ import db from '../../lib/Firestore';
   event: 'HoFSetup',
   name: 'Hall of Fame Channel Setup',
 })
-export default class UserEvent extends Listener {
+export default class HoFSetup extends Listener {
   public async run(forumChannel: ForumChannel) {
     const { logger } = container;
     logger.debug(`Got ${forumChannel}`);

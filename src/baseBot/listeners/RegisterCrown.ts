@@ -2,17 +2,17 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { container, Listener, ListenerOptions } from '@sapphire/framework';
 import { ROLE_IDS } from '../../lib/Constants';
 import db from '../../lib/Firestore';
-import type { CrownRegisterArgs } from '../../typeDefs/typeDefs';
+import type { RegisterCrownArgs } from '../../typeDefs/typeDefs';
 import { PMAEventHandler } from '../lib/Utilities';
 
 @ApplyOptions<ListenerOptions>({
-  name: 'CrownRegister',
+  name: 'Registers Crown data of user',
   emitter: PMAEventHandler,
-  event: 'CrownRegister',
+  event: 'RegisterCrown',
   enabled: true,
 })
-export default class UserEvent extends Listener {
-  public async run(args: CrownRegisterArgs) {
+export default class RegisterCrownEvent extends Listener {
+  public async run(args: RegisterCrownArgs) {
     let collectionName = '';
     let { quantity } = args;
     if (quantity > 3 || quantity < 1) {

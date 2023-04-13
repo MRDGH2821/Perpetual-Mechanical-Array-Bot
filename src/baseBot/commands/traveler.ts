@@ -8,10 +8,10 @@ import {
 } from 'discord.js';
 import EnvConfig from '../../lib/EnvConfig';
 import type { ELEMENTS, JSONCmd } from '../../typeDefs/typeDefs';
-import { findElementProp, findTech, isSkill } from '../lib/TravelerTechnologies';
+import { getElementProp, getTech, isSkill } from '../lib/TravelerTechnologies';
 
 function APIsubCommandBuilder(element: ELEMENTS): ApplicationCommandOptionData {
-  const eleProp = findElementProp(element);
+  const eleProp = getElementProp(element);
 
   return {
     type: ApplicationCommandOptionType.SubcommandGroup,
@@ -67,7 +67,7 @@ const cmdDef: JSONCmd = {
 };
 
 function subCommandGroupMaker(element: ELEMENTS): SubcommandMapping {
-  const eleProp = findElementProp(element);
+  const eleProp = getElementProp(element);
   return {
     name: eleProp.element,
     type: 'group',
@@ -90,7 +90,7 @@ function subCommandGroupMaker(element: ELEMENTS): SubcommandMapping {
     ],
   };
 }
-export default class UserCommand extends Subcommand {
+export default class GuildCommand extends Subcommand {
   public constructor(context: Subcommand.Context, options: Subcommand.Options) {
     super(context, {
       ...options,
@@ -109,7 +109,7 @@ export default class UserCommand extends Subcommand {
   public async runCmd(interaction: ChatInputCommandInteraction) {
     const element = interaction.options.getSubcommandGroup(true);
     const subCommand = interaction.options.getSubcommand(true);
-    const eleProp = findElementProp(element as ELEMENTS);
+    const eleProp = getElementProp(element as ELEMENTS);
     if (subCommand === 'guide') {
       return interaction.reply({ content: eleProp.guide });
     }
@@ -117,7 +117,7 @@ export default class UserCommand extends Subcommand {
     const techId = interaction.options.getString('tech', true);
 
     container.logger.debug('Searching for tech');
-    const tech = findTech({
+    const tech = getTech({
       element: element as ELEMENTS,
       type: isSkill(subCommand) ? 'skill' : 'burst',
       id: techId,

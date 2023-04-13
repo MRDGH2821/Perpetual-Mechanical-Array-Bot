@@ -3,7 +3,7 @@ import { Listener } from '@sapphire/framework';
 import { codeBlock } from '@sapphire/utilities';
 import { MessageFlags } from 'discord.js';
 
-export default class UserEvent extends Listener<typeof Events.ChatInputCommandError> {
+export default class ChatInputCommandErrorEvent extends Listener<typeof Events.ChatInputCommandError> {
   public async run(err: Error, payload: ChatInputCommandErrorPayload) {
     const { interaction } = payload;
     const errMsg = `${err}\n\n${codeBlock('md', JSON.stringify(err, null, 2))}`;

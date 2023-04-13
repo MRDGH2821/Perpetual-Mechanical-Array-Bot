@@ -66,7 +66,7 @@ export type DBQuotes = GIFCategory | ReasonCategory | QuoteCategory;
 
 export type DBQuotesCollection = Collection<DBQuotes, string[]>;
 
-export type CrownRegisterArgs = {
+export type RegisterCrownArgs = {
   quantity: number;
   target: GuildMember;
   crownID: ROLE_IDS.CROWN;
