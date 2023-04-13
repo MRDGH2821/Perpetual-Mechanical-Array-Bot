@@ -1,10 +1,12 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Listener, ListenerOptions } from '@sapphire/framework';
-import { ForumChannel } from 'discord.js';
+import { container, Listener, ListenerOptions } from '@sapphire/framework';
+import { ActionRowBuilder, APIEmbed, ButtonBuilder, ButtonStyle, ForumChannel } from 'discord.js';
+import { sequentialPromises } from 'yaspr';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import EnvConfig from '../../lib/EnvConfig';
 import db from '../../lib/Firestore';
 import type { ELEMENTS } from '../../typeDefs/typeDefs';
+import { RELEASED_ELEMENTS } from '../lib/Constants';
 import HallOfFameCache from '../lib/HallOfFameCache';
 import { crownProps } from '../lib/Utilities';
 
@@ -13,7 +15,7 @@ import { crownProps } from '../lib/Utilities';
   event: 'HoFPublish',
   name: 'Hall of Fame Publisher',
 })
-export default class UserEvent extends Listener {
+export default class HoFPublish extends Listener {
   HallOfFameForum: ForumChannel | undefined;
 
   static dashLine = '-------------------------------------';
@@ -39,7 +41,7 @@ export default class UserEvent extends Listener {
 
     this.HallOfFameForum = forumChannel;
 
-    forumChannel.threads.create({});
+    await sequentialPromises(RELEASED_ELEMENTS, this.publish);
   }
 
   public async publish(element: ELEMENTS) {
@@ -59,9 +61,52 @@ export default class UserEvent extends Listener {
 
     const currentDate = new Date();
     const props = crownProps(element);
-    const thread = this.HallOfFameForum.threads.create({
-      name: `Herrschers of Wind as of ${currentDate.toUTCString()} `,
-      message: 'The her',
+    const thread = await this.HallOfFameForum.threads.create({
+      name: `${props.plural} as of ${currentDate.toUTCString()} `,
+      message: {
+        content: `${props.description}`,
+      },
     });
+
+    const insertDashLine = async () =>
+      thread.send({
+        content: HoFPublish.dashLine,
+      });
+
+    const insertEmbeds = async (embeds: APIEmbed[]) =>
+      thread.send({
+        embeds,
+      });
+
+    await insertDashLine();
+    const firstMsg = await insertEmbeds(oneCrownEmbeds);
+
+    if (twoCrownEmbeds) {
+      await insertDashLine();
+      await insertEmbeds(twoCrownEmbeds);
+    }
+
+    if (threeCrownEmbeds) {
+      await insertDashLine();
+      await insertEmbeds(threeCrownEmbeds);
+    }
+
+    await thread.send({
+      content: HoFPublish.dashLine,
+      components: [
+        new ActionRowBuilder<ButtonBuilder>({
+          components: [
+            new ButtonBuilder({
+              label: 'Back to first place',
+              style: ButtonStyle.Link,
+              emoji: '⬆',
+              url: firstMsg.url,
+            }),
+          ],
+        }),
+      ],
+    });
+
+    container.logger.info(`Hall of fame for Element: ${element} sent!`);
   }
 }
