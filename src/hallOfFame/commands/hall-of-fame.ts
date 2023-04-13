@@ -1,8 +1,10 @@
 import { Subcommand } from '@sapphire/plugin-subcommands';
 import { ApplicationCommandOptionType } from 'discord.js';
 import EnvConfig from '../../lib/EnvConfig';
-import type { JSONCmd } from '../../typeDefs/typeDefs';
+import { viewPages } from '../../lib/utils';
+import type { ELEMENTS, JSONCmd } from '../../typeDefs/typeDefs';
 import { HALL_OF_FAME_ELEMENT_CHOICES } from '../lib/Constants';
+import HallOfFameCache from '../lib/HallOfFameCache';
 
 const cmdDef: JSONCmd = {
   name: 'hall-of-fame',
@@ -46,8 +48,15 @@ export default class UserCommand extends Subcommand {
         {
           name: cmdDef.options![0].name,
           type: 'method',
-          chatInputRun(interaction) {
-            return interaction.reply({ content: 'Hello this is cmd1!' });
+          async chatInputRun(interaction) {
+            const element = interaction.options.getString('element', true) as ELEMENTS;
+            const qty = interaction.options.getInteger('crown_quantity', true) as 1 | 2 | 3;
+
+            const embeds = await HallOfFameCache.generateEmbeds(element, qty, 10);
+
+            const pager = await viewPages(embeds);
+
+            return pager(interaction);
           },
         },
       ],
