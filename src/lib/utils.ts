@@ -5,11 +5,25 @@ import {
   type ContextMenuCommandSuccessPayload,
   type MessageCommandSuccessPayload,
 } from '@sapphire/framework';
-import { deepClone } from '@sapphire/utilities';
+import { Time } from '@sapphire/time-utilities';
+import { deepClone, pickRandom } from '@sapphire/utilities';
 import { cyan } from 'colorette';
-import type { APIEmbed, APIUser, Guild, User } from 'discord.js';
+import {
+  ActionRowBuilder,
+  APIEmbed,
+  APIUser,
+  ButtonBuilder,
+  ButtonInteraction,
+  ButtonStyle,
+  ChatInputCommandInteraction,
+  ComponentType,
+  Guild,
+  MessageFlags,
+  User,
+} from 'discord.js';
 import { getClient } from './ClientExtractor';
 import { ChannelIds, EMPTY_STRING } from './Constants';
+import { ABYSS_QUOTES } from './DynamicConstants';
 import EnvConfig from './EnvConfig';
 
 function getShardInfo(id: number) {
@@ -121,4 +135,60 @@ export async function serverLogChannel() {
   }
 
   return logChannel;
+}
+
+function getAbyssQuote() {
+  return pickRandom(ABYSS_QUOTES);
+}
+
+export async function viewPages(embeds: APIEmbed[]) {
+  return async function next(
+    ctx: ChatInputCommandInteraction | ButtonInteraction,
+    i = 0,
+  ): Promise<any | void> {
+    await ctx.deferReply({
+      ephemeral: true,
+    });
+    if (embeds.length < 1) {
+      return ctx.editReply({
+        content: 'No users found for given category',
+      });
+    }
+    const msg = await ctx.editReply({
+      content: embeds[i] ? undefined : getAbyssQuote(),
+      embeds: [embeds[i]],
+      options: {
+        flags: MessageFlags.Ephemeral,
+      },
+      components: [
+        new ActionRowBuilder<ButtonBuilder>({
+          components: [
+            new ButtonBuilder({
+              label: 'Previous',
+              emoji: '⬅️',
+              style: ButtonStyle.Secondary,
+            }).setCustomId('go_previous'),
+            new ButtonBuilder({
+              label: 'Next',
+              emoji: '➡️',
+              style: ButtonStyle.Primary,
+            }).setCustomId('go_next'),
+          ],
+        }),
+      ],
+    });
+
+    return msg
+      .awaitMessageComponent({
+        componentType: ComponentType.Button,
+        dispose: true,
+        time: Time.Minute,
+      })
+      .then((button) => {
+        if (button.customId === 'go_next') {
+          return next(button, i < embeds.length ? i + 1 : i);
+        }
+        return next(button, i >= 0 ? i - 1 : i);
+      });
+  };
 }
