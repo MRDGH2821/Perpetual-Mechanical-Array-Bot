@@ -146,9 +146,6 @@ export async function viewPages(embeds: APIEmbed[]) {
     ctx: ChatInputCommandInteraction | ButtonInteraction,
     i = 0,
   ): Promise<any | void> {
-    await ctx.deferReply({
-      ephemeral: true,
-    });
     if (embeds.length < 1) {
       return ctx.editReply({
         content: 'No users found for given category',

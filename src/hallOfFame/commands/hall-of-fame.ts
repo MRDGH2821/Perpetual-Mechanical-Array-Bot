@@ -51,7 +51,9 @@ export default class UserCommand extends Subcommand {
           async chatInputRun(interaction) {
             const element = interaction.options.getString('element', true) as ELEMENTS;
             const qty = interaction.options.getInteger('crown_quantity', true) as 1 | 2 | 3;
-
+            await interaction.deferReply({
+              ephemeral: true,
+            });
             const embeds = await HallOfFameCache.generateEmbeds(element, qty, 10);
 
             const pager = await viewPages(embeds);
