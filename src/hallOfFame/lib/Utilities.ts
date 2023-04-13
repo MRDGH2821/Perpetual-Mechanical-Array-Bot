@@ -32,7 +32,7 @@ They went extra mile to crown Unaligned Traveler in Archon Quest Chapter 2: Prol
       return {
         icon: ICONS.PALM_VORTEX_AETHER,
         name: 'Herrscher of Wind',
-        description: '*Prepare to grt blown away!*',
+        description: '*Prepare to get blown away!*',
         color: COLORS.ANEMO,
         emoji: EMOJIS.Anemo,
         plural: 'Herrscher of Wind',
@@ -50,10 +50,10 @@ They went extra mile to crown Unaligned Traveler in Archon Quest Chapter 2: Prol
       return {
         icon: ICONS.LIGHTENING_BLADE_AETHER,
         name: "Ten'nō of Thunder",
-        description: '*Got Electrocuted?*',
+        description: '*Get Electrocuted!*',
         color: COLORS.ELECTRO,
         emoji: EMOJIS.Electro,
-        plural: "Ten'nōs of Thunder",
+        plural: "Ten'nō of Thunder",
       };
     case 'dendro':
       return {
