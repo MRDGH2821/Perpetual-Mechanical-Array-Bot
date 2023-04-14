@@ -24,7 +24,7 @@ export default class SpiralAbyssCache {
     return checkBoolean(process.env.SPIRAL_ABYSS_READY);
   }
 
-  static #fetchDB(clearType: SpiralAbyssClearTypes) {
+  static async #fetchDB(clearType: SpiralAbyssClearTypes) {
     let roleId: ROLE_IDS.SpiralAbyss;
 
     switch (clearType) {
@@ -40,17 +40,30 @@ export default class SpiralAbyssCache {
         roleId = ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN;
         break;
       }
-      // no default
+      default: {
+        throw new Error(`Invalid Clear Type ${clearType}`);
+      }
     }
-    return container.client.guilds
-      .fetch(EnvConfig.guildId)
-      .then((guild) => guild.roles.fetch(roleId))
-      .then((role) => {
-        if (role) {
-          return role.members;
-        }
-        throw new Error(`Cannot fetch the role whose id is ${roleId}`);
-      });
+    const guild = await container.client.guilds.fetch(EnvConfig.guildId);
+
+    try {
+      const role = await guild.roles.fetch(roleId);
+      const guildMembers = await guild.members.fetch();
+      const getMembers = () => guildMembers.filter((member) => member.roles.cache.has(roleId));
+      const members: Role['members'] = role ? role.members : new Collection();
+
+      if (members.size < 1) {
+        return getMembers();
+      }
+      return members;
+    } catch (e) {
+      container.logger.error(e);
+      container.logger.debug('Setting self in cache');
+      const self = await guild.members.fetch(EnvConfig.clientId);
+      const members: Role['members'] = new Collection();
+      members.set(EnvConfig.clientId, self);
+      return members;
+    }
   }
 
   static #accessCache(clearType: SpiralAbyssClearTypes) {
@@ -63,9 +76,9 @@ export default class SpiralAbyssCache {
 
   static async prepareCache() {
     this.#cache = {
-      traveler: (await this.#fetchDB('traveler')) || new Collection(),
-      conqueror: (await this.#fetchDB('conqueror')) || new Collection(),
-      sovereign: (await this.#fetchDB('sovereign')) || new Collection(),
+      traveler: await this.#fetchDB('traveler'),
+      conqueror: await this.#fetchDB('conqueror'),
+      sovereign: await this.#fetchDB('sovereign'),
     };
   }
 

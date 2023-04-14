@@ -11,6 +11,7 @@ import SpiralAbyssCache from '../lib/SpiralAbyssCache';
 })
 export default class HoFRefresh extends Listener {
   public run() {
+    container.logger.debug('Preparing Spiral Abyss Cache');
     SpiralAbyssCache.prepareCache().then(() => {
       container.logger.debug('Spiral Abyss Cache Ready!');
       process.env.SPIRAL_ABYSS_READY = 'true';
