@@ -137,7 +137,7 @@ export async function serverLogChannel() {
   return logChannel;
 }
 
-function getAbyssQuote() {
+export function getAbyssQuote() {
   return pickRandom(ABYSS_QUOTES);
 }
 
@@ -155,8 +155,8 @@ export async function viewBook(book: APIEmbed[]) {
         content: 'No users found for given category',
       });
     }
+
     const msg = await ctx.editReply({
-      content: book[i] ? undefined : getAbyssQuote(),
       embeds: [book[i]],
       options: {
         flags: MessageFlags.Ephemeral,
@@ -168,11 +168,13 @@ export async function viewBook(book: APIEmbed[]) {
               label: 'Previous',
               emoji: '⬅️',
               style: ButtonStyle.Secondary,
+              disabled: !book[i - 1],
             }).setCustomId('go_previous'),
             new ButtonBuilder({
               label: 'Next',
               emoji: '➡️',
               style: ButtonStyle.Primary,
+              disabled: !book[i + 1],
             }).setCustomId('go_next'),
           ],
         }),
