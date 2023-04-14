@@ -16,6 +16,7 @@ export default class ReadyEvent extends Listener {
 
     setClient(this.container.client);
     PMAEventHandler.emit('HoFRefresh');
+    PMAEventHandler.emit('SARefresh');
   }
 
   private printBanner() {
