@@ -1,30 +1,35 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { container, Listener, ListenerOptions } from '@sapphire/framework';
-import type { ForumChannel } from 'discord.js';
+import type { ForumChannel, TextChannel } from 'discord.js';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import db from '../../lib/Firestore';
 
+type LBSetupArgs = {
+  forumChannel: ForumChannel;
+  textChannel: TextChannel;
+};
+
 @ApplyOptions<ListenerOptions>({
   emitter: PMAEventHandler,
-  event: 'HoFSetup',
-  name: 'Hall of Fame Channel Setup',
+  event: 'LBSetup',
+  name: 'Leaderboard Channel Setup',
 })
 export default class HoFSetup extends Listener {
-  public async run(forumChannel: ForumChannel) {
+  public async run(channels: LBSetupArgs) {
     const { logger } = container;
-    logger.debug(`Got ${forumChannel}`);
+    logger.debug(`Got ${channels}`);
 
     await db
-      .collection('hall-of-fame-config')
+      .collection('leaderboard-config')
       .doc('channel')
       .set(
-        { forumId: forumChannel.id },
+        { forumId: channels.forumChannel.id, channelId: channels.textChannel.id },
         {
           merge: true,
         },
       )
       .then(() => {
-        logger.debug(`Forum channel registered in database for Hall Of Fame`);
+        logger.debug(`Channels registered in database for Leaderboard`);
       })
       .catch(logger.error);
   }

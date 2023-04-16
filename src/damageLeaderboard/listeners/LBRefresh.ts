@@ -6,14 +6,14 @@ import HallOfFameCache from '../lib/LeaderboardCache';
 @ApplyOptions<ListenerOptions>({
   emitter: PMAEventHandler,
   enabled: true,
-  event: 'HoFRefresh',
-  name: 'Hall of Fame Cache Refresher',
+  event: 'LBRefresh',
+  name: 'Leaderboard Cache Refresher',
 })
 export default class HoFRefresh extends Listener {
   public run() {
     HallOfFameCache.prepareCache().then(() => {
-      container.logger.debug('Hall of Fame Cache Ready!');
-      process.env.HALL_OF_FAME_READY = 'true';
+      container.logger.debug('Leaderboard Cache Ready!');
+      process.env.LEADERBOARD_READY = 'true';
     });
   }
 }

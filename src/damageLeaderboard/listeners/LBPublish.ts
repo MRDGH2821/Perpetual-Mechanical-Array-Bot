@@ -5,10 +5,10 @@ import { sequentialPromises } from 'yaspr';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import EnvConfig from '../../lib/EnvConfig';
 import db from '../../lib/Firestore';
-import type { ELEMENTS } from '../../typeDefs/typeDefs';
 import { RELEASED_ELEMENTS } from '../lib/Constants';
 import HallOfFameCache from '../lib/LeaderboardCache';
 import { leaderboardProps } from '../lib/Utilities';
+import type { LBElements } from '../typeDefs/leaderboardTypeDefs';
 
 @ApplyOptions<ListenerOptions>({
   emitter: PMAEventHandler,
@@ -19,24 +19,16 @@ export default class HoFPublish extends Listener {
   static dashLine = '-------------------------------------';
 
   public async run() {
-    async function publish(element: ELEMENTS, HallOfFameForum: ForumChannel) {
-      const isUnaligned = () => element === 'unaligned';
-      const oneCrownEmbeds = await HallOfFameCache.generateEmbeds(element, 1);
-
-      const twoCrownEmbeds = isUnaligned()
-        ? undefined
-        : await HallOfFameCache.generateEmbeds(element, 2);
-
-      const threeCrownEmbeds = isUnaligned()
-        ? undefined
-        : await HallOfFameCache.generateEmbeds(element, 3);
+    async function publish(element: LBElements, HallOfFameForum: ForumChannel) {
+      const openEmbeds = await HallOfFameCache.generateEmbeds(element, 'open');
+      const soloEmbeds = await HallOfFameCache.generateEmbeds(element, 'solo');
 
       const currentDate = new Date();
       const props = leaderboardProps(element);
       const thread = await HallOfFameForum.threads.create({
-        name: `${props.plural} as of ${currentDate.toUTCString()} `,
+        name: `${props.name} leaderboard as of ${currentDate.toUTCString()} `,
         message: {
-          content: `${props.description}`,
+          content: `${props.name}`,
         },
       });
 
@@ -51,19 +43,12 @@ export default class HoFPublish extends Listener {
         });
 
       await insertDashLine();
-      const firstMsg = await insertEmbeds(oneCrownEmbeds);
+      const firstMsg = await insertEmbeds(openEmbeds);
 
-      if (twoCrownEmbeds) {
-        await insertDashLine();
-        await insertEmbeds(twoCrownEmbeds);
-      }
+      await insertDashLine();
+      await insertEmbeds(soloEmbeds);
 
-      if (threeCrownEmbeds) {
-        await insertDashLine();
-        await insertEmbeds(threeCrownEmbeds);
-      }
-
-      container.logger.info(`Hall of fame for Element: ${element} sent!`);
+      container.logger.info(`Damage Leaderboard for Element: ${element} sent!`);
       return thread.send({
         content: HoFPublish.dashLine,
         components: [
@@ -82,7 +67,7 @@ export default class HoFPublish extends Listener {
     }
 
     await db
-      .collection('hall-of-fame-config')
+      .collection('leaderboard-config')
       .doc('channel')
       .get()
       .then(async (docSnap) => {
@@ -100,7 +85,7 @@ export default class HoFPublish extends Listener {
           throw new Error('Could not obtain text forum channel');
         }
 
-        const publisher = (element: ELEMENTS) => publish(element, forumChannel);
+        const publisher = (element: LBElements) => publish(element, forumChannel);
 
         await sequentialPromises(RELEASED_ELEMENTS, publisher);
       });
