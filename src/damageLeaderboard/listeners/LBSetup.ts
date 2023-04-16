@@ -5,8 +5,8 @@ import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import db from '../../lib/Firestore';
 
 type LBSetupArgs = {
-  forumChannel: ForumChannel;
-  textChannel: TextChannel;
+  forumChannel?: ForumChannel;
+  textChannel?: TextChannel;
 };
 
 @ApplyOptions<ListenerOptions>({
@@ -14,16 +14,16 @@ type LBSetupArgs = {
   event: 'LBSetup',
   name: 'Leaderboard Channel Setup',
 })
-export default class HoFSetup extends Listener {
+export default class LBSetup extends Listener {
   public async run(channels: LBSetupArgs) {
     const { logger } = container;
-    logger.debug(`Got ${channels}`);
+    logger.debug('Got', channels);
 
     await db
       .collection('leaderboard-config')
       .doc('channel')
       .set(
-        { forumId: channels.forumChannel.id, channelId: channels.textChannel.id },
+        { forumId: channels.forumChannel?.id, channelId: channels.textChannel?.id },
         {
           merge: true,
         },
