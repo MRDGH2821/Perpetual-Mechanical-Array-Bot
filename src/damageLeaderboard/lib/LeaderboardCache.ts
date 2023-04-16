@@ -129,7 +129,7 @@ export default class LeaderboardCache {
       logger.debug(`Skipping ${element}-dmg-${groupType}`);
     }
 
-    logger.debug(`Cache for ${element} is ready`);
+    logger.debug(`Cache for ${element}-dmg-${groupType} is ready`);
   }
 
   static async #prepareDamageCache(element: LBElements) {
