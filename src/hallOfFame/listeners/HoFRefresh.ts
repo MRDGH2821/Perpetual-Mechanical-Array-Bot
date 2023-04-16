@@ -11,8 +11,10 @@ import HallOfFameCache from '../lib/HallOfFameCache';
 })
 export default class HoFRefresh extends Listener {
   public run() {
+    process.env.HALL_OF_FAME_READY = 'false';
+    container.logger.info('Preparing Hall Of Fame Cache');
     HallOfFameCache.prepareCache().then(() => {
-      container.logger.debug('Hall of Fame Cache Ready!');
+      container.logger.info('Hall of Fame Cache Ready!');
       process.env.HALL_OF_FAME_READY = 'true';
     });
   }

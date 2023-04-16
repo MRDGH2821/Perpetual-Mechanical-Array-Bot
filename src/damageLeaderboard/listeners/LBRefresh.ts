@@ -11,8 +11,10 @@ import LeaderboardCache from '../lib/LeaderboardCache';
 })
 export default class LBRefresh extends Listener {
   public run() {
+    process.env.LEADERBOARD_READY = 'false';
+    container.logger.info('Preparing Leaderboard Cache');
     LeaderboardCache.prepareCache().then(() => {
-      container.logger.debug('Leaderboard Cache Ready!');
+      container.logger.info('Leaderboard Cache Ready!');
       process.env.LEADERBOARD_READY = 'true';
     });
   }
