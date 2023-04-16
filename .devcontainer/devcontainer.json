@@ -2,5 +2,5 @@
   "name": "Node.js",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
   "image": "mcr.microsoft.com/devcontainers/javascript-node:18",
-  "postStartCommand": "npm install"
+  "postStartCommand": "yarn install"
 }
