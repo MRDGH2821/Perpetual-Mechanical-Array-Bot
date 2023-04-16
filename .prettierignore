@@ -1,5 +1,5 @@
-dist/
-node_modules/
-.yarn/
-examples/*/dist/
 .pnp.*
+.yarn/
+dist/
+examples/*/dist/
+node_modules/
