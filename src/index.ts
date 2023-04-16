@@ -27,8 +27,12 @@ const client = new CustomClient({
   },
   intents: [
     GatewayIntentBits.DirectMessages,
+    GatewayIntentBits.GuildEmojisAndStickers,
+    GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildModeration,
     GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildWebhooks,
     GatewayIntentBits.MessageContent,
   ],
   loadMessageCommandListeners: true,
