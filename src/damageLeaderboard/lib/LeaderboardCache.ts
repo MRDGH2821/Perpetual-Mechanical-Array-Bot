@@ -167,7 +167,7 @@ export default class HallOfFameCache {
         thumbnail: {
           url: props.icon,
         },
-        description: `Highest Damage of **${props.description}**`,
+        description: `Highest Damage of **${props.name}**`,
         timestamp: new Date().toISOString(),
         fields: [],
       };
