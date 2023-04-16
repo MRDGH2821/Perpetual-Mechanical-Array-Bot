@@ -13,9 +13,9 @@ import type { LBElements } from '../typeDefs/leaderboardTypeDefs';
 @ApplyOptions<ListenerOptions>({
   emitter: PMAEventHandler,
   event: 'LBPublish',
-  name: 'Hall of Fame Publisher',
+  name: 'Leaderboard Publisher',
 })
-export default class HoFPublish extends Listener {
+export default class LBPublish extends Listener {
   static dashLine = '-------------------------------------';
 
   public async run() {
@@ -34,7 +34,7 @@ export default class HoFPublish extends Listener {
 
       const insertDashLine = async () =>
         thread.send({
-          content: HoFPublish.dashLine,
+          content: LBPublish.dashLine,
         });
 
       const insertEmbeds = async (embeds: APIEmbed[]) =>
@@ -50,7 +50,7 @@ export default class HoFPublish extends Listener {
 
       container.logger.info(`Damage Leaderboard for Element: ${element} sent!`);
       return thread.send({
-        content: HoFPublish.dashLine,
+        content: LBPublish.dashLine,
         components: [
           new ActionRowBuilder<ButtonBuilder>({
             components: [

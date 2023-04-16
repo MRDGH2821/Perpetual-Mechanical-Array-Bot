@@ -1,7 +1,7 @@
 import { Precondition } from '@sapphire/framework';
 import LeaderboardCache from '../lib/LeaderboardCache';
 
-export default class HoFCacheCheck extends Precondition {
+export default class LBCacheCheck extends Precondition {
   public override chatInputRun() {
     return LeaderboardCache.isCacheReady()
       ? this.ok()
@@ -14,6 +14,6 @@ export default class HoFCacheCheck extends Precondition {
 
 declare module '@sapphire/framework' {
   interface Preconditions {
-    HoFCacheCheck: never;
+    LBCacheCheck: never;
   }
 }

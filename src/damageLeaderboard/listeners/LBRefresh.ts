@@ -9,7 +9,7 @@ import LeaderboardCache from '../lib/LeaderboardCache';
   event: 'LBRefresh',
   name: 'Leaderboard Cache Refresher',
 })
-export default class HoFRefresh extends Listener {
+export default class LBRefresh extends Listener {
   public run() {
     LeaderboardCache.prepareCache().then(() => {
       container.logger.debug('Leaderboard Cache Ready!');

@@ -43,7 +43,7 @@ export default class GuildCommand extends Subcommand {
       ...options,
       name: cmdDef.name,
       description: cmdDef.description,
-      preconditions: ['HoFCacheCheck'],
+      preconditions: ['LBCacheCheck'],
       subcommands: [
         {
           name: cmdDef.options![0].name,
