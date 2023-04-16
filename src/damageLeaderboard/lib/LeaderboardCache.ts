@@ -5,7 +5,7 @@ import { sequentialPromises } from 'yaspr';
 import { checkBoolean } from '../../baseBot/lib/Utilities';
 import db from '../../lib/Firestore';
 import { getUser, publishEmbedsGenerator } from '../../lib/utils';
-import type { ElementDamageCategories } from '../typeDefs/leaderboardTypeDefs';
+import type { ElementDamageCategories, LBElements } from '../typeDefs/leaderboardTypeDefs';
 import { leaderboardProps } from './Utilities';
 
 type GroupCategoryType = 'open' | 'solo';
@@ -25,11 +25,7 @@ type GroupCache = Record<GroupCategoryType, DataCollection>;
 
 type DamageCache = Partial<Record<DmgDoneByType, GroupCache>>;
 
-type SkillElements = 'anemo' | 'geo' | 'electro' | 'dendro';
-
-type N5Elements = 'uni';
-
-type CacheType = Record<SkillElements | N5Elements, DamageCache>;
+type CacheType = Record<LBElements, DamageCache>;
 
 const { logger } = container;
 
@@ -73,12 +69,12 @@ export default class HallOfFameCache {
     return checkBoolean(process.env.HALL_OF_FAME_READY);
   }
 
-  static #getDamageType(element: N5Elements | SkillElements) {
+  static #getDamageType(element: LBElements) {
     return element === 'uni' ? 'n5' : 'skill';
   }
 
   static #fetchDB(
-    element: N5Elements | SkillElements,
+    element: LBElements,
     groupType: GroupCategoryType,
     topEntries = 0,
   ): Promise<DBLeaderboardData[]> {
@@ -100,10 +96,7 @@ export default class HallOfFameCache {
     });
   }
 
-  static #accessCache(
-    element: N5Elements | SkillElements,
-    groupType: GroupCategoryType,
-  ): DataCollection {
+  static #accessCache(element: LBElements, groupType: GroupCategoryType): DataCollection {
     const cache = this.#cache[element];
     if (!cache) {
       throw new Error(`Cache for ${element} does not exist`);
@@ -122,10 +115,7 @@ export default class HallOfFameCache {
     return groupCache[groupType];
   }
 
-  static async #prepareGroupCache(
-    element: N5Elements | SkillElements,
-    groupType: GroupCategoryType,
-  ) {
+  static async #prepareGroupCache(element: LBElements, groupType: GroupCategoryType) {
     const DBData = await this.#fetchDB(element, groupType);
 
     try {
@@ -140,13 +130,13 @@ export default class HallOfFameCache {
     logger.debug(`Cache for ${element} is ready`);
   }
 
-  static async #prepareDamageCache(element: N5Elements | SkillElements) {
+  static async #prepareDamageCache(element: LBElements) {
     const categories: GroupCategoryType[] = ['solo', 'open'];
     categories.forEach((category) => this.#prepareGroupCache(element, category));
   }
 
   static async prepareCache() {
-    const validElements = Object.keys(this.#cache) as N5Elements[] | SkillElements[];
+    const validElements = Object.keys(this.#cache) as LBElements[];
 
     // await sequentialPromises(validElements, this.#prepareSubCache);
 
@@ -158,7 +148,7 @@ export default class HallOfFameCache {
   }
 
   static generateEmbeds(
-    element: N5Elements | SkillElements,
+    element: LBElements,
     groupType: GroupCategoryType,
     usersPerPage = this.#usersPerPage,
   ): Promise<APIEmbed[]> {
