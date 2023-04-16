@@ -1,6 +1,6 @@
 {
-  "threshold": 5,
-  "reporters": ["html", "markdown"],
+  "$schema": "https://json.schemastore.org/jscpd.json",
+  "gitignore": true,
   "ignore": [
     "**/node_modules/**",
     "**/.git/**",
@@ -11,6 +11,10 @@
     "**/.idea/**",
     "**/report/**",
     "**/*.svg",
-    "**/dist/**"
-  ]
+    "**/dist/**",
+    "**/.yarn/**",
+    "**.lock**"
+  ],
+  "reporters": ["html", "markdown"],
+  "threshold": 5
 }
