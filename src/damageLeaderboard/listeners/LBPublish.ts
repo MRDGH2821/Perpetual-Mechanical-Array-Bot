@@ -6,7 +6,7 @@ import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import EnvConfig from '../../lib/EnvConfig';
 import db from '../../lib/Firestore';
 import { RELEASED_ELEMENTS } from '../lib/Constants';
-import HallOfFameCache from '../lib/LeaderboardCache';
+import LeaderboardCache from '../lib/LeaderboardCache';
 import { leaderboardProps } from '../lib/Utilities';
 import type { LBElements } from '../typeDefs/leaderboardTypeDefs';
 
@@ -20,8 +20,8 @@ export default class HoFPublish extends Listener {
 
   public async run() {
     async function publish(element: LBElements, HallOfFameForum: ForumChannel) {
-      const openEmbeds = await HallOfFameCache.generateEmbeds(element, 'open');
-      const soloEmbeds = await HallOfFameCache.generateEmbeds(element, 'solo');
+      const openEmbeds = await LeaderboardCache.generateEmbeds(element, 'open');
+      const soloEmbeds = await LeaderboardCache.generateEmbeds(element, 'solo');
 
       const currentDate = new Date();
       const props = leaderboardProps(element);

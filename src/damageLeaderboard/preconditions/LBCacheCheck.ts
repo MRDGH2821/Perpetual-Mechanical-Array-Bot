@@ -1,9 +1,9 @@
 import { Precondition } from '@sapphire/framework';
-import HallOfFameCache from '../lib/LeaderboardCache';
+import LeaderboardCache from '../lib/LeaderboardCache';
 
 export default class HoFCacheCheck extends Precondition {
   public override chatInputRun() {
-    return HallOfFameCache.isCacheReady()
+    return LeaderboardCache.isCacheReady()
       ? this.ok()
       : this.error({
         context: 'Hall of Fame cache not ready',

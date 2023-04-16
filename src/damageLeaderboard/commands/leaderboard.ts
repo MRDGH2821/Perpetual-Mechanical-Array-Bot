@@ -4,7 +4,7 @@ import EnvConfig from '../../lib/EnvConfig';
 import { viewBook } from '../../lib/utils';
 import type { ELEMENTS, JSONCmd } from '../../typeDefs/typeDefs';
 import { LEADERBOARD_DAMAGE_TYPE_CHOICES } from '../lib/Constants';
-import HallOfFameCache from '../lib/LeaderboardCache';
+import LeaderboardCache from '../lib/LeaderboardCache';
 
 const cmdDef: JSONCmd = {
   name: 'leaderboard',
@@ -59,7 +59,7 @@ export default class GuildCommand extends Subcommand {
               qty = 1;
             }
 
-            const embeds = await HallOfFameCache.generateEmbeds(element, qty, 10);
+            const embeds = await LeaderboardCache.generateEmbeds(element, qty, 10);
             const pager = await viewBook(embeds);
             return pager(interaction);
           },

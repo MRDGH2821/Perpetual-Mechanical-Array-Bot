@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { container, Listener, ListenerOptions } from '@sapphire/framework';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
-import HallOfFameCache from '../lib/LeaderboardCache';
+import LeaderboardCache from '../lib/LeaderboardCache';
 
 @ApplyOptions<ListenerOptions>({
   emitter: PMAEventHandler,
@@ -11,7 +11,7 @@ import HallOfFameCache from '../lib/LeaderboardCache';
 })
 export default class HoFRefresh extends Listener {
   public run() {
-    HallOfFameCache.prepareCache().then(() => {
+    LeaderboardCache.prepareCache().then(() => {
       container.logger.debug('Leaderboard Cache Ready!');
       process.env.LEADERBOARD_READY = 'true';
     });

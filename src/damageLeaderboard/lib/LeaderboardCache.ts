@@ -29,7 +29,7 @@ type CacheType = Record<LBElements, DamageCache>;
 
 const { logger } = container;
 
-export default class HallOfFameCache {
+export default class LeaderboardCache {
   static #usersPerPage = 20;
 
   static #cache: CacheType = {
