@@ -29,6 +29,7 @@ if (process.env.NODE_ENV !== 'development') {
 }
 initializeApp();
 const db = getFirestore();
+db.settings({ ignoreUndefinedProperties: true });
 
 export default db;
 
