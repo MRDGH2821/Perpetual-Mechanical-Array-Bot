@@ -5,10 +5,12 @@ import { sequentialPromises } from 'yaspr';
 import { checkBoolean } from '../../baseBot/lib/Utilities';
 import db from '../../lib/Firestore';
 import { getUser, publishEmbedsGenerator } from '../../lib/utils';
-import type { ElementDamageCategories, LBElements } from '../typeDefs/leaderboardTypeDefs';
+import type {
+  ElementDamageCategories,
+  GroupCategoryType,
+  LBElements,
+} from '../typeDefs/leaderboardTypeDefs';
 import { leaderboardProps } from './Utilities';
-
-type GroupCategoryType = 'open' | 'solo';
 
 type DmgDoneByType = 'skill' | 'n5';
 type DBLeaderboardData = {

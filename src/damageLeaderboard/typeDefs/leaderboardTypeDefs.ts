@@ -10,3 +10,5 @@ export type SkillElements = 'anemo' | 'geo' | 'electro' | 'dendro';
 export type N5Elements = 'uni';
 
 export type LBElements = SkillElements | N5Elements;
+
+export type GroupCategoryType = 'open' | 'solo';
