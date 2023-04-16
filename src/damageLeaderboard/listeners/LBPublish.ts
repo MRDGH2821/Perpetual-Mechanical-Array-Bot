@@ -5,7 +5,7 @@ import { sequentialPromises } from 'yaspr';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import EnvConfig from '../../lib/EnvConfig';
 import db from '../../lib/Firestore';
-import { RELEASED_ELEMENTS } from '../lib/Constants';
+import { LEADERBOARD_ELEMENTS } from '../lib/Constants';
 import LeaderboardCache from '../lib/LeaderboardCache';
 import { leaderboardProps } from '../lib/Utilities';
 import type { LBElements } from '../typeDefs/leaderboardTypeDefs';
@@ -87,7 +87,7 @@ export default class HoFPublish extends Listener {
 
         const publisher = (element: LBElements) => publish(element, forumChannel);
 
-        await sequentialPromises(RELEASED_ELEMENTS, publisher);
+        await sequentialPromises(LEADERBOARD_ELEMENTS, publisher);
       });
     // .catch(container.logger.error);
   }

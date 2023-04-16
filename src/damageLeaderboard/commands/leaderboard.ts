@@ -2,13 +2,14 @@ import { Subcommand } from '@sapphire/plugin-subcommands';
 import { ApplicationCommandOptionType } from 'discord.js';
 import EnvConfig from '../../lib/EnvConfig';
 import { viewBook } from '../../lib/utils';
-import type { ELEMENTS, JSONCmd } from '../../typeDefs/typeDefs';
+import type { JSONCmd } from '../../typeDefs/typeDefs';
 import { LEADERBOARD_DAMAGE_TYPE_CHOICES } from '../lib/Constants';
 import LeaderboardCache from '../lib/LeaderboardCache';
+import type { GroupCategoryType, LBElements } from '../typeDefs/leaderboardTypeDefs';
 
 const cmdDef: JSONCmd = {
   name: 'leaderboard',
-  description: 'Hall of Fame commands',
+  description: 'Leaderboard commands',
   options: [
     {
       type: 1,
@@ -23,14 +24,13 @@ const cmdDef: JSONCmd = {
           choices: LEADERBOARD_DAMAGE_TYPE_CHOICES,
         },
         {
-          name: 'crown_quantity',
-          description: 'Select Crown Quantity',
-          type: ApplicationCommandOptionType.Integer,
+          name: 'group_type',
+          description: 'Select group type',
+          type: ApplicationCommandOptionType.String,
           required: true,
           choices: [
-            { name: 'One (1)', value: 1 },
-            { name: 'Two (2)', value: 2 },
-            { name: 'Three (3)', value: 3 },
+            { name: 'Solo', value: 'solo' },
+            { name: 'Open', value: 'open' },
           ],
         },
       ],
@@ -49,17 +49,16 @@ export default class GuildCommand extends Subcommand {
           name: cmdDef.options![0].name,
           type: 'method',
           async chatInputRun(interaction) {
-            const element = interaction.options.getString('element', true) as ELEMENTS;
-            let qty = interaction.options.getInteger('crown_quantity', true) as 1 | 2 | 3;
+            const element = interaction.options.getString('element', true) as LBElements;
+            const groupType = interaction.options.getString(
+              'group_type',
+              true,
+            ) as GroupCategoryType;
             await interaction.deferReply({
               ephemeral: true,
             });
 
-            if (element === 'unaligned') {
-              qty = 1;
-            }
-
-            const embeds = await LeaderboardCache.generateEmbeds(element, qty, 10);
+            const embeds = await LeaderboardCache.generateEmbeds(element, groupType, 10);
             const pager = await viewBook(embeds);
             return pager(interaction);
           },

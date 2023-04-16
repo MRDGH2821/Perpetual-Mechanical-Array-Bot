@@ -1,26 +1,26 @@
-import type { ELEMENTS } from '../../typeDefs/typeDefs';
+import type { LBElements } from '../typeDefs/leaderboardTypeDefs';
 
-export const LEADERBOARD_DAMAGE_TYPE_CHOICES = <{ name: string; value: ELEMENTS }[]>[
+export const LEADERBOARD_DAMAGE_TYPE_CHOICES = <{ name: string; value: LBElements }[]>[
   {
-    name: 'Herrscher of Wind (Anemo)',
+    name: "Traveler's Normal Attack 5th hit",
+    value: 'uni',
+  },
+  {
+    name: 'Palm Vortex - Max storm damage',
     value: 'anemo',
   },
   {
-    name: 'Jūnzhǔ of Earth (Geo)',
+    name: 'Starfell Sword',
     value: 'geo',
   },
   {
-    name: "Ten'nō of Thunder (Electro)",
+    name: 'Lightening Blade',
     value: 'electro',
   },
   {
-    name: 'Raja of Evergreens (Dendro)',
+    name: 'Razor grass Blade',
     value: 'dendro',
-  },
-  {
-    name: 'Arbitrator of Fate (Unaligned)',
-    value: 'unaligned',
   },
 ];
 
-export const RELEASED_ELEMENTS: ELEMENTS[] = ['anemo', 'geo', 'electro', 'dendro', 'unaligned'];
+export const LEADERBOARD_ELEMENTS: LBElements[] = ['anemo', 'geo', 'electro', 'dendro', 'uni'];
