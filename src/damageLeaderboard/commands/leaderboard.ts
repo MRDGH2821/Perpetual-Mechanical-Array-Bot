@@ -1,5 +1,13 @@
 import { Subcommand } from '@sapphire/plugin-subcommands';
-import { ApplicationCommandOptionType } from 'discord.js';
+import {
+  ApplicationCommandOptionType,
+  ApplicationCommandType,
+  ComponentType,
+  Message,
+  User,
+} from 'discord.js';
+import { guildMessageIDsExtractor } from '../../baseBot/lib/Utilities';
+import { ChannelIds } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import { viewBook } from '../../lib/utils';
 import type { JSONCmd } from '../../typeDefs/typeDefs';
@@ -159,6 +167,32 @@ export default class GuildCommand extends Subcommand {
       possibleScore,
     };
   }
+
+  public override async contextMenuRun(interaction: Subcommand.ContextMenuCommandInteraction) {
+    if (!interaction.isMessageContextMenuCommand()) {
+      throw new Error('No message found');
+    }
+
+    const message = interaction.targetMessage;
+
+    const contestant = message.author;
+
+    const assets = this.extractData(message);
+
+    await interaction.showModal({
+      title: 'Registration Form',
+      customId: 'registration_form',
+      custom_id: 'registration_form',
+      components: [
+        {
+          type: ComponentType.ActionRow,
+          components: [
+            {
+              type: ComponentType.TextInput,
+              customId: 'score',
+            },
+          ],
+        },
       ],
     });
   }
@@ -183,5 +217,16 @@ export default class GuildCommand extends Subcommand {
     registry.registerChatInputCommand(cmdDef, {
       guildIds: [EnvConfig.guildId],
     });
+    registry.registerContextMenuCommand(
+      {
+        name: 'Register Score for leaderboard',
+        type: ApplicationCommandType.Message,
+        dm_permission: false,
+        dmPermission: false,
+      },
+      {
+        guildIds: [EnvConfig.guildId],
+      },
+    );
   }
 }
