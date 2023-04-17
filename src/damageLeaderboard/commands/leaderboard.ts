@@ -163,6 +163,21 @@ export default class GuildCommand extends Subcommand {
     });
   }
 
+  public async registerContestant({
+    contestant,
+    element,
+    groupType,
+    score,
+    proofMessage,
+    shouldForceUpdate = false,
+  }: {
+    contestant: User;
+    element: LBElements;
+    groupType: GroupCategoryType;
+    score: number;
+    proofMessage: Message;
+    shouldForceUpdate: boolean;
+  }) {}
 
   public override registerApplicationCommands(registry: Subcommand.Registry) {
     registry.registerChatInputCommand(cmdDef, {
