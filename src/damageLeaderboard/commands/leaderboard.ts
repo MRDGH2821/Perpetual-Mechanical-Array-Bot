@@ -118,9 +118,51 @@ export default class GuildCommand extends Subcommand {
       ],
     });
   }
+
+  public async parseRegistration(interaction: Subcommand.ChatInputCommandInteraction) {
+    const contestant = interaction.options.getUser('contestant', true);
+    const element = interaction.options.getString('element', true) as LBElements;
+    const groupType = interaction.options.getString('group_type') as GroupCategoryType;
+    const score = interaction.options.getInteger('score', true);
+    const proofLink = interaction.options.getString('proof_link', true);
+    const shouldForceUpdate = interaction.options.getBoolean('force_update') || false;
+
+    const lbChannel = await interaction.guild?.channels.fetch(ChannelIds.SHOWCASE);
+    if (!lbChannel?.isTextBased()) {
+      throw new Error('Cannot fetch showcase text channel');
+    }
+    const proofMessage = await lbChannel.messages.fetch(
+      guildMessageIDsExtractor(proofLink).messageId,
+    );
+
+    return this.registerContestant({
+      contestant,
+      element,
+      groupType,
+      proofMessage,
+      score,
+      shouldForceUpdate,
+    });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  public async extractData(message: Message) {
+    const attachment = message.attachments.first();
+    const contestant = message.author;
+    const { content } = message;
+    const possibleScore = content.search(/\d/gimu);
+
+    return {
+      contestant,
+      url: attachment?.url,
+      proxyUrl: attachment?.proxyURL,
+      possibleScore,
+    };
+  }
       ],
     });
   }
+
 
   public override registerApplicationCommands(registry: Subcommand.Registry) {
     registry.registerChatInputCommand(cmdDef, {
