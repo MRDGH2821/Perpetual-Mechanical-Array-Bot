@@ -322,6 +322,14 @@ export default class GuildCommand extends Subcommand {
       },
     };
 
+    const ids = guildMessageIDsExtractor(args.proofMessage.url);
+
+    if (ids.channelId !== ChannelIds.SHOWCASE) {
+      return interaction.editReply({
+        content: `Proof Link should be from ${channelMention(ChannelIds.SHOWCASE)}`,
+      });
+    }
+
     if (args.shouldForceUpdate === false && oldScoreData && oldScoreData!.score > args.score) {
       return interaction.editReply({
         embeds: [
