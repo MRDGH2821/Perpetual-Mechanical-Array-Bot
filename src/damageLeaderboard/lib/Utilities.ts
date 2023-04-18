@@ -1,4 +1,5 @@
-import { COLORS, ICONS } from '../../lib/Constants';
+import { COLORS, EMOJIS, ICONS } from '../../lib/Constants';
+import type { ValueOf } from '../../typeDefs/typeDefs';
 import type {
   ElementDamageCategories,
   GroupCategoryType,
@@ -10,6 +11,7 @@ export type LBProp = {
   icon: ICONS;
   name: string;
   color: COLORS;
+  emoji: ValueOf<typeof EMOJIS>;
 };
 
 export function leaderboardProps(element: LBElements): LBProp {
@@ -19,30 +21,35 @@ export function leaderboardProps(element: LBElements): LBProp {
         icon: ICONS.COPIUM,
         name: "Traveler's Normal Attack 5th hit",
         color: COLORS.UNIVERSAL,
+        emoji: EMOJIS.Copium,
       };
     case 'anemo':
       return {
         icon: ICONS.PALM_VORTEX_AETHER,
         name: 'Palm Vortex - Max storm damage',
         color: COLORS.ANEMO,
+        emoji: EMOJIS.Anemo,
       };
     case 'geo':
       return {
         icon: ICONS.STARFELL_SWORD_LUMINE,
         name: 'Starfell Sword',
         color: COLORS.GEO,
+        emoji: EMOJIS.Geo,
       };
     case 'electro':
       return {
         icon: ICONS.LIGHTENING_BLADE_AETHER,
         name: 'Lightening Blade',
         color: COLORS.ELECTRO,
+        emoji: EMOJIS.Electro,
       };
     case 'dendro':
       return {
         icon: ICONS.RAZOR_GRASS_BLADE_AETHER,
         name: 'Razor grass Blade',
         color: COLORS.DENDRO,
+        emoji: EMOJIS.Dendro,
       };
     default: {
       throw new Error(`Props for ${element} does not exist`);
