@@ -158,13 +158,18 @@ export default class GuildCommand extends Subcommand {
     const attachment = message.attachments.first();
     const contestant = message.author;
     const { content } = message;
-    const possibleScore = content.search(/\d/gimu);
+    const possibleScores = content.match(/\d/gimu);
+    const possibleGroupTypes = content.match(/(solo)|(open)/gimu);
+    const possibleElements = content.match(/(anemo)|(geo)|(electro)|(dendro)|(uni|universal))/gimu);
 
     return {
       contestant,
       url: attachment?.url,
       proxyUrl: attachment?.proxyURL,
-      possibleScore,
+      possibleScore: possibleScores ? possibleScores[0] : undefined,
+      possibleGroupType: possibleGroupTypes ? possibleGroupTypes[0] : undefined,
+      possibleElement: possibleElements ? possibleElements[0] : undefined,
+      possibleLinks: extractLinks(content),
     };
   }
 
