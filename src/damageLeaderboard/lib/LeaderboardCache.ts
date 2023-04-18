@@ -6,20 +6,13 @@ import { checkBoolean } from '../../baseBot/lib/Utilities';
 import db from '../../lib/Firestore';
 import { getUser, publishEmbedsGenerator } from '../../lib/utils';
 import type {
-  ElementDamageCategories,
+  DBLeaderboardData,
   GroupCategoryType,
   LBElements,
 } from '../typeDefs/leaderboardTypeDefs';
 import { leaderboardProps } from './Utilities';
 
 type DmgDoneByType = 'skill' | 'n5';
-type DBLeaderboardData = {
-  elementCategory: ElementDamageCategories;
-  proof: string;
-  score: number;
-  typeCategory: GroupCategoryType;
-  userID: User['id'];
-};
 
 type DataCollection = Collection<User['id'], DBLeaderboardData>;
 
