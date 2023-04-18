@@ -352,20 +352,20 @@ export default class GuildCommand extends Subcommand {
           },
         ],
         components: [
-          new ActionRowBuilder<ButtonBuilder>({}).addComponents([
-            new ButtonBuilder({
-              customId: 'old_proof',
-              label: 'Old Proof',
-              style: ButtonStyle.Link,
-              url: oldScoreData.proof,
-            }),
-            new ButtonBuilder({
-              customId: 'new_proof',
-              label: 'New Proof',
-              style: ButtonStyle.Link,
-              url: args.proofMessage.url,
-            }),
-          ]),
+          new ActionRowBuilder<ButtonBuilder>({
+            components: [
+              new ButtonBuilder({
+                label: 'Old Proof',
+                style: ButtonStyle.Link,
+                url: oldScoreData.proof,
+              }),
+              new ButtonBuilder({
+                label: 'New Proof',
+                style: ButtonStyle.Link,
+                url: args.proofMessage.url,
+              }),
+            ],
+          }),
         ],
       });
     }
