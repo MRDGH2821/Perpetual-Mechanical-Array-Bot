@@ -71,3 +71,5 @@ export type RegisterCrownArgs = {
   target: GuildMember;
   crownID: ROLE_IDS.CROWN;
 };
+
+export type ValueOf<T> = T[keyof T];

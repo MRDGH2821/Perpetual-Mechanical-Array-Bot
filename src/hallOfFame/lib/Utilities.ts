@@ -1,7 +1,5 @@
 import { COLORS, EMOJIS, ICONS } from '../../lib/Constants';
-import type { ELEMENTS } from '../../typeDefs/typeDefs';
-
-type ValueOf<T> = T[keyof T];
+import type { ELEMENTS, ValueOf } from '../../typeDefs/typeDefs';
 
 export type CrownProp = {
   icon: ICONS;
