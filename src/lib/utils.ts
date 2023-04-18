@@ -198,3 +198,16 @@ export async function viewBook(book: APIEmbed[]) {
       });
   };
 }
+
+export function parseTruthy(text: string) {
+  const txt = text.toLowerCase();
+  const truthyWords = ['y', 'true', 'yes'];
+  let flag = false;
+  truthyWords.forEach((word) => {
+    if (word === txt) {
+      flag = true;
+    }
+  });
+
+  return flag;
+}

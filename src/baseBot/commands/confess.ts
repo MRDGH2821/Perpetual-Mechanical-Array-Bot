@@ -22,7 +22,7 @@ import {
 } from 'discord.js';
 import { ChannelIds, COLORS, ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
-import { serverLogChannel } from '../../lib/utils';
+import { parseTruthy, serverLogChannel } from '../../lib/utils';
 import type { JSONCmd } from '../../typeDefs/typeDefs';
 import { guildMessageIDsExtractor } from '../lib/Utilities';
 
@@ -125,19 +125,6 @@ export default class GuildCommand extends Subcommand {
     return confession.replaceAll('\\n', '\n');
   }
 
-  public static parseTruthy(text: string) {
-    const txt = text.toLowerCase();
-    const truthyWords = ['y', 'true', 'yes'];
-    let flag = false;
-    truthyWords.forEach((word) => {
-      if (word === txt) {
-        flag = true;
-      }
-    });
-
-    return flag;
-  }
-
   public override async contextMenuRun(interaction: Command.ContextMenuCommandInteraction) {
     if (!interaction.isMessageContextMenuCommand()) return;
 
@@ -233,9 +220,9 @@ export default class GuildCommand extends Subcommand {
           const imageLink = modalCtx.fields.getTextInputValue('image_link');
           const skipMultiline = modalCtx.fields.getTextInputValue('skip_multiline');
 
-          const isAnon = GuildCommand.parseTruthy(anonymous);
-          const shouldPingArchons = GuildCommand.parseTruthy(pingArchons);
-          const shouldSkipMultiline = GuildCommand.parseTruthy(skipMultiline);
+          const isAnon = parseTruthy(anonymous);
+          const shouldPingArchons = parseTruthy(pingArchons);
+          const shouldSkipMultiline = parseTruthy(skipMultiline);
           const confessor = interaction.member;
 
           if (!isGuildMember(confessor)) {
