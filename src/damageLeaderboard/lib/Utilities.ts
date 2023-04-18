@@ -1,5 +1,6 @@
 import { COLORS, ICONS } from '../../lib/Constants';
-import type { LBElements } from '../typeDefs/leaderboardTypeDefs';
+import type { GroupCategoryType, LBElements } from '../typeDefs/leaderboardTypeDefs';
+import { LEADERBOARD_ELEMENTS } from './Constants';
 
 export type LBProp = {
   icon: ICONS;
@@ -43,4 +44,24 @@ export function leaderboardProps(element: LBElements): LBProp {
       throw new Error(`Props for ${element} does not exist`);
     }
   }
+}
+
+export function parseElement(element: string): LBElements {
+  const possibleElement = element.toLowerCase() as LBElements;
+
+  if (LEADERBOARD_ELEMENTS.includes(possibleElement)) {
+    return possibleElement;
+  }
+  throw new Error(`Invalid element type ${element}`);
+}
+
+export function parseGroupType(groupType: string): GroupCategoryType {
+  const possibleGpTp = groupType.toLowerCase() as GroupCategoryType;
+
+  const validType: GroupCategoryType[] = ['open', 'solo'];
+
+  if (validType.includes(possibleGpTp)) {
+    return possibleGpTp;
+  }
+  throw new Error(`Invalid Group type ${groupType}`);
 }
