@@ -149,6 +149,11 @@ export default class LeaderboardCache {
     }
   }
 
+  static getScore(userID: User['id'], element: LBElements, groupType: GroupCategoryType) {
+    const collection = this.#accessCache(element, groupType);
+    return collection.get(userID);
+  }
+
   static generateEmbeds(
     element: LBElements,
     groupType: GroupCategoryType,
