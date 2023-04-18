@@ -5,6 +5,7 @@ import {
   APIEmbed,
   ApplicationCommandOptionType,
   ApplicationCommandType,
+  AttachmentBuilder,
   ButtonBuilder,
   ButtonStyle,
   ComponentType,
@@ -289,7 +290,6 @@ export default class GuildCommand extends Subcommand {
       });
   }
 
-  // eslint-disable-next-line consistent-return
   public async registerContestant(
     args: LBRegistrationArgs,
     interaction:
@@ -490,6 +490,20 @@ export default class GuildCommand extends Subcommand {
         });
     } catch (e) {
       this.container.logger.error(e);
+
+      return interaction.editReply({
+        embeds: [
+          {
+            title: '**An error occurred**',
+            description: `There was an error while registration:\n\n${e}`,
+          },
+        ],
+        files: [
+          new AttachmentBuilder(Buffer.from(`${e}`), {
+            name: 'Error while registering user.txt',
+          }),
+        ],
+      });
     }
   }
 
