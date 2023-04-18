@@ -269,13 +269,15 @@ export default class GuildCommand extends Subcommand {
           return itx.user.id === interaction.user.id;
         },
       })
-      .then((modalCtx) => {
+      .then(async (modalCtx) => {
         const score = modalCtx.fields.getTextInputValue('score');
         const element = parseElement(modalCtx.fields.getTextInputValue('element'));
         const groupType = parseGroupType(modalCtx.fields.getTextInputValue('group_type'));
         const shouldForceUpdate =
           parseTruthy(modalCtx.fields.getTextInputValue('force_update')) || false;
-
+        await modalCtx.deferReply({
+          ephemeral: true,
+        });
         return this.registerContestant(
           {
             contestant,
