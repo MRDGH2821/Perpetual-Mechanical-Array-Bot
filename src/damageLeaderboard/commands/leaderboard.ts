@@ -1,19 +1,31 @@
 import { Subcommand } from '@sapphire/plugin-subcommands';
+import { Time } from '@sapphire/time-utilities';
 import {
+  ActionRowBuilder,
+  APIEmbed,
   ApplicationCommandOptionType,
   ApplicationCommandType,
+  ButtonBuilder,
+  ButtonStyle,
   ComponentType,
   Message,
-  User,
+  MessageFlags,
+  ModalSubmitInteraction,
+  TextInputStyle,
 } from 'discord.js';
-import { guildMessageIDsExtractor } from '../../baseBot/lib/Utilities';
-import { ChannelIds } from '../../lib/Constants';
+import { guildMessageIDsExtractor, isStaff, PMAEventHandler } from '../../baseBot/lib/Utilities';
+import { ChannelIds, COLORS, ICONS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
-import { viewBook } from '../../lib/utils';
+import { parseTruthy, viewBook } from '../../lib/utils';
 import type { JSONCmd } from '../../typeDefs/typeDefs';
 import { LEADERBOARD_DAMAGE_TYPE_CHOICES } from '../lib/Constants';
 import LeaderboardCache from '../lib/LeaderboardCache';
-import type { GroupCategoryType, LBElements } from '../typeDefs/leaderboardTypeDefs';
+import { extractLinks, leaderboardProps, parseElement, parseGroupType } from '../lib/Utilities';
+import type {
+  GroupCategoryType,
+  LBElements,
+  LBRegistrationArgs,
+} from '../typeDefs/leaderboardTypeDefs';
 
 const cmdDef: JSONCmd = {
   name: 'leaderboard',
@@ -143,14 +155,17 @@ export default class GuildCommand extends Subcommand {
       guildMessageIDsExtractor(proofLink).messageId,
     );
 
-    return this.registerContestant({
-      contestant,
-      element,
-      groupType,
-      proofMessage,
-      score,
-      shouldForceUpdate,
-    });
+    return this.registerContestant(
+      {
+        contestant,
+        element,
+        groupType,
+        proofMessage,
+        score,
+        shouldForceUpdate,
+      },
+      interaction,
+    );
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -274,6 +289,209 @@ export default class GuildCommand extends Subcommand {
       });
   }
 
+  // eslint-disable-next-line consistent-return
+  public async registerContestant(
+    args: LBRegistrationArgs,
+    interaction:
+      | Subcommand.ChatInputCommandInteraction
+      | Subcommand.ContextMenuCommandInteraction
+      | ModalSubmitInteraction,
+  ) {
+    const oldScoreData = LeaderboardCache.getScore(
+      args.contestant.id,
+      args.element,
+      args.groupType,
+    );
+    const props = leaderboardProps(args.element);
+    const assets = await this.extractData(args.proofMessage);
+    const embed: APIEmbed = {
+      title: '**Entry Verification**',
+      color: props.color,
+      thumbnail: {
+        url: props.icon,
+      },
+      description: `**Contestant**: ${args.contestant} \`${args.contestant.tag}\` \n**Category**: [${args.element}] ${props.name} \n**Group**: ${args.groupType} \n**Score (i.e. Dmg value)**: ${args.score} \n\n**Proof**: \n${args.proofMessage.url}`,
+      fields: [],
+      image: {
+        url: '',
+      },
+      video: {
+        url: '',
+      },
+    };
+
+    if (args.shouldForceUpdate === false && oldScoreData && oldScoreData!.score > args.score) {
+      return interaction.editReply({
+        embeds: [
+          {
+            color: COLORS.ERROR,
+            title: '**Higher score detected!**',
+            thumbnail: { url: ICONS.CROSS_MARK },
+            description:
+              'A higher score for same contestant was detected in leaderboard thus rejecting submission.',
+            fields: [
+              {
+                name: 'Score in Leaderboard',
+                value: `[${oldScoreData.score}](${oldScoreData.proof})`,
+              },
+              {
+                name: 'Score input',
+                value: `[${args.score}](${args.proofMessage.url})`,
+              },
+            ],
+          },
+        ],
+        components: [
+          new ActionRowBuilder<ButtonBuilder>({}).addComponents([
+            new ButtonBuilder({
+              customId: 'old_proof',
+              label: 'Old Proof',
+              style: ButtonStyle.Link,
+              url: oldScoreData.proof,
+            }),
+            new ButtonBuilder({
+              customId: 'new_proof',
+              label: 'New Proof',
+              style: ButtonStyle.Link,
+              url: args.proofMessage.url,
+            }),
+          ]),
+        ],
+      });
+    }
+    try {
+      const { author, content, attachments } = args.proofMessage;
+      const firstAtt = attachments.first();
+
+      const proofURL = firstAtt?.url || firstAtt?.proxyURL || assets.possibleLinks![0] || '';
+
+      embed.image = {
+        url: proofURL,
+      };
+      embed.video = {
+        url: proofURL,
+      };
+      embed.fields?.push(
+        {
+          name: '**Auto Verification**',
+          value: `**Contestant**: ${
+            author.id === args.contestant.id
+              ? 'Verified'
+              : `Cannot Verify (most likely submission done on behalf of ${
+                args.contestant?.tag
+              } by ${author.tag})\n**Score**: ${
+                content.match(`${args.score}`)?.length
+                  ? 'Verified'
+                  : "Cannot Verify (most likely because contestant didn't put score as text while uploading proof)"
+              }`
+          }`,
+        },
+        {
+          name: '**Attachments direct link**',
+          value: `Link 1: ${firstAtt?.url || 'Failed to get attachment url'}\nLink 2: ${
+            firstAtt?.proxyURL || 'Failed to get attachment url'
+          }\nOther links: ${assets.possibleLinks?.toString()}`,
+        },
+      );
+
+      if (oldScoreData) {
+        const diff = Number(args.score) - Number(oldScoreData.score);
+
+        const diffSign = diff < 0 ? '-' : '+';
+
+        embed.fields?.push({
+          name: '**Previous Score**',
+          value: `[${oldScoreData.score}](${oldScoreData.proof}) \nA difference of ${diffSign} ${diff}`,
+        });
+      }
+
+      const approveRow = new ActionRowBuilder<ButtonBuilder>({
+        type: ComponentType.Button,
+        components: [
+          new ButtonBuilder({
+            customId: 'accepted',
+            label: 'Accept',
+            emoji: '👍',
+            style: ButtonStyle.Success,
+          }),
+          new ButtonBuilder({
+            customId: 'declined',
+            label: 'Decline',
+            emoji: '👎',
+            style: ButtonStyle.Danger,
+          }),
+          new ButtonBuilder({
+            customId: 'show_proof',
+            label: 'Show Proof',
+            emoji: '🧾',
+            style: ButtonStyle.Link,
+            url: proofURL,
+          }),
+          new ButtonBuilder({
+            customId: 'show_message',
+            label: 'Jump to message',
+            emoji: '💬',
+            url: args.proofMessage.url,
+          }),
+        ],
+      });
+
+      return await interaction
+        .editReply({
+          embeds: [embed],
+          components: [approveRow],
+        })
+        .then((msg) => {
+          interaction.followUp({
+            content:
+              firstAtt?.url ||
+              assets.possibleLinks![0] ||
+              "No URLs/Videos found in contestant's message",
+          });
+
+          return msg.awaitMessageComponent({
+            componentType: ComponentType.Button,
+            dispose: true,
+            async filter(itx) {
+              await itx.deferUpdate();
+              if (!isStaff(itx.member!)) {
+                itx.followUp({
+                  content: 'Ping a mod to get approval!',
+                  flags: MessageFlags.Ephemeral,
+                });
+              }
+              return isStaff(itx.member!);
+            },
+          });
+        })
+        .then((btnCtx) => {
+          if (btnCtx.customId === 'accepted') {
+            embed.thumbnail = {
+              url: ICONS.CHECK_MARK,
+            };
+            embed.title = '**Submission Accepted!**';
+            embed.color = COLORS.SUCCESS;
+            PMAEventHandler.emit('LBRegister', args);
+            return btnCtx.editReply({
+              embeds: [embed],
+              components: [],
+            });
+          }
+          embed.thumbnail = {
+            url: ICONS.CROSS_MARK,
+          };
+          embed.title = '**Submission Rejected!**';
+          embed.color = COLORS.ERROR;
+
+          return btnCtx.editReply({
+            embeds: [embed],
+            components: [],
+          });
+        });
+    } catch (e) {
+      this.container.logger.error(e);
+    }
+  }
 
   public override registerApplicationCommands(registry: Subcommand.Registry) {
     registry.registerChatInputCommand(cmdDef, {
