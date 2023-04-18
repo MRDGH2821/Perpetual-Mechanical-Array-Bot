@@ -147,6 +147,20 @@ export default class LeaderboardCache {
     return collection.get(userID);
   }
 
+  static async getRank(userID: User['id'], element: LBElements, groupType: GroupCategoryType) {
+    let collection = this.#accessCache(element, groupType).clone();
+
+    collection = collection.sort();
+    collection = collection.reverse();
+
+    const array = collection.map((data) => ({
+      userID: data.userID,
+    }));
+
+    const rank = array.indexOf({ userID });
+    return rank;
+  }
+
   static generateEmbeds(
     element: LBElements,
     groupType: GroupCategoryType,
