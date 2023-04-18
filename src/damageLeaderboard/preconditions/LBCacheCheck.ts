@@ -3,6 +3,14 @@ import LeaderboardCache from '../lib/LeaderboardCache';
 
 export default class LBCacheCheck extends Precondition {
   public override chatInputRun() {
+    return this.validate();
+  }
+
+  public override contextMenuRun() {
+    return this.validate();
+  }
+
+  public validate() {
     return LeaderboardCache.isCacheReady()
       ? this.ok()
       : this.error({
