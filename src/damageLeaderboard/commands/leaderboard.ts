@@ -373,7 +373,10 @@ export default class GuildCommand extends Subcommand {
       const { author, content, attachments } = args.proofMessage;
       const firstAtt = attachments.first();
 
-      const proofURL = firstAtt?.url || firstAtt?.proxyURL || assets.possibleLinks![0] || '';
+      const proofURL =
+        firstAtt?.url ||
+        firstAtt?.proxyURL ||
+        (assets.possibleLinks ? assets.possibleLinks[0] : 'https://youtube.com');
 
       embed.image = {
         url: proofURL,
@@ -455,8 +458,10 @@ export default class GuildCommand extends Subcommand {
           interaction.followUp({
             content:
               firstAtt?.url ||
-              assets.possibleLinks![0] ||
-              "No URLs/Videos found in contestant's message",
+              (assets.possibleLinks
+                ? assets.possibleLinks[0]
+                : "No URLs/Videos found in contestant's message"),
+            flags: MessageFlags.Ephemeral,
           });
 
           return msg.awaitMessageComponent({
