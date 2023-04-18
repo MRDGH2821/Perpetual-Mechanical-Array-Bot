@@ -1,5 +1,9 @@
 import { COLORS, ICONS } from '../../lib/Constants';
-import type { GroupCategoryType, LBElements } from '../typeDefs/leaderboardTypeDefs';
+import type {
+  ElementDamageCategories,
+  GroupCategoryType,
+  LBElements,
+} from '../typeDefs/leaderboardTypeDefs';
 import { LEADERBOARD_ELEMENTS } from './Constants';
 
 export type LBProp = {
@@ -64,4 +68,36 @@ export function parseGroupType(groupType: string): GroupCategoryType {
     return possibleGpTp;
   }
   throw new Error(`Invalid Group type ${groupType}`);
+}
+
+export function extractLinks(str: string) {
+  return str.match(
+    // eslint-disable-next-line no-useless-escape
+    /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/,
+  );
+}
+
+export function parseDamageCategory(element: LBElements): ElementDamageCategories {
+  const possibleElement = element.toLowerCase();
+
+  switch (possibleElement) {
+    case 'anemo': {
+      return 'anemo-dmg-skill';
+    }
+    case 'geo': {
+      return 'geo-dmg-skill';
+    }
+    case 'electro': {
+      return 'electro-dmg-skill';
+    }
+    case 'dendro': {
+      return 'dendro-dmg-skill';
+    }
+    case 'uni': {
+      return 'uni-dmg-n5';
+    }
+    default: {
+      throw new Error(`This is not a valid element: ${element}`);
+    }
+  }
 }
