@@ -174,7 +174,7 @@ export default class GuildCommand extends Subcommand {
     const attachment = message.attachments.first();
     const contestant = message.author;
     const { content } = message;
-    const possibleScores = content.match(/\d/gimu);
+    const possibleScores = content.match(/\d+/gimu);
     const possibleGroupTypes = content.match(/(solo)|(open)/gimu);
     const possibleElements = content.match(/(anemo)|(geo)|(electro)|(dendro)|(uni|universal)/gimu);
 
