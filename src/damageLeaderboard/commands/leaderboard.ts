@@ -182,10 +182,10 @@ export default class GuildCommand extends Subcommand {
 
     const contestant = message.author;
 
-    const assets = this.extractData(message);
+    const assets = await this.extractData(message);
 
     await interaction.showModal({
-      title: 'Registration Form',
+      title: `Registering user ${contestant.tag}`,
       customId: 'registration_form',
       custom_id: 'registration_form',
       components: [
@@ -195,28 +195,85 @@ export default class GuildCommand extends Subcommand {
             {
               type: ComponentType.TextInput,
               customId: 'score',
+              label: 'Score?',
+              style: TextInputStyle.Short,
+              required: true,
+              placeholder: 'Insert score',
+              value: assets.possibleScore,
+            },
+          ],
+        },
+        {
+          type: ComponentType.ActionRow,
+          components: [
+            {
+              type: ComponentType.TextInput,
+              customId: 'element',
+              label: 'Element?',
+              style: TextInputStyle.Short,
+              required: true,
+              placeholder: 'Uni/Anemo/Geo/Electro/Dendro/Hydro/Pyro/Cryo',
+              value: assets.possibleElement,
+            },
+          ],
+        },
+        {
+          type: ComponentType.ActionRow,
+          components: [
+            {
+              type: ComponentType.TextInput,
+              customId: 'group_type',
+              label: 'Did solo or open?',
+              style: TextInputStyle.Short,
+              required: true,
+              placeholder: 'Solo/Open',
+              value: assets.possibleGroupType,
+            },
+          ],
+        },
+        {
+          type: ComponentType.ActionRow,
+          components: [
+            {
+              type: ComponentType.TextInput,
+              customId: 'force_update',
+              label: 'Force update score?',
+              style: TextInputStyle.Short,
+              placeholder: 'Yes/No/Y/N (Default no)',
             },
           ],
         },
       ],
     });
+
+    return interaction
+      .awaitModalSubmit({
+        time: 3 * Time.Minute,
+        async filter(itx) {
+          return itx.user.id === interaction.user.id;
+        },
+      })
+      .then((modalCtx) => {
+        const score = modalCtx.fields.getTextInputValue('score');
+        const element = parseElement(modalCtx.fields.getTextInputValue('element'));
+        const groupType = parseGroupType(modalCtx.fields.getTextInputValue('group_type'));
+        const shouldForceUpdate =
+          parseTruthy(modalCtx.fields.getTextInputValue('force_update')) || false;
+
+        return this.registerContestant(
+          {
+            contestant,
+            element,
+            groupType,
+            proofMessage: message,
+            score: parseInt(score, 10),
+            shouldForceUpdate,
+          },
+          modalCtx,
+        );
+      });
   }
 
-  public async registerContestant({
-    contestant,
-    element,
-    groupType,
-    score,
-    proofMessage,
-    shouldForceUpdate = false,
-  }: {
-    contestant: User;
-    element: LBElements;
-    groupType: GroupCategoryType;
-    score: number;
-    proofMessage: Message;
-    shouldForceUpdate: boolean;
-  }) {}
 
   public override registerApplicationCommands(registry: Subcommand.Registry) {
     registry.registerChatInputCommand(cmdDef, {
