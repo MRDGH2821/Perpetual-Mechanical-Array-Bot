@@ -8,6 +8,7 @@ import {
   AttachmentBuilder,
   ButtonBuilder,
   ButtonStyle,
+  channelMention,
   ComponentType,
   Message,
   MessageFlags,
@@ -419,7 +420,7 @@ export default class GuildCommand extends Subcommand {
       }
 
       const approveRow = new ActionRowBuilder<ButtonBuilder>({
-        type: ComponentType.Button,
+        type: ComponentType.ActionRow,
         components: [
           new ButtonBuilder({
             customId: 'accepted',
@@ -434,16 +435,33 @@ export default class GuildCommand extends Subcommand {
             style: ButtonStyle.Danger,
           }),
           new ButtonBuilder({
-            customId: 'show_proof',
             label: 'Show Proof',
             emoji: '🧾',
             style: ButtonStyle.Link,
             url: proofURL,
           }),
           new ButtonBuilder({
-            customId: 'show_message',
             label: 'Jump to message',
             emoji: '💬',
+            style: ButtonStyle.Link,
+            url: args.proofMessage.url,
+          }),
+        ],
+      });
+
+      const linkRow = new ActionRowBuilder<ButtonBuilder>({
+        type: ComponentType.ActionRow,
+        components: [
+          new ButtonBuilder({
+            label: 'Show Proof',
+            emoji: '🧾',
+            style: ButtonStyle.Link,
+            url: proofURL,
+          }),
+          new ButtonBuilder({
+            label: 'Jump to message',
+            emoji: '💬',
+            style: ButtonStyle.Link,
             url: args.proofMessage.url,
           }),
         ],
@@ -489,7 +507,7 @@ export default class GuildCommand extends Subcommand {
             PMAEventHandler.emit('LBRegister', args);
             return btnCtx.editReply({
               embeds: [embed],
-              components: [],
+              components: [linkRow],
             });
           }
           embed.thumbnail = {
@@ -500,7 +518,7 @@ export default class GuildCommand extends Subcommand {
 
           return btnCtx.editReply({
             embeds: [embed],
-            components: [],
+            components: [linkRow],
           });
         });
     } catch (e) {
