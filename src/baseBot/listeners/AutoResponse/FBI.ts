@@ -46,7 +46,7 @@ export default class FBIResponse extends Listener<typeof Events.MessageCreate> {
     }
     try {
       const isLimited = rateLimit.check('FBI_ICD');
-      if (isLimited < 1 || isLimited === false) {
+      if (isLimited < 1) {
         const { channel } = message;
         channel
           .send({

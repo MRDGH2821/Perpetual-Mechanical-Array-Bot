@@ -86,7 +86,7 @@ export default class LeakMuteResponse extends Listener<typeof Events.MessageCrea
     }
     try {
       const isLimited = rateLimit.check('Leaks_ICD');
-      if (isLimited < 1 || isLimited === false) {
+      if (isLimited < 1) {
         const { channel } = message;
         channel
           .send({

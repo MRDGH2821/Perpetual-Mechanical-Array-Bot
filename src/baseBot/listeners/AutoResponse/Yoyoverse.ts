@@ -36,7 +36,7 @@ export default class YoyoverseResponse extends Listener<typeof Events.MessageCre
     }
     try {
       const isLimited = rateLimit.check('Yoyoverse_ICD');
-      if (isLimited < 1 || isLimited === false) {
+      if (isLimited < 1) {
         const { channel } = message;
         channel
           .send({

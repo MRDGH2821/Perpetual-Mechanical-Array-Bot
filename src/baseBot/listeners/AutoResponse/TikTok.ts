@@ -40,7 +40,7 @@ export default class TikTokResponse extends Listener<typeof Events.MessageCreate
     }
     try {
       const isLimited = rateLimit.check('TikTok_ICD');
-      if (isLimited < 1 || isLimited === false) {
+      if (isLimited < 1) {
         const { channel } = message;
         channel
           .send({

@@ -22,6 +22,6 @@ export default class CoolDownManager {
   check(key: string) {
     const timestamp = this.coolDowns.get(key);
 
-    return timestamp ? timestamp - Date.now() : false;
+    return timestamp ? timestamp - Date.now() : -1;
   }
 }

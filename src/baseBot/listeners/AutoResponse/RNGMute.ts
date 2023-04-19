@@ -71,7 +71,7 @@ export default class RNGMuteResponse extends Listener<typeof Events.MessageCreat
     }
     try {
       const isLimited = rateLimit.check('RNG_ICD');
-      if (isLimited < 1 || isLimited === false) {
+      if (isLimited < 1) {
         const { channel } = message;
         channel
           .send({
