@@ -153,11 +153,9 @@ export default class LeaderboardCache {
     collection = collection.sort();
     collection = collection.reverse();
 
-    const array = collection.map((data) => ({
-      userID: data.userID,
-    }));
+    const array = collection.map((data) => data.userID);
 
-    return array.indexOf({ userID });
+    return array.indexOf(userID);
   }
 
   static generateEmbeds(
