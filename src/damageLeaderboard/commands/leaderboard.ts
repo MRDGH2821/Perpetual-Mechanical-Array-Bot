@@ -300,6 +300,10 @@ export default class GuildCommand extends Subcommand {
       | Subcommand.ContextMenuCommandInteraction
       | ModalSubmitInteraction,
   ) {
+    if (!interaction.deferred) {
+      await interaction.deferReply();
+    }
+
     const oldScoreData = LeaderboardCache.getScore(
       args.contestant.id,
       args.element,
