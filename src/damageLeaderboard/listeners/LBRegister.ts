@@ -1,10 +1,16 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { container, Listener, type ListenerOptions } from '@sapphire/framework';
+import type { EmojiIdentifierResolvable } from 'discord.js';
 import { sequentialPromises } from 'yaspr';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import db from '../../lib/Firestore';
 import LeaderboardCache from '../lib/LeaderboardCache';
-import { digitWord, leaderboardProps, parseDamageCategory, parseGroupType } from '../lib/Utilities';
+import {
+  digitEmoji,
+  leaderboardProps,
+  parseDamageCategory,
+  parseGroupType,
+} from '../lib/Utilities';
 import type { DBLeaderboardData, LBRegistrationArgs } from '../typeDefs/leaderboardTypeDefs';
 
 @ApplyOptions<ListenerOptions>({
@@ -46,18 +52,19 @@ export default class LBRegister extends Listener {
       return;
     }
     const digits = rank.toString().split('');
-    const words = digits.map((digit) => digitWord(digit));
-    const wordsDone: string[] = [];
+    container.logger.debug({ rank, digits });
+    const digitEmojis = digits.map((digit) => digitEmoji(digit));
+    const emojisDone: EmojiIdentifierResolvable[] = [];
 
-    const reactWord = async (word: string) => {
-      if (wordsDone.includes(word)) {
+    const reactWord = async (emoji: EmojiIdentifierResolvable) => {
+      if (emojisDone.includes(emoji)) {
         await args.proofMessage.react('#️⃣');
       } else {
-        await args.proofMessage.react(word);
-        wordsDone.push(word);
+        await args.proofMessage.react(emoji);
+        emojisDone.push(emoji);
       }
     };
 
-    await sequentialPromises(words, reactWord);
+    await sequentialPromises(digitEmojis, reactWord);
   }
 }
