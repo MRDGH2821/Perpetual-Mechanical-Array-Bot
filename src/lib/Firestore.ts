@@ -9,7 +9,7 @@ if (process.env.NODE_ENV !== 'development') {
   process.env.FIRESTORE_EMULATOR_HOST = '';
   const configs = fs.readdirSync(basePath).filter((file) => file.endsWith('.json'));
 
-  console.log(configs);
+  console.debug(configs);
   configs.sort();
 
   const validConfigs = configs.filter((config) => {
