@@ -42,7 +42,7 @@ export default class LBRegister extends Listener {
     const props = leaderboardProps(args.element);
 
     await args.proofMessage.react(props.emoji);
-    if (rank >= 100) {
+    if (rank >= 100 || rank < 1) {
       return;
     }
     const digits = rank.toString().split('');
