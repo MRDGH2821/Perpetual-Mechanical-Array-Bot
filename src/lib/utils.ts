@@ -10,8 +10,8 @@ import { deepClone, pickRandom } from '@sapphire/utilities';
 import { cyan } from 'colorette';
 import {
   ActionRowBuilder,
-  APIEmbed,
-  APIUser,
+  type APIEmbed,
+  type APIUser,
   ButtonBuilder,
   ButtonInteraction,
   ButtonStyle,

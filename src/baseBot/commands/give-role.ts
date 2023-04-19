@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import {
-  ChatInputOrContextMenuCommandInteraction,
+  type ChatInputOrContextMenuCommandInteraction,
   isGuildMember,
 } from '@sapphire/discord.js-utilities';
 import { Subcommand } from '@sapphire/plugin-subcommands';
@@ -12,7 +12,7 @@ import {
   GuildMember,
   Message,
   PermissionFlagsBits,
-  SelectMenuComponentOptionData,
+  type SelectMenuComponentOptionData,
   StringSelectMenuBuilder,
 } from 'discord.js';
 import { ChannelIds, COLORS, EMOJIS, ROLE_IDS } from '../../lib/Constants';

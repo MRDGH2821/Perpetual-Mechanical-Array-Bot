@@ -5,7 +5,7 @@ import { pickRandom } from '@sapphire/utilities';
 import { randomInt } from 'crypto';
 import {
   ActionRowBuilder,
-  APIInteractionGuildMember,
+  type APIInteractionGuildMember,
   ButtonBuilder,
   ButtonStyle,
   GuildMember,

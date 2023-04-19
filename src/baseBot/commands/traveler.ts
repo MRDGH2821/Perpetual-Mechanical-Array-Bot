@@ -1,7 +1,7 @@
 import { container } from '@sapphire/pieces';
-import { Subcommand, SubcommandMapping } from '@sapphire/plugin-subcommands';
+import { Subcommand, type SubcommandMapping } from '@sapphire/plugin-subcommands';
 import {
-  ApplicationCommandOptionData,
+  type ApplicationCommandOptionData,
   ApplicationCommandOptionType,
   ChatInputCommandInteraction,
   MessageFlags,

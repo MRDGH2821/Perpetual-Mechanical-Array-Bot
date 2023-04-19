@@ -2,7 +2,7 @@ import { Subcommand } from '@sapphire/plugin-subcommands';
 import { Time } from '@sapphire/time-utilities';
 import {
   ActionRowBuilder,
-  APIEmbed,
+  type APIEmbed,
   ApplicationCommandOptionType,
   ApplicationCommandType,
   AttachmentBuilder,

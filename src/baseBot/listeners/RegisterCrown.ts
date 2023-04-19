@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { container, Listener, ListenerOptions } from '@sapphire/framework';
+import { container, Listener, type ListenerOptions } from '@sapphire/framework';
 import { ROLE_IDS } from '../../lib/Constants';
 import db from '../../lib/Firestore';
 import type { RegisterCrownArgs } from '../../typeDefs/typeDefs';

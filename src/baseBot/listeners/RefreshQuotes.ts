@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { container, Listener, ListenerOptions } from '@sapphire/framework';
+import { container, Listener, type ListenerOptions } from '@sapphire/framework';
 import { QUOTE_CATEGORIES } from '../../lib/DynamicConstants';
 import QuotesManager from '../lib/QuotesManager';
 import { PMAEventHandler } from '../lib/Utilities';

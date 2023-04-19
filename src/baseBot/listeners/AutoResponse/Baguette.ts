@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Events, Listener, ListenerOptions } from '@sapphire/framework';
+import { Events, Listener, type ListenerOptions } from '@sapphire/framework';
 import { Message, userMention } from 'discord.js';
 import CoolDownManager from '../../../lib/CoolDownManager';
 import { checkBoolean } from '../../lib/Utilities';

@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Events, Listener, ListenerOptions } from '@sapphire/framework';
+import { Events, Listener, type ListenerOptions } from '@sapphire/framework';
 import { pickRandom } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
 import CoolDownManager from '../../../lib/CoolDownManager';

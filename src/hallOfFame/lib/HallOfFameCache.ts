@@ -1,6 +1,6 @@
 import { container } from '@sapphire/pieces';
 import { range } from '@sapphire/utilities';
-import { APIEmbed, Collection, User } from 'discord.js';
+import { type APIEmbed, Collection, User } from 'discord.js';
 import { sequentialPromises } from 'yaspr';
 import { checkBoolean } from '../../baseBot/lib/Utilities';
 import db from '../../lib/Firestore';

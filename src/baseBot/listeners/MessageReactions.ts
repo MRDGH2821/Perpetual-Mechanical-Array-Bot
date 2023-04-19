@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { container, Events, Listener, ListenerOptions } from '@sapphire/framework';
+import { container, Events, Listener, type ListenerOptions } from '@sapphire/framework';
 import { pickRandom } from '@sapphire/utilities';
 import type { EmojiIdentifierResolvable, Message } from 'discord.js';
 import { EMOJIS } from '../../lib/Constants';

@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { container, Listener, ListenerOptions } from '@sapphire/framework';
+import { container, Listener, type ListenerOptions } from '@sapphire/framework';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import HallOfFameCache from '../lib/HallOfFameCache';
 

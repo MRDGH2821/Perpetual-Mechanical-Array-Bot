@@ -1,5 +1,5 @@
 import { container } from '@sapphire/pieces';
-import { APIEmbed, Collection, Role } from 'discord.js';
+import { type APIEmbed, Collection, Role } from 'discord.js';
 import { checkBoolean } from '../../baseBot/lib/Utilities';
 import { ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
