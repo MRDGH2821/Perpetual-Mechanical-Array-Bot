@@ -42,21 +42,22 @@ export default class LBRegister extends Listener {
     const props = leaderboardProps(args.element);
 
     await args.proofMessage.react(props.emoji);
-    if (rank < 100) {
-      const digits = rank.toString().split('');
-      const words = digits.map((digit) => digitWord(digit));
-      const wordsDone: string[] = [];
-
-      const reactWord = async (word: string) => {
-        if (!wordsDone.includes(word)) {
-          await args.proofMessage.react(word);
-          wordsDone.push(word);
-        } else {
-          await args.proofMessage.react('#️⃣');
-        }
-      };
-
-      await sequentialPromises(words, reactWord);
+    if (rank >= 100) {
+      return;
     }
+    const digits = rank.toString().split('');
+    const words = digits.map((digit) => digitWord(digit));
+    const wordsDone: string[] = [];
+
+    const reactWord = async (word: string) => {
+      if (wordsDone.includes(word)) {
+        await args.proofMessage.react('#️⃣');
+      } else {
+        await args.proofMessage.react(word);
+        wordsDone.push(word);
+      }
+    };
+
+    await sequentialPromises(words, reactWord);
   }
 }
