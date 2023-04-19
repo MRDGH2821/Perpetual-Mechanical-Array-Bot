@@ -109,29 +109,29 @@ export function parseDamageCategory(element: LBElements): ElementDamageCategorie
   }
 }
 
-export function digitWord(digit: any) {
+export function digitEmoji(digit: any) {
   const parsed = digit instanceof Number ? digit : parseInt(digit, 10);
   switch (parsed) {
     case 0:
-      return 'zero';
+      return '0️⃣';
     case 1:
-      return 'one';
+      return '1️⃣';
     case 2:
-      return 'two';
+      return '2️⃣';
     case 3:
-      return 'three';
+      return '3️⃣';
     case 4:
-      return 'four';
+      return '4️⃣';
     case 5:
-      return 'five';
+      return '5️⃣';
     case 6:
-      return 'six';
+      return '6️⃣';
     case 7:
-      return 'seven';
+      return '7️⃣';
     case 8:
-      return 'eight';
+      return '8️⃣';
     case 9:
-      return 'nine';
+      return '9️⃣';
     default:
       throw new Error(`Invalid digit provided: ${digit}`);
   }
