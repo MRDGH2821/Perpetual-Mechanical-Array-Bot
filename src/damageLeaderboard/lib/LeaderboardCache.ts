@@ -157,8 +157,7 @@ export default class LeaderboardCache {
       userID: data.userID,
     }));
 
-    const rank = array.indexOf({ userID });
-    return rank;
+    return array.indexOf({ userID });
   }
 
   static generateEmbeds(
