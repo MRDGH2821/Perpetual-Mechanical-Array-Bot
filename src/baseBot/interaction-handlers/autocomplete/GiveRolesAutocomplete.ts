@@ -1,4 +1,8 @@
-import { InteractionHandler, InteractionHandlerTypes, type PieceContext } from '@sapphire/framework';
+import {
+  InteractionHandler,
+  InteractionHandlerTypes,
+  type PieceContext,
+} from '@sapphire/framework';
 import type { AutocompleteInteraction } from 'discord.js';
 import { ACHIEVEMENT_ROLES } from '../../../lib/Constants';
 

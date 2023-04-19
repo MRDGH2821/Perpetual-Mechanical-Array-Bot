@@ -13,7 +13,7 @@ import {
 } from 'discord.js';
 import { COLORS, EMPTY_STRING, ROLE_IDS } from '../../lib/Constants';
 import type { RegisterCrownArgs } from '../../typeDefs/typeDefs';
-import { arrayIntersection, isStaff, PMAEventHandler } from './Utilities';
+import { PMAEventHandler, arrayIntersection, isStaff } from './Utilities';
 
 type AssignRoleOptions = {
   member: GuildMember;

@@ -5,11 +5,11 @@ import { pickRandom } from '@sapphire/utilities';
 import { randomInt } from 'crypto';
 import {
   ActionRowBuilder,
-  type APIInteractionGuildMember,
   ButtonBuilder,
   ButtonStyle,
   GuildMember,
   TextChannel,
+  type APIInteractionGuildMember,
 } from 'discord.js';
 import EventEmitter from 'events';
 import { setTimeout } from 'timers/promises';

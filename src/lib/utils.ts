@@ -10,8 +10,6 @@ import { deepClone, pickRandom } from '@sapphire/utilities';
 import { cyan } from 'colorette';
 import {
   ActionRowBuilder,
-  type APIEmbed,
-  type APIUser,
   ButtonBuilder,
   ButtonInteraction,
   ButtonStyle,
@@ -20,6 +18,8 @@ import {
   Guild,
   MessageFlags,
   User,
+  type APIEmbed,
+  type APIUser,
 } from 'discord.js';
 import { getClient } from './ClientExtractor';
 import { ChannelIds, EMPTY_STRING } from './Constants';

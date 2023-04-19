@@ -1,10 +1,10 @@
 import { container } from '@sapphire/pieces';
 import { Subcommand, type SubcommandMapping } from '@sapphire/plugin-subcommands';
 import {
-  type ApplicationCommandOptionData,
   ApplicationCommandOptionType,
   ChatInputCommandInteraction,
   MessageFlags,
+  type ApplicationCommandOptionData,
 } from 'discord.js';
 import EnvConfig from '../../lib/EnvConfig';
 import type { ELEMENTS, JSONCmd } from '../../typeDefs/typeDefs';

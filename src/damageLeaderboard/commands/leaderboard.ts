@@ -2,21 +2,21 @@ import { Subcommand } from '@sapphire/plugin-subcommands';
 import { Time } from '@sapphire/time-utilities';
 import {
   ActionRowBuilder,
-  type APIEmbed,
   ApplicationCommandOptionType,
   ApplicationCommandType,
   AttachmentBuilder,
   ButtonBuilder,
   ButtonStyle,
-  channelMention,
   ComponentType,
   Message,
   MessageFlags,
   ModalSubmitInteraction,
   TextInputStyle,
+  channelMention,
+  type APIEmbed,
 } from 'discord.js';
-import { guildMessageIDsExtractor, isStaff, PMAEventHandler } from '../../baseBot/lib/Utilities';
-import { ChannelIds, COLORS, ICONS } from '../../lib/Constants';
+import { PMAEventHandler, guildMessageIDsExtractor, isStaff } from '../../baseBot/lib/Utilities';
+import { COLORS, ChannelIds, ICONS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import { parseTruthy, viewBook } from '../../lib/utils';
 import type { JSONCmd } from '../../typeDefs/typeDefs';

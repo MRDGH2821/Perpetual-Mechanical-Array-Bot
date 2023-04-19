@@ -1,4 +1,8 @@
-import { InteractionHandler, InteractionHandlerTypes, type PieceContext } from '@sapphire/framework';
+import {
+  InteractionHandler,
+  InteractionHandlerTypes,
+  type PieceContext,
+} from '@sapphire/framework';
 import type { ButtonInteraction } from 'discord.js';
 import { ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
