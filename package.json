@@ -21,6 +21,7 @@
     "@sapphire/discord.js-utilities": "^6.0.6",
     "@sapphire/framework": "^4.4.1",
     "@sapphire/pieces": "^3.6.2",
+    "@sapphire/plugin-logger": "^3.0.3",
     "@sapphire/plugin-subcommands": "^4.0.1",
     "@sapphire/ratelimits": "^2.4.6",
     "@sapphire/time-utilities": "^1.7.9",
@@ -49,7 +50,7 @@
     "prettier-plugin-organize-imports": "^3.2.2",
     "tsc-watch": "^6.0.0",
     "tslib": "^2.5.0",
-    "typescript": "5.0.4"
+    "typescript": "^5.0.4"
   },
   "scripts": {
     "build": "tsc",
