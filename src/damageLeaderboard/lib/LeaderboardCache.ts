@@ -10,7 +10,7 @@ import type {
   GroupCategoryType,
   LBElements,
 } from '../typeDefs/leaderboardTypeDefs';
-import { leaderboardProps } from './Utilities';
+import { leaderboardProps, parseElement } from './Utilities';
 
 type DmgDoneByType = 'skill' | 'n5';
 
@@ -156,6 +156,22 @@ export default class LeaderboardCache {
     const array = collection.map((data) => data.userID);
 
     return array.indexOf(userID) + 1;
+  }
+
+  static async registerScore(dbData: DBLeaderboardData): Promise<void> {
+    const element = parseElement(dbData.elementCategory);
+    const collection = this.#accessCache(element, dbData.typeCategory);
+    return new Promise((res, rej) => {
+      db.collection(`${dbData.elementCategory}-${dbData.typeCategory}`)
+        .doc(dbData.userID)
+        .set(dbData)
+        .then(() => {
+          container.logger.debug('Leaderboard Entry Submitted!');
+          collection.set(dbData.userID, dbData);
+          res();
+        })
+        .catch(rej);
+    });
   }
 
   static generateEmbeds(
