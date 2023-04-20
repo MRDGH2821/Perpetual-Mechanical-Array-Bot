@@ -155,7 +155,7 @@ export default class LeaderboardCache {
 
     const array = collection.map((data) => data.userID);
 
-    return array.indexOf(userID);
+    return array.indexOf(userID) + 1;
   }
 
   static generateEmbeds(
