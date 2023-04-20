@@ -23,7 +23,7 @@ They went extra mile to crown Unaligned Traveler in Archon Quest Chapter 2: Prol
 ***Never** question their Hard work, Dedication ~~& Mora..~~* 
 `,
         color: COLORS.UNALIGNED,
-        emoji: EMOJIS.Void,
+        emoji: EMOJIS.Copium,
         plural: 'Arbitrators of Fate',
       };
     case 'anemo':
