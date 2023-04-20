@@ -13,7 +13,7 @@ import type { LBRegistrationArgs } from '../typeDefs/leaderboardTypeDefs';
   event: 'LBPostRegister',
   name: 'Leaderboard Registration',
 })
-export default class LBRegister extends Listener {
+export default class LBPostRegister extends Listener {
   public async run(args: LBRegistrationArgs) {
     try {
       await args.proofMessage.react('✅');
