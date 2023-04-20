@@ -5,7 +5,6 @@ import type {
   GroupCategoryType,
   LBElements,
 } from '../typeDefs/leaderboardTypeDefs';
-import { LEADERBOARD_ELEMENTS } from './Constants';
 
 export type LBProp = {
   icon: ICONS;
@@ -58,23 +57,42 @@ export function leaderboardProps(element: LBElements): LBProp {
 }
 
 export function parseElement(element: string): LBElements {
-  const possibleElement = element.toLowerCase() as LBElements;
+  const possibleElement = element.toLowerCase();
 
-  if (LEADERBOARD_ELEMENTS.includes(possibleElement)) {
-    return possibleElement;
+  switch (true) {
+    case /\banemo\b/gimu.test(possibleElement):
+      return 'anemo';
+
+    case /\bgeo\b/gimu.test(possibleElement):
+      return 'geo';
+
+    case /\belectro\b/gimu.test(possibleElement):
+      return 'electro';
+
+    case /\bdendro\b/gimu.test(possibleElement):
+      return 'dendro';
+
+    case /\buni\b/gimu.test(possibleElement):
+      return 'uni';
+
+    default:
+      throw new Error(`Invalid element type ${possibleElement}`);
   }
-  throw new Error(`Invalid element type ${element}`);
 }
 
 export function parseGroupType(groupType: string): GroupCategoryType {
-  const possibleGpTp = groupType.toLowerCase() as GroupCategoryType;
+  const possibleGpTp = groupType.toLowerCase();
 
-  const validType: GroupCategoryType[] = ['open', 'solo'];
+  switch (true) {
+    case /\bopen\b/gimu.test(possibleGpTp):
+      return 'open';
 
-  if (validType.includes(possibleGpTp)) {
-    return possibleGpTp;
+    case /\bsolo\b/gimu.test(possibleGpTp):
+      return 'solo';
+
+    default:
+      throw new Error(`Invalid Group type ${groupType}`);
   }
-  throw new Error(`Invalid Group type ${groupType}`);
 }
 
 export function extractLinks(str: string) {
@@ -87,20 +105,20 @@ export function extractLinks(str: string) {
 export function parseDamageCategory(element: LBElements): ElementDamageCategories {
   const possibleElement = element.toLowerCase();
 
-  switch (possibleElement) {
-    case 'anemo': {
+  switch (true) {
+    case /\banemo\b/gimu.test(possibleElement): {
       return 'anemo-dmg-skill';
     }
-    case 'geo': {
+    case /\bgeo\b/gimu.test(possibleElement): {
       return 'geo-dmg-skill';
     }
-    case 'electro': {
+    case /\belectro\b/gimu.test(possibleElement): {
       return 'electro-dmg-skill';
     }
-    case 'dendro': {
+    case /\bdendro\b/gimu.test(possibleElement): {
       return 'dendro-dmg-skill';
     }
-    case 'uni': {
+    case /\buni\b/gimu.test(possibleElement): {
       return 'uni-dmg-n5';
     }
     default: {
