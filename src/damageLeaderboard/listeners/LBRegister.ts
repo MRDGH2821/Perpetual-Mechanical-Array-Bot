@@ -42,29 +42,58 @@ export default class LBRegister extends Listener {
 
   // eslint-disable-next-line class-methods-use-this
   public async postRegistration(args: LBRegistrationArgs) {
-    await args.proofMessage.react('✅');
+    try {
+      await args.proofMessage.react('✅');
 
-    const rank = await LeaderboardCache.getRank(args.contestant.id, args.element, args.groupType);
-    const props = leaderboardProps(args.element);
+      const rank = await LeaderboardCache.getRank(args.contestant.id, args.element, args.groupType);
+      const props = leaderboardProps(args.element);
 
-    await args.proofMessage.react(props.emoji);
-    if (rank >= 100 || rank < 1) {
-      return;
-    }
-    const digits = rank.toString().split('');
-    container.logger.debug({ rank, digits });
-    const digitEmojis = digits.map((digit) => digitEmoji(digit));
-    const emojisDone: EmojiIdentifierResolvable[] = [];
-
-    const reactWord = async (emoji: EmojiIdentifierResolvable) => {
-      if (emojisDone.includes(emoji)) {
-        await args.proofMessage.react('#️⃣');
-      } else {
-        await args.proofMessage.react(emoji);
-        emojisDone.push(emoji);
+      await args.proofMessage.react(props.emoji).catch(container.logger.error);
+      container.logger.debug({ rank });
+      if (rank >= 100 || rank < 1) {
+        return;
       }
-    };
 
-    await sequentialPromises(digitEmojis, reactWord);
+      if (rank >= 1 && rank <= 3) {
+        await args.proofMessage.react('⭐');
+      }
+
+      if (rank === 1) {
+        await args.proofMessage.react('🥇');
+        return;
+      }
+
+      if (rank === 2) {
+        await args.proofMessage.react('🥈');
+        return;
+      }
+
+      if (rank === 3) {
+        await args.proofMessage.react('🥉');
+        return;
+      }
+
+      const digits = rank.toString().split('');
+      container.logger.debug({ rank, digits });
+      const digitEmojis = digits.map((digit) => digitEmoji(digit));
+      container.logger.debug({ digitEmojis });
+
+      const emojisDone: EmojiIdentifierResolvable[] = [];
+      const reactWord = async (emoji: EmojiIdentifierResolvable) => {
+        if (emojisDone.includes(emoji)) {
+          await args.proofMessage.react('#️⃣');
+        } else {
+          container.logger.debug(`Emoji: `, emoji);
+          await args.proofMessage.react(emoji.toString()).catch(container.logger.error);
+
+          emojisDone.push(emoji);
+        }
+      };
+
+      await sequentialPromises(digitEmojis, reactWord).catch(container.logger.error);
+      // reactWord(':thinking:');
+    } catch (e) {
+      container.logger.error(e);
+    }
   }
 }
