@@ -22,7 +22,13 @@ import { parseTruthy, viewBook } from '../../lib/utils';
 import type { JSONCmd } from '../../typeDefs/typeDefs';
 import { LEADERBOARD_DAMAGE_TYPE_CHOICES } from '../lib/Constants';
 import LeaderboardCache from '../lib/LeaderboardCache';
-import { extractLinks, leaderboardProps, parseElement, parseGroupType } from '../lib/Utilities';
+import {
+  extractLinks,
+  leaderboardProps,
+  parseDamageCategory,
+  parseElement,
+  parseGroupType,
+} from '../lib/Utilities';
 import type {
   GroupCategoryType,
   LBElements,
@@ -509,10 +515,18 @@ export default class GuildCommand extends Subcommand {
             };
             embed.title = '**Submission Accepted!**';
             embed.color = COLORS.SUCCESS;
-            PMAEventHandler.emit('LBRegister', args);
-            return btnCtx.editReply({
-              embeds: [embed],
-              components: [linkRow],
+            return LeaderboardCache.registerScore({
+              elementCategory: parseDamageCategory(args.element),
+              proof: args.proofMessage.url,
+              score: args.score,
+              typeCategory: parseGroupType(args.groupType),
+              userID: args.contestant.id,
+            }).then(() => {
+              PMAEventHandler.emit('LBPostRegister', args);
+              return btnCtx.editReply({
+                embeds: [embed],
+                components: [linkRow],
+              });
             });
           }
           embed.thumbnail = {
