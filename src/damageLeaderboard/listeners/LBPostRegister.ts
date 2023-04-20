@@ -54,13 +54,13 @@ export default class LBPostRegister extends Listener {
       const emojisDone: EmojiIdentifierResolvable[] = [];
       const reactWord = async (emoji: EmojiIdentifierResolvable) => {
         if (emojisDone.includes(emoji)) {
-          await args.proofMessage.react('#️⃣');
-        } else {
-          container.logger.debug(`Emoji: `, emoji);
-          await args.proofMessage.react(emoji.toString()).catch(container.logger.error);
-
-          emojisDone.push(emoji);
+          return args.proofMessage.react('#️⃣');
         }
+        container.logger.debug(`Emoji: `, emoji);
+        return args.proofMessage.react(emoji.toString()).then((rt) => {
+          emojisDone.push(emoji);
+          return rt;
+        });
       };
 
       await sequentialPromises(digitEmojis, reactWord).catch(container.logger.error);
