@@ -16,7 +16,7 @@ import type { DBLeaderboardData, LBRegistrationArgs } from '../typeDefs/leaderbo
 @ApplyOptions<ListenerOptions>({
   emitter: PMAEventHandler,
   enabled: true,
-  event: 'LBRegister',
+  event: 'LBPostRegister',
   name: 'Leaderboard Registration',
 })
 export default class LBRegister extends Listener {
