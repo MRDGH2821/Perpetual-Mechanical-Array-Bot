@@ -15,7 +15,7 @@ const cmdDef: JSONCmd = {
     },
     {
       type: 1,
-      name: 'update',
+      name: 'update_summary',
       description: 'Updates the leaderboard',
     },
     {
