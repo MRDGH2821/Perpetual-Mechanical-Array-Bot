@@ -19,34 +19,46 @@ const cmdDef: JSONCmd = {
       description: 'Updates the leaderboard',
     },
     {
-      type: ApplicationCommandOptionType.Subcommand,
-      name: 'setup_summary',
-      description: 'Setup Leaderboard Summary Channel',
+      type: ApplicationCommandOptionType.SubcommandGroup,
+      name: 'setup',
+      description: 'Setup Leaderboard Channels',
       options: [
         {
-          type: ApplicationCommandOptionType.Channel,
-          name: 'channel',
-          description: 'Select the channel where the updates will be posted',
-          required: true,
-          channel_types: [ChannelType.GuildText],
-          channelTypes: [ChannelType.GuildText],
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'summary_channel',
+          description: 'Setup Leaderboard Summary Channel',
+          options: [
+            {
+              type: ApplicationCommandOptionType.Channel,
+              name: 'channel',
+              description: 'Select the channel where the updates will be posted',
+              required: true,
+              channel_types: [ChannelType.GuildText],
+              channelTypes: [ChannelType.GuildText],
+            },
+          ],
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'forum_channel',
+          description: 'Setup Leaderboard Forum Channel',
+          options: [
+            {
+              type: ApplicationCommandOptionType.Channel,
+              name: 'forum_channel',
+              description: 'Select the channel where the updates will be posted',
+              required: true,
+              channel_types: [ChannelType.GuildForum],
+              channelTypes: [ChannelType.GuildForum],
+            },
+          ],
         },
       ],
     },
     {
       type: ApplicationCommandOptionType.Subcommand,
-      name: 'setup_forum',
-      description: 'Setup Leaderboard Forum Channel',
-      options: [
-        {
-          type: ApplicationCommandOptionType.Channel,
-          name: 'forum_channel',
-          description: 'Select the channel where the updates will be posted',
-          required: true,
-          channel_types: [ChannelType.GuildForum],
-          channelTypes: [ChannelType.GuildForum],
-        },
-      ],
+      name: 'publish_forum',
+      description: 'Publishes leaderboard in forum channel',
     },
   ],
 };
@@ -83,34 +95,52 @@ export default class GuildCommand extends Subcommand {
         },
         {
           name: cmdDef.options![2].name,
-          type: 'method',
-          chatInputRun(interaction) {
-            const textChannel = interaction.options.getChannel<ChannelType.GuildText>(
-              'channel',
-              true,
-              [ChannelType.GuildText],
-            );
+          type: 'group',
+          entries: [
+            {
+              name: 'summary_channel',
+              type: 'method',
 
-            PMAEventHandler.emit('LBSetup', { textChannel });
-            return interaction.reply({
-              content: `Leaderboard Summary updates will now arrive in ${textChannel}`,
-              flags: MessageFlags.Ephemeral,
-            });
-          },
+              chatInputRun(interaction) {
+                const textChannel = interaction.options.getChannel<ChannelType.GuildText>(
+                  'channel',
+                  true,
+                  [ChannelType.GuildText],
+                );
+
+                PMAEventHandler.emit('LBSetup', { textChannel });
+                return interaction.reply({
+                  content: `Leaderboard Summary updates will now arrive in ${textChannel}`,
+                  flags: MessageFlags.Ephemeral,
+                });
+              },
+            },
+            {
+              name: 'forum_channel',
+              type: 'method',
+              chatInputRun(interaction) {
+                const forumChannel = interaction.options.getChannel<ChannelType.GuildForum>(
+                  'forum_channel',
+                  true,
+                  [ChannelType.GuildForum],
+                );
+
+                PMAEventHandler.emit('LBSetup', { forumChannel });
+                return interaction.reply({
+                  content: `Leaderboard Forum updates will now arrive in ${forumChannel}`,
+                  flags: MessageFlags.Ephemeral,
+                });
+              },
+            },
+          ],
         },
         {
           name: cmdDef.options![3].name,
           type: 'method',
           chatInputRun(interaction) {
-            const forumChannel = interaction.options.getChannel<ChannelType.GuildForum>(
-              'forum_channel',
-              true,
-              [ChannelType.GuildForum],
-            );
-
-            PMAEventHandler.emit('LBSetup', { forumChannel });
+            PMAEventHandler.emit('LBPublish');
             return interaction.reply({
-              content: `Leaderboard Forum updates will now arrive in ${forumChannel}`,
+              content: 'Leaderboards will be published soon.',
               flags: MessageFlags.Ephemeral,
             });
           },
