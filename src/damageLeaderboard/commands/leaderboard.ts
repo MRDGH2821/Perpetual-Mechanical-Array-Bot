@@ -257,6 +257,7 @@ export default class GuildCommand extends Subcommand {
               label: 'Force update score?',
               style: TextInputStyle.Short,
               placeholder: 'Yes/No/Y/N (Default no)',
+              required: false,
             },
           ],
         },
