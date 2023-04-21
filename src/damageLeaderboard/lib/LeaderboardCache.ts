@@ -173,6 +173,39 @@ export default class LeaderboardCache {
     });
   }
 
+  static async #rankBuilder(
+    element: LBElements,
+    groupType: GroupCategoryType,
+    usersPerPage = this.#usersPerPage,
+  ): Promise<string[]> {
+    return new Promise((res, rej) => {
+      let collection = this.#accessCache(element, groupType).clone();
+
+      collection = collection.sort((data1, data2) => data2.score - data1.score);
+
+      const array = collection.map((data) => data);
+
+      const chunks = chunksGenerator(array, usersPerPage);
+
+      let rank = 1;
+
+      const pages: string[] = [];
+
+      chunks.forEach((chunk) => {
+        let page = '';
+
+        chunk.forEach((data) => {
+          page += `${rank}. \`${getUser(data.userID)
+            .then((user) => user.tag)
+            .catch(rej)}\` ${data.score}\n`;
+          pages.push(page);
+          rank += 1;
+        });
+      });
+
+      res(pages);
+    });
+  }
   static generateEmbeds(
     element: LBElements,
     groupType: GroupCategoryType,
