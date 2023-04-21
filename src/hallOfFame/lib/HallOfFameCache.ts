@@ -3,6 +3,7 @@ import { range } from '@sapphire/utilities';
 import { Collection, User, type APIEmbed } from 'discord.js';
 import { sequentialPromises } from 'yaspr';
 import { checkBoolean } from '../../baseBot/lib/Utilities';
+import { EMPTY_STRING } from '../../lib/Constants';
 import db from '../../lib/Firestore';
 import { getUser, publishEmbedsGenerator } from '../../lib/utils';
 import type { ELEMENTS } from '../../typeDefs/typeDefs';
@@ -135,7 +136,7 @@ export default class HallOfFameCache {
 
       logger.debug('Building embeds for: ', {
         element,
-        length: collection.size,
+        users: collection.size,
       });
 
       const embed: APIEmbed = {
@@ -154,13 +155,22 @@ export default class HallOfFameCache {
         getUser,
       )
         .then((users) => {
-          publishEmbedsGenerator({
-            users,
-            embedTemplate: embed,
-            usersPerPage,
-          })
-            .then(res)
-            .catch(rej);
+          if (users.length < 1) {
+            embed.fields?.push({
+              name: EMPTY_STRING,
+              value: 'No members found in this section',
+            });
+
+            res([embed]);
+          } else {
+            publishEmbedsGenerator({
+              users,
+              embedTemplate: embed,
+              usersPerPage,
+            })
+              .then(res)
+              .catch(rej);
+          }
         })
         .catch(rej);
     });

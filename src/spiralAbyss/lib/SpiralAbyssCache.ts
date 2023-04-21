@@ -1,7 +1,7 @@
 import { container } from '@sapphire/pieces';
 import { Collection, Role, type APIEmbed } from 'discord.js';
 import { checkBoolean } from '../../baseBot/lib/Utilities';
-import { ROLE_IDS } from '../../lib/Constants';
+import { EMPTY_STRING, ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import { publishEmbedsGenerator } from '../../lib/utils';
 import type { SpiralAbyssClearTypes } from '../typeDefs/spiralAbyssTypes';
@@ -108,13 +108,22 @@ export default class SpiralAbyssCache {
 
       const users = collection.map((member) => member.user);
 
-      publishEmbedsGenerator({
-        users,
-        embedTemplate: embed,
-        usersPerPage,
-      })
-        .then(res)
-        .catch(rej);
+      if (users.length < 1) {
+        embed.fields?.push({
+          name: EMPTY_STRING,
+          value: 'No members found in this section',
+        });
+
+        res([embed]);
+      } else {
+        publishEmbedsGenerator({
+          users,
+          embedTemplate: embed,
+          usersPerPage,
+        })
+          .then(res)
+          .catch(rej);
+      }
     });
   }
 }

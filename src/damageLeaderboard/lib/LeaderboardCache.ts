@@ -184,6 +184,10 @@ export default class LeaderboardCache {
 
     const array = collection.map((data) => data);
 
+    if (array.length < 1) {
+      return ['No members found in this section'];
+    }
+
     const chunks = chunksGenerator(array, usersPerPage);
 
     let rank = 1;
@@ -247,7 +251,7 @@ export default class LeaderboardCache {
 
       logger.debug('Building embeds for: ', {
         element,
-        size: collection.size,
+        users: collection.size,
       });
 
       const embed: APIEmbed = {
