@@ -2,6 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { container, Listener, type ListenerOptions } from '@sapphire/framework';
 import {
   ActionRowBuilder,
+  AttachmentBuilder,
   ButtonBuilder,
   ButtonStyle,
   ForumChannel,
@@ -39,10 +40,17 @@ export default class HoFPublish extends Listener {
 
       const currentDate = new Date();
       const props = crownProps(element);
+
+      const iconPic = Buffer.from(await (await fetch(props.icon)).arrayBuffer());
       const thread = await HallOfFameForum.threads.create({
         name: `${props.plural} as of ${currentDate.toUTCString()} `,
         message: {
           content: `${props.description}`,
+          files: [
+            new AttachmentBuilder(iconPic, {
+              name: 'Icon.png',
+            }),
+          ],
         },
       });
 
