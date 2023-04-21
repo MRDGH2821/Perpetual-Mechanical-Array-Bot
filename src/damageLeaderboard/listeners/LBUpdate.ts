@@ -58,8 +58,10 @@ export default class LBUpdate extends Listener {
         container.logger.fatal('Uni leaderboard update failed');
         container.logger.error(err);
       }),
-    ]).then(() => {
-      container.logger.info('Leaderboard summary channel updated!');
-    });
+    ])
+      .then(() => {
+        container.logger.info('Leaderboard summary channel updated!');
+      })
+      .catch(container.logger.error);
   }
 }
