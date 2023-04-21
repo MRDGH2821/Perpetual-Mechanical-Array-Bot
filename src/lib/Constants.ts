@@ -145,7 +145,7 @@ export const EMOJIS = {
   // Void: formatEmoji('983370274227499050', 'Void'),
   DullBlade: formatEmoji('861628955697741844'),
   DvalinHYPE: formatEmoji('808591175640154142'),
-  Copium: formatEmoji('897176156057518130','Copium'),
+  Copium: formatEmoji('897176156057518130', 'Copium'),
   LumineCopium: formatEmoji('821897404260417557'),
   iLumineati: formatEmoji('1004994499312877598'),
   Pairamid: formatEmoji('1008108212026880050'),
