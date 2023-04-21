@@ -248,7 +248,7 @@ export default class LeaderboardCache {
 
       logger.debug('Building embeds for: ', {
         element,
-        length: collection.size,
+        size: collection.size,
       });
 
       const embed: APIEmbed = {
