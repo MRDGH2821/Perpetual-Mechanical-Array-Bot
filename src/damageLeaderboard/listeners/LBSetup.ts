@@ -2,7 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { container, Listener, type ListenerOptions } from '@sapphire/framework';
 import type { APIEmbed, ForumChannel, TextChannel } from 'discord.js';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
-import { ChannelIds, COLORS, ICONS } from '../../lib/Constants';
+import { ChannelIds, COLORS, ICONS, ThreadIds } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import db from '../../lib/Firestore';
 
@@ -70,6 +70,11 @@ export default class LBSetup extends Listener {
       color: COLORS.UNIVERSAL,
     };
 
+    const cmd = container.client.application?.commands.cache.find(
+      (command) => command.name === 'leaderboard',
+    );
+
+    const subCmd = cmd?.options.find((option) => option.name === 'register');
     const information: APIEmbed = {
       color: COLORS.EMBED_COLOR,
       title: '**Traveler Mains Damage Leaderboards**',
@@ -83,7 +88,11 @@ export default class LBSetup extends Listener {
         },
         {
           name: '***How do I enter?***',
-          value: `Send an image (preferably a video) with damage number, element & group category type as message text, of your fight against "Masanori" - the nameless samurai in <#${ChannelIds.SHOWCASE}>.\nCopy the message link and use \`/leaderboard register\` command at <#950365539073675274>. After registering, ping a mod to get approval!\n\nExample format: \`uni 12345 solo\``,
+          value: `Send an image (preferably a video) with damage number, element & group category type as message text, of your fight against "Masanori" - the nameless samurai in <#${
+            ChannelIds.SHOWCASE
+          }>.\nCopy the message link and use ${subCmd || '`/leaderboard register`'} command at <#${
+            ThreadIds.LEADERBOARD_APPLICATION
+          }>. After registering, ping a mod to get approval!\n\nExample format: \`uni 12345 solo\``,
         },
         {
           name: '***Why "Masanori" - the nameless samurai?***',
@@ -160,6 +169,6 @@ export default class LBSetup extends Listener {
       });
     });
 
-    PMAEventHandler.emit('LBUpdate')
+    PMAEventHandler.emit('LBUpdate');
   }
 }
