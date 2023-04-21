@@ -150,8 +150,7 @@ export default class LeaderboardCache {
   static async getRank(userID: User['id'], element: LBElements, groupType: GroupCategoryType) {
     let collection = this.#accessCache(element, groupType).clone();
 
-    collection = collection.sort();
-    collection = collection.reverse();
+    collection = collection.sort((data1, data2) => data2.score - data1.score);
 
     const array = collection.map((data) => data.userID);
 
