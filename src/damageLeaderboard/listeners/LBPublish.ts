@@ -1,7 +1,9 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { container, Listener, type ListenerOptions } from '@sapphire/framework';
+import { toTitleCase } from '@sapphire/utilities';
 import {
   ActionRowBuilder,
+  AttachmentBuilder,
   ButtonBuilder,
   ButtonStyle,
   ForumChannel,
@@ -31,10 +33,20 @@ export default class LBPublish extends Listener {
 
       const currentDate = new Date();
       const props = leaderboardProps(element);
+
+      const iconPic = Buffer.from(await (await fetch(props.icon)).arrayBuffer());
+
       const thread = await HallOfFameForum.threads.create({
-        name: `${props.name} leaderboard as of ${currentDate.toUTCString()} `,
+        name: `${toTitleCase(element)}: ${
+          props.name
+        } leaderboard as of ${currentDate.toUTCString()} `,
         message: {
           content: `${props.name}`,
+          files: [
+            new AttachmentBuilder(iconPic, {
+              name: 'Icon.png',
+            }),
+          ],
         },
       });
 
