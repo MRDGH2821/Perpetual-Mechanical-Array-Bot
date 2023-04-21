@@ -262,18 +262,10 @@ export default class LeaderboardCache {
         fields: [],
       };
 
-      sequentialPromises(
-        collection.map((data) => data.userID),
-        getUser,
-      )
-        .then((users) => {
-          publishEmbedsGenerator({
-            users,
-            embedTemplate: embed,
-            usersPerPage,
-          })
-            .then(res)
-            .catch(rej);
+      this.#rankEmbedGenerator(element, groupType, embed, usersPerPage).then(res).catch(rej);
+    });
+  }
+
         })
         .catch(rej);
     });
