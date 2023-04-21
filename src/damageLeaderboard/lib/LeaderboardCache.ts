@@ -206,6 +206,37 @@ export default class LeaderboardCache {
       res(pages);
     });
   }
+
+  static async #rankEmbedGenerator(
+    element: LBElements,
+    groupType: GroupCategoryType,
+    embedTemplate: APIEmbed,
+    usersPerPage = this.#usersPerPage,
+  ): Promise<APIEmbed[]> {
+    return new Promise((res, rej) => {
+      this.#rankBuilder(element, groupType, usersPerPage)
+        .then((rankPages) => {
+          const embeds: Array<typeof embedTemplate> = [];
+
+          rankPages.forEach((page) => {
+            const embed = deepClone(embedTemplate);
+            embed.fields?.push({
+              name: EMPTY_STRING,
+              value: page,
+            });
+
+            embed.footer = {
+              text: `${rankPages.indexOf(page) + 1} of ${rankPages.length}`,
+            };
+
+            embeds.push(embed);
+          });
+          res(embeds);
+        })
+        .catch(rej);
+    });
+  }
+
   static generateEmbeds(
     element: LBElements,
     groupType: GroupCategoryType,
