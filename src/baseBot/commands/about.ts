@@ -7,7 +7,7 @@ import { COLORS } from '../../lib/Constants';
 const pkg = require('../../../package.json');
 
 const deps = Object.entries(pkg.dependencies)
-  .map(([depName, depVer]) => `${depName}: ${depVer}`)
+  .map(([depName, depVer]) => `\`${depName}\`: ${depVer}`)
   .join('\n');
 
 @ApplyOptions<Command.Options>({
