@@ -1,10 +1,10 @@
 import { container } from '@sapphire/pieces';
-import { toTitleCase } from '@sapphire/utilities';
+import { deepClone, toTitleCase } from '@sapphire/utilities';
 import { Collection, User, type APIEmbed } from 'discord.js';
-import { sequentialPromises } from 'yaspr';
 import { checkBoolean } from '../../baseBot/lib/Utilities';
+import { EMPTY_STRING } from '../../lib/Constants';
 import db from '../../lib/Firestore';
-import { getUser, publishEmbedsGenerator } from '../../lib/utils';
+import { chunksGenerator, getUser } from '../../lib/utils';
 import type {
   DBLeaderboardData,
   GroupCategoryType,
@@ -266,8 +266,52 @@ export default class LeaderboardCache {
     });
   }
 
+  static generateSummaryEmbed(element: LBElements) {
+    const props = leaderboardProps(element);
+
+    container.logger.debug('Generating Leaderboard summary for:', element);
+    return new Promise<APIEmbed>((res, rej) => {
+      const embed: APIEmbed = {
+        title: `${toTitleCase(element)} Traveler Damage Leaderboard`,
+        color: props.color,
+        thumbnail: {
+          url: props.icon,
+        },
+        description: `Highest Damage of **${props.name}**`,
+        timestamp: new Date().toISOString(),
+        fields: [],
+      };
+
+      this.#rankBuilder(element, 'open', 7)
+        .then((openRanks) => {
+          embed.fields?.push(
+            { name: '**Open Category Top 1-7**', value: openRanks[0], inline: true },
+            {
+              name: '**Open Category Top 8-14**',
+              value: openRanks[1],
+            },
+          );
         })
         .catch(rej);
+
+      embed.fields?.push({
+        name: EMPTY_STRING,
+        value: EMPTY_STRING,
+      });
+
+      this.#rankBuilder(element, 'solo', 7)
+        .then((soloRanks) => {
+          embed.fields?.push(
+            { name: '**Solo Category Top 1-7**', value: soloRanks[0], inline: true },
+            {
+              name: '**Solo Category Top 8-14**',
+              value: soloRanks[1],
+            },
+          );
+        })
+        .catch(rej);
+
+      res(embed);
     });
   }
 }
