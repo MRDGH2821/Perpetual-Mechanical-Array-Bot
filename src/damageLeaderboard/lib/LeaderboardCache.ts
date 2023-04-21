@@ -178,33 +178,32 @@ export default class LeaderboardCache {
     groupType: GroupCategoryType,
     usersPerPage = this.#usersPerPage,
   ): Promise<string[]> {
-    return new Promise((res, rej) => {
-      let collection = this.#accessCache(element, groupType).clone();
+    let collection = this.#accessCache(element, groupType).clone();
 
-      collection = collection.sort((data1, data2) => data2.score - data1.score);
+    collection = collection.sort((data1, data2) => data2.score - data1.score);
 
-      const array = collection.map((data) => data);
+    const array = collection.map((data) => data);
 
-      const chunks = chunksGenerator(array, usersPerPage);
+    const chunks = chunksGenerator(array, usersPerPage);
 
-      let rank = 1;
-
-      const pages: string[] = [];
-
-      chunks.forEach((chunk) => {
-        let page = '';
-
-        chunk.forEach((data) => {
-          page += `${rank}. \`${getUser(data.userID)
-            .then((user) => user.tag)
-            .catch(rej)}\` ${data.score}\n`;
-          pages.push(page);
-          rank += 1;
-        });
-      });
-
-      res(pages);
-    });
+    let rank = 1;
+    const pages: string[] = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const chunk of chunks) {
+      const lines: string[] = [];
+      // eslint-disable-next-line no-restricted-syntax
+      for (const data of chunk) {
+        // eslint-disable-next-line no-await-in-loop
+        const user = await getUser(data.userID);
+        const { tag } = user;
+        const line = `${rank}. \`${tag}\` [${data.score}](${data.proof})`;
+        rank += 1;
+        lines.push(line);
+      }
+      const page = lines.join('\n');
+      pages.push(page);
+    }
+    return pages;
   }
 
   static async #rankEmbedGenerator(
