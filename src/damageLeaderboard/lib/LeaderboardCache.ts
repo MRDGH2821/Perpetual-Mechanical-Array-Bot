@@ -25,7 +25,7 @@ type CacheType = Record<LBElements, DamageCache>;
 const { logger } = container;
 
 export default class LeaderboardCache {
-  static #usersPerPage = 20;
+  static #usersPerPage = 7;
 
   static #cache: CacheType = {
     anemo: {
