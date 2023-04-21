@@ -133,7 +133,7 @@ export default class GuildCommand extends Subcommand {
               ephemeral: true,
             });
 
-            const embeds = await LeaderboardCache.generateEmbeds(element, groupType, 10);
+            const embeds = await LeaderboardCache.generateEmbeds(element, groupType, 5);
             const pager = await viewBook(embeds);
             return pager(interaction);
           },
