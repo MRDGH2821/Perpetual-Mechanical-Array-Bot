@@ -31,7 +31,7 @@ export default class CommandLogs extends Listener<typeof Events.ChatInputCommand
       subCommand.group = interaction.options.getSubcommandGroup() || 'none';
       subCommand.cmd = interaction.options.getSubcommand() || 'none';
     } catch (e) {
-      container.logger.info('There are no sub commands in this guild command');
+      container.logger.debug('There are no sub commands in this guild command');
     }
 
     logChannel.send({
