@@ -18,18 +18,6 @@ export default class SABackup extends Listener {
 
     const date = new Date();
 
-    const bkpFiles: AttachmentBuilder[] = [
-      new AttachmentBuilder(Buffer.from(JSON.stringify(backup.traveler)), {
-        name: `Abyssal Traveler ${date.toUTCString()}_.json`,
-      }),
-      new AttachmentBuilder(Buffer.from(JSON.stringify(backup.conqueror)), {
-        name: `Abyssal Conqueror ${date.toUTCString()}_.json`,
-      }),
-      new AttachmentBuilder(Buffer.from(JSON.stringify(backup.sovereign)), {
-        name: `Abyssal Sovereign ${date.toUTCString()}_.json`,
-      }),
-    ];
-
     const channel = await container.client.channels.fetch(ChannelIds.ARCHIVES);
 
     if (!channel?.isTextBased()) {
@@ -38,7 +26,11 @@ export default class SABackup extends Listener {
 
     channel.send({
       content: `Backup made on ${time(date, 'F')} (${time(date, 'R')})`,
-      files: bkpFiles,
+      files: [
+        new AttachmentBuilder(Buffer.from(JSON.stringify(backup)), {
+          name: `SPiral Abyss Members ${date.toUTCString()}_.json`,
+        }),
+      ],
     });
   }
 }
