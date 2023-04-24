@@ -129,7 +129,7 @@ export default class SpiralAbyssCache {
     });
   }
 
-  static exportCacheBackup() {
+  static exportCacheBackup(): BackupCacheFileType {
     return {
       traveler: this.#cache.traveler.map((member) => member.id),
       conqueror: this.#cache.conqueror.map((member) => member.id),
