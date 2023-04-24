@@ -1,5 +1,5 @@
 import { container } from '@sapphire/pieces';
-import { Collection, Role, type APIEmbed, time } from 'discord.js';
+import { Collection, Role, time, type APIEmbed } from 'discord.js';
 import { checkBoolean } from '../../baseBot/lib/Utilities';
 import { EMPTY_STRING, ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
@@ -101,7 +101,9 @@ export default class SpiralAbyssCache {
         thumbnail: {
           url: props.icon,
         },
-        description: `Cycle Details: \n${date.getDate() < 16 ? 'Waxing Phase' : 'Waning Phase'} \n${time(date, 'F')}`,
+        description: `Cycle Details: \n${
+          date.getDate() < 16 ? 'Waxing Phase' : 'Waning Phase'
+        } \n${time(date, 'F')}`,
         timestamp: date.toISOString(),
         fields: [],
       };
@@ -129,9 +131,9 @@ export default class SpiralAbyssCache {
 
   static exportCacheBackup() {
     return {
-      traveler: this.#cache.traveler.map((member) => ({ id: member.id })),
-      conqueror: this.#cache.conqueror.map((member) => ({ id: member.id })),
-      sovereign: this.#cache.sovereign.map((member) => ({ id: member.id })),
+      traveler: this.#cache.traveler.map((member) => member.id),
+      conqueror: this.#cache.conqueror.map((member) => member.id),
+      sovereign: this.#cache.sovereign.map((member) => member.id),
     };
   }
 
