@@ -75,6 +75,19 @@ const cmdDef: JSONCmd = {
         },
       ],
     },
+    {
+      type: ApplicationCommandOptionType.Subcommand,
+      name: 'restore_backup',
+      description: 'Restore Spiral Abyss Backup',
+      options: [
+        {
+          type: ApplicationCommandOptionType.Attachment,
+          name: 'backup_file',
+          description: 'Upload the backup file',
+          required: true,
+        },
+      ],
+    },
   ],
 };
 export default class GuildCommand extends Subcommand {
@@ -270,6 +283,23 @@ export default class GuildCommand extends Subcommand {
                   embeds: [verifyEmb],
                 });
               });
+          },
+        },
+        {
+          name: cmdDef.options![4].name,
+          type: 'method',
+          async chatInputRun(interaction) {
+            const backupFile = interaction.options.getAttachment('backup_file', true);
+
+            PMAEventHandler.emit('SARestore', {
+              backupFile,
+              user: interaction.user,
+            });
+
+            return interaction.reply({
+              content: 'Backup will be restored soon & you will be notified',
+              flags: MessageFlags.Ephemeral,
+            });
           },
         },
       ],
