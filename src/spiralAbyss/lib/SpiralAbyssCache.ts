@@ -4,7 +4,7 @@ import { checkBoolean } from '../../baseBot/lib/Utilities';
 import { EMPTY_STRING, ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import { publishEmbedsGenerator } from '../../lib/utils';
-import type { SpiralAbyssClearTypes } from '../typeDefs/spiralAbyssTypes';
+import type { BackupCacheFileType, SpiralAbyssClearTypes } from '../typeDefs/spiralAbyssTypes';
 import { SAProps } from './Utilities';
 
 type CacheType = Record<SpiralAbyssClearTypes, Role['members']>;
@@ -66,7 +66,7 @@ export default class SpiralAbyssCache {
     }
   }
 
-  static #accessCache(clearType: SpiralAbyssClearTypes) {
+  static accessCache(clearType: SpiralAbyssClearTypes) {
     const collection = this.#cache[clearType];
     if (!collection) {
       throw new Error(`'${clearType}' is not a valid Spiral Abyss Clear Type`);
@@ -89,7 +89,7 @@ export default class SpiralAbyssCache {
   ): Promise<APIEmbed[]> {
     const props = SAProps(clearType);
     return new Promise((res, rej) => {
-      const collection = this.#accessCache(clearType);
+      const collection = this.accessCache(clearType);
       logger.debug('Building embeds for: ', {
         'Clear Type': clearType,
         users: collection.size,
