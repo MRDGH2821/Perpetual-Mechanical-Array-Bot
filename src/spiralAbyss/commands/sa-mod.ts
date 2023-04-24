@@ -180,6 +180,7 @@ export default class GuildCommand extends Subcommand {
                 }),
               )
               .then(async (btnCtx) => {
+                PMAEventHandler.emit('SABackup')
                 if (btnCtx.customId === 'confirm_reset') {
                   const successEmbed: APIEmbed = {
                     title: '**Success**',
