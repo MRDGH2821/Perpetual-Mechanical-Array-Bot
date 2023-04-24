@@ -180,7 +180,7 @@ export default class GuildCommand extends Subcommand {
                 }),
               )
               .then(async (btnCtx) => {
-                PMAEventHandler.emit('SABackup')
+                PMAEventHandler.emit('SABackup');
                 if (btnCtx.customId === 'confirm_reset') {
                   const successEmbed: APIEmbed = {
                     title: '**Success**',
@@ -227,12 +227,12 @@ export default class GuildCommand extends Subcommand {
                         {
                           name: '\u200B',
                           value: shouldRemoveRoles
-                            ? '||*Yes roles were removed and none of the animals were harmed in this process.*||'
+                            ? '||*Yes roles were removed but none of the animals were harmed in this process.*||'
                             : '*No roles were removed nor any animals were hurt in this process.*',
                         },
                       ],
                       footer: {
-                        text: `*Needs video proof at <#${ChannelIds.ROLE_APPLICATION}>`,
+                        text: '*Needs Video Proof at Role Application Channel',
                       },
                     };
 
