@@ -1,5 +1,5 @@
 import { container } from '@sapphire/pieces';
-import { Collection, Role, type APIEmbed } from 'discord.js';
+import { Collection, Role, type APIEmbed, time } from 'discord.js';
 import { checkBoolean } from '../../baseBot/lib/Utilities';
 import { EMPTY_STRING, ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
@@ -101,7 +101,7 @@ export default class SpiralAbyssCache {
         thumbnail: {
           url: props.icon,
         },
-        description: `Cycle Details: \n${date.getDate() < 16 ? 'Waxing Phase' : 'Waning Phase'}`,
+        description: `Cycle Details: \n${date.getDate() < 16 ? 'Waxing Phase' : 'Waning Phase'} \n${time(date, 'F')}`,
         timestamp: date.toISOString(),
         fields: [],
       };
