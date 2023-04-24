@@ -19,8 +19,13 @@ export function arrayIntersection<T>(arr1: T[], arr2: T[]) {
   return arr1.filter((value) => arr2.includes(value));
 }
 
-export function isStaff(member: GuildMember | APIInteractionGuildMember): boolean {
+export function isStaff(
+  member: GuildMember | APIInteractionGuildMember | null | undefined,
+): boolean {
   let memberRoles: string[] = [];
+  if (!member) {
+    return false;
+  }
   if (member instanceof GuildMember) {
     if (
       member.permissions.has([
