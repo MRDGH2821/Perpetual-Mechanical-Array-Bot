@@ -126,4 +126,24 @@ export default class SpiralAbyssCache {
       }
     });
   }
+
+  static exportCacheBackup() {
+    return {
+      traveler: this.#cache.traveler.map((member) => ({ id: member.id })),
+      conqueror: this.#cache.conqueror.map((member) => ({ id: member.id })),
+      sovereign: this.#cache.sovereign.map((member) => ({ id: member.id })),
+    };
+  }
+
+  static async removeRoles() {
+    this.#cache.traveler.forEach(async (member) => {
+      await member.roles.remove(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER);
+    });
+    this.#cache.conqueror.forEach(async (member) => {
+      await member.roles.remove(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER);
+    });
+    this.#cache.sovereign.forEach(async (member) => {
+      await member.roles.remove(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER);
+    });
+  }
 }
