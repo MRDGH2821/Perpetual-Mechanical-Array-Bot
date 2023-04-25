@@ -13,7 +13,7 @@ const rateLimit = new CoolDownManager(1000);
 rateLimit.add('RNG_ICD', 1000);
 @ApplyOptions<ListenerOptions>({
   event: Events.MessageCreate,
-  name: 'Leaks Autoresponse',
+  name: 'RNG Mute Autoresponse',
 })
 export default class RNGMuteResponse extends Listener<typeof Events.MessageCreate> {
   static RNGQuotes = [

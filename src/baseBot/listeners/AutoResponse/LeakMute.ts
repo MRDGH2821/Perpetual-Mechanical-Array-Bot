@@ -15,7 +15,7 @@ const muteChance = 15;
 @ApplyOptions<ListenerOptions>({
   enabled: parseBoolean(process.env.AUTORESPONSE_LEAKS),
   event: Events.MessageCreate,
-  name: 'Leaks Autoresponse',
+  name: 'Leak Mute Autoresponse',
 })
 export default class LeakMuteResponse extends Listener<typeof Events.MessageCreate> {
   static LeakQuotes = [
