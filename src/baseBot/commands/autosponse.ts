@@ -1,3 +1,4 @@
+import { container } from '@sapphire/pieces';
 import { Subcommand } from '@sapphire/plugin-subcommands';
 import { Time } from '@sapphire/time-utilities';
 import {
@@ -114,17 +115,17 @@ export default class GuildCommand extends Subcommand {
     const name = interaction.options.getString('name', true);
     const hours = interaction.options.getInteger('duration') || 24;
     const subCommand = interaction.options.getSubcommand(true);
-    function isToDisable() {
-      return subCommand.toLowerCase().includes('disable');
+    function isToEnable() {
+      return subCommand.toLowerCase().includes('enable');
     }
-    process.env[`AUTORESPONSE_${name}`] = String(isToDisable());
+    process.env[`AUTORESPONSE_${name}`] = String(isToEnable());
 
-    const content = isToDisable()
-      ? `${name} is now disabled for ${hours}h.\nIt will be enabled in ${time(
+    const content = isToEnable()
+      ? `\`${name} autoresponse is now enabled.\``
+      : `${name} is now disabled for ${hours}h.\nIt will be enabled in ${time(
         new Date(hours * Time.Hour + Date.now()),
         'R',
-      )} \n\nDo note that if the bot restarts, it will be enabled again irrespective of given duration`
-      : `\`${name} autoresponse is now enabled.\``;
+      )} \n\nDo note that if the bot restarts, it will be enabled again irrespective of given duration`;
 
     await interaction.editReply({
       content,
@@ -132,7 +133,7 @@ export default class GuildCommand extends Subcommand {
         flags: MessageFlags.Ephemeral,
       },
     });
-
+    container.logger.debug(`AUTORESPONSE_${name} = `, process.env[`AUTORESPONSE_${name}`]);
     setTimeout(() => {
       process.env[`AUTORESPONSE_${name}`] = 'true';
     }, hours * Time.Hour);
