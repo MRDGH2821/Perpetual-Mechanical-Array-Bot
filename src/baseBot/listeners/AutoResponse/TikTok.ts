@@ -9,8 +9,9 @@ import { parseBoolean } from '../../lib/Utilities';
 
 const rateLimit = new CoolDownManager(3000);
 rateLimit.add('TikTok_ICD', 3000);
+
+const isEnabled = () => parseBoolean(process.env.AUTORESPONSE_TIKTOK);
 @ApplyOptions<ListenerOptions>({
-  enabled: parseBoolean(process.env.AUTORESPONSE_TIKTOK),
   event: Events.MessageCreate,
   name: 'TikTok Autoresponse',
 })
@@ -26,6 +27,10 @@ export default class TikTokResponse extends Listener<typeof Events.MessageCreate
 
   public run(message: Message) {
     const { content } = message;
+
+    if (!isEnabled()) {
+      return;
+    }
 
     if (message.channelId === '840268374621945906') {
       return;

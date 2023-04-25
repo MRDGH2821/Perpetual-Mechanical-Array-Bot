@@ -5,15 +5,16 @@ import type { Message, TextChannel } from 'discord.js';
 import { ChannelIds, EMOJIS } from '../../../lib/Constants';
 import CoolDownManager from '../../../lib/CoolDownManager';
 import QuotesManager from '../../lib/QuotesManager';
-import { parseBoolean, freezeMuteUser } from '../../lib/Utilities';
+import { freezeMuteUser, parseBoolean } from '../../lib/Utilities';
 
 const rateLimit = new CoolDownManager(3000);
 rateLimit.add('Leaks_ICD', 3000);
 
 const muteChance = 15;
 
+const isEnabled = () => parseBoolean(process.env.AUTORESPONSE_LEAKS);
+
 @ApplyOptions<ListenerOptions>({
-  enabled: parseBoolean(process.env.AUTORESPONSE_LEAKS),
   event: Events.MessageCreate,
   name: 'Leak Mute Autoresponse',
 })
@@ -72,6 +73,10 @@ export default class LeakMuteResponse extends Listener<typeof Events.MessageCrea
 
   public run(message: Message) {
     const { content } = message;
+
+    if (!isEnabled()) {
+      return;
+    }
 
     if (message.channelId !== ChannelIds.LEAKS_DISCUSSION) {
       return;

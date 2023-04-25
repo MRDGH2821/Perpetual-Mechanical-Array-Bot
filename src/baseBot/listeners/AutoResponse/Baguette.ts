@@ -6,8 +6,9 @@ import { parseBoolean } from '../../lib/Utilities';
 
 const rateLimit = new CoolDownManager(3000);
 rateLimit.add('Baguette_ICD', 3000);
+
+const isEnabled = () => parseBoolean(process.env.AUTORESPONSE_BAGUETTE);
 @ApplyOptions<ListenerOptions>({
-  enabled: parseBoolean(process.env.AUTORESPONSE_BAGUETTE),
   event: Events.MessageCreate,
   name: 'Baguette Autoresponse',
 })
@@ -17,6 +18,10 @@ export default class BaguetteResponse extends Listener<typeof Events.MessageCrea
   public run(message: Message) {
     const { content } = message;
     console.debug(content);
+
+    if (!isEnabled()) {
+      return;
+    }
 
     if (message.channelId === '840268374621945906') {
       return;

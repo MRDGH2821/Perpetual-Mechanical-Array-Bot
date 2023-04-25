@@ -8,8 +8,9 @@ import { parseBoolean } from '../../lib/Utilities';
 
 const rateLimit = new CoolDownManager(3000);
 rateLimit.add('FBI_ICD', 3000);
+
+const isEnabled = () => parseBoolean(process.env.AUTORESPONSE_FBI);
 @ApplyOptions<ListenerOptions>({
-  enabled: parseBoolean(process.env.AUTORESPONSE_FBI),
   event: Events.MessageCreate,
   name: 'FBI Autoresponse',
 })
@@ -32,6 +33,10 @@ export default class FBIResponse extends Listener<typeof Events.MessageCreate> {
   public run(message: Message) {
     const { content } = message;
     console.debug(content);
+
+    if (!isEnabled()) {
+      return;
+    }
 
     if (message.channelId === '840268374621945906') {
       return;

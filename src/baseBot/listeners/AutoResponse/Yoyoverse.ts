@@ -8,8 +8,9 @@ import { parseBoolean } from '../../lib/Utilities';
 
 const rateLimit = new CoolDownManager(3000);
 rateLimit.add('Yoyoverse_ICD', 3000);
+
+const isEnabled = () => parseBoolean(process.env.AUTORESPONSE_YOYOVERSE);
 @ApplyOptions<ListenerOptions>({
-  enabled: parseBoolean(process.env.AUTORESPONSE_YOYOVERSE),
   event: Events.MessageCreate,
   name: 'Yoyoverse Autoresponse',
 })
@@ -22,6 +23,10 @@ export default class YoyoverseResponse extends Listener<typeof Events.MessageCre
 
   public run(message: Message) {
     const { content } = message;
+
+    if (!isEnabled()) {
+      return;
+    }
 
     if (message.channelId === '840268374621945906') {
       return;
