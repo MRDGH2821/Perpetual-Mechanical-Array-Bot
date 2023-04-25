@@ -2,7 +2,6 @@
   "name": "Node.js",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
   "image": "mcr.microsoft.com/devcontainers/javascript-node:18",
-  "postStartCommand": "yarn install",
   "customizations": {
     "vscode": {
       "extensions": [
