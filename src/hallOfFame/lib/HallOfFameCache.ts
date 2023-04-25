@@ -2,7 +2,7 @@ import { container } from '@sapphire/pieces';
 import { range } from '@sapphire/utilities';
 import { Collection, User, type APIEmbed } from 'discord.js';
 import { sequentialPromises } from 'yaspr';
-import { checkBoolean } from '../../baseBot/lib/Utilities';
+import { parseBoolean } from '../../baseBot/lib/Utilities';
 import { EMPTY_STRING } from '../../lib/Constants';
 import db from '../../lib/Firestore';
 import { getUser, publishEmbedsGenerator } from '../../lib/utils';
@@ -53,7 +53,7 @@ export default class HallOfFameCache {
   };
 
   static isCacheReady() {
-    return checkBoolean(process.env.HALL_OF_FAME_READY);
+    return parseBoolean(process.env.HALL_OF_FAME_READY);
   }
 
   static #fetchDB(element: ELEMENTS, topEntries = 0): Promise<DBHallOfFameData[]> {

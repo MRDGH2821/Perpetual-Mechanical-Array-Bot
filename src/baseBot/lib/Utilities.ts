@@ -59,7 +59,7 @@ export function guildMessageIDsExtractor(link: string) {
   };
 }
 
-export function checkBoolean(str: string | null | undefined) {
+export function parseBoolean(str: string | null | undefined) {
   if (str) {
     return str.toLowerCase() === 'true';
   }

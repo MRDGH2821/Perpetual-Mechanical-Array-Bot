@@ -1,6 +1,6 @@
 import { container } from '@sapphire/pieces';
 import { Collection, Role, time, type APIEmbed } from 'discord.js';
-import { checkBoolean } from '../../baseBot/lib/Utilities';
+import { parseBoolean } from '../../baseBot/lib/Utilities';
 import { EMPTY_STRING, ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import { publishEmbedsGenerator } from '../../lib/utils';
@@ -21,7 +21,7 @@ export default class SpiralAbyssCache {
   };
 
   static isCacheReady() {
-    return checkBoolean(process.env.SPIRAL_ABYSS_READY);
+    return parseBoolean(process.env.SPIRAL_ABYSS_READY);
   }
 
   static async #fetchDB(clearType: SpiralAbyssClearTypes) {

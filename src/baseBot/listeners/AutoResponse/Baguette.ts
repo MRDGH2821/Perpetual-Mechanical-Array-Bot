@@ -2,12 +2,12 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener, type ListenerOptions } from '@sapphire/framework';
 import { Message, userMention } from 'discord.js';
 import CoolDownManager from '../../../lib/CoolDownManager';
-import { checkBoolean } from '../../lib/Utilities';
+import { parseBoolean } from '../../lib/Utilities';
 
 const rateLimit = new CoolDownManager(3000);
 rateLimit.add('Baguette_ICD', 3000);
 @ApplyOptions<ListenerOptions>({
-  enabled: checkBoolean(process.env.AUTORESPONSE_BAGUETTE),
+  enabled: parseBoolean(process.env.AUTORESPONSE_BAGUETTE),
   event: Events.MessageCreate,
   name: 'LTF Autoresponse',
 })

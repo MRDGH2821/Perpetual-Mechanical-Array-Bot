@@ -5,12 +5,12 @@ import { pickRandom } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
 import CoolDownManager from '../../../lib/CoolDownManager';
 import QuotesManager from '../../lib/QuotesManager';
-import { checkBoolean } from '../../lib/Utilities';
+import { parseBoolean } from '../../lib/Utilities';
 
 const rateLimit = new CoolDownManager(3000);
 rateLimit.add('TikTok_ICD', 3000);
 @ApplyOptions<ListenerOptions>({
-  enabled: checkBoolean(process.env.AUTORESPONSE_TIKTOK),
+  enabled: parseBoolean(process.env.AUTORESPONSE_TIKTOK),
   event: Events.MessageCreate,
   name: 'TikTok Autoresponse',
 })

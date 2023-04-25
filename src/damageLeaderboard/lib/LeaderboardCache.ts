@@ -1,7 +1,7 @@
 import { container } from '@sapphire/pieces';
 import { deepClone, toTitleCase } from '@sapphire/utilities';
 import { Collection, User, type APIEmbed } from 'discord.js';
-import { checkBoolean } from '../../baseBot/lib/Utilities';
+import { parseBoolean } from '../../baseBot/lib/Utilities';
 import { EMPTY_STRING } from '../../lib/Constants';
 import db from '../../lib/Firestore';
 import { chunksGenerator, getUser } from '../../lib/utils';
@@ -61,7 +61,7 @@ export default class LeaderboardCache {
   };
 
   static isCacheReady() {
-    return checkBoolean(process.env.HALL_OF_FAME_READY);
+    return parseBoolean(process.env.HALL_OF_FAME_READY);
   }
 
   static #getDamageType(element: LBElements) {
