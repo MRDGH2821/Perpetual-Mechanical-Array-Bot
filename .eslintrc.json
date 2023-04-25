@@ -15,7 +15,8 @@
           "run",
           "printBanner",
           "registerApplicationCommands",
-          "autocompleteRun"
+          "autocompleteRun",
+          "onLoad"
         ]
       }
     ]
