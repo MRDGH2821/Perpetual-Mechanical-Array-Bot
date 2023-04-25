@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Events, Listener, container, type ListenerOptions } from '@sapphire/framework';
+import { Events,Listener,container,type ListenerOptions } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { pickRandom } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
@@ -12,6 +12,7 @@ rateLimit.add('TikTok_ICD', 3000);
 
 const isEnabled = () => parseBoolean(process.env.AUTORESPONSE_TIKTOK);
 @ApplyOptions<ListenerOptions>({
+  enabled: true,
   event: Events.MessageCreate,
   name: 'TikTok Autoresponse',
 })
@@ -67,5 +68,9 @@ export default class TikTokResponse extends Listener<typeof Events.MessageCreate
     setTimeout(async () => {
       await message.delete();
     }, 5 * Time.Second);
+  }
+
+  public override onLoad() {
+    container.logger.debug(this.name, 'Loaded!');
   }
 }

@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Events, Listener, container, type ListenerOptions } from '@sapphire/framework';
+import { Events,Listener,container,type ListenerOptions } from '@sapphire/framework';
 import { pickRandom } from '@sapphire/utilities';
-import { Message, userMention } from 'discord.js';
+import { Message,userMention } from 'discord.js';
 import CoolDownManager from '../../../lib/CoolDownManager';
 import QuotesManager from '../../lib/QuotesManager';
 import { parseBoolean } from '../../lib/Utilities';
@@ -11,6 +11,7 @@ rateLimit.add('Yoyoverse_ICD', 3000);
 
 const isEnabled = () => parseBoolean(process.env.AUTORESPONSE_YOYOVERSE);
 @ApplyOptions<ListenerOptions>({
+  enabled: true,
   event: Events.MessageCreate,
   name: 'Yoyoverse Autoresponse',
 })
@@ -55,5 +56,9 @@ export default class YoyoverseResponse extends Listener<typeof Events.MessageCre
     } catch (e) {
       container.logger.debug(e);
     }
+  }
+
+  public override onLoad() {
+    container.logger.debug(this.name, 'Loaded!');
   }
 }

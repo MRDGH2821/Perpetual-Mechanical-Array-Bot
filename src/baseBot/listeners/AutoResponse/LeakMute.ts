@@ -1,11 +1,11 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Events, Listener, container, type ListenerOptions } from '@sapphire/framework';
+import { Events,Listener,container,type ListenerOptions } from '@sapphire/framework';
 import { pickRandom } from '@sapphire/utilities';
-import type { Message, TextChannel } from 'discord.js';
-import { ChannelIds, EMOJIS } from '../../../lib/Constants';
+import type { Message,TextChannel } from 'discord.js';
+import { ChannelIds,EMOJIS } from '../../../lib/Constants';
 import CoolDownManager from '../../../lib/CoolDownManager';
 import QuotesManager from '../../lib/QuotesManager';
-import { freezeMuteUser, parseBoolean } from '../../lib/Utilities';
+import { freezeMuteUser,parseBoolean } from '../../lib/Utilities';
 
 const rateLimit = new CoolDownManager(3000);
 rateLimit.add('Leaks_ICD', 3000);
@@ -15,6 +15,7 @@ const muteChance = 15;
 const isEnabled = () => parseBoolean(process.env.AUTORESPONSE_LEAKS);
 
 @ApplyOptions<ListenerOptions>({
+  enabled: true,
   event: Events.MessageCreate,
   name: 'Leak Mute Autoresponse',
 })
@@ -115,5 +116,9 @@ export default class LeakMuteResponse extends Listener<typeof Events.MessageCrea
     } catch (e) {
       container.logger.debug(e);
     }
+  }
+
+  public override onLoad() {
+    container.logger.debug(this.name, 'Loaded!');
   }
 }
