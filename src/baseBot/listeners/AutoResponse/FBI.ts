@@ -35,18 +35,22 @@ export default class FBIResponse extends Listener<typeof Events.MessageCreate> {
     const { content } = message;
 
     if (!isEnabled()) {
+      container.logger.debug('FBI Autoresponse is not enabled, thus not responding');
       return;
     }
 
     if (message.channelId === '840268374621945906') {
+      container.logger.debug('Chanel Black listed, hence not responding');
       return;
     }
 
     if (!content.toLowerCase().includes('fbi')) {
+      container.logger.debug('Not found FBI in message, hence not responding');
       return;
     }
 
     if (message.author.bot) {
+      container.logger.debug('Message by bot, hence not responding');
       return;
     }
     try {
