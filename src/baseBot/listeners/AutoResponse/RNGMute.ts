@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Events, Listener, type ListenerOptions } from '@sapphire/framework';
+import { Events, Listener, container, type ListenerOptions } from '@sapphire/framework';
 import { pickRandom } from '@sapphire/utilities';
 import type { Message, TextChannel } from 'discord.js';
 import { ChannelIds, EMOJIS, ROLE_IDS } from '../../../lib/Constants';
@@ -90,10 +90,10 @@ export default class RNGMuteResponse extends Listener<typeof Events.MessageCreat
             });
             rateLimit.add('RNG_ICD', 3000);
           })
-          .catch(console.debug);
+          .catch(container.logger.debug);
       }
     } catch (e) {
-      console.debug(e);
+      container.logger.debug(e);
     }
   }
 }

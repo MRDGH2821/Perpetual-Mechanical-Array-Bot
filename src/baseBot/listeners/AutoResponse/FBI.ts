@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Events, Listener, type ListenerOptions } from '@sapphire/framework';
+import { Events,Listener,container,type ListenerOptions } from '@sapphire/framework';
 import { pickRandom } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
 import CoolDownManager from '../../../lib/CoolDownManager';
@@ -32,7 +32,6 @@ export default class FBIResponse extends Listener<typeof Events.MessageCreate> {
 
   public run(message: Message) {
     const { content } = message;
-    console.debug(content);
 
     if (!isEnabled()) {
       return;
@@ -60,10 +59,10 @@ export default class FBIResponse extends Listener<typeof Events.MessageCreate> {
           .then(() => {
             rateLimit.add('FBI_ICD', 3000);
           })
-          .catch(console.debug);
+          .catch(container.logger.debug);
       }
     } catch (e) {
-      console.debug(e);
+      container.logger.debug(e);
     }
   }
 }

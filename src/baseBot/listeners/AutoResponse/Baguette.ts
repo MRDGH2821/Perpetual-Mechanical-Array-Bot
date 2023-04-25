@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Events, Listener, type ListenerOptions } from '@sapphire/framework';
+import { Events, Listener, container, type ListenerOptions } from '@sapphire/framework';
 import { Message, userMention } from 'discord.js';
 import CoolDownManager from '../../../lib/CoolDownManager';
 import { parseBoolean } from '../../lib/Utilities';
@@ -17,7 +17,6 @@ export default class BaguetteResponse extends Listener<typeof Events.MessageCrea
 
   public run(message: Message) {
     const { content } = message;
-    console.debug(content);
 
     if (!isEnabled()) {
       return;
@@ -45,10 +44,10 @@ export default class BaguetteResponse extends Listener<typeof Events.MessageCrea
           .then(() => {
             rateLimit.add('Baguette_ICD', 3000);
           })
-          .catch(console.debug);
+          .catch(container.logger.debug);
       }
     } catch (e) {
-      console.debug(e);
+      container.logger.debug(e);
     }
   }
 }

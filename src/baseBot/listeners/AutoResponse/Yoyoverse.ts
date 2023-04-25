@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Events, Listener, type ListenerOptions } from '@sapphire/framework';
+import { Events, Listener, container, type ListenerOptions } from '@sapphire/framework';
 import { pickRandom } from '@sapphire/utilities';
 import { Message, userMention } from 'discord.js';
 import CoolDownManager from '../../../lib/CoolDownManager';
@@ -50,10 +50,10 @@ export default class YoyoverseResponse extends Listener<typeof Events.MessageCre
           .then(() => {
             rateLimit.add('Yoyoverse_ICD', 3000);
           })
-          .catch(console.debug);
+          .catch(container.logger.debug);
       }
     } catch (e) {
-      console.debug(e);
+      container.logger.debug(e);
     }
   }
 }
