@@ -1,4 +1,6 @@
+import { PaginatedMessageEmbedFields } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/pieces';
+import { chunk } from '@sapphire/utilities';
 import { Collection, Role, time, type APIEmbed } from 'discord.js';
 import { parseBoolean } from '../../baseBot/lib/Utilities';
 import { EMPTY_STRING, ROLE_IDS } from '../../lib/Constants';
@@ -147,5 +149,38 @@ export default class SpiralAbyssCache {
     this.#cache.sovereign.forEach(async (member) => {
       await member.roles.remove(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER);
     });
+  }
+
+  static generatePaginatedMessage(
+    clearType: SpiralAbyssClearTypes,
+    usersPerPage = this.#usersPerPage,
+    date = new Date(),
+  ) {
+    const props = SAProps(clearType);
+    const collection = this.accessCache(clearType);
+    const users = collection.map((member) => member.user);
+    const usersChunk = chunk(users, usersPerPage);
+
+    return new PaginatedMessageEmbedFields()
+      .setTemplate({
+        title: `**${props.name}** ${props.emoji}`,
+        color: props.color,
+        thumbnail: {
+          url: props.icon,
+        },
+        description: `Cycle Details: \n${
+          date.getDate() < 16 ? 'Waxing Phase' : 'Waning Phase'
+        } \n${time(date, 'F')}`,
+        timestamp: date.toISOString(),
+      })
+      .setItems(
+        usersChunk.map((userChunk) => userChunk.map((user) => ({
+          name: EMPTY_STRING,
+          value: `${user} - \`${user.tag}\``,
+          inline: false,
+        }))).flat(),
+      )
+      .setItemsPerPage(usersPerPage)
+      .make();
   }
 }
