@@ -11,9 +11,8 @@ rateLimit.add('FBI_ICD', 3000);
 
 // const isEnabled = () => parseBoolean(process.env.AUTORESPONSE_FBI);
 @ApplyOptions<ListenerOptions>({
-  enabled: true,
   event: Events.MessageCreate,
-  name: 'FBI Autoresponse',
+  name: 'FBI_Autoresponse',
 })
 export default class FBIResponse extends Listener<typeof Events.MessageCreate> {
   static FBIQuotes = () =>
@@ -40,30 +39,35 @@ export default class FBIResponse extends Listener<typeof Events.MessageCreate> {
       return;
     }
 */
+    container.logger.debug('Got message:', content);
     if (message.channelId === '840268374621945906') {
-      container.logger.debug('Chanel Black listed, hence not responding');
+      container.logger.warn('Chanel Black listed, hence not responding');
       return;
     }
 
     if (!content.toLowerCase().includes('fbi')) {
-      container.logger.debug('Not found FBI in message, hence not responding');
+      container.logger.warn('Not found FBI in message, hence not responding');
       return;
     }
 
     if (message.author.bot) {
-      container.logger.debug('Message by bot, hence not responding');
+      container.logger.warn('Message by bot, hence not responding');
       return;
     }
+
+    container.logger.debug('All conditions passed for FBI');
     try {
       const isLimited = rateLimit.check('FBI_ICD');
       if (isLimited < 1) {
         const { channel } = message;
+
         channel
           .send({
             content: pickRandom(FBIResponse.FBIQuotes()),
           })
           .then(() => {
             rateLimit.add('FBI_ICD', 3000);
+            container.logger.debug('FBI gif sent');
           })
           .catch(container.logger.debug);
       }
