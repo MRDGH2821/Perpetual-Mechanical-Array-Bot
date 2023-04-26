@@ -1,3 +1,4 @@
+import { LazyPaginatedMessage } from '@sapphire/discord.js-utilities';
 import {
   container,
   type ChatInputCommandSuccessPayload,
@@ -5,22 +6,17 @@ import {
   type ContextMenuCommandSuccessPayload,
   type MessageCommandSuccessPayload,
 } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
 import { chunk, deepClone, pickRandom } from '@sapphire/utilities';
 import { cyan } from 'colorette';
 import {
-  ActionRowBuilder,
-  ButtonBuilder,
   ButtonInteraction,
-  ButtonStyle,
   ChatInputCommandInteraction,
-  ComponentType,
   Guild,
-  MessageFlags,
   User,
   type APIEmbed,
   type APIUser,
 } from 'discord.js';
+import { sequentialPromises } from 'yaspr';
 import { getClient } from './ClientExtractor';
 import { ChannelIds, EMPTY_STRING } from './Constants';
 import { ABYSS_QUOTES } from './DynamicConstants';
@@ -133,61 +129,14 @@ export function getAbyssQuote() {
 }
 
 export async function viewBook(book: APIEmbed[]) {
-  return async function next(
-    ctx: ChatInputCommandInteraction | ButtonInteraction,
-    i = 0,
-  ): Promise<any | void> {
-    if (!ctx.deferred) {
-      await ctx.deferReply();
-    }
+  const pg = new LazyPaginatedMessage();
 
-    if (book.length < 1) {
-      return ctx.editReply({
-        content: 'No users found for given category',
-      });
-    }
+  const addEmbed = (embed: APIEmbed) =>
+    pg.addAsyncPageBuilder(async (builder) => builder.setEmbeds([embed]));
 
-    const msg = await ctx.editReply({
-      embeds: [book[i]],
-      options: {
-        flags: MessageFlags.Ephemeral,
-      },
-      components: [
-        new ActionRowBuilder<ButtonBuilder>({
-          components: [
-            new ButtonBuilder({
-              label: 'Previous',
-              emoji: '⬅️',
-              style: ButtonStyle.Secondary,
-              disabled: !book[i - 1],
-            }).setCustomId('go_previous'),
-            new ButtonBuilder({
-              label: 'Next',
-              emoji: '➡️',
-              style: ButtonStyle.Primary,
-              disabled: !book[i + 1],
-            }).setCustomId('go_next'),
-          ],
-        }),
-      ],
-    });
+  await sequentialPromises(book, addEmbed);
 
-    return msg
-      .awaitMessageComponent({
-        componentType: ComponentType.Button,
-        time: Time.Minute,
-        async filter(itx) {
-          await itx.deferUpdate();
-          return itx.user.id === ctx.user.id;
-        },
-      })
-      .then((button) => {
-        if (button.customId === 'go_next') {
-          return next(button, i < book.length ? i + 1 : i);
-        }
-        return next(button, i >= 0 ? i - 1 : i);
-      });
-  };
+  return (interaction: ChatInputCommandInteraction | ButtonInteraction) => pg.run(interaction);
 }
 
 export function parseTruthy(text: string) {
