@@ -1,7 +1,7 @@
 import { LogLevel, SapphireClient } from '@sapphire/framework';
 import { getRootData } from '@sapphire/pieces';
 import type { ClientOptions } from 'discord.js';
-import { GatewayIntentBits } from 'discord.js';
+import { GatewayIntentBits, Partials } from 'discord.js';
 import { join } from 'node:path';
 import './lib/setup';
 
@@ -34,6 +34,7 @@ const client = new CustomClient({
     GatewayIntentBits.GuildWebhooks,
     GatewayIntentBits.MessageContent,
   ],
+  partials: [Partials.Channel, Partials.GuildMember, Partials.Message],
   loadMessageCommandListeners: true,
 });
 
