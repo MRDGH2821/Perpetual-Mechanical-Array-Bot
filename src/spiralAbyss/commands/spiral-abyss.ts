@@ -1,6 +1,7 @@
 import { Subcommand } from '@sapphire/plugin-subcommands';
 import { ApplicationCommandOptionType } from 'discord.js';
 import EnvConfig from '../../lib/EnvConfig';
+import { viewBook } from '../../lib/utils';
 import type { JSONCmd } from '../../typeDefs/typeDefs';
 import { SPIRAL_ABYSS_TYPE_CHOICES } from '../lib/Constants';
 import SpiralAbyssCache from '../lib/SpiralAbyssCache';
@@ -47,13 +48,9 @@ export default class GuildCommand extends Subcommand {
               ephemeral: true,
             });
 
-            return SpiralAbyssCache.generatePaginatedMessage(clearType).run(interaction);
-            // const embeds = await SpiralAbyssCache.generateEmbeds(clearType, 10);
-            // const pg = new PaginatedMessage();
-            // pg.addPageEmbeds(embeds.map((embed) => new EmbedBuilder(embed)));
-            // return pg.run(interaction);
-            // const pager = await viewBook(embeds);
-            // return pager(interaction);
+            const embeds = await SpiralAbyssCache.generateEmbeds(clearType, 10);
+            const pager = await viewBook(embeds);
+            return pager(interaction);
           },
         },
       ],
