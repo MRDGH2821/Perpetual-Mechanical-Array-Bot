@@ -174,11 +174,11 @@ export default class SpiralAbyssCache {
         timestamp: date.toISOString(),
       })
       .setItems(
-        usersChunk.map((userChunk) => userChunk.map((user) => ({
+        usersChunk.map((userChunk) => ({
           name: EMPTY_STRING,
-          value: `${user} - \`${user.tag}\``,
+          value: userChunk.map((user) => `${user} - \`${user.tag}\``).join('\n'),
           inline: false,
-        }))).flat(),
+        })),
       )
       .setItemsPerPage(usersPerPage)
       .make();
