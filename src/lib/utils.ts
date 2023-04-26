@@ -6,7 +6,7 @@ import {
   type MessageCommandSuccessPayload,
 } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
-import { deepClone, pickRandom } from '@sapphire/utilities';
+import { chunk, deepClone, pickRandom } from '@sapphire/utilities';
 import { cyan } from 'colorette';
 import {
   ActionRowBuilder,
@@ -74,15 +74,6 @@ export async function getUser(id: User['id']) {
   return client.users.fetch(id);
 }
 
-export function chunksGenerator<T>(array: T[], size: number) {
-  const result = [];
-  const copy = [...array];
-  while (copy.length > 0) {
-    result.push(copy.splice(0, size));
-  }
-  return result;
-}
-
 type PublishEmbedBuilderOption = {
   users: User[];
   usersPerPage: number;
@@ -94,19 +85,19 @@ export function publishEmbedsGenerator(
   const { embedTemplate, users, usersPerPage } = options;
   return new Promise((res, rej) => {
     try {
-      const chunks = chunksGenerator(users, usersPerPage);
+      const chunks = chunk(users, usersPerPage);
       const embeds: (typeof embedTemplate)[] = [];
-      chunks.forEach((chunk) => {
+      chunks.forEach((piece) => {
         let value = '';
         const embed = deepClone(embedTemplate);
         embed.footer = {
-          text: `${chunks.indexOf(chunk) + 1} of ${chunks.length}`,
+          text: `${chunks.indexOf(piece) + 1} of ${chunks.length}`,
         };
 
-        if (chunk.length < 1) {
+        if (piece.length < 1) {
           value = '*No users found in this section...*';
         } else {
-          chunk.forEach((user) => {
+          piece.forEach((user) => {
             value = `${value}\n${user} - \`${user.tag}\``;
           });
         }

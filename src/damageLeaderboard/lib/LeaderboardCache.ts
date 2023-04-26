@@ -1,10 +1,10 @@
 import { container } from '@sapphire/pieces';
-import { deepClone, toTitleCase } from '@sapphire/utilities';
+import { chunk, deepClone, toTitleCase } from '@sapphire/utilities';
 import { Collection, User, type APIEmbed } from 'discord.js';
 import { parseBoolean } from '../../baseBot/lib/Utilities';
 import { EMPTY_STRING } from '../../lib/Constants';
 import db from '../../lib/Firestore';
-import { chunksGenerator, getUser } from '../../lib/utils';
+import { getUser } from '../../lib/utils';
 import type {
   DBLeaderboardData,
   GroupCategoryType,
@@ -188,15 +188,15 @@ export default class LeaderboardCache {
       return ['No members found in this section'];
     }
 
-    const chunks = chunksGenerator(array, usersPerPage);
+    const chunks = chunk(array, usersPerPage);
 
     let rank = 1;
     const pages: string[] = [];
     // eslint-disable-next-line no-restricted-syntax
-    for (const chunk of chunks) {
+    for (const piece of chunks) {
       const lines: string[] = [];
       // eslint-disable-next-line no-restricted-syntax
-      for (const data of chunk) {
+      for (const data of piece) {
         // eslint-disable-next-line no-await-in-loop
         const user = await getUser(data.userID);
         const { tag } = user;
