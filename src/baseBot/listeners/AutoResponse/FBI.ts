@@ -4,12 +4,12 @@ import { pickRandom } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
 import CoolDownManager from '../../../lib/CoolDownManager';
 import QuotesManager from '../../lib/QuotesManager';
-import { parseBoolean } from '../../lib/Utilities';
+// import { parseBoolean } from '../../lib/Utilities';
 
 const rateLimit = new CoolDownManager(3000);
 rateLimit.add('FBI_ICD', 3000);
 
-const isEnabled = () => parseBoolean(process.env.AUTORESPONSE_FBI);
+// const isEnabled = () => parseBoolean(process.env.AUTORESPONSE_FBI);
 @ApplyOptions<ListenerOptions>({
   enabled: true,
   event: Events.MessageCreate,
@@ -33,12 +33,12 @@ export default class FBIResponse extends Listener<typeof Events.MessageCreate> {
 
   public run(message: Message) {
     const { content } = message;
-
+    /*
     if (!isEnabled()) {
       container.logger.debug('FBI Autoresponse is not enabled, thus not responding');
       return;
     }
-
+*/
     if (message.channelId === '840268374621945906') {
       container.logger.debug('Chanel Black listed, hence not responding');
       return;
