@@ -1,4 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
+import { FetchResultTypes, fetch } from '@sapphire/fetch';
 import { Listener, container, type ListenerOptions } from '@sapphire/framework';
 import { Attachment, User } from 'discord.js';
 import { sequentialPromises } from 'yaspr';
@@ -23,9 +24,11 @@ export default class SARestore extends Listener {
     const tvmGuild = await container.client.guilds.fetch(EnvConfig.guildId);
     const archivesChannel = await tvmGuild.channels.fetch(ChannelIds.ARCHIVES);
 
-    const fileContent = (await (
-      await fetch(args.backupFile.url)
-    ).json()) as Partial<BackupCacheFileType>;
+    container.logger.debug(args.backupFile)
+    const fileContent = await fetch<Partial<BackupCacheFileType>>(
+      args.backupFile.url,
+      FetchResultTypes.JSON,
+    );
 
     const getMember = (id: string) => tvmGuild.members.fetch(id);
 
