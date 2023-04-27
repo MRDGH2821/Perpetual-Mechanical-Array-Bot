@@ -2,13 +2,24 @@
   "name": "Node.js",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
   "image": "mcr.microsoft.com/devcontainers/javascript-node:18",
+  "postCreateCommand": "yarn install",
   "customizations": {
     "vscode": {
       "extensions": [
+        "christian-kohler.npm-intellisense",
+        "christian-kohler.path-intellisense",
+        "cschlosser.doxdocgen",
+        "dbaeumer.vscode-eslint",
         "dotenv.dotenv-vscode",
         "eamodio.gitlens",
         "EditorConfig.EditorConfig",
+        "esbenp.prettier-vscode",
+        "exiasr.hadolint",
+        "p42ai.refactor",
+        "redhat.vscode-yaml",
+        "ryanlaws.toggle-case",
         "sohamkamani.code-eol",
+        "spmeesseman.vscode-taskexplorer",
         "streetsidesoftware.code-spell-checker",
         "usernamehw.errorlens"
       ]
