@@ -20,21 +20,30 @@ export enum COLORS {
 }
 
 export enum ICONS {
-  ANEMO = 'https://cdn.discordapp.com/emojis/803516622772895764.webp?&quality=lossless',
-  GEO = 'https://cdn.discordapp.com/emojis/803516612430135326.webp?&quality=lossless',
-  ELECTRO = 'https://cdn.discordapp.com/emojis/803516644923146260.webp?&quality=lossless',
-  DENDRO = 'https://cdn.discordapp.com/emojis/803516669984505856.webp?size=128&quality=lossless',
-  COPIUM = 'https://cdn.discordapp.com/emojis/897176156057518130.webp?&quality=lossless',
-  VOID = 'https://cdn.discordapp.com/emojis/886587673408569394.png?v=1',
-  SPIRAL_ABYSS = 'https://cdn.discordapp.com/emojis/806999511096361031.png?v=1',
+  ANEMO = 'https://cdn.discordapp.com/emojis/803516622772895764.png',
+  GEO = 'https://cdn.discordapp.com/emojis/803516612430135326.png',
+  ELECTRO = 'https://cdn.discordapp.com/emojis/803516644923146260.png',
+  DENDRO = 'https://cdn.discordapp.com/emojis/803516669984505856.png',
+  COPIUM = 'https://cdn.discordapp.com/emojis/897176156057518130.png',
+  VOID = 'https://cdn.discordapp.com/emojis/886587673408569394.png',
+  SPIRAL_ABYSS = 'https://cdn.discordapp.com/emojis/806999511096361031.png',
+  ORIGINAL_SWORD = 'https://cdn.discordapp.com/emojis/1086640917877891192.png',
+  SILVER_SWORD = 'https://cdn.discordapp.com/emojis/1017378688209256508.png',
+  DULL_BLADE = 'https://cdn.discordapp.com/emojis/861628955697741844.png',
   CHECK_MARK = 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/282/check-mark-button_2705.png',
   CROSS_MARK = 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/282/cross-mark_274c.png',
   MASANORI = 'https://cdn.discordapp.com/attachments/825749528275189760/954657244157452348/250.png',
   TROPHY = 'https://whatemoji.org/wp-content/uploads/2020/07/Trophy-Emoji.png',
-  PALM_VORTEX_AETHER = 'https://cdn.discordapp.com/emojis/840965851199832087.png?v=1',
-  STARFELL_SWORD_LUMINE = 'https://cdn.discordapp.com/emojis/840965876370112532.png?v=1',
   LIGHTENING_BLADE_AETHER = 'https://cdn.discordapp.com/attachments/817208583988051999/886635086362071040/ElectroAether3.png',
-  RAZOR_GRASS_BLADE_AETHER = 'https://cdn.discordapp.com/emojis/995905335812427846.webp?size=128&quality=lossless',
+  LIGHTENING_BLADE_GOOFY = 'https://cdn.discordapp.com/emojis/1100775051739017286.png',
+  LIGHTENING_BLADE_OG_GOOFY = 'https://cdn.discordapp.com/emojis/1001043182655651880.png',
+  PALM_VORTEX_AETHER = 'https://cdn.discordapp.com/emojis/840965851199832087.png',
+  PALM_VORTEX_GOOFY = 'https://cdn.discordapp.com/emojis/1100787694012993658.png',
+  PALM_VORTEX_OG_GOOFY = 'https://cdn.discordapp.com/emojis/1001032044299694080.png',
+  RAZOR_GRASS_BLADE_AETHER = 'https://cdn.discordapp.com/emojis/995905335812427846.png',
+  STARFELL_SWORD_GOOFY = 'https://cdn.discordapp.com/emojis/1100772595764314222.png',
+  STARFELL_SWORD_LUMINE = 'https://cdn.discordapp.com/emojis/840965876370112532.png',
+  STARFELL_SWORD_OG_GOOFY = 'https://cdn.discordapp.com/emojis/1001037414338408468.png',
 }
 
 export enum ChannelIds {
@@ -149,7 +158,7 @@ export const EMOJIS = {
   Pyro: formatEmoji('803516441424822303', 'Pyro'),
   Cryo: formatEmoji('803516632735154177', 'Cryo'),
   // Void: formatEmoji('983370274227499050', 'Void'),
-  DullBlade: formatEmoji('861628955697741844'),
+  DullBlade: formatEmoji('861628955697741844', 'DullBlade'),
   DvalinHYPE: formatEmoji('808591175640154142'),
   Copium: formatEmoji('897176156057518130', 'Copium'),
   LumineCopium: formatEmoji('821897404260417557'),
@@ -166,6 +175,18 @@ export const EMOJIS = {
   Pairasmol: formatEmoji('1010238883872657448', 'Pairasmol'),
   GoldenAranaraSmile: formatEmoji('1024189925811306526', 'GoldenAranaraSmile'),
   GoldenAranaraWave: formatEmoji('1024191817438203944', 'GoldenAranaraWave'),
+  OriginalSword: formatEmoji('1086640917877891192', 'OriginalSword'),
+  SilverSword: formatEmoji('1017378688209256508', 'SilverSword'),
+  Windblade: formatEmoji('1100787694012993658', 'Windblade'),
+  LightningBlade: formatEmoji('1100775051739017286', 'LightningBlade'),
+  StarfellSword: formatEmoji('1100772595764314222', 'StarfellSword'),
+};
+
+export const EMOJIS2 = {
+  Void: formatEmoji('1101118379114377256', 'Void'),
+  starfell: formatEmoji('1001037414338408468', 'starfell'),
+  windblade: formatEmoji('1001032044299694080', 'windblade'),
+  thunderblade: formatEmoji('1001043182655651880', 'thunderblade'),
 };
 
 const REP_ROLES = [

@@ -1,3 +1,4 @@
+import { pickRandom } from '@sapphire/utilities';
 import { COLORS, EMOJIS, ICONS } from '../../lib/Constants';
 import type { SpiralAbyssClearTypes } from '../typeDefs/spiralAbyssTypes';
 
@@ -15,28 +16,28 @@ export function SAProps(clearType: SpiralAbyssClearTypes): SpiralAbyssProp {
   switch (clearType) {
     case 'traveler':
       return {
-        icon: ICONS.SPIRAL_ABYSS,
+        icon: ICONS.DULL_BLADE,
         name: 'Abyssal Traveler',
         description: 'Cleared Spiral Abyss using Traveler',
         color: COLORS.SPIRAL_ABYSS,
-        emoji: '🌀',
+        emoji: pickRandom(['🌀', EMOJIS.DullBlade]),
       };
     case 'conqueror':
       return {
-        icon: ICONS.SPIRAL_ABYSS,
+        icon: ICONS.SILVER_SWORD,
         name: 'Abyssal Conqueror',
         description: 'Cleared Spiral Abyss Using 3 Traveler Teams',
         color: COLORS.SPIRAL_ABYSS,
-        emoji: EMOJIS.DvalinHYPE,
+        emoji: pickRandom([EMOJIS.DvalinHYPE, EMOJIS.SilverSword]),
       };
     case 'sovereign':
       return {
-        icon: ICONS.SPIRAL_ABYSS,
+        icon: ICONS.ORIGINAL_SWORD,
         name: 'Abyssal Sovereign',
         description:
           'Cleared Spiral Abyss Using 4 distinct Traveler Teams with no character repetitions',
         color: COLORS.SPIRAL_ABYSS,
-        emoji: EMOJIS.DullBlade,
+        emoji: EMOJIS.OriginalSword,
       };
 
     default: {

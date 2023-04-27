@@ -1,4 +1,5 @@
-import { COLORS, EMOJIS, ICONS } from '../../lib/Constants';
+import { pickRandom } from '@sapphire/utilities';
+import { COLORS, EMOJIS, EMOJIS2, ICONS } from '../../lib/Constants';
 import type { ELEMENTS, ValueOf } from '../../typeDefs/typeDefs';
 
 export type CrownProp = {
@@ -14,7 +15,7 @@ export function crownProps(element: ELEMENTS): CrownProp {
   switch (element) {
     case 'unaligned':
       return {
-        icon: ICONS.VOID,
+        icon: pickRandom([ICONS.VOID, ICONS.ORIGINAL_SWORD]),
         name: 'Arbitrator of Fate',
         description: `*These people are the true & attentive MC Mains...*
 
@@ -23,12 +24,12 @@ They went extra mile to crown Unaligned Traveler in Archon Quest Chapter 2: Prol
 ***Never** question their Hard work, Dedication ~~& Mora..~~* 
 `,
         color: COLORS.UNALIGNED,
-        emoji: EMOJIS.Copium,
+        emoji: pickRandom([EMOJIS.Copium, EMOJIS.OriginalSword, EMOJIS2.Void]),
         plural: 'Arbitrators of Fate',
       };
     case 'anemo':
       return {
-        icon: ICONS.PALM_VORTEX_AETHER,
+        icon: ICONS.ANEMO,
         name: 'Herrscher of Wind',
         description: '*Prepare to get blown away!*',
         color: COLORS.ANEMO,
@@ -37,7 +38,7 @@ They went extra mile to crown Unaligned Traveler in Archon Quest Chapter 2: Prol
       };
     case 'geo':
       return {
-        icon: ICONS.STARFELL_SWORD_LUMINE,
+        icon: ICONS.GEO,
         name: 'Jūnzhǔ of Earth',
         description: '*Shock waves underneath your feet!*',
         color: COLORS.GEO,
@@ -46,7 +47,7 @@ They went extra mile to crown Unaligned Traveler in Archon Quest Chapter 2: Prol
       };
     case 'electro':
       return {
-        icon: ICONS.LIGHTENING_BLADE_AETHER,
+        icon: ICONS.ELECTRO,
         name: "Ten'nō of Thunder",
         description: '*Get Electrocuted!*',
         color: COLORS.ELECTRO,
@@ -55,7 +56,7 @@ They went extra mile to crown Unaligned Traveler in Archon Quest Chapter 2: Prol
       };
     case 'dendro':
       return {
-        icon: ICONS.RAZOR_GRASS_BLADE_AETHER,
+        icon: ICONS.DENDRO,
         name: 'Raja of Evergreens',
         description: '*Feel the (razor) Grass!*',
         color: COLORS.DENDRO,

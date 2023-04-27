@@ -1,4 +1,5 @@
-import { COLORS, EMOJIS, ICONS } from '../../lib/Constants';
+import { pickRandom } from '@sapphire/utilities';
+import { COLORS, EMOJIS, EMOJIS2, ICONS } from '../../lib/Constants';
 import type { ValueOf } from '../../typeDefs/typeDefs';
 import type {
   ElementDamageCategories,
@@ -20,28 +21,40 @@ export function leaderboardProps(element: LBElements): LBProp {
         icon: ICONS.COPIUM,
         name: "Traveler's Normal Attack 5th hit",
         color: COLORS.UNIVERSAL,
-        emoji: EMOJIS.Copium,
+        emoji: pickRandom([EMOJIS.DullBlade, EMOJIS.Copium, EMOJIS2.Void]),
       };
     case 'anemo':
       return {
-        icon: ICONS.PALM_VORTEX_AETHER,
+        icon: pickRandom([
+          ICONS.PALM_VORTEX_AETHER,
+          ICONS.PALM_VORTEX_GOOFY,
+          ICONS.PALM_VORTEX_OG_GOOFY,
+        ]),
         name: 'Palm Vortex - Max storm damage',
         color: COLORS.ANEMO,
-        emoji: EMOJIS.Anemo,
+        emoji: pickRandom([EMOJIS.Anemo, EMOJIS.Windblade, EMOJIS2.windblade]),
       };
     case 'geo':
       return {
-        icon: ICONS.STARFELL_SWORD_LUMINE,
+        icon: pickRandom([
+          ICONS.STARFELL_SWORD_LUMINE,
+          ICONS.STARFELL_SWORD_GOOFY,
+          ICONS.STARFELL_SWORD_OG_GOOFY,
+        ]),
         name: 'Starfell Sword',
         color: COLORS.GEO,
-        emoji: EMOJIS.Geo,
+        emoji: pickRandom([EMOJIS.Geo, EMOJIS.StarfellSword, EMOJIS2.starfell]),
       };
     case 'electro':
       return {
-        icon: ICONS.LIGHTENING_BLADE_AETHER,
+        icon: pickRandom([
+          ICONS.LIGHTENING_BLADE_GOOFY,
+          ICONS.LIGHTENING_BLADE_OG_GOOFY,
+          ICONS.LIGHTENING_BLADE_AETHER,
+        ]),
         name: 'Lightening Blade',
         color: COLORS.ELECTRO,
-        emoji: EMOJIS.Electro,
+        emoji: pickRandom([EMOJIS.Electro, EMOJIS.LightningBlade, EMOJIS2.thunderblade]),
       };
     case 'dendro':
       return {
