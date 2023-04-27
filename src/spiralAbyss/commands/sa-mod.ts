@@ -262,6 +262,7 @@ export default class GuildCommand extends Subcommand {
                           roleMention(ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN)
                         : roleMention(ROLE_IDS.OTHERS.ARCHONS),
                       embeds: [announceEmb],
+                      components: [],
                     });
                   }
 
@@ -271,6 +272,7 @@ export default class GuildCommand extends Subcommand {
 
                   return btnCtx.editReply({
                     embeds: [successEmbed],
+                    components: [],
                   });
                 }
                 verifyEmb.fields?.push({
@@ -281,6 +283,7 @@ export default class GuildCommand extends Subcommand {
                 verifyEmb.thumbnail!.url = ICONS.CROSS_MARK;
                 return btnCtx.editReply({
                   embeds: [verifyEmb],
+                  components: [],
                 });
               });
           },
