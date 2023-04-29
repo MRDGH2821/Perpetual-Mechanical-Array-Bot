@@ -14,6 +14,9 @@
     "ryanlaws.toggle-case",
     "spmeesseman.vscode-taskexplorer",
     "streetsidesoftware.code-spell-checker",
-    "usernamehw.errorlens"
+    "usernamehw.errorlens",
+    "oderwat.indent-rainbow",
+    "michaelcurrin.auto-commit-msg",
+    "sohamkamani.code-eol"
   ]
 }
