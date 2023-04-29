@@ -7,17 +7,9 @@
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
     "ghcr.io/devcontainers/features/desktop-lite:1": {},
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers/features/node:1": {},
-    "ghcr.io/devcontainers-contrib/features/apt-get-packages:1": {},
-    "ghcr.io/devcontainers-contrib/features/apt-packages:1": {},
-    "ghcr.io/devcontainers-contrib/features/curl-apt-get:1": {},
-    "ghcr.io/devcontainers-contrib/features/gitsign:1": {},
-    "ghcr.io/devcontainers-contrib/features/gitsign-credential-cache:1": {},
-    "ghcr.io/devcontainers-contrib/features/micro:1": {},
     "ghcr.io/devcontainers-contrib/features/typescript:2": {},
-    "ghcr.io/devcontainers-contrib/features/wget-apt-get:1": {},
     "ghcr.io/dhoeric/features/google-cloud-cli:1": {},
     "ghcr.io/dhoeric/features/hadolint:1": {}
   },
