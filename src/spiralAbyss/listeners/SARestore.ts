@@ -24,7 +24,7 @@ export default class SARestore extends Listener {
     const tvmGuild = await container.client.guilds.fetch(EnvConfig.guildId);
     const archivesChannel = await tvmGuild.channels.fetch(ChannelIds.ARCHIVES);
 
-    container.logger.debug(args.backupFile)
+    container.logger.debug(args.backupFile);
     const fileContent = await fetch<Partial<BackupCacheFileType>>(
       args.backupFile.url,
       FetchResultTypes.JSON,

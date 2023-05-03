@@ -10,11 +10,11 @@ const rateLimit = new CoolDownManager(3000);
 rateLimit.add('FBI_ICD', 3000);
 
 // const isEnabled = () => parseBoolean(process.env.AUTORESPONSE_FBI);
-@ApplyOptions<ListenerOptions>(({
+@ApplyOptions<ListenerOptions>({
   event: GatewayDispatchEvents.MessageCreate,
   name: 'FBIAutoresponse',
-  emitter: container.client.ws
-}))
+  emitter: container.client.ws,
+})
 export default class FBIResponse extends Listener<typeof GatewayDispatchEvents.MessageCreate> {
   static FBIQuotes = () =>
     [

@@ -1,8 +1,8 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Events,Listener,container,type ListenerOptions } from '@sapphire/framework';
+import { Events, Listener, container, type ListenerOptions } from '@sapphire/framework';
 import { pickRandom } from '@sapphire/utilities';
-import type { Message,TextChannel } from 'discord.js';
-import { ChannelIds,EMOJIS,ROLE_IDS } from '../../../lib/Constants';
+import type { Message, TextChannel } from 'discord.js';
+import { ChannelIds, EMOJIS, ROLE_IDS } from '../../../lib/Constants';
 import CoolDownManager from '../../../lib/CoolDownManager';
 import QuotesManager from '../../lib/QuotesManager';
 import { freezeMuteUser } from '../../lib/Utilities';

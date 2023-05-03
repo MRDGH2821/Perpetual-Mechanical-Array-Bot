@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Events,Listener,container,type ListenerOptions } from '@sapphire/framework';
+import { Events, Listener, container, type ListenerOptions } from '@sapphire/framework';
 import { pickRandom } from '@sapphire/utilities';
-import { Message,userMention } from 'discord.js';
+import { Message, userMention } from 'discord.js';
 import CoolDownManager from '../../../lib/CoolDownManager';
 import QuotesManager from '../../lib/QuotesManager';
 import { parseBoolean } from '../../lib/Utilities';
