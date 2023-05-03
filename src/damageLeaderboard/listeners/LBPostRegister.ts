@@ -3,6 +3,7 @@ import { container, Listener, type ListenerOptions } from '@sapphire/framework';
 import type { EmojiIdentifierResolvable } from 'discord.js';
 import { sequentialPromises } from 'yaspr';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
+import { ThreadIds } from '../../lib/Constants';
 import LeaderboardCache from '../lib/LeaderboardCache';
 import { digitEmoji, leaderboardProps } from '../lib/Utilities';
 import type { LBRegistrationArgs } from '../typeDefs/leaderboardTypeDefs';
@@ -68,5 +69,34 @@ export default class LBPostRegister extends Listener {
     } catch (e) {
       container.logger.error(e);
     }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  public async sendLog(args: LBRegistrationArgs, rank: number) {
+    const thread = await container.client.channels.fetch(ThreadIds.LB_REGISTRATION_LOGS);
+
+    if (!thread?.isThread()) {
+      throw new Error(`Cannot fetch Leaderboard Registration log thread`);
+    }
+
+    const props = leaderboardProps(args.element);
+
+    thread.send({
+      embeds: [
+        {
+          title: 'New Score!',
+          thumbnail: {
+            url: props.icon,
+          },
+          description: `**${args.contestant.tag}** scored ${args.score} in ${props.name} ${args.groupType} and are now ranked ${rank} in the respective leaderboard!`,
+          fields: [
+            {
+              name: 'Previous score (if any)',
+              value: 'old score',
+            },
+          ],
+        },
+      ],
+    });
   }
 }
