@@ -522,7 +522,7 @@ export default class GuildCommand extends Subcommand {
               typeCategory: parseGroupType(args.groupType),
               userID: args.contestant.id,
             }).then(() => {
-              PMAEventHandler.emit('LBPostRegister', args);
+              PMAEventHandler.emit('LBPostRegister', args, oldScoreData);
               return btnCtx.editReply({
                 embeds: [embed],
                 components: [linkRow],
