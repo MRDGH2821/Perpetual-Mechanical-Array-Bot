@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Events, Listener, container, type ListenerOptions } from '@sapphire/framework';
+import { Events, Listener, type ListenerOptions } from '@sapphire/framework';
 import { pickRandom } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
 import QuotesManager from '../../lib/QuotesManager';
@@ -25,9 +25,5 @@ export default class BanHammerResponse extends Listener<typeof Events.MessageCre
         content: pickRandom(BanHammerResponse.banHammerQuotes),
       });
     }
-  }
-
-  public override onLoad() {
-    container.logger.debug(this.name, 'Loaded!');
   }
 }

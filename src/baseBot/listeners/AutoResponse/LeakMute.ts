@@ -117,8 +117,4 @@ export default class LeakMuteResponse extends Listener<typeof Events.MessageCrea
       container.logger.debug(e);
     }
   }
-
-  public override onLoad() {
-    container.logger.debug(this.name, 'Loaded!');
-  }
 }

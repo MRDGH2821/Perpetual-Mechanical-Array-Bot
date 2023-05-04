@@ -76,8 +76,4 @@ export default class FBIResponse extends Listener<typeof GatewayDispatchEvents.M
       container.logger.debug(e);
     }
   }
-
-  public override onLoad() {
-    container.logger.debug(this.name, 'Loaded!');
-  }
 }

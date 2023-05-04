@@ -57,8 +57,4 @@ export default class YoyoverseResponse extends Listener<typeof Events.MessageCre
       container.logger.debug(e);
     }
   }
-
-  public override onLoad() {
-    container.logger.debug(this.name, 'Loaded!');
-  }
 }

@@ -97,8 +97,4 @@ export default class RNGMuteResponse extends Listener<typeof Events.MessageCreat
       container.logger.debug(e);
     }
   }
-
-  public override onLoad() {
-    container.logger.debug(this.name, 'Loaded!');
-  }
 }

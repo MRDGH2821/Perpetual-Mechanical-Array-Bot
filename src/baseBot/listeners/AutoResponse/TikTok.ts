@@ -69,8 +69,4 @@ export default class TikTokResponse extends Listener<typeof Events.MessageCreate
       await message.delete();
     }, 5 * Time.Second);
   }
-
-  public override onLoad() {
-    container.logger.debug(this.name, 'Loaded!');
-  }
 }
