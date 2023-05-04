@@ -26,13 +26,15 @@ export default class LBPostRegister extends Listener {
       await args.proofMessage.react(props.emoji).catch(container.logger.error);
       container.logger.debug({ rank });
       if (rank >= 100 || rank < 1) {
+        container.logger.warn('Rank not in top 100, exiting.');
         return;
       }
-
+      this.sendLog(args, rank, oldScoreData);
       if (rank >= 1 && rank <= 3) {
         await args.proofMessage.react('⭐');
       }
 
+      container.logger.debug('Will react with emoji');
       if (rank === 1) {
         await args.proofMessage.react('🥇');
         return;
@@ -47,7 +49,7 @@ export default class LBPostRegister extends Listener {
         await args.proofMessage.react('🥉');
         return;
       }
-
+      container.logger.debug('Will react with digits');
       const digits = rank.toString().split('');
       container.logger.debug({ rank, digits });
       const digitEmojis = digits.map((digit) => digitEmoji(digit));
@@ -66,7 +68,6 @@ export default class LBPostRegister extends Listener {
       };
 
       await sequentialPromises(digitEmojis, reactWord).catch(container.logger.error);
-      this.sendLog(args, rank, oldScoreData);
       // reactWord(':thinking:');
     } catch (e) {
       container.logger.error(e);
