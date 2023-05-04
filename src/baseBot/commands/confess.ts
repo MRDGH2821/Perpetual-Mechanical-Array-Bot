@@ -22,7 +22,7 @@ import {
 } from 'discord.js';
 import { COLORS, ChannelIds, ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
-import { parseTruthy, serverLogChannel } from '../../lib/utils';
+import { parseTruthy, serverLogChannel, userLink } from '../../lib/utils';
 import type { JSONCmd } from '../../typeDefs/typeDefs';
 import { guildMessageIDsExtractor } from '../lib/Utilities';
 
@@ -367,7 +367,7 @@ export default class GuildCommand extends Subcommand {
       author: {
         name: confessor.nickname || confessor.user.tag,
         icon_url: confessor.displayAvatarURL(),
-        url: `https://discord.com/users/${confessor.user.id}`,
+        url: userLink(confessor.user),
       },
       color: anonEmbed.color,
       description,

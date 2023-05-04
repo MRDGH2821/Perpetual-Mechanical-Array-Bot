@@ -151,3 +151,9 @@ export function parseTruthy(text: string) {
 
   return flag;
 }
+
+export function userLink(userOrID: User | User['id']) {
+  const id = userOrID instanceof User ? userOrID.id : userOrID;
+
+  return `https://discord.com/users/${id}`;
+}
