@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Listener, container, type ListenerOptions } from '@sapphire/framework';
+import { Events, Listener, container, type ListenerOptions } from '@sapphire/framework';
 import { pickRandom } from '@sapphire/utilities';
 import { GatewayDispatchEvents, type Message } from 'discord.js';
 import CoolDownManager from '../../../lib/CoolDownManager';
@@ -11,9 +11,8 @@ rateLimit.add('FBI_ICD', 3000);
 
 // const isEnabled = () => parseBoolean(process.env.AUTORESPONSE_FBI);
 @ApplyOptions<ListenerOptions>({
-  event: GatewayDispatchEvents.MessageCreate,
+  event: Events.MessageCreate,
   name: 'FBIAutoresponse',
-  emitter: container.client.ws,
 })
 export default class FBIResponse extends Listener<typeof GatewayDispatchEvents.MessageCreate> {
   static FBIQuotes = () =>
