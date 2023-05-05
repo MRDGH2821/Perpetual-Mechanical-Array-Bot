@@ -10,7 +10,7 @@ import EnvConfig from '../../lib/EnvConfig';
 import type { ELEMENTS, JSONCmd } from '../../typeDefs/typeDefs';
 import { getElementProp, getTech, isSkill } from '../lib/TravelerTechnologies';
 
-function APIsubCommandBuilder(element: ELEMENTS): ApplicationCommandOptionData {
+function APISubCommandBuilder(element: ELEMENTS): ApplicationCommandOptionData {
   const eleProp = getElementProp(element);
 
   return {
@@ -59,10 +59,10 @@ const cmdDef: JSONCmd = {
   name: 'traveler',
   description: 'Guild command with sub commands',
   options: [
-    APIsubCommandBuilder('anemo'),
-    APIsubCommandBuilder('geo'),
-    APIsubCommandBuilder('electro'),
-    APIsubCommandBuilder('dendro'),
+    APISubCommandBuilder('anemo'),
+    APISubCommandBuilder('geo'),
+    APISubCommandBuilder('electro'),
+    APISubCommandBuilder('dendro'),
   ],
 };
 
