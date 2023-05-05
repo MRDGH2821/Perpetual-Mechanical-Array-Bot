@@ -1,10 +1,11 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Command, container } from '@sapphire/framework';
-import { ApplicationCommandOptionType, PermissionFlagsBits } from 'discord.js';
+import { Command,container } from '@sapphire/framework';
+import { ApplicationCommandOptionType,PermissionFlagsBits } from 'discord.js';
 import { COLORS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import type { DBQuotes } from '../../typeDefs/typeDefs';
 import QuotesManager from '../lib/QuotesManager';
+import { PMAEventHandler } from '../lib/Utilities';
 
 @ApplyOptions<Command.Options>({
   name: 'add-quote',
@@ -126,6 +127,7 @@ export default class GuildCommand extends Command {
             },
           ],
         });
+        PMAEventHandler.emit('RefreshQuotes');
       })
       .catch((err) => {
         container.logger.error(err);
