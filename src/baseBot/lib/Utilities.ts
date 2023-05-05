@@ -82,11 +82,13 @@ export async function freezeMuteUser(options: FreezeOptions) {
   const painEmotes = `${pickRandom(pain1)}${pickRandom(pain2)}`;
   const RNG = randomInt(0, 100);
 
+  const newDate = new Date(Date.now() + duration);
+
   const muteEmbed: APIEmbed = {
     color: 0x5f929e,
     title: `${member.nickname || member.displayName || member.user.tag}`,
     description: `${member.toString()} is now temporarily frozen (muted) till ${time(
-      Date.now() + duration,
+      newDate,
     )}.\n\n**Reason**: ${reason}\n\nPlease use this time to take a break or be productive!`,
     thumbnail: {
       url: 'https://cdn.discordapp.com/attachments/804253204291387422/895916863345803284/Frozen_Skies.png',
@@ -101,7 +103,7 @@ export async function freezeMuteUser(options: FreezeOptions) {
   }
   await member
     .edit({
-      communicationDisabledUntil: new Date(Date.now() + duration).toISOString(),
+      communicationDisabledUntil: newDate.toISOString(),
       reason: `${reason} (muted by RNG)`,
     })
     .then(async () => {
