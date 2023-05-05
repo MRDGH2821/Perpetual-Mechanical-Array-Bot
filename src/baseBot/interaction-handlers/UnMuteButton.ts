@@ -1,10 +1,10 @@
 import {
   InteractionHandler,
   InteractionHandlerTypes,
-  container,
   type PieceContext,
 } from '@sapphire/framework';
-import type { ButtonInteraction } from 'discord.js';
+import { Time } from '@sapphire/time-utilities';
+import { type ButtonInteraction } from 'discord.js';
 import { ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 
@@ -28,15 +28,29 @@ export default class UnMuteButton extends InteractionHandler {
     const guild = await interaction.client.guilds.fetch(EnvConfig.guildId);
     const member = await guild.members.fetch(interaction.user);
 
-    container.logger.debug('Removing roles/timeout');
-    const unMuteReason = "Removed freeze mute role on user's request (muted by RNG luck)";
-    await member.roles.remove(ROLE_IDS.OTHERS.FROZEN_RNG, unMuteReason).catch(container.logger.debug);
-    await member.disableCommunicationUntil(null, unMuteReason).catch(container.logger.debug);
+    if (interaction.message.createdTimestamp - Date.now() < Time.Hour) {
+      this.container.logger.info(
+        'Will not unmute user because 1 hour has passed since the unmute message being sent.',
+        {
+          memberID: member.id,
+        },
+      );
 
-    container.logger.debug('Editing msg to remove button');
-    await interaction.editReply({
+      return interaction.editReply({
+        content:
+          'Cannot remove timeout/mute role after 1 hour has passed.\nYou may contact mods regarding this matter',
+        components: [],
+      });
+    }
+
+    this.container.logger.debug('Removing roles/timeout');
+    const unMuteReason = "Removed freeze mute role on user's request (muted by RNG luck)";
+    await member.roles.remove(ROLE_IDS.OTHERS.FROZEN_RNG, unMuteReason).catch(console.debug);
+    await member.disableCommunicationUntil(null, unMuteReason).catch(console.debug);
+
+    this.container.logger.debug('Editing msg to remove button');
+    return interaction.editReply({
       content: 'Timeout/mute role is successfully removed',
-      components: [],
     });
   }
 }
