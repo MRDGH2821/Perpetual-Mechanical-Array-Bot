@@ -39,7 +39,7 @@ export default class FBIResponse extends Listener<typeof GatewayDispatchEvents.M
       return;
     }
 */
-    container.logger.debug('Got message:', content);
+    // container.logger.debug('Got message:', content);
     if (message.channelId === '840268374621945906') {
       // container.logger.warn('Chanel Black listed, hence not responding');
       return;
