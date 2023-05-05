@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, container, type ListenerOptions } from '@sapphire/framework';
-import { AttachmentBuilder, time } from 'discord.js';
+import { time } from 'discord.js';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import { ChannelIds } from '../../lib/Constants';
 import SpiralAbyssCache from '../lib/SpiralAbyssCache';
@@ -27,9 +27,10 @@ export default class SABackup extends Listener {
     channel.send({
       content: `Backup made on ${time(date, 'F')} (${time(date, 'R')})`,
       files: [
-        new AttachmentBuilder(Buffer.from(JSON.stringify(backup)), {
+        {
+          attachment: Buffer.from(JSON.stringify(backup)),
           name: `SPiral Abyss Members ${date.toUTCString()}_.json`,
-        }),
+        },
       ],
     });
   }

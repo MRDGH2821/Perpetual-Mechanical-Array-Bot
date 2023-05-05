@@ -3,17 +3,15 @@ import { Command, container } from '@sapphire/framework';
 import { Subcommand } from '@sapphire/plugin-subcommands';
 import { Time } from '@sapphire/time-utilities';
 import {
-  ActionRowBuilder,
   ApplicationCommandOptionType,
   ApplicationCommandType,
   Attachment,
-  AttachmentBuilder,
-  ButtonBuilder,
   ButtonStyle,
   ComponentType,
   GuildMember,
   Message,
   MessageFlags,
+  MessagePayload,
   TextInputStyle,
   channelMention,
   roleMention,
@@ -327,7 +325,7 @@ export default class GuildCommand extends Subcommand {
     const description = shouldSkipMultiline
       ? confession
       : GuildCommand.processConfession(confession);
-    let components;
+    let components: MessagePayload['options']['components'];
     let title = '**A New Confession!**';
 
     if (reply) {
@@ -338,12 +336,17 @@ export default class GuildCommand extends Subcommand {
       title = `Replying to ${OGAuthor}`;
 
       components = [
-        new ActionRowBuilder<ButtonBuilder>().addComponents([
-          new ButtonBuilder()
-            .setStyle(ButtonStyle.Link)
-            .setLabel('Go to original confession')
-            .setURL(reply.originalMessage.url),
-        ]),
+        {
+          type: ComponentType.ActionRow,
+          components: [
+            {
+              type: ComponentType.Button,
+              label: 'Go to original confession',
+              style: ButtonStyle.Link,
+              url: reply.originalMessage.url,
+            },
+          ],
+        },
       ];
     }
 
@@ -412,19 +415,15 @@ export default class GuildCommand extends Subcommand {
         content: 'Confession log',
         embeds: [confessEmbed],
         files: [
-          new AttachmentBuilder(
-            Buffer.from(
-              `Author: ${confessor.user.tag}\nID: ${
-                confessor.user.id
-              }\n\nRaw Confession:\n${confession}\n\nMedia: \n${imageLink} \n${imageAttachment}\n\nProcessed Confession:\n${GuildCommand.processConfession(
-                confession,
-              )}`,
-              'utf8',
-            ),
-            {
-              name: `Confession by ${confessor.user.tag} on ${new Date()}.txt`,
-            },
-          ),
+          {
+            attachment: `Author: ${confessor.user.tag}\nID: ${
+              confessor.user.id
+            }\n\nRaw Confession:\n${confession}\n\nMedia: \n${imageLink} \n${imageAttachment}\n\nProcessed Confession:\n${GuildCommand.processConfession(
+              confession,
+            )}`,
+
+            name: `Confession by ${confessor.user.tag} on ${new Date()}.txt`,
+          },
         ],
         components,
       })

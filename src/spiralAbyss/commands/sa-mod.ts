@@ -1,9 +1,7 @@
 import { container } from '@sapphire/pieces';
 import { Subcommand } from '@sapphire/plugin-subcommands';
 import {
-  ActionRowBuilder,
   ApplicationCommandOptionType,
-  ButtonBuilder,
   ButtonStyle,
   ChannelType,
   ComponentType,
@@ -15,7 +13,7 @@ import {
 import { PMAEventHandler, isStaff } from '../../baseBot/lib/Utilities';
 import { COLORS, ChannelIds, ICONS, ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
-import type { JSONCmd } from '../../typeDefs/typeDefs';
+import type { ButtonActionRow, JSONCmd } from '../../typeDefs/typeDefs';
 import SpiralAbyssCache from '../lib/SpiralAbyssCache';
 
 const cmdDef: JSONCmd = {
@@ -160,21 +158,25 @@ export default class GuildCommand extends Subcommand {
               },
             };
 
-            const verifyRow = new ActionRowBuilder<ButtonBuilder>({
+            const verifyRow: ButtonActionRow = {
               type: ComponentType.ActionRow,
               components: [
-                new ButtonBuilder({
+                {
+                  type: ComponentType.Button,
                   label: 'Yes, do it!',
                   emoji: '✅',
                   style: ButtonStyle.Danger,
-                }).setCustomId('confirm_reset'),
-                new ButtonBuilder({
+                  customId: 'confirm_reset',
+                },
+                {
+                  type: ComponentType.Button,
                   label: 'No, I was going to do a mistake!',
                   emoji: '❌',
                   style: ButtonStyle.Success,
-                }).setCustomId('skip_reset'),
+                  customId: 'skip_reset',
+                },
               ],
-            });
+            };
 
             return interaction
               .reply({

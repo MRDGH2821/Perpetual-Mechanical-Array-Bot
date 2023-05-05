@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command, container } from '@sapphire/framework';
-import { ApplicationCommandOptionType, AttachmentBuilder, PermissionFlagsBits } from 'discord.js';
+import { ApplicationCommandOptionType, PermissionFlagsBits } from 'discord.js';
 import { COLORS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import type { DBQuotes } from '../../typeDefs/typeDefs';
@@ -139,10 +139,11 @@ export default class GuildCommand extends Command {
           ],
 
           files: [
-            new AttachmentBuilder(JSON.stringify(err, null, 2), {
+            {
+              attachment: JSON.stringify(err, null, 2),
               name: 'Error log.txt',
               description: 'Error logs while adding quote',
-            }),
+            },
           ],
         });
       });

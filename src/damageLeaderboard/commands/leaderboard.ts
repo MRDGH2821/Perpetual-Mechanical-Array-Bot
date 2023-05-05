@@ -1,11 +1,8 @@
 import { Subcommand } from '@sapphire/plugin-subcommands';
 import { Time } from '@sapphire/time-utilities';
 import {
-  ActionRowBuilder,
   ApplicationCommandOptionType,
   ApplicationCommandType,
-  AttachmentBuilder,
-  ButtonBuilder,
   ButtonStyle,
   ComponentType,
   Message,
@@ -19,7 +16,7 @@ import { PMAEventHandler, guildMessageIDsExtractor, isStaff } from '../../baseBo
 import { COLORS, ChannelIds, ICONS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import { parseTruthy, viewBook } from '../../lib/utils';
-import type { JSONCmd } from '../../typeDefs/typeDefs';
+import type { ButtonActionRow, JSONCmd } from '../../typeDefs/typeDefs';
 import { LEADERBOARD_DAMAGE_TYPE_CHOICES } from '../lib/Constants';
 import LeaderboardCache from '../lib/LeaderboardCache';
 import {
@@ -364,20 +361,23 @@ export default class GuildCommand extends Subcommand {
           },
         ],
         components: [
-          new ActionRowBuilder<ButtonBuilder>({
+          {
+            type: ComponentType.ActionRow,
             components: [
-              new ButtonBuilder({
+              {
+                type: ComponentType.Button,
                 label: 'Old Proof',
                 style: ButtonStyle.Link,
                 url: oldScoreData.proof,
-              }),
-              new ButtonBuilder({
+              },
+              {
+                type: ComponentType.Button,
                 label: 'New Proof',
                 style: ButtonStyle.Link,
                 url: args.proofMessage.url,
-              }),
+              },
             ],
-          }),
+          },
         ],
       });
     }
@@ -430,53 +430,59 @@ export default class GuildCommand extends Subcommand {
         });
       }
 
-      const approveRow = new ActionRowBuilder<ButtonBuilder>({
+      const approveRow: ButtonActionRow = {
         type: ComponentType.ActionRow,
         components: [
-          new ButtonBuilder({
+          {
+            type: ComponentType.Button,
             customId: 'accepted',
             label: 'Accept',
             emoji: '👍',
             style: ButtonStyle.Success,
-          }),
-          new ButtonBuilder({
+          },
+          {
+            type: ComponentType.Button,
             customId: 'declined',
             label: 'Decline',
             emoji: '👎',
             style: ButtonStyle.Danger,
-          }),
-          new ButtonBuilder({
+          },
+          {
+            type: ComponentType.Button,
             label: 'Show Proof',
             emoji: '🧾',
             style: ButtonStyle.Link,
             url: proofURL,
-          }),
-          new ButtonBuilder({
+          },
+          {
+            type: ComponentType.Button,
             label: 'Jump to message',
             emoji: '💬',
             style: ButtonStyle.Link,
             url: args.proofMessage.url,
-          }),
+          },
         ],
-      });
+      };
 
-      const linkRow = new ActionRowBuilder<ButtonBuilder>({
+      const linkRow: ButtonActionRow = {
         type: ComponentType.ActionRow,
         components: [
-          new ButtonBuilder({
+          {
+            type: ComponentType.Button,
             label: 'Show Proof',
             emoji: '🧾',
             style: ButtonStyle.Link,
             url: proofURL,
-          }),
-          new ButtonBuilder({
+          },
+          {
+            type: ComponentType.ActionRow,
             label: 'Jump to message',
             emoji: '💬',
             style: ButtonStyle.Link,
             url: args.proofMessage.url,
-          }),
+          },
         ],
-      });
+      };
 
       return await interaction
         .editReply({
@@ -551,9 +557,11 @@ export default class GuildCommand extends Subcommand {
           },
         ],
         files: [
-          new AttachmentBuilder(Buffer.from(`${e}`), {
+          {
+            attachment: `${e}`,
+
             name: 'Error while registering user.txt',
-          }),
+          },
         ],
       });
     }

@@ -12,7 +12,6 @@ import {
   GuildMember,
   Message,
   PermissionFlagsBits,
-  StringSelectMenuBuilder,
   type SelectMenuComponentOptionData,
 } from 'discord.js';
 import { COLORS, ChannelIds, EMOJIS, ROLE_IDS } from '../../lib/Constants';
@@ -103,12 +102,12 @@ export default class GuildCommand extends Subcommand {
     });
 
     registry.registerContextMenuCommand(
-      (builder) => {
-        builder
-          .setName('Give Roles')
-          .setType(ApplicationCommandType.Message)
-          .setDMPermission(false)
-          .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles);
+      {
+        name: 'Give Roles',
+        type: ApplicationCommandType.Message,
+        dmPermission: false,
+        dm_permission: false,
+        defaultMemberPermissions: PermissionFlagsBits.ManageRoles,
       },
       {
         guildIds: [EnvConfig.guildId],
@@ -277,12 +276,13 @@ export default class GuildCommand extends Subcommand {
           {
             type: ComponentType.ActionRow,
             components: [
-              new StringSelectMenuBuilder({
+              {
+                type: ComponentType.StringSelect,
+                customId: 'selected_roles',
+                minValues: 1,
+                maxValues: optionsArr.length,
                 options: optionsArr,
-              })
-                .setCustomId('selected_roles')
-                .setMinValues(1)
-                .setMaxValues(optionsArr.length),
+              },
             ],
           },
         ],

@@ -1,14 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { container, Listener, type ListenerOptions } from '@sapphire/framework';
 import { toTitleCase } from '@sapphire/utilities';
-import {
-  ActionRowBuilder,
-  AttachmentBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  ForumChannel,
-  type APIEmbed,
-} from 'discord.js';
+import { ButtonStyle, ComponentType, ForumChannel, type APIEmbed } from 'discord.js';
 import { sequentialPromises } from 'yaspr';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import EnvConfig from '../../lib/EnvConfig';
@@ -43,9 +36,10 @@ export default class LBPublish extends Listener {
         message: {
           content: `${props.name}`,
           files: [
-            new AttachmentBuilder(iconPic, {
+            {
+              attachment: iconPic,
               name: 'Icon.png',
-            }),
+            },
           ],
         },
       });
@@ -70,16 +64,18 @@ export default class LBPublish extends Listener {
       return thread.send({
         content: LBPublish.dashLine,
         components: [
-          new ActionRowBuilder<ButtonBuilder>({
+          {
+            type: ComponentType.ActionRow,
             components: [
-              new ButtonBuilder({
+              {
+                type: ComponentType.Button,
                 label: 'Back to first place',
                 style: ButtonStyle.Link,
                 emoji: '⬆',
                 url: firstMsg.url,
-              }),
+              },
             ],
-          }),
+          },
         ],
       });
     }

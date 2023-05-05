@@ -1,4 +1,10 @@
-import type { ChatInputApplicationCommandData, Collection, GuildMember } from 'discord.js';
+import type {
+  ActionRowData,
+  ButtonComponentData,
+  ChatInputApplicationCommandData,
+  Collection,
+  GuildMember,
+} from 'discord.js';
 import type { ROLE_IDS } from '../lib/Constants';
 
 export type JSONCmd = ChatInputApplicationCommandData;
@@ -73,3 +79,5 @@ export type RegisterCrownArgs = {
 };
 
 export type ValueOf<T> = T[keyof T];
+
+export type ButtonActionRow = ActionRowData<ButtonComponentData>;

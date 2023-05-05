@@ -4,9 +4,8 @@ import { Time } from '@sapphire/time-utilities';
 import { pickRandom } from '@sapphire/utilities';
 import { randomInt } from 'crypto';
 import {
-  ActionRowBuilder,
-  ButtonBuilder,
   ButtonStyle,
+  ComponentType,
   GuildMember,
   TextChannel,
   type APIInteractionGuildMember,
@@ -136,14 +135,17 @@ export async function freezeMuteUser(options: FreezeOptions) {
       .send({
         content: 'Click on Unmute button if you wish to be unmuted',
         components: [
-          new ActionRowBuilder<ButtonBuilder>({
+          {
+            type: ComponentType.ActionRow,
             components: [
-              new ButtonBuilder({
+              {
+                type: ComponentType.Button,
                 label: 'Unmute Me!',
                 style: ButtonStyle.Secondary,
-              }).setCustomId('unmute_me_rng'),
+                customId: 'unmute_me_rng',
+              },
             ],
-          }),
+          },
         ],
       })
       .then(() => {

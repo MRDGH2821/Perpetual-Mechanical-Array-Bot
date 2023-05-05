@@ -1,12 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { container, Listener, type ListenerOptions } from '@sapphire/framework';
-import {
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  ForumChannel,
-  type APIEmbed,
-} from 'discord.js';
+import { ButtonStyle, ComponentType, ForumChannel, type APIEmbed } from 'discord.js';
 import { sequentialPromises } from 'yaspr';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import EnvConfig from '../../lib/EnvConfig';
@@ -54,16 +48,18 @@ export default class SAPublish extends Listener {
       return thread.send({
         content: SAPublish.dashLine,
         components: [
-          new ActionRowBuilder<ButtonBuilder>({
+          {
+            type: ComponentType.ActionRow,
             components: [
-              new ButtonBuilder({
+              {
+                type: ComponentType.Button,
                 label: 'Back to first place',
                 style: ButtonStyle.Link,
                 emoji: '⬆',
                 url: firstMsg.url,
-              }),
+              },
             ],
-          }),
+          },
         ],
       });
     }

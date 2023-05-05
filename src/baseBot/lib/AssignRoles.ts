@@ -2,8 +2,6 @@ import type { ChatInputOrContextMenuCommandInteraction } from '@sapphire/discord
 import { container } from '@sapphire/pieces';
 import { pickRandom, range } from '@sapphire/utilities';
 import {
-  ActionRowBuilder,
-  ButtonBuilder,
   ButtonStyle,
   ComponentType,
   GuildMember,
@@ -12,7 +10,7 @@ import {
   roleMention,
 } from 'discord.js';
 import { COLORS, EMPTY_STRING, ROLE_IDS } from '../../lib/Constants';
-import type { RegisterCrownArgs } from '../../typeDefs/typeDefs';
+import type { ButtonActionRow, RegisterCrownArgs } from '../../typeDefs/typeDefs';
 import { PMAEventHandler, arrayIntersection, isStaff } from './Utilities';
 
 type AssignRoleOptions = {
@@ -189,21 +187,29 @@ export default class AssignRoles {
       props.emoji = '<:Dendro:803516669984505856>';
     }
     return new Promise((res, rej) => {
-      const crownAmtRow = new ActionRowBuilder<ButtonBuilder>().addComponents([
-        new ButtonBuilder({
-          emoji: '1️⃣',
-          style: ButtonStyle.Secondary,
-        }).setCustomId(`crown_${this.#member.id}_1`),
-        new ButtonBuilder({
-          emoji: '2️⃣',
-          style: ButtonStyle.Secondary,
-        }).setCustomId(`crown_${this.#member.id}_2`),
-        new ButtonBuilder({
-          emoji: '3️⃣',
-          style: ButtonStyle.Secondary,
-        }).setCustomId(`crown_${this.#member.id}_3`),
-      ]);
-
+      const crownAmtRow: ButtonActionRow = {
+        type: ComponentType.ActionRow,
+        components: [
+          {
+            type: ComponentType.Button,
+            emoji: '1️⃣',
+            style: ButtonStyle.Secondary,
+            customId: `crown_${this.#member.id}_1`,
+          },
+          {
+            type: ComponentType.Button,
+            emoji: '2️⃣',
+            style: ButtonStyle.Secondary,
+            customId: `crown_${this.#member.id}_2`,
+          },
+          {
+            type: ComponentType.Button,
+            emoji: '3️⃣',
+            style: ButtonStyle.Secondary,
+            customId: `crown_${this.#member.id}_3`,
+          },
+        ],
+      };
       container.logger.debug(JSON.stringify({ roleID }, null, 2));
       this.#ctx
         .editReply({
@@ -315,29 +321,39 @@ export default class AssignRoles {
       });
     }
 
-    const abyssClearRow = new ActionRowBuilder<ButtonBuilder>().addComponents([
-      new ButtonBuilder({
-        label: 'Traveler',
-        emoji: '😎',
-        style: ButtonStyle.Secondary,
-      }).setCustomId('traveler'),
-      new ButtonBuilder({
-        label: 'Conqueror',
-        emoji: '🌀',
-        style: ButtonStyle.Secondary,
-      }).setCustomId('conqueror'),
-      new ButtonBuilder({
-        label: 'Sovereign',
-        emoji: '⚔️',
-        style: ButtonStyle.Secondary,
-      }).setCustomId('sovereign'),
-      new ButtonBuilder({
-        label: 'Criteria not Satisfied!',
-        emoji: '❌',
-        style: ButtonStyle.Danger,
-      }).setCustomId('not_satisfied'),
-    ]);
-
+    const abyssClearRow: ButtonActionRow = {
+      type: ComponentType.ActionRow,
+      components: [
+        {
+          type: ComponentType.Button,
+          label: 'Traveler',
+          emoji: '😎',
+          style: ButtonStyle.Secondary,
+          customId: 'traveler',
+        },
+        {
+          type: ComponentType.Button,
+          label: 'Conqueror',
+          emoji: '🌀',
+          style: ButtonStyle.Secondary,
+          customId: 'conqueror',
+        },
+        {
+          type: ComponentType.Button,
+          label: 'Sovereign',
+          emoji: '⚔️',
+          style: ButtonStyle.Secondary,
+          customId: 'sovereign',
+        },
+        {
+          type: ComponentType.Button,
+          label: 'Criteria not Satisfied!',
+          emoji: '❌',
+          style: ButtonStyle.Danger,
+          customId: 'not_satisfied',
+        },
+      ],
+    };
     await this.#ctx
       .editReply({
         embeds: [
