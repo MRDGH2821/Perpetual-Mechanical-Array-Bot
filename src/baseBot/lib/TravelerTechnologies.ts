@@ -176,7 +176,7 @@ export const EMC_PROPS: TravelerTechProp = {
   element: 'electro',
   description: 'Traveler aligned with the power of Electro',
   skill: {
-    name: 'lightening_blade',
+    name: 'lightning_blade',
     description: 'Electro Traveler Skill',
     techs: EMC_TECHS.SKILL_TECHS,
   },

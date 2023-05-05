@@ -30,7 +30,7 @@ export function leaderboardProps(element: LBElements): LBProp {
           ICONS.PALM_VORTEX_GOOFY,
           ICONS.PALM_VORTEX_OG_GOOFY,
         ]),
-        name: 'Palm Vortex - Max storm damage',
+        name: 'Palm Vortex - Max Storm damage',
         color: COLORS.ANEMO,
         emoji: pickRandom([EMOJIS.Anemo, EMOJIS.Windblade, EMOJIS2.windblade]),
       };
@@ -48,18 +48,18 @@ export function leaderboardProps(element: LBElements): LBProp {
     case 'electro':
       return {
         icon: pickRandom([
-          ICONS.LIGHTENING_BLADE_GOOFY,
-          ICONS.LIGHTENING_BLADE_OG_GOOFY,
-          ICONS.LIGHTENING_BLADE_AETHER,
+          ICONS.LIGHTNING_BLADE_GOOFY,
+          ICONS.LIGHTNING_BLADE_OG_GOOFY,
+          ICONS.LIGHTNING_BLADE_AETHER,
         ]),
-        name: 'Lightening Blade',
+        name: 'Lightning Blade',
         color: COLORS.ELECTRO,
         emoji: pickRandom([EMOJIS.Electro, EMOJIS.LightningBlade, EMOJIS2.thunderblade]),
       };
     case 'dendro':
       return {
         icon: ICONS.RAZOR_GRASS_BLADE_AETHER,
-        name: 'Razor grass Blade',
+        name: 'Razorgrass Blade',
         color: COLORS.DENDRO,
         emoji: EMOJIS.Dendro,
       };

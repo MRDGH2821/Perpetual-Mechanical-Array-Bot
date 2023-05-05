@@ -6,7 +6,7 @@ export const LEADERBOARD_DAMAGE_TYPE_CHOICES = <{ name: string; value: LBElement
     value: 'uni',
   },
   {
-    name: 'Anemo: Palm Vortex - Max storm damage',
+    name: 'Anemo: Palm Vortex - Max Storm damage',
     value: 'anemo',
   },
   {
@@ -14,11 +14,11 @@ export const LEADERBOARD_DAMAGE_TYPE_CHOICES = <{ name: string; value: LBElement
     value: 'geo',
   },
   {
-    name: 'Electro: Lightening Blade',
+    name: 'Electro: Lightning Blade',
     value: 'electro',
   },
   {
-    name: 'Dendro: Razor grass Blade',
+    name: 'Dendro: Razorgrass Blade',
     value: 'dendro',
   },
 ];
