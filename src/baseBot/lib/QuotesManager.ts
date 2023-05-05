@@ -48,4 +48,4 @@ export default class QuotesManager {
     });
   }
 }
-// console.log(await getQuotes('RNGMuteQuotes'));
+// container.logger.log(await getQuotes('RNGMuteQuotes'));

@@ -243,7 +243,7 @@ export default class GuildCommand extends Subcommand {
             flags: MessageFlags.Ephemeral,
           });
         })
-        .catch(console.error);
+        .catch(container.logger.error);
     } else {
       await interaction.reply({
         content: 'Cannot reply to random message outside confession channel',

@@ -1,6 +1,7 @@
 import {
   InteractionHandler,
   InteractionHandlerTypes,
+  container,
   type PieceContext,
 } from '@sapphire/framework';
 import type { ButtonInteraction } from 'discord.js';
@@ -27,12 +28,12 @@ export default class UnMuteButton extends InteractionHandler {
     const guild = await interaction.client.guilds.fetch(EnvConfig.guildId);
     const member = await guild.members.fetch(interaction.user);
 
-    console.debug('removing roles/timeout');
+    container.logger.debug('Removing roles/timeout');
     const unMuteReason = "Removed freeze mute role on user's request (muted by RNG luck)";
-    await member.roles.remove(ROLE_IDS.OTHERS.FROZEN_RNG, unMuteReason).catch(console.debug);
-    await member.disableCommunicationUntil(null, unMuteReason).catch(console.debug);
+    await member.roles.remove(ROLE_IDS.OTHERS.FROZEN_RNG, unMuteReason).catch(container.logger.debug);
+    await member.disableCommunicationUntil(null, unMuteReason).catch(container.logger.debug);
 
-    console.debug('editing msg');
+    container.logger.debug('Editing msg to remove button');
     await interaction.editReply({
       content: 'Timeout/mute role is successfully removed',
       components: [],
