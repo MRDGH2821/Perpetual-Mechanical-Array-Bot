@@ -1,10 +1,15 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { container, Listener, type ListenerOptions } from '@sapphire/framework';
-import { channelMention, hyperlink, type EmojiIdentifierResolvable } from 'discord.js';
+import {
+  ButtonStyle,
+  channelMention,
+  ComponentType,
+  hyperlink,
+  type EmojiIdentifierResolvable,
+} from 'discord.js';
 import { sequentialPromises } from 'yaspr';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import { ChannelIds, ThreadIds } from '../../lib/Constants';
-import { userLink } from '../../lib/utils';
 import LeaderboardCache from '../lib/LeaderboardCache';
 import { digitEmoji, leaderboardProps } from '../lib/Utilities';
 import type { DBLeaderboardData, LBRegistrationArgs } from '../typeDefs/leaderboardTypeDefs';
@@ -102,51 +107,68 @@ export default class LBPostRegister extends Listener {
     await thread.join();
 
     const props = leaderboardProps(args.element);
+    const embedLog = {
+      title: 'A New Score was added!',
+      color: props.color,
+      thumbnail: {
+        url: props.icon,
+      },
+      fields: [
+        {
+          name: 'Contestant',
+          value: `\`${args.contestant.tag}\` ${args.contestant}`,
+        },
+        {
+          name: 'Leaderboard',
+          value: props.name,
+        },
+        {
+          name: 'Group',
+          value: args.groupType,
+        },
+        {
+          name: 'Rank',
+          value: rank.toString(),
+        },
+        {
+          name: 'New Score',
+          value: hyperlink(args.score.toString(), args.proofMessage.url),
+        },
+      ],
+      timestamp: new Date().toISOString(),
+    };
+
+    if (oldScoreData) {
+      const diff = Number(args.score) - Number(oldScoreData.score);
+
+      const diffSign = diff < 0 ? '-' : '+';
+
+      embedLog.fields?.push({
+        name: '**Previous Score**',
+        value: `[${oldScoreData.score}](${oldScoreData.proof}) \nA difference of ${diffSign} ${diff}`,
+      });
+    }
 
     thread
       .send({
-        embeds: [
+        embeds: [embedLog],
+        components: [
           {
-            title: 'A New Score was added!',
-            color: props.color,
-            thumbnail: {
-              url: props.icon,
-            },
-            author: {
-              name: args.contestant.tag,
-              url: userLink(args.contestant),
-            },
-            fields: [
+            type: ComponentType.ActionRow,
+            components: [
               {
-                name: 'Contestant',
-                value: `${args.contestant.tag} ${args.contestant}`,
+                type: ComponentType.Button,
+                label: 'Jump to New Score proof',
+                style: ButtonStyle.Link,
+                url: args.proofMessage.url,
               },
               {
-                name: 'Leaderboard',
-                value: props.name,
-              },
-              {
-                name: 'Group',
-                value: args.groupType,
-              },
-              {
-                name: 'Rank',
-                value: rank.toString(),
-              },
-              {
-                name: 'New Score',
-                value: hyperlink(args.score.toString(), args.proofMessage.url),
-              },
-              {
-                name: 'Previous score (if any)',
-                value: `${
-                  oldScoreData
-                    ? hyperlink(oldScoreData.score.toString(), oldScoreData.proof)
-                    : 'This is a fresh New Entry!'
-                }`,
+                type: ComponentType.Button,
+                label: 'Jump to Old Score proof (if any, else new)',
+                style: ButtonStyle.Link,
+                url: oldScoreData?.proof || args.proofMessage.url,
               },
             ],
-            timestamp: new Date().toISOString(),
           },
         ],
       })
