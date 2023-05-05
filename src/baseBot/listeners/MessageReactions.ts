@@ -91,7 +91,7 @@ export default class MessageReactions extends Listener<typeof Events.MessageCrea
         return null;
       };
       const emojiId = getEmojiId();
-      const emote = emojiId ? await message.guild?.emojis.fetch(emojiId) : emoji;
+      const emote = emojiId ? container.client.emojis.resolve(emojiId) : emoji;
 
       try {
         message.react(emote || emoji);
