@@ -71,6 +71,10 @@ export default class MessageReactions extends Listener<typeof Events.MessageCrea
         condition: (content: string) => /a+r+a+n+a+r+a+/gimu.test(content),
         emojis: [EMOJIS.GoldenAranaraSmile, EMOJIS.GoldenAranaraWave],
       },
+      {
+        condition: (content: string) => /sus$/gimu.test(content),
+        emojis: [EMOJIS.GoldenAranaraSmile, EMOJIS.SusgeMine, EMOJIS.PepeSus],
+      },
     ];
 
   public run(message: Message) {

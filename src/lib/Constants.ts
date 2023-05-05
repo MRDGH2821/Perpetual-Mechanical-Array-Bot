@@ -180,6 +180,8 @@ export const EMOJIS = {
   Windblade: formatEmoji('1100787694012993658', 'Windblade'),
   LightningBlade: formatEmoji('1100775051739017286', 'LightningBlade'),
   StarfellSword: formatEmoji('1100772595764314222', 'StarfellSword'),
+  SusgeMine: formatEmoji('996479624441770174', 'SusgeMine'),
+  PepeSus: formatEmoji('994677813170942012', 'PepeSus'),
 };
 
 export const EMOJIS2 = {
