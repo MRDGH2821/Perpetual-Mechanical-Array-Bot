@@ -10,9 +10,12 @@ import QuotesManager from '../../lib/QuotesManager';
   name: 'Ban Hammer',
 })
 export default class BanHammerResponse extends Listener<typeof Events.MessageCreate> {
-  static banHammerQuotes = ['Who are we banning today? :smirk:']
-    .concat(QuotesManager.getQuotes('banHammerReasons'))
-    .flat();
+  static Quote = () =>
+    pickRandom(
+      ['Who are we banning today? :smirk:']
+        .concat(QuotesManager.getQuotes('banHammerReasons'))
+        .flat(),
+    );
 
   public run(message: Message) {
     const { content } = message;
@@ -22,7 +25,7 @@ export default class BanHammerResponse extends Listener<typeof Events.MessageCre
       message.member?.permissions.has('BanMembers')
     ) {
       message.reply({
-        content: pickRandom(BanHammerResponse.banHammerQuotes),
+        content: BanHammerResponse.Quote(),
       });
     }
   }

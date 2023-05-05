@@ -18,9 +18,12 @@ const isEnabled = () => parseBoolean(process.env.AUTORESPONSE_YOYOVERSE);
 export default class YoyoverseResponse extends Listener<typeof Events.MessageCreate> {
   private static pelon = userMention('476219631539847188');
 
-  static YoyoverseQuotes = [`Did you know that saying yoyoverse pings ${YoyoverseResponse.pelon}`]
-    .concat(QuotesManager.getQuotes('yoyoverseQuotes'))
-    .flat();
+  static Quote = () =>
+    pickRandom(
+      [`Did you know that saying yoyoverse pings ${YoyoverseResponse.pelon}`]
+        .concat(QuotesManager.getQuotes('yoyoverseQuotes'))
+        .flat(),
+    );
 
   public run(message: Message) {
     const { content } = message;
@@ -46,7 +49,7 @@ export default class YoyoverseResponse extends Listener<typeof Events.MessageCre
         const { channel } = message;
         channel
           .send({
-            content: pickRandom(YoyoverseResponse.YoyoverseQuotes),
+            content: YoyoverseResponse.Quote(),
           })
           .then(() => {
             rateLimit.add('Yoyoverse_ICD', 3000);
