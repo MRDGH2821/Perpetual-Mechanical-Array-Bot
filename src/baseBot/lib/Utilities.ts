@@ -153,8 +153,11 @@ export async function freezeMuteUser(options: FreezeOptions) {
           },
         ],
       })
-      .then(() => {
+      .then((msg) => {
         logger.info(`Unmute message sent to ${member.user.tag}`);
+        setTimeout(duration)
+          .then(() => msg.delete())
+          .then(() => logger.info('Deleted unmute message to prevent abuse'));
       })
       .catch(async (err) => {
         logger.debug(err);
