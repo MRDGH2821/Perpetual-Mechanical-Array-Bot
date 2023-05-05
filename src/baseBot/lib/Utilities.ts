@@ -8,6 +8,8 @@ import {
   ComponentType,
   GuildMember,
   TextChannel,
+  time,
+  type APIEmbed,
   type APIInteractionGuildMember,
 } from 'discord.js';
 import EventEmitter from 'events';
@@ -80,15 +82,18 @@ export async function freezeMuteUser(options: FreezeOptions) {
   const painEmotes = `${pickRandom(pain1)}${pickRandom(pain2)}`;
   const RNG = randomInt(0, 100);
 
-  const muteEmbed = {
+  const muteEmbed: APIEmbed = {
     color: 0x5f929e,
     title: `${member.nickname || member.displayName || member.user.tag}`,
-    description: `${member.toString()} is now temporarily frozen (muted).\n\n**Reason**: ${reason}\n\nPlease use this time to take a break or be productive!`,
+    description: `${member.toString()} is now temporarily frozen (muted) till ${time(
+      Date.now() + duration,
+    )}.\n\n**Reason**: ${reason}\n\nPlease use this time to take a break or be productive!`,
     thumbnail: {
       url: 'https://cdn.discordapp.com/attachments/804253204291387422/895916863345803284/Frozen_Skies.png',
     },
     footer: {
       text: 'For any problems, file a ticket to contact the staff.',
+      icon_url: member.guild.iconURL({ extension: 'gif' }) || undefined,
     },
   };
   if (RNG > chance) {
