@@ -82,11 +82,21 @@ export default class AutoResponseTrigger {
     const isEnvPassed = envName ? parseBoolean(process.env[envName]) : true;
 
     const searchRegex = new RegExp(searchString, 'gimu');
-    const isSearchPassed = searchRegex.test(message);
+    const matches = message.match(searchRegex);
+    const hasSearchPassed = matches ? matches.length > 0 : false;
 
     const isCooled = this.hasCooledDown();
 
-    return isEnvPassed && isSearchPassed && isCooled;
+    /*
+    container.logger.debug({
+      name: this.name,
+      isEnvPassed,
+      hasSearchPassed,
+      isCooled,
+    });
+    */
+
+    return isEnvPassed && hasSearchPassed && isCooled;
   }
 
   refreshCoolDown() {
