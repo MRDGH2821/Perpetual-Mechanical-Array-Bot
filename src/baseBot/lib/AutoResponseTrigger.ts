@@ -24,14 +24,21 @@ export default class AutoResponseTrigger {
     instance: CoolDownManager;
   };
 
-  constructor(
-    name: string,
-    quotes: string[],
-    conditions: TriggerCondition,
-    quoteCategories: DBQuotes[],
+  constructor({
+    name,
+    quotes,
+    conditions,
+    quoteCategories,
     coolDownTime = 0,
     coolDownInstance = defaultCDM,
-  ) {
+  }: {
+    name: string;
+    quotes: string[];
+    conditions: TriggerCondition;
+    quoteCategories: DBQuotes[];
+    coolDownTime?: number;
+    coolDownInstance?: CoolDownManager;
+  }) {
     this.name = name;
     this.quotes = quotes;
     this.conditions = conditions;
