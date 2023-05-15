@@ -13,6 +13,7 @@ rateLimit.add('FBI_ICD', 3000);
 @ApplyOptions<ListenerOptions>({
   event: Events.MessageCreate,
   name: 'FBIAutoresponse',
+  enabled: false,
 })
 export default class FBIResponse extends Listener<typeof GatewayDispatchEvents.MessageCreate> {
   static Quote = () =>

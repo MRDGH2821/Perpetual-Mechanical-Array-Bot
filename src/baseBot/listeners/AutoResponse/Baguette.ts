@@ -9,7 +9,7 @@ rateLimit.add('Baguette_ICD', 3000);
 
 const isEnabled = () => parseBoolean(process.env.AUTORESPONSE_BAGUETTE);
 @ApplyOptions<ListenerOptions>({
-  enabled: true,
+  enabled: false,
   event: Events.MessageCreate,
   name: 'Baguette Autoresponse',
 })
