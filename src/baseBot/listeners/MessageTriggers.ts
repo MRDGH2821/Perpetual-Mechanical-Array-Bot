@@ -101,9 +101,19 @@ export default class MessageTriggers extends Listener<typeof Events.MessageCreat
       }
       const quote = trigger.getQuote();
       // this.container.logger.debug(`Can actually act ${trigger.name}`);
-      message.channel
-        .send({ content: quote })
-        .then(() => trigger.refreshCoolDown())
+      message
+        .reply({
+          content: quote,
+          allowedMentions: {
+            roles: [],
+            users: [],
+            repliedUser: false,
+          },
+        })
+        .then((botMsg) => {
+          trigger.refreshCoolDown();
+          if (trigger.customAction) trigger.customAction(message, botMsg);
+        })
         .catch(this.container.logger.debug);
     });
   }
