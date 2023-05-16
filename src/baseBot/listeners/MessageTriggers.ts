@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener, type ListenerOptions } from '@sapphire/framework';
-import { userMention, type Message } from 'discord.js';
+import { ButtonStyle, ComponentType, userMention, type Message } from 'discord.js';
 import AutoResponseTrigger from '../lib/AutoResponseTrigger';
 
 const triggers: AutoResponseTrigger[] = [
@@ -44,6 +44,38 @@ const triggers: AutoResponseTrigger[] = [
     },
     quoteCategories: ['yoyoverseQuotes'],
     coolDownTime: 3000,
+  }),
+  new AutoResponseTrigger({
+    name: 'BanHammer',
+    quotes: ['Who are we banning today? :smirk:'],
+    conditions: {
+      searchString: /(b+a+n+)\s*(h+a+m+m+e+r+)/gimu,
+      customCondition(message: Message) {
+        const { member } = message;
+        if (member) {
+          return member.permissions.has('BanMembers');
+        }
+        return false;
+      },
+    },
+    quoteCategories: ['banHammerReasons'],
+    customAction(sourceMessage, botMessage) {
+      botMessage.edit({
+        components: [
+          {
+            type: ComponentType.ActionRow,
+            components: [
+              {
+                type: ComponentType.Button,
+                style: ButtonStyle.Link,
+                label: 'See the mod in action!',
+                url: sourceMessage.url,
+              },
+            ],
+          },
+        ],
+      });
+    },
   }),
 ];
 
