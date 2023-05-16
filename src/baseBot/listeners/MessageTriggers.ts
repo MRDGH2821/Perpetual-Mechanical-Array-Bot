@@ -50,16 +50,15 @@ const triggers: AutoResponseTrigger[] = [
     quotes: ['Who are we banning today? :smirk:'],
     conditions: {
       searchString: /(b+a+n+)\s*(h+a+m+m+e+r+)/gimu,
-      customCondition(message: Message) {
-        const { member } = message;
-        if (member) {
-          return member.permissions.has('BanMembers');
+      customCondition: (message: Message) => {
+        if (message.member) {
+          return message.member.permissions.has('BanMembers');
         }
         return false;
       },
     },
     quoteCategories: ['banHammerReasons'],
-    customAction(sourceMessage, botMessage) {
+    customAction: (sourceMessage, botMessage) => {
       botMessage.edit({
         components: [
           {
@@ -94,8 +93,10 @@ export default class MessageTriggers extends Listener<typeof Events.MessageCreat
     }
     this.container.logger.debug('Got message:', message.content);
 
-    triggers.forEach((trigger) => {
-      if (!trigger.canAct(message.content)) {
+    triggers.forEach(async (trigger) => {
+      let customConditionFlag = false;
+      customConditionFlag = trigger.conditions.customCondition ? await trigger.conditions.customCondition(message) : true;
+      if (!trigger.canAct(message.content) && !customConditionFlag) {
         // this.container.logger.warn(`${trigger.name} cannot act`);
         return;
       }
