@@ -1,5 +1,5 @@
 import { pickRandom } from '@sapphire/utilities';
-import type { Message } from 'discord.js';
+import type { Message, MessageMentionOptions } from 'discord.js';
 import CoolDownManager from '../../lib/CoolDownManager';
 import type { DBQuotes } from '../../typeDefs/typeDefs';
 import QuotesManager from './QuotesManager';
@@ -8,7 +8,7 @@ import { parseBoolean } from './Utilities';
 type TriggerCondition = {
   envName?: string;
   searchString: string | RegExp;
-  customCondition?(...args: any): Promise<boolean> | boolean;
+  customCondition?(): (...args: any) => Promise<boolean> | boolean;
 };
 
 const defaultCDM = new CoolDownManager();
@@ -26,7 +26,13 @@ export default class AutoResponseTrigger {
     instance: CoolDownManager;
   };
 
-  customAction?: (sourceMessage: Message, botMessage: Message) => any;
+  customAction?: () => (sourceMessage: Message, botMessage: Message) => any;
+
+  allowedMentions: MessageMentionOptions = {
+    roles: [],
+    users: [],
+    repliedUser: false,
+  };
 
   constructor({
     name,
@@ -35,8 +41,13 @@ export default class AutoResponseTrigger {
     quoteCategories,
     coolDownTime = 0,
     coolDownInstance = defaultCDM,
-    customAction = (sourceMessage: Message, botMessage: Message) =>
+    customAction = () => (sourceMessage: Message, botMessage: Message) =>
       `${sourceMessage.content}\n\n${botMessage.content}`,
+    allowedMentions = {
+      roles: [],
+      users: [],
+      repliedUser: false,
+    },
   }: {
     name: string;
     quotes: string[];
@@ -45,7 +56,8 @@ export default class AutoResponseTrigger {
     coolDownTime?: number;
     coolDownInstance?: CoolDownManager;
 
-    customAction?: (sourceMessage: Message, botMessage: Message) => any;
+    customAction?: () => (sourceMessage: Message, botMessage: Message) => any;
+    allowedMentions?: MessageMentionOptions;
   }) {
     this.name = name;
     this.quotes = quotes;
@@ -58,6 +70,7 @@ export default class AutoResponseTrigger {
 
     this.customAction = customAction;
     this.#prepareQuotes();
+    this.allowedMentions = allowedMentions;
   }
 
   #prepareQuotes() {
