@@ -8,7 +8,6 @@ import { parseBoolean } from './Utilities';
 type TriggerCondition = {
   envName?: string;
   searchString: string | RegExp;
-  customCondition?(): (...args: any) => Promise<boolean> | boolean;
 };
 
 const defaultCDM = new CoolDownManager();
@@ -27,6 +26,8 @@ export default class AutoResponseTrigger {
   };
 
   customAction?: () => (sourceMessage: Message, botMessage: Message) => any;
+
+  customCondition: () => (...args: any) => Promise<boolean> | boolean;
 
   allowedMentions: MessageMentionOptions = {
     roles: [],
@@ -48,6 +49,7 @@ export default class AutoResponseTrigger {
       users: [],
       repliedUser: false,
     },
+    customCondition = () => () => true,
   }: {
     name: string;
     quotes: string[];
@@ -55,13 +57,14 @@ export default class AutoResponseTrigger {
     quoteCategories: DBQuotes[];
     coolDownTime?: number;
     coolDownInstance?: CoolDownManager;
-
+    customCondition?: () => (...args: any) => Promise<boolean> | boolean;
     customAction?: () => (sourceMessage: Message, botMessage: Message) => any;
     allowedMentions?: MessageMentionOptions;
   }) {
     this.name = name;
     this.quotes = quotes;
     this.conditions = conditions;
+    this.customCondition = customCondition;
     this.quoteCategories = quoteCategories;
     this.coolDown = {
       instance: coolDownInstance,
@@ -109,9 +112,7 @@ export default class AutoResponseTrigger {
 
     const isCooled = this.hasCooledDown();
 
-    const hasCustomConditionPassed = this.conditions.customCondition
-      ? await this.conditions.customCondition()
-      : true;
+    const hasCustomConditionPassed = this.customCondition ? await this.customCondition() : true;
 
     /*
     container.logger.debug({
