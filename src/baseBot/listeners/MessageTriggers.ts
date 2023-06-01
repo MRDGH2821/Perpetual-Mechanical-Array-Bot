@@ -1,6 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener, type ListenerOptions } from '@sapphire/framework';
 import { ButtonStyle, ComponentType, userMention, type Message } from 'discord.js';
+import { sequentialPromises } from 'yaspr';
 import AutoResponseTrigger from '../lib/AutoResponseTrigger';
 
 const triggers: AutoResponseTrigger[] = [
@@ -50,18 +51,18 @@ const triggers: AutoResponseTrigger[] = [
     quotes: ['Who are we banning today? :smirk:'],
     conditions: {
       searchString: /(b+a+n+)\s*(h+a+m+m+e+r+)/gimu,
-      customCondition: () => (message: Message) => {
-        if (message.member) {
-          return message.member.permissions.has('BanMembers');
-        }
-        return false;
-      },
     },
     quoteCategories: ['banHammerReasons'],
     allowedMentions: {
       roles: [],
       users: [],
       repliedUser: true,
+    },
+    customCondition: () => (message: Message) => {
+      if (message.member) {
+        return message.member.permissions.has('BanMembers');
+      }
+      return false;
     },
     customAction: () => (sourceMessage, botMessage) => {
       botMessage.edit({
@@ -89,7 +90,7 @@ const triggers: AutoResponseTrigger[] = [
   enabled: true,
 })
 export default class MessageTriggers extends Listener<typeof Events.MessageCreate> {
-  public run(message: Message) {
+  public async run(message: Message) {
     if (message.channelId === '840268374621945906') {
       return;
     }
@@ -98,11 +99,9 @@ export default class MessageTriggers extends Listener<typeof Events.MessageCreat
     }
     this.container.logger.debug('Got message:', message.content);
 
-    triggers.forEach(async (trigger) => {
-      let customConditionFlag = false;
-      customConditionFlag = trigger.conditions.customCondition
-        ? await trigger.conditions.customCondition()(message)
-        : true;
+    const executeTrigger = async (trigger: AutoResponseTrigger) => {
+      const customConditionFlag = trigger.customCondition()(message);
+
       if (!trigger.canAct(message.content) && !customConditionFlag) {
         // this.container.logger.warn(`${trigger.name} cannot act`);
         return;
@@ -119,6 +118,8 @@ export default class MessageTriggers extends Listener<typeof Events.MessageCreat
           if (trigger.customAction) trigger.customAction()(message, botMsg);
         })
         .catch(this.container.logger.debug);
-    });
+    };
+
+    await sequentialPromises(triggers, executeTrigger);
   }
 }
