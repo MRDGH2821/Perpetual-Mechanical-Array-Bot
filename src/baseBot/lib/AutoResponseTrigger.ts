@@ -1,3 +1,4 @@
+import { container } from '@sapphire/pieces';
 import { pickRandom } from '@sapphire/utilities';
 import type { Message, MessageMentionOptions } from 'discord.js';
 import CoolDownManager from '../../lib/CoolDownManager';
@@ -140,26 +141,33 @@ export default class AutoResponseTrigger {
     return instance.check(this.name) < 0;
   }
 
-  async canAct(message: string) {
+  async canAct(text?: string) {
+    if (!this.sourceMessage) {
+      throw new Error('No source message set');
+    }
+
+    const content = text || this.sourceMessage.content;
     const { envName, searchString } = this.conditions;
 
     const isEnvPassed = envName ? parseBoolean(process.env[envName]) : true;
 
     const searchRegex = new RegExp(searchString, 'gimu');
-    const matches = message.match(searchRegex);
+    const matches = content.match(searchRegex);
     const hasSearchPassed = matches ? matches.length > 0 : false;
 
     const isCooled = this.hasCooledDown();
 
     const hasCustomConditionPassed = await this.customCondition();
-
     /*
-    container.logger.debug({
-      name: this.name,
-      isEnvPassed,
-      hasSearchPassed,
-      isCooled,
-    });
+    if (this.sourceMessage?.author.username === 'MRDGH2821') {
+      container.logger.debug({
+        name: this.name,
+        isEnvPassed,
+        hasSearchPassed,
+        isCooled,
+        hasCustomConditionPassed,
+      });
+    }
     */
 
     return isEnvPassed && hasSearchPassed && isCooled && hasCustomConditionPassed;
@@ -167,5 +175,21 @@ export default class AutoResponseTrigger {
 
   refreshCoolDown() {
     return this.coolDown?.instance.add(this.name, this.coolDown.time);
+  }
+
+  async log(context?: string) {
+    if (this.sourceMessage?.author.username === 'MRDGH2821') {
+      container.logger.debug({
+        name: this.name,
+        context,
+        canAct: await this.canAct().catch(() => false),
+        customCondition: await this.customCondition().catch(() => false),
+        sourceMsgID: this.sourceMessage?.id,
+        botMsgID: this.botMessage?.id,
+        sourceContent: this.sourceMessage?.content,
+        hasCooledDown: this.hasCooledDown(),
+        coolDownTime: this.coolDown?.instance.check(this.name),
+      });
+    }
   }
 }
