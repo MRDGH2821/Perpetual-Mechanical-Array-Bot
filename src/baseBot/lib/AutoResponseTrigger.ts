@@ -27,7 +27,8 @@ export default class AutoResponseTrigger {
 
   customAction?: () => (sourceMessage: Message, botMessage: Message) => any;
 
-  customCondition: () => (...args: any) => Promise<boolean> | boolean;
+  // eslint-disable-next-line class-methods-use-this
+  customCondition: () => (...args: any) => Promise<boolean> | boolean = () => () => true;
 
   allowedMentions: MessageMentionOptions = {
     roles: [],
