@@ -101,8 +101,9 @@ export default class MessageTriggers extends Listener<typeof Events.MessageCreat
 
     const executeTrigger = async (trigger: AutoResponseTrigger) => {
       const customConditionFlag = await trigger.customCondition()(message);
+      const canActFlag = await trigger.canAct(message.content);
 
-      if (!(await trigger.canAct(message.content)) && !customConditionFlag) {
+      if (!canActFlag && !customConditionFlag) {
         // this.container.logger.warn(`${trigger.name} cannot act`);
         return;
       }
