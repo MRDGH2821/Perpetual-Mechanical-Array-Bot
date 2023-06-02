@@ -48,7 +48,7 @@ const triggers: AutoResponseTrigger[] = [
   }),
   new AutoResponseTrigger({
     name: 'BanHammer',
-    quotes: ['Who are we banning today? :smirk:'],
+    quotes: ['Who are we banning today? :smirk:', 'BAN BAN BAN BAN BAN BAN BAN!'],
     conditions: {
       searchString: /(b+a+n+)\s*(h+a+m+m+e+r+)/gimu,
     },
@@ -65,7 +65,7 @@ const triggers: AutoResponseTrigger[] = [
       }
       return false;
     })
-    .setCustomAction(async (sourceMessage: Message, botMessage: Message) => {
+    .setCustomAction(async (botMessage: Message, sourceMessage: Message) => {
       botMessage.edit({
         components: [
           {
@@ -100,16 +100,21 @@ export default class MessageTriggers extends Listener<typeof Events.MessageCreat
     this.container.logger.debug('Got message:', message.content);
 
     const executeTrigger = async (trigger: AutoResponseTrigger) => {
+      // await trigger.log('Before setting source message');
       trigger.setSourceMessage(message);
       const customConditionFlag = await trigger.customCondition();
       const canActFlag = await trigger.canAct(message.content);
 
-      if (!canActFlag && !customConditionFlag) {
+      if (!(canActFlag && customConditionFlag)) {
         // this.container.logger.warn(`${trigger.name} cannot act`);
+        // await trigger.log('Cannot act');
         return;
       }
+      // await trigger.log('Can act');
+
       const quote = trigger.getQuote();
       // this.container.logger.debug(`Can actually act ${trigger.name}`);
+
       message
         .reply({
           content: quote,
