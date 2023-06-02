@@ -25,16 +25,42 @@ export default class AutoResponseTrigger {
     instance: CoolDownManager;
   };
 
-  customAction?: () => (sourceMessage: Message, botMessage: Message) => any;
+  conditionFn?: (sourceMessage: Message) => Promise<boolean>;
 
-  // eslint-disable-next-line class-methods-use-this
-  customCondition: () => (...args: any) => Promise<boolean> | boolean = () => () => true;
+  async customCondition() {
+    if (this.conditionFn) {
+      if (!this.sourceMessage) {
+        throw new Error('No source message set');
+      }
+      return this.conditionFn(this.sourceMessage);
+    }
+    return Promise.resolve(true);
+  }
+
+  actionFn?: (botMessage: Message, sourceMessage: Message) => Promise<any>;
+
+  async customAction() {
+    if (this.actionFn) {
+      if (!this.botMessage) {
+        throw new Error('No bot message set');
+      }
+      if (!this.sourceMessage) {
+        throw new Error('No source message set');
+      }
+      return this.actionFn(this.botMessage, this.sourceMessage);
+    }
+    return Promise.resolve();
+  }
 
   allowedMentions: MessageMentionOptions = {
     roles: [],
     users: [],
     repliedUser: false,
   };
+
+  botMessage?: Message;
+
+  sourceMessage?: Message;
 
   constructor({
     name,
@@ -43,14 +69,11 @@ export default class AutoResponseTrigger {
     quoteCategories,
     coolDownTime = 0,
     coolDownInstance = defaultCDM,
-    customAction = () => (sourceMessage: Message, botMessage: Message) =>
-      `${sourceMessage.content}\n\n${botMessage.content}`,
     allowedMentions = {
       roles: [],
       users: [],
       repliedUser: false,
     },
-    customCondition = () => () => true,
   }: {
     name: string;
     quotes: string[];
@@ -58,23 +81,38 @@ export default class AutoResponseTrigger {
     quoteCategories: DBQuotes[];
     coolDownTime?: number;
     coolDownInstance?: CoolDownManager;
-    customCondition?: () => (...args: any) => Promise<boolean> | boolean;
-    customAction?: () => (sourceMessage: Message, botMessage: Message) => any;
     allowedMentions?: MessageMentionOptions;
   }) {
     this.name = name;
     this.quotes = quotes;
     this.conditions = conditions;
-    this.customCondition = customCondition;
     this.quoteCategories = quoteCategories;
     this.coolDown = {
       instance: coolDownInstance,
       time: coolDownTime,
     };
-
-    this.customAction = customAction;
     this.#prepareQuotes();
     this.allowedMentions = allowedMentions;
+  }
+
+  setBotMessage(botMessage: Message) {
+    this.botMessage = botMessage;
+    return this;
+  }
+
+  setSourceMessage(sourceMessage: Message) {
+    this.sourceMessage = sourceMessage;
+    return this;
+  }
+
+  setCustomCondition(conditionFn: (...args: any) => Promise<boolean>) {
+    this.conditionFn = conditionFn;
+    return this;
+  }
+
+  setCustomAction(actionFn: (botMessage: Message, sourceMessage: Message) => Promise<any>) {
+    this.actionFn = actionFn;
+    return this;
   }
 
   #prepareQuotes() {
@@ -113,7 +151,7 @@ export default class AutoResponseTrigger {
 
     const isCooled = this.hasCooledDown();
 
-    const hasCustomConditionPassed = await this.customCondition()(message);
+    const hasCustomConditionPassed = await this.customCondition();
 
     /*
     container.logger.debug({
