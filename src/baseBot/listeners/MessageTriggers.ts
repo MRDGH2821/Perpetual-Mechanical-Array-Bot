@@ -58,13 +58,14 @@ const triggers: AutoResponseTrigger[] = [
       users: [],
       repliedUser: true,
     },
-    customCondition: () => (message: Message) => {
+  })
+    .setCustomCondition(async (message: Message) => {
       if (message.member) {
         return message.member.permissions.has('BanMembers');
       }
       return false;
-    },
-    customAction: () => (sourceMessage, botMessage) => {
+    })
+    .setCustomAction(async (sourceMessage: Message, botMessage: Message) => {
       botMessage.edit({
         components: [
           {
@@ -80,8 +81,7 @@ const triggers: AutoResponseTrigger[] = [
           },
         ],
       });
-    },
-  }),
+    }),
 ];
 
 @ApplyOptions<ListenerOptions>({
@@ -100,7 +100,8 @@ export default class MessageTriggers extends Listener<typeof Events.MessageCreat
     this.container.logger.debug('Got message:', message.content);
 
     const executeTrigger = async (trigger: AutoResponseTrigger) => {
-      const customConditionFlag = await trigger.customCondition()(message);
+      trigger.setSourceMessage(message);
+      const customConditionFlag = await trigger.customCondition();
       const canActFlag = await trigger.canAct(message.content);
 
       if (!canActFlag && !customConditionFlag) {
@@ -116,7 +117,8 @@ export default class MessageTriggers extends Listener<typeof Events.MessageCreat
         })
         .then((botMsg) => {
           trigger.refreshCoolDown();
-          if (trigger.customAction) trigger.customAction()(message, botMsg);
+          trigger.setBotMessage(botMsg);
+          trigger.customAction();
         })
         .catch(this.container.logger.debug);
     };
