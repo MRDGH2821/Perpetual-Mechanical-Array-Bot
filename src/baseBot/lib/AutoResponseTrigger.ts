@@ -113,7 +113,7 @@ export default class AutoResponseTrigger {
 
     const isCooled = this.hasCooledDown();
 
-    const hasCustomConditionPassed = this.customCondition ? await this.customCondition() : true;
+    const hasCustomConditionPassed = await this.customCondition()(message);
 
     /*
     container.logger.debug({
