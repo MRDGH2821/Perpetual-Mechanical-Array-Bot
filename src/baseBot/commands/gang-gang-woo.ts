@@ -1,5 +1,14 @@
+import { isGuildMember } from '@sapphire/discord.js-utilities';
 import { Subcommand } from '@sapphire/plugin-subcommands';
-import { ButtonStyle, Collection, ComponentType, GuildMember, MessageFlags } from 'discord.js';
+import { isNullOrUndefined } from '@sapphire/utilities';
+import {
+  ApplicationCommandOptionType,
+  ButtonStyle,
+  Collection,
+  ComponentType,
+  GuildMember,
+  MessageFlags,
+} from 'discord.js';
 import { COLORS, ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import type { JSONCmd } from '../../typeDefs/typeDefs';
@@ -16,8 +25,45 @@ const cmdDef: JSONCmd = {
     },
     {
       type: 1,
-      name: 'reset-role',
+      name: 'remove-members',
       description: 'Removes members from Gang Gang Woo role',
+    },
+    {
+      type: 1,
+      name: 'add-members',
+      description: 'Adds Gang Gang Woo role to members',
+      options: [
+        {
+          type: ApplicationCommandOptionType.User,
+          name: 'member1',
+          description: 'Member no.1 to add Gang Gang Woo role to',
+          required: true,
+        },
+        {
+          type: ApplicationCommandOptionType.User,
+          name: 'member2',
+          description: 'Member no.2 to add Gang Gang Woo role to',
+          required: true,
+        },
+        {
+          type: ApplicationCommandOptionType.User,
+          name: 'member3',
+          description: 'Member no.3 to add Gang Gang Woo role to',
+          required: true,
+        },
+        {
+          type: ApplicationCommandOptionType.User,
+          name: 'member4',
+          description: 'Member no.4 to add Gang Gang Woo role to',
+          required: true,
+        },
+        {
+          type: ApplicationCommandOptionType.User,
+          name: 'member5',
+          description: 'Member no.5 to add Gang Gang Woo role to',
+          required: true,
+        },
+      ],
     },
   ],
 };
@@ -36,7 +82,12 @@ export default class UserCommand extends Subcommand {
         {
           name: cmdDef.options![1].name,
           type: 'method',
-          chatInputRun: 'gangReset',
+          chatInputRun: 'gangRemove',
+        },
+        {
+          name: cmdDef.options![2].name,
+          type: 'method',
+          chatInputRun: 'gangAdd',
         },
       ],
     });
@@ -78,7 +129,7 @@ export default class UserCommand extends Subcommand {
     });
   }
 
-  public async gangReset(interaction: Subcommand.ChatInputCommandInteraction) {
+  public async gangRemove(interaction: Subcommand.ChatInputCommandInteraction) {
     if (!isStaff(interaction.member)) {
       return interaction.reply({
         content: 'You do not have permission to use this command.',
@@ -144,6 +195,50 @@ export default class UserCommand extends Subcommand {
           components: [],
         });
       });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  public async gangAdd(interaction: Subcommand.ChatInputCommandInteraction) {
+    const members = [
+      interaction.options.getMember('member1'),
+      interaction.options.getMember('member2'),
+      interaction.options.getMember('member3'),
+      interaction.options.getMember('member4'),
+      interaction.options.getMember('member5'),
+    ];
+
+    const notNullMembers = members.filter((member) => !isNullOrUndefined(member));
+
+    const validatedMembers = notNullMembers.filter((member) => isGuildMember(member));
+
+    if (validatedMembers.length !== 5) {
+      return interaction.reply({
+        content: 'Invalid members provided.',
+        flags: MessageFlags.Ephemeral,
+        files: [
+          {
+            name: 'Input Members.json',
+            attachment: Buffer.from(members.map((member) => member?.id).toString()),
+          },
+          {
+            name: 'Validated Members.json',
+            attachment: Buffer.from(validatedMembers.map((member) => member?.id).toString()),
+          },
+        ],
+      });
+    }
+
+    validatedMembers.forEach((member) => member?.roles.add(ROLE_IDS.OTHERS.GANG_GANG_WOO));
+
+    return interaction.reply({
+      content: 'Added all members to Gang Gang Woo role.',
+      files: [
+        {
+          name: 'Members Added into Role.json',
+          attachment: Buffer.from(validatedMembers.map((member) => member?.id).toString()),
+        },
+      ],
+    });
   }
 
   public override registerApplicationCommands(registry: Subcommand.Registry) {
