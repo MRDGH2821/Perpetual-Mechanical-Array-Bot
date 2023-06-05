@@ -1,6 +1,5 @@
 import { isGuildMember } from '@sapphire/discord.js-utilities';
 import { Subcommand } from '@sapphire/plugin-subcommands';
-import { isNullOrUndefined } from '@sapphire/utilities';
 import {
   ApplicationCommandOptionType,
   ButtonStyle,
@@ -207,9 +206,14 @@ export default class UserCommand extends Subcommand {
       interaction.options.getMember('member5'),
     ];
 
-    const notNullMembers = members.filter((member) => !isNullOrUndefined(member));
+    const validatedMembers = [];
 
-    const validatedMembers = notNullMembers.filter((member) => isGuildMember(member));
+    // eslint-disable-next-line no-restricted-syntax
+    for (const member of members) {
+      if (isGuildMember(member)) {
+        validatedMembers.push(member);
+      }
+    }
 
     if (validatedMembers.length !== 5) {
       return interaction.reply({
@@ -218,11 +222,13 @@ export default class UserCommand extends Subcommand {
         files: [
           {
             name: 'Input Members.json',
-            attachment: Buffer.from(members.map((member) => member?.id).toString()),
+            attachment: Buffer.from(members.map((member) => ({ id: member?.id })).toString()),
           },
           {
             name: 'Validated Members.json',
-            attachment: Buffer.from(validatedMembers.map((member) => member?.id).toString()),
+            attachment: Buffer.from(
+              validatedMembers.map((member) => ({ id: member?.id })).toString(),
+            ),
           },
         ],
       });
