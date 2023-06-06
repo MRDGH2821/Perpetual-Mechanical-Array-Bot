@@ -1,12 +1,14 @@
-import { container } from '@sapphire/framework';
+import { LogLevel, Logger } from '@sapphire/framework';
 import { Range, RecurrenceRule, scheduleJob } from 'node-schedule';
 import { PMAEventHandler } from './baseBot/lib/Utilities';
 
-container.logger.info('Starting Schedules');
+const logger = new Logger(LogLevel.Debug);
+
+logger.info('Starting Schedules');
 const HoFRule = new RecurrenceRule(undefined, undefined, 5, undefined, 0, 0, 0, 'Etc/UTC');
 
 export const HoFJobSchedule = scheduleJob(HoFRule, () => {
-  container.logger.info('--------Automated Schedule---------');
+  logger.info('--------Automated Schedule---------');
   PMAEventHandler.emit('HoFRefresh');
   setTimeout(() => PMAEventHandler.emit('HoFPublish'), 1000 * 60 * 30);
 });
