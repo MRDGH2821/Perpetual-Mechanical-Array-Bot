@@ -97,7 +97,7 @@ export default class MessageTriggers extends Listener<typeof Events.MessageCreat
     if (message.author.bot) {
       return;
     }
-    this.container.logger.debug('Got message:', message.content);
+    // this.container.logger.debug('Got message:', message.content);
 
     const executeTrigger = async (trigger: AutoResponseTrigger) => {
       // await trigger.log('Before setting source message');
