@@ -416,13 +416,14 @@ export default class GuildCommand extends Subcommand {
         embeds: [confessEmbed],
         files: [
           {
-            attachment: `Author: ${confessor.user.tag}\nID: ${
-              confessor.user.id
-            }\n\nRaw Confession:\n${confession}\n\nMedia: \n${imageLink} \n${imageAttachment}\n\nProcessed Confession:\n${GuildCommand.processConfession(
-              confession,
-            )}`,
-
             name: `Confession by ${confessor.user.tag} on ${new Date()}.txt`,
+            attachment: Buffer.from(
+              `Author: ${confessor.user.tag}\nID: ${
+                confessor.user.id
+              }\n\nRaw Confession:\n${confession}\n\nMedia: \n${imageLink} \n${imageAttachment}\n\nProcessed Confession:\n${GuildCommand.processConfession(
+                confession,
+              )}`,
+            ),
           },
         ],
         components,
