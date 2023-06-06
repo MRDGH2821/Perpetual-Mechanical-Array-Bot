@@ -147,7 +147,7 @@ export default class GuildCommand extends Subcommand {
             const shouldAnnounceWithPing =
               interaction.options.getBoolean('announce_with_ping') === true;
 
-            const status = `1. Will publish names: \`${shouldPublishNames}\`\n 2. Will remove roles: \`${shouldRemoveRoles}\`\n 3. Send Announcement message: \`${shouldSendAnnouncement}\` \n 4. Will Announce with ping: \`${shouldAnnounceWithPing}\``;
+            const status = `1. Will publish names: \`${shouldPublishNames}\`\n2. Will remove roles: \`${shouldRemoveRoles}\`\n3. Send Announcement message: \`${shouldSendAnnouncement}\` \n4. Will Announce with ping: \`${shouldAnnounceWithPing}\``;
 
             const verifyEmb: APIEmbed = {
               title: '**Are you sure?**',
