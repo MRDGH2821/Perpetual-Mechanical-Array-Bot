@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import {
+  HttpUrlRegex,
   isGuildMember,
   type ChatInputOrContextMenuCommandInteraction,
 } from '@sapphire/discord.js-utilities';
@@ -139,7 +140,10 @@ export default class GuildCommand extends Subcommand {
     const memberMessages = messages.filter((msg) => msg.author.id === member.id);
 
     memberMessages.sort((msg1, msg2) => msg2.createdTimestamp - msg1.createdTimestamp);
-    return memberMessages.first();
+    const messagesWithAttachments = memberMessages.filter(
+      (msg) => msg.attachments.size > 0 || HttpUrlRegex.test(msg.content),
+    );
+    return messagesWithAttachments.first();
   }
 
   private async selectRoles(
