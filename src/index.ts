@@ -4,13 +4,13 @@ import type { ClientOptions } from 'discord.js';
 import { GatewayIntentBits, Partials } from 'discord.js';
 import { join } from 'node:path';
 import './lib/setup';
+import './scheduledTasks';
 
 class CustomClient extends SapphireClient {
   private rootData = getRootData();
 
   public constructor(options: ClientOptions) {
     super(options);
-
     this.stores.registerPath(join(this.rootData.root, 'baseBot'));
     this.stores.registerPath(join(this.rootData.root, 'hallOfFame'));
     this.stores.registerPath(join(this.rootData.root, 'spiralAbyss'));

@@ -31,11 +31,13 @@
     "discord-api-types": "^0.37.43",
     "discord.js": "^14.11.0",
     "firebase-admin": "^11.9.0",
+    "node-schedule": "^2.1.1",
     "yaspr": "^1.0.2"
   },
   "devDependencies": {
     "@sapphire/ts-config": "^4.0.0",
     "@types/node": "^18.16.16",
+    "@types/node-schedule": "^2.1.0",
     "@types/ws": "^8.5.4",
     "@typescript-eslint/eslint-plugin": "^5.59.8",
     "@typescript-eslint/parser": "^5.59.8",
