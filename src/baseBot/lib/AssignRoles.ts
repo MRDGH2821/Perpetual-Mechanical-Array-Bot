@@ -1,5 +1,4 @@
 import type { ChatInputOrContextMenuCommandInteraction } from '@sapphire/discord.js-utilities';
-import { container } from '@sapphire/pieces';
 import { pickRandom, range } from '@sapphire/utilities';
 import {
   ButtonStyle,
@@ -210,7 +209,7 @@ export default class AssignRoles {
           },
         ],
       };
-      container.logger.debug(JSON.stringify({ roleID }, null, 2));
+      // container.logger.debug(JSON.stringify({ roleID }, null, 2));
       this.#ctx
         .editReply({
           embeds: [
@@ -494,7 +493,21 @@ export default class AssignRoles {
             description: this.#embedDescription,
           },
         ],
-        components: [],
+        components: this.#proofMessage
+          ? [
+            {
+              type: ComponentType.ActionRow,
+              components: [
+                {
+                  type: ComponentType.Button,
+                  label: 'Jump to User Submission',
+                  style: ButtonStyle.Link,
+                  url: this.#proofMessage.url,
+                },
+              ],
+            },
+          ]
+          : undefined,
         options: {
           fetchReply: true,
         },
