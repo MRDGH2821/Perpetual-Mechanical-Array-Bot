@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Command,container } from '@sapphire/framework';
-import { ApplicationCommandOptionType,PermissionFlagsBits } from 'discord.js';
+import { Command, container } from '@sapphire/framework';
+import { ApplicationCommandOptionType, PermissionFlagsBits } from 'discord.js';
 import { COLORS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import type { DBQuotes } from '../../typeDefs/typeDefs';

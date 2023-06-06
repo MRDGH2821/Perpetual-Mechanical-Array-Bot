@@ -19,7 +19,7 @@ class CustomClient extends SapphireClient {
 }
 
 const client = new CustomClient({
-  defaultPrefix: '!',
+  defaultPrefix: 'pma!',
   caseInsensitiveCommands: true,
   logger: {
     level: LogLevel.Debug,
@@ -51,5 +51,3 @@ const main = async () => {
 };
 
 main();
-
-// deleteAllCommands()

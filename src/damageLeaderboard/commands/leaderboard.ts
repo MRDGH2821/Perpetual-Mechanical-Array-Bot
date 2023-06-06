@@ -559,7 +559,6 @@ export default class GuildCommand extends Subcommand {
         files: [
           {
             attachment: `${e}`,
-
             name: 'Error while registering user.txt',
           },
         ],
