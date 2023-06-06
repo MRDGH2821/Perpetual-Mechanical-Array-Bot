@@ -64,7 +64,8 @@
     "prewatch:start": "node clean.mjs dist",
     "watch:start": "tsc-watch --onSuccess \"npm run dev:start\"",
     "format": "prettier --write .",
-    "lint": "eslint . --fix --ignore-path .gitignore "
+    "lint": "eslint . --fix --ignore-path .gitignore",
+    "docker:app": "docker compose up -d --build",
   },
   "peerDependencies": {
     "eslint-plugin-import": "*",
