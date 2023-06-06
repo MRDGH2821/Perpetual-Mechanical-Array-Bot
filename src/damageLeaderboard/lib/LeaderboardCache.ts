@@ -286,29 +286,30 @@ export default class LeaderboardCache {
       };
 
       this.#rankBuilder(element, 'open', 7)
-        .then((openRanks) => {
+        .then((openRanks) =>
           embed.fields?.push(
             { name: '**Open Category Top 1-7**', value: openRanks[0], inline: true },
             {
               name: '**Open Category Top 8-14**',
               value: openRanks[1],
+              inline: true,
             },
-          );
-        })
-        .catch(rej);
-
-      embed.fields?.push({
-        name: EMPTY_STRING,
-        value: EMPTY_STRING,
-      });
-
-      this.#rankBuilder(element, 'solo', 7)
+          ),
+        )
+        .then(() =>
+          embed.fields?.push({
+            name: EMPTY_STRING,
+            value: EMPTY_STRING,
+          }),
+        )
+        .then(() => this.#rankBuilder(element, 'solo', 7))
         .then((soloRanks) => {
           embed.fields?.push(
             { name: '**Solo Category Top 1-7**', value: soloRanks[0], inline: true },
             {
               name: '**Solo Category Top 8-14**',
               value: soloRanks[1],
+              inline: true,
             },
           );
         })
