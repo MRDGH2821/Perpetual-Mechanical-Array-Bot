@@ -222,26 +222,28 @@ export default class UserCommand extends Subcommand {
         files: [
           {
             name: 'Input Members.json',
-            attachment: Buffer.from(members.map((member) => ({ id: member?.id })).toString()),
+            attachment: Buffer.from(members.toString()),
           },
           {
             name: 'Validated Members.json',
             attachment: Buffer.from(
-              validatedMembers.map((member) => ({ id: member?.id })).toString(),
+              validatedMembers.map((member) => ({ id: member.id })).toString(),
             ),
           },
         ],
       });
     }
 
-    validatedMembers.forEach((member) => member?.roles.add(ROLE_IDS.OTHERS.GANG_GANG_WOO));
+    validatedMembers.forEach((member) => member.roles.add(ROLE_IDS.OTHERS.GANG_GANG_WOO));
 
     return interaction.reply({
-      content: 'Added all members to Gang Gang Woo role.',
-      files: [
+      embeds: [
         {
-          name: 'Members Added into Role.json',
-          attachment: Buffer.from(validatedMembers.map((member) => member?.id).toString()),
+          color: COLORS.EMBED_COLOR,
+          title: 'Added members in Gang Gang Woo!',
+          description: `The following members are the new Gang Gang Woo!\n\n${validatedMembers
+            .map((member) => `${member} \`${member.user.tag}\``)
+            .join('\n')}`,
         },
       ],
     });
