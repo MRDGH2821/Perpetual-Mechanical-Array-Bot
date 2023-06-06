@@ -15,7 +15,7 @@ FROM node:lts-slim
 WORKDIR /app
 
 COPY ./firebase-service-acc ./firebase-service-acc
-COPY package*.json ./
+COPY package.json ./
 
 COPY --from=builder /app/build .
 

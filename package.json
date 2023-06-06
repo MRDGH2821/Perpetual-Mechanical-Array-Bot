@@ -65,7 +65,7 @@
     "watch:start": "tsc-watch --onSuccess \"npm run dev:start\"",
     "format": "prettier --write .",
     "lint": "eslint . --fix --ignore-path .gitignore",
-    "docker:app": "docker compose up -d --build",
+    "docker:app": "docker compose up -d --build app"
   },
   "peerDependencies": {
     "eslint-plugin-import": "*",
