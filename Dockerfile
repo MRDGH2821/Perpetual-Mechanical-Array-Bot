@@ -1,16 +1,23 @@
-FROM node:lts-slim
-
-ENV NODE_ENV=production
-
+# Builder
+FROM node:lts-alpine AS builder
 WORKDIR /app
 
-COPY package*.json ./
+RUN apk update && apk add bash=~5 curl=~8 npm=~9 --no-cache && corepack enable && corepack prepare yarn@stable --activate && yarn set version berry
+
+COPY . .
+
+RUN yarn install
+
+RUN yarn run build && yarn prod-install /app/build && cp -r dist /app/build
+
+# Minimalistic image
+FROM node:lts-slim
+WORKDIR /app
 
 COPY ./firebase-service-acc ./firebase-service-acc
+COPY package*.json ./
 
-RUN npm install --omit=dev
-
-COPY ./out ./out
+COPY --from=builder /app/build .
 
 RUN useradd pma-bot
 
@@ -18,4 +25,4 @@ USER pma-bot
 
 HEALTHCHECK NONE
 
-CMD ["node", "./out/index.js"]
+ENTRYPOINT [ "yarn", "start" ]

@@ -1,5 +1,5 @@
-import { DBQuotes } from '../botTypes/types';
-import { getQuotes } from './QuotesManager';
+import QuotesManager from '../baseBot/lib/QuotesManager';
+import type { DBQuotes } from '../typeDefs/typeDefs';
 
 export const ABYSS_QUOTES = [
   '*You stare into the abyss and you feel some presence staring over you*',
@@ -14,10 +14,9 @@ export const ABYSS_QUOTES = [
   'https://tenor.com/view/cave-dive-darkness-leap-gif-5803442',
   'https://tenor.com/view/full-bore-and-into-the-abyss-davy-jones-abyss-dark-bore-gif-22332324',
 ]
-  .concat(getQuotes('abyssGifs'), getQuotes('abyssQuotes'))
+  .concat(QuotesManager.getQuotes('abyssGifs'), QuotesManager.getQuotes('abyssQuotes'))
   .flat();
-
-export const botQuoteCategories: DBQuotes[] = [
+export const QUOTE_CATEGORIES: DBQuotes[] = [
   'FBIGifs',
   'FBIQuotes',
   'RNGMuteQuotes',

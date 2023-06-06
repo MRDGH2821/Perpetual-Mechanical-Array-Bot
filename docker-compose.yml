@@ -2,10 +2,11 @@ version: '3.9'
 
 services:
   app:
-    environment:
-      - NODE_ENV=production
+    profiles:
+      - dev
+      - prod
     build:
       context: .
-      dockerfile: Dockerfile
+    container_name: perpetual-mechanical-array-bot
     env_file: .env
     restart: always

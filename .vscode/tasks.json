@@ -1,0 +1,19 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "TSC-SHELL: DEEP CLEAN",
+      "detail": "Uses the environments SHELL to wipe TSC build dirs, and the dirs contents",
+      "type": "shell",
+      "command": "rm",
+      "args": ["-R", "-d", "-v", "${workspaceFolder}/dist"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "close": false,
+        "group": "Clean"
+      }
+    }
+  ]
+}

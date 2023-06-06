@@ -1,9 +1,24 @@
 {
-  "extends": ["eslint-config-airbnb-base", "eslint-config-airbnb-typescript/base"],
+  "extends": ["eslint-config-airbnb-ts-prettier"],
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": ["tsconfig.json", "tsconfig.eslint.json"]
   },
+  "ignorePatterns": ["./.pnp.*", "./.yarn"],
   "rules": {
-    "no-console": "off"
+    "no-console": "off",
+    "class-methods-use-this": [
+      "error",
+      {
+        "exceptMethods": [
+          "chatInputRun",
+          "run",
+          "printBanner",
+          "registerApplicationCommands",
+          "autocompleteRun",
+          "onLoad"
+        ]
+      }
+    ]
   }
 }

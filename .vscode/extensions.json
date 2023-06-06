@@ -1,15 +1,22 @@
 {
   "recommendations": [
+    "christian-kohler.npm-intellisense",
     "christian-kohler.path-intellisense",
     "cschlosser.doxdocgen",
     "dbaeumer.vscode-eslint",
+    "dotenv.dotenv-vscode",
+    "eamodio.gitlens",
     "editorconfig.editorconfig",
     "esbenp.prettier-vscode",
-    "howardzuo.vscode-npm-dependency",
-    "irongeek.vscode-env",
-    "mikestead.dotenv",
-    "PatrykPeszko.vscode-proselint",
+    "exiasr.hadolint",
+    "p42ai.refactor",
+    "redhat.vscode-yaml",
     "ryanlaws.toggle-case",
-    "streetsidesoftware.code-spell-checker"
+    "spmeesseman.vscode-taskexplorer",
+    "streetsidesoftware.code-spell-checker",
+    "usernamehw.errorlens",
+    "oderwat.indent-rainbow",
+    "michaelcurrin.auto-commit-msg",
+    "sohamkamani.code-eol"
   ]
 }

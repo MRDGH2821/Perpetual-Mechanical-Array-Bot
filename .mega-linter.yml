@@ -17,13 +17,20 @@ FILEIO_REPORTER: false
 JAVASCRIPT_DEFAULT_STYLE: prettier
 TYPESCRIPT_DEFAULT_STYLE: prettier
 LINTER_RULES_PATH: .
+COPYPASTE_JSCPD_CONFIG_FILE: .jscpd.json
 PRINT_ALPACA: false
 
 PRE_COMMANDS:
-  - command: 'npm ci'
+  - command: 'corepack enable'
+    cwd: 'workspace'
+  - command: 'corepack prepare yarn@stable --activate'
+    cwd: 'workspace'
+  - command: 'yarn install'
     cwd: 'workspace'
 POST_COMMANDS:
-  - command: 'npm run pretty'
+  - command: 'yarn run format'
+    cwd: 'workspace'
+  - command: 'yarn run lint'
     cwd: 'workspace'
 IGNORE_GITIGNORED_FILES: true
 

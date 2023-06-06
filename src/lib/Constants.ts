@@ -1,64 +1,13 @@
-import { Colors, Snowflake } from 'detritus-client/lib/constants';
+import { Colors, Emoji } from 'discord.js';
+import { join } from 'path';
 
-import { ElementDamageCategories, ELEMENTS } from '../botTypes/types';
-
-function formatEmoji(EmojiSnowflake: Snowflake, EmojiName = '_') {
-  return `<:${EmojiName}:${EmojiSnowflake}>`;
-}
-
-export enum TravelerTypes {
-  ANEMO = 'Anemo Traveler',
-  GEO = 'Geo Traveler',
-  ELECTRO = 'Electro Traveler',
-  DENDRO = 'Dendro Traveler',
-  HYDRO = 'Hydro Traveler',
-  PYRO = 'Pyro Traveler',
-  CRYO = 'Cryo Traveler',
-  UNIVERSAL = 'Universal Traveler',
-  UNALIGNED = 'Unaligned Traveler',
-}
-
-export const EleDmgCategoriesArr: ElementDamageCategories[] = [
-  'anemo-dmg-skill',
-  'geo-dmg-skill',
-  'electro-dmg-skill',
-  'dendro-dmg-skill',
-  'uni-dmg-n5',
-];
-
-export const ElementsArr: ELEMENTS[] = [
-  'anemo',
-  'cryo',
-  'dendro',
-  'electro',
-  'geo',
-  'hydro',
-  'pyro',
-  'unaligned',
-];
-
-export enum ICONS {
-  COPIUM = 'https://cdn.discordapp.com/emojis/897176156057518130.webp?&quality=lossless',
-  VOID = 'https://cdn.discordapp.com/emojis/886587673408569394.png?v=1',
-  ANEMO = 'https://cdn.discordapp.com/emojis/803516622772895764.webp?&quality=lossless',
-  ELECTRO = 'https://cdn.discordapp.com/emojis/803516644923146260.webp?&quality=lossless',
-  GEO = 'https://cdn.discordapp.com/emojis/803516612430135326.webp?&quality=lossless',
-  PALM_VORTEX_AETHER = 'https://cdn.discordapp.com/emojis/840965851199832087.png?v=1',
-  STARFELL_SWORD_LUMINE = 'https://cdn.discordapp.com/emojis/840965876370112532.png?v=1',
-  LIGHTENING_BLADE_AETHER = 'https://cdn.discordapp.com/attachments/817208583988051999/886635086362071040/ElectroAether3.png',
-  SPIRAL_ABYSS = 'https://cdn.discordapp.com/emojis/806999511096361031.png?v=1',
-  CHECK_MARK = 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/282/check-mark-button_2705.png',
-  CROSS_MARK = 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/282/cross-mark_274c.png',
-  MASANORI = 'https://cdn.discordapp.com/attachments/825749528275189760/954657244157452348/250.png',
-  TROPHY = 'https://whatemoji.org/wp-content/uploads/2020/07/Trophy-Emoji.png',
-  DENDRO = 'https://cdn.discordapp.com/emojis/803516669984505856.webp?size=128&quality=lossless',
-  RAZOR_GRASS_BLADE_AETHER = 'https://cdn.discordapp.com/emojis/995905335812427846.webp?size=128&quality=lossless',
-}
+export const rootDir = join(__dirname, '..', '..');
+export const srcDir = join(rootDir, 'src');
 
 export enum COLORS {
   EMBED_COLOR = 0xe0d1bd,
   INVISIBLE = 0x2f3136,
-  BLURPLE = Colors.BLURPLE,
+  BLURPLE = Colors.Blurple,
   ANEMO = 0x00ffcc,
   GEO = 0xfce200,
   ELECTRO = 0xa500ff,
@@ -70,48 +19,32 @@ export enum COLORS {
   DENDRO = 0x94fe00,
 }
 
-export const EMOJIS = {
-  HmmMine: formatEmoji('830243258960838717'),
-  HmmTher: formatEmoji('830243224105779290'),
-  BoreasKek: formatEmoji('829620211190595605'),
-  AetherBonk: formatEmoji('821169357765345291'),
-  LuminePadoru: formatEmoji('912033737280192562'),
-  PepeKekPoint: formatEmoji('1003564950633054248', 'PepeKekPoint'),
-  GoosetherConfuse: formatEmoji('907307618677178368'),
-  FakeNooz: formatEmoji('865259265471152138'),
-  pepeduck: formatEmoji('907293876073680946'),
-  AntiHornyElixir: formatEmoji('810751842883207168'),
-  AetherBruh: formatEmoji('813355624796520478'),
-  AetherYikes: formatEmoji('810278255336489020'),
-  LumineMAD_REEE: formatEmoji('814814997196308491'),
-  LuminePanic: formatEmoji('814883112998666241'),
-  TarouAngy: formatEmoji('854040153555468329'),
-  Anemo: formatEmoji('803516622772895764'),
-  Geo: formatEmoji('803516612430135326'),
-  Electro: formatEmoji('803516644923146260'),
-  Dendro: formatEmoji('803516669984505856'),
-  Hydro: formatEmoji('803516313782714378'),
-  Pyro: formatEmoji('803516441424822303'),
-  Cryo: formatEmoji('803516632735154177'),
-  Void: formatEmoji('983370274227499050'),
-  DullBlade: formatEmoji('861628955697741844'),
-  DvalinHYPE: formatEmoji('808591175640154142'),
-  Copium: formatEmoji('897176156057518130'),
-  LumineCopium: formatEmoji('821897404260417557'),
-  iLumineati: formatEmoji('1004994499312877598'),
-  Pairamid: formatEmoji('1008108212026880050'),
-  smh: formatEmoji('866190698676355092'),
-  LumineWoke: formatEmoji('809010967786160138'),
-  PaimonThink: formatEmoji('853288230694944798'),
-  Aether_Pain1: formatEmoji('804189532718759956'),
-  Aether_Pain2: formatEmoji('804189554294128650'),
-  Lumine_Pain1: formatEmoji('839415679824429098'),
-  Lumine_Pain2: formatEmoji('839415680625016832'),
-  LumineNice: formatEmoji('822436572736520212', 'LumineNice'),
-  Pairasmol: formatEmoji('1010238883872657448', 'Pairasmol'),
-  GoldenAranaraSmile: formatEmoji('1024189925811306526', 'GoldenAranaraSmile'),
-  GoldenAranaraWave: formatEmoji('1024191817438203944', 'GoldenAranaraWave'),
-};
+export enum ICONS {
+  ANEMO = 'https://cdn.discordapp.com/emojis/803516622772895764.png',
+  GEO = 'https://cdn.discordapp.com/emojis/803516612430135326.png',
+  ELECTRO = 'https://cdn.discordapp.com/emojis/803516644923146260.png',
+  DENDRO = 'https://cdn.discordapp.com/emojis/803516669984505856.png',
+  COPIUM = 'https://cdn.discordapp.com/emojis/897176156057518130.png',
+  VOID = 'https://cdn.discordapp.com/emojis/886587673408569394.png',
+  SPIRAL_ABYSS = 'https://cdn.discordapp.com/emojis/806999511096361031.png',
+  ORIGINAL_SWORD = 'https://cdn.discordapp.com/emojis/1086640917877891192.png',
+  SILVER_SWORD = 'https://cdn.discordapp.com/emojis/1017378688209256508.png',
+  DULL_BLADE = 'https://cdn.discordapp.com/emojis/861628955697741844.png',
+  CHECK_MARK = 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/282/check-mark-button_2705.png',
+  CROSS_MARK = 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/282/cross-mark_274c.png',
+  MASANORI = 'https://cdn.discordapp.com/attachments/825749528275189760/954657244157452348/250.png',
+  TROPHY = 'https://whatemoji.org/wp-content/uploads/2020/07/Trophy-Emoji.png',
+  LIGHTNING_BLADE_AETHER = 'https://cdn.discordapp.com/attachments/817208583988051999/886635086362071040/ElectroAether3.png',
+  LIGHTNING_BLADE_GOOFY = 'https://cdn.discordapp.com/emojis/1100775051739017286.png',
+  LIGHTNING_BLADE_OG_GOOFY = 'https://cdn.discordapp.com/emojis/1001043182655651880.png',
+  PALM_VORTEX_AETHER = 'https://cdn.discordapp.com/emojis/840965851199832087.png',
+  PALM_VORTEX_GOOFY = 'https://cdn.discordapp.com/emojis/1100787694012993658.png',
+  PALM_VORTEX_OG_GOOFY = 'https://cdn.discordapp.com/emojis/1001032044299694080.png',
+  RAZOR_GRASS_BLADE_AETHER = 'https://cdn.discordapp.com/emojis/995905335812427846.png',
+  STARFELL_SWORD_GOOFY = 'https://cdn.discordapp.com/emojis/1100772595764314222.png',
+  STARFELL_SWORD_LUMINE = 'https://cdn.discordapp.com/emojis/840965876370112532.png',
+  STARFELL_SWORD_OG_GOOFY = 'https://cdn.discordapp.com/emojis/1001037414338408468.png',
+}
 
 export enum ChannelIds {
   ARCHIVES = '806110144110919730',
@@ -128,28 +61,11 @@ export enum ChannelIds {
   ARENA_OF_VOTERS = '897042006679883796',
 }
 
-namespace STAFF {
-  export enum ADMIN {
-    EMERITUS_KNIGHT = '930313822911217674',
-    SERVER_ADMIN = '813605549907378186',
-  }
-  export enum MODS {
-    HONORARY_KNIGHT = '803429256758820916',
-    GUILD_EMISSARIES = '814338717703471135',
-  }
-  export enum HELPERS {
-    GAME_DIRECTOR = '821571314543624232',
-    SERVER_STAFF = '828537737330163732',
-    KNIGHT_RECRUIT = '825108492582649877',
-    BOT_DEV = '892956048640602122',
-  }
+export enum ThreadIds {
+  LEADERBOARD_APPLICATION = '950365539073675274',
+  LEADERBOARD_BETA_APPLICATION = '1020027164713811968',
+  LB_REGISTRATION_LOGS = '1098939511276326992',
 }
-
-export const STAFF_ARRAY = [
-  ...Object.values(STAFF.ADMIN),
-  ...Object.values(STAFF.HELPERS),
-  ...Object.values(STAFF.MODS),
-];
 
 export namespace ROLE_IDS {
   export enum OTHERS {
@@ -159,6 +75,7 @@ export namespace ROLE_IDS {
     FROZEN_RNG = '1005767717812449291',
     BATTLE_CASTER = '960210333501358180',
     GLADIATORS = '827536548345806858',
+    GANG_GANG_WOO = '964818838334111744',
   }
 
   export enum SpiralAbyss {
@@ -181,6 +98,99 @@ export namespace ROLE_IDS {
     UNALIGNED = '859430358419243038',
   }
 }
+
+namespace STAFF {
+  export enum ADMIN {
+    EMERITUS_KNIGHT = '930313822911217674',
+    SERVER_ADMIN = '813605549907378186',
+  }
+  export enum MODS {
+    HONORARY_KNIGHT = '803429256758820916',
+    GUILD_EMISSARIES = '814338717703471135',
+  }
+  export enum HELPERS {
+    GAME_DIRECTOR = '821571314543624232',
+    SERVER_STAFF = '828537737330163732',
+    KNIGHT_RECRUIT = '825108492582649877',
+    BOT_DEV = '892956048640602122',
+  }
+}
+
+export const STAFF_ARRAY: string[] = [
+  Object.values(STAFF.ADMIN).map(String),
+  Object.values(STAFF.HELPERS).map(String),
+  Object.values(STAFF.MODS).map(String),
+].flat();
+
+export const EMPTY_STRING = '\u200B';
+
+function formatEmoji(
+  id: Emoji['id'],
+  name: Emoji['name'] = '_',
+  animated: Emoji['animated'] = false,
+): `<a:${Emoji['name']}:${Emoji['id']}>` | `<:${Emoji['name']}:${Emoji['id']}>` {
+  if (animated) {
+    return `<a:${name}:${id}>`;
+  }
+  return `<:${name}:${id}>`;
+}
+
+export const EMOJIS = {
+  HmmMine: formatEmoji('830243258960838717'),
+  HmmTher: formatEmoji('830243224105779290'),
+  BoreasKek: formatEmoji('829620211190595605'),
+  AetherBonk: formatEmoji('821169357765345291'),
+  LuminePadoru: formatEmoji('912033737280192562'),
+  PepeKekPoint: formatEmoji('1003564950633054248', 'PepeKekPoint'),
+  GoosetherConfuse: formatEmoji('907307618677178368'),
+  FakeNooz: formatEmoji('865259265471152138'),
+  pepeduck: formatEmoji('907293876073680946'),
+  AntiHornyElixir: formatEmoji('810751842883207168'),
+  AetherBruh: formatEmoji('813355624796520478'),
+  AetherYikes: formatEmoji('810278255336489020'),
+  LumineMAD_REEE: formatEmoji('814814997196308491'),
+  LuminePanic: formatEmoji('814883112998666241'),
+  TarouAngy: formatEmoji('854040153555468329'),
+  Anemo: formatEmoji('803516622772895764', 'Anemo'),
+  Geo: formatEmoji('803516612430135326', 'Geo'),
+  Electro: formatEmoji('803516644923146260', 'Electro'),
+  Dendro: formatEmoji('803516669984505856', 'Dendro'),
+  Hydro: formatEmoji('803516313782714378', 'Hydro'),
+  Pyro: formatEmoji('803516441424822303', 'Pyro'),
+  Cryo: formatEmoji('803516632735154177', 'Cryo'),
+  // Void: formatEmoji('983370274227499050', 'Void'),
+  DullBlade: formatEmoji('861628955697741844', 'DullBlade'),
+  DvalinHYPE: formatEmoji('808591175640154142'),
+  Copium: formatEmoji('897176156057518130', 'Copium'),
+  LumineCopium: formatEmoji('821897404260417557'),
+  iLumineati: formatEmoji('1004994499312877598'),
+  Pairamid: formatEmoji('1008108212026880050'),
+  smh: formatEmoji('866190698676355092'),
+  LumineWoke: formatEmoji('809010967786160138'),
+  PaimonThink: formatEmoji('853288230694944798'),
+  Aether_Pain1: formatEmoji('804189532718759956'),
+  Aether_Pain2: formatEmoji('804189554294128650'),
+  Lumine_Pain1: formatEmoji('839415679824429098'),
+  Lumine_Pain2: formatEmoji('839415680625016832'),
+  LumineNice: formatEmoji('822436572736520212', 'LumineNice'),
+  Pairasmol: formatEmoji('1010238883872657448', 'Pairasmol'),
+  GoldenAranaraSmile: formatEmoji('1024189925811306526', 'GoldenAranaraSmile'),
+  GoldenAranaraWave: formatEmoji('1024191817438203944', 'GoldenAranaraWave'),
+  OriginalSword: formatEmoji('1086640917877891192', 'OriginalSword'),
+  SilverSword: formatEmoji('1017378688209256508', 'SilverSword'),
+  Windblade: formatEmoji('1100787694012993658', 'Windblade'),
+  LightningBlade: formatEmoji('1100775051739017286', 'LightningBlade'),
+  StarfellSword: formatEmoji('1100772595764314222', 'StarfellSword'),
+  SusgeMine: formatEmoji('996479624441770174', 'SusgeMine'),
+  PepeSus: formatEmoji('994677813170942012', 'PepeSus'),
+};
+
+export const EMOJIS2 = {
+  Void: formatEmoji('1101118379114377256', 'Void'),
+  starfell: formatEmoji('1001037414338408468', 'starfell'),
+  windblade: formatEmoji('1001032044299694080', 'windblade'),
+  thunderblade: formatEmoji('1001043182655651880', 'thunderblade'),
+};
 
 const REP_ROLES = [
   {
@@ -246,52 +256,4 @@ const SPIRAL_ABYSS_ROLES = [
   },
 ];
 
-export const ACH_ROLES = [REP_ROLES, OTHER_ROLES, CROWN_ROLES, SPIRAL_ABYSS_ROLES].flat();
-
-export const LEADERBOARD_ELE_CATEGORY_CHOICES = <
-  { name: string; value: ElementDamageCategories }[]
->[
-  {
-    name: 'Anemo: Palm Vortex',
-    value: 'anemo-dmg-skill',
-  },
-  {
-    name: 'Geo: Starfell Sword',
-    value: 'geo-dmg-skill',
-  },
-  {
-    name: 'Electro: Lightening Blade',
-    value: 'electro-dmg-skill',
-  },
-  {
-    name: 'Dendro: Razor grass Blade',
-    value: 'dendro-dmg-skill',
-  },
-  {
-    name: 'Universal: 5th normal Atk dmg',
-    value: 'uni-dmg-n5',
-  },
-];
-
-export const HALL_OF_FAME_ELEMENT_CHOICES = <{ name: string; value: ELEMENTS }[]>[
-  {
-    name: 'Herrscher of Wind (Anemo)',
-    value: 'anemo',
-  },
-  {
-    name: 'Jūnzhǔ of Earth (Geo)',
-    value: 'geo',
-  },
-  {
-    name: "Ten'nō of Thunder (Electro)",
-    value: 'electro',
-  },
-  {
-    name: 'Raja of Evergreens (Dendro)',
-    value: 'dendro',
-  },
-  {
-    name: 'Arbitrator of Fate (Unaligned)',
-    value: 'unaligned',
-  },
-];
+export const ACHIEVEMENT_ROLES = [REP_ROLES, OTHER_ROLES, CROWN_ROLES, SPIRAL_ABYSS_ROLES].flat();
