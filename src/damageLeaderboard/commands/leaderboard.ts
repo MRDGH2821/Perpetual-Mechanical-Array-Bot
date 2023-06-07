@@ -430,6 +430,26 @@ export default class GuildCommand extends Subcommand {
         });
       }
 
+      const linkRow: ButtonActionRow = {
+        type: ComponentType.ActionRow,
+        components: [
+          {
+            type: ComponentType.Button,
+            label: 'Show Proof',
+            emoji: '🧾',
+            style: ButtonStyle.Link,
+            url: proofURL,
+          },
+          {
+            type: ComponentType.Button,
+            label: 'Jump to message',
+            emoji: '💬',
+            style: ButtonStyle.Link,
+            url: args.proofMessage.url,
+          },
+        ],
+      };
+
       const approveRow: ButtonActionRow = {
         type: ComponentType.ActionRow,
         components: [
@@ -447,47 +467,13 @@ export default class GuildCommand extends Subcommand {
             emoji: '👎',
             style: ButtonStyle.Danger,
           },
-          {
-            type: ComponentType.Button,
-            label: 'Show Proof',
-            emoji: '🧾',
-            style: ButtonStyle.Link,
-            url: proofURL,
-          },
-          {
-            type: ComponentType.Button,
-            label: 'Jump to message',
-            emoji: '💬',
-            style: ButtonStyle.Link,
-            url: args.proofMessage.url,
-          },
-        ],
-      };
-
-      const linkRow: ButtonActionRow = {
-        type: ComponentType.ActionRow,
-        components: [
-          {
-            type: ComponentType.Button,
-            label: 'Show Proof',
-            emoji: '🧾',
-            style: ButtonStyle.Link,
-            url: proofURL,
-          },
-          {
-            type: ComponentType.ActionRow,
-            label: 'Jump to message',
-            emoji: '💬',
-            style: ButtonStyle.Link,
-            url: args.proofMessage.url,
-          },
         ],
       };
 
       return await interaction
         .editReply({
           embeds: [embed],
-          components: [approveRow],
+          components: [approveRow, linkRow],
         })
         .then((msg) => {
           interaction.followUp({
@@ -516,11 +502,14 @@ export default class GuildCommand extends Subcommand {
         })
         .then((btnCtx) => {
           if (btnCtx.customId === 'accepted') {
-            embed.thumbnail = {
-              url: ICONS.CHECK_MARK,
+            const successEmbed: APIEmbed = {
+              ...embed,
+              thumbnail: {
+                url: ICONS.CHECK_MARK,
+              },
+              title: '**Submission Accepted!**',
+              color: COLORS.SUCCESS,
             };
-            embed.title = '**Submission Accepted!**';
-            embed.color = COLORS.SUCCESS;
             return LeaderboardCache.registerScore({
               elementCategory: parseDamageCategory(args.element),
               proof: args.proofMessage.url,
@@ -530,19 +519,21 @@ export default class GuildCommand extends Subcommand {
             }).then(() => {
               PMAEventHandler.emit('LBPostRegister', args, oldScoreData);
               return btnCtx.editReply({
-                embeds: [embed],
+                embeds: [successEmbed],
                 components: [linkRow],
               });
             });
           }
-          embed.thumbnail = {
-            url: ICONS.CROSS_MARK,
+          const failEmbed: APIEmbed = {
+            ...embed,
+            thumbnail: {
+              url: ICONS.CROSS_MARK,
+            },
+            title: '**Submission Rejected!**',
+            color: COLORS.ERROR,
           };
-          embed.title = '**Submission Rejected!**';
-          embed.color = COLORS.ERROR;
-
           return btnCtx.editReply({
-            embeds: [embed],
+            embeds: [failEmbed],
             components: [linkRow],
           });
         });
