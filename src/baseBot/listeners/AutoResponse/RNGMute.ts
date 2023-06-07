@@ -95,7 +95,7 @@ export default class RNGMuteResponse extends Listener<typeof Events.MessageCreat
               member: message.member!,
               reason: RNGMuteResponse.Reason(),
             });
-            rateLimit.add('RNG_ICD', 3000);
+            rateLimit.add('RNG_ICD', 1000);
           })
           .catch(container.logger.debug);
       }
