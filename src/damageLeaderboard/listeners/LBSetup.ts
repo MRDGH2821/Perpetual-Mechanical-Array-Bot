@@ -73,8 +73,11 @@ export default class LBSetup extends Listener {
     const cmd = container.client.application?.commands.cache.find(
       (command) => command.name === 'leaderboard',
     );
-
     const subCmd = cmd?.options.find((option) => option.name === 'register');
+
+    const subCmdMention = `</${cmd?.name || 'leaderboard'} ${subCmd?.name || 'register'}:${
+      cmd?.id
+    }>`;
     const information: APIEmbed = {
       color: COLORS.EMBED_COLOR,
       title: '**Traveler Mains Damage Leaderboards**',
@@ -90,7 +93,9 @@ export default class LBSetup extends Listener {
           name: '***How do I enter?***',
           value: `Send an image (preferably a video) with damage number, element & group category type as message text, of your fight against "Masanori" - the nameless samurai in <#${
             ChannelIds.SHOWCASE
-          }>.\nCopy the message link and use ${subCmd || '`/leaderboard register`'} command at <#${
+          }>.\nCopy the message link and use ${
+            subCmdMention || '`/leaderboard register`'
+          } command at <#${
             ThreadIds.LEADERBOARD_APPLICATION
           }>. After registering, ping a mod to get approval!\n\nExample format: \`uni 12345 solo\``,
         },
