@@ -17,6 +17,7 @@ import {
   type APIUser,
 } from 'discord.js';
 import { sequentialPromises } from 'yaspr';
+import type { ELEMENTS } from '../typeDefs/typeDefs';
 import { getClient } from './ClientExtractor';
 import { ChannelIds, EMPTY_STRING } from './Constants';
 import { ABYSS_QUOTES } from './DynamicConstants';
@@ -156,4 +157,40 @@ export function userLink(userOrID: User | User['id']) {
   const id = userOrID instanceof User ? userOrID.id : userOrID;
 
   return `https://discord.com/users/${id}`;
+}
+
+export function parseElement(element: string): ELEMENTS {
+  const possibleElement = element.toLowerCase();
+
+  switch (true) {
+    case /\banemo\b/gimu.test(possibleElement):
+      return 'anemo';
+
+    case /\bgeo\b/gimu.test(possibleElement):
+      return 'geo';
+
+    case /\belectro\b/gimu.test(possibleElement):
+      return 'electro';
+
+    case /\bdendro\b/gimu.test(possibleElement):
+      return 'dendro';
+
+    case /\bhydro\b/gimu.test(possibleElement):
+      return 'hydro';
+
+    case /\bpyro\b/gimu.test(possibleElement):
+      return 'pyro';
+
+    case /\bcryo\b/gimu.test(possibleElement):
+      return 'cryo';
+
+    case /\bunaligned\b/gimu.test(possibleElement):
+      return 'unaligned';
+
+    case /\buni\b/gimu.test(possibleElement):
+      return 'uni';
+
+    default:
+      throw new Error(`Invalid element type ${possibleElement}`);
+  }
 }
