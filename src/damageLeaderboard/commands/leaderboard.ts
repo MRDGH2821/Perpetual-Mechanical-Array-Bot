@@ -23,8 +23,8 @@ import {
   extractLinks,
   leaderboardProps,
   parseDamageCategory,
-  parseLBElement,
   parseGroupType,
+  parseLBElement,
 } from '../lib/Utilities';
 import type {
   GroupCategoryType,
