@@ -1,5 +1,6 @@
 import { container } from '@sapphire/pieces';
 import { Subcommand } from '@sapphire/plugin-subcommands';
+import { sleep } from '@sapphire/utilities';
 import {
   ApplicationCommandOptionType,
   ButtonStyle,
@@ -15,6 +16,7 @@ import { COLORS, ChannelIds, ICONS, ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import type { ButtonActionRow, JSONCmd } from '../../typeDefs/typeDefs';
 import SpiralAbyssCache from '../lib/SpiralAbyssCache';
+import TravelerTeam from '../lib/TravelerTeam';
 
 const cmdDef: JSONCmd = {
   name: 'sa-mod',
@@ -82,6 +84,25 @@ const cmdDef: JSONCmd = {
           type: ApplicationCommandOptionType.Attachment,
           name: 'backup_file',
           description: 'Upload the backup file',
+          required: true,
+        },
+      ],
+    },
+    {
+      name: 'announce-sovereign',
+      description: 'Announce the new Abyssal Sovereign',
+      type: ApplicationCommandOptionType.Subcommand,
+      options: [
+        {
+          name: 'user',
+          description: 'The user who achieved Abyssal Sovereign role',
+          type: ApplicationCommandOptionType.User,
+          required: true,
+        },
+        {
+          name: 'proof_link',
+          description: 'Link to the proof of achievement',
+          type: ApplicationCommandOptionType.String,
           required: true,
         },
       ],
@@ -304,6 +325,76 @@ export default class GuildCommand extends Subcommand {
             return interaction.reply({
               content: 'Backup will be restored soon & you will be notified',
               flags: MessageFlags.Ephemeral,
+            });
+          },
+        },
+        {
+          name: cmdDef.options![5].name,
+          type: 'method',
+          async chatInputRun(interaction) {
+            const user = interaction.options.getUser('user', true);
+            const proofLink = interaction.options.getString('proof_link', true);
+
+            if (!interaction.inCachedGuild() || !interaction.inGuild() || !interaction.guild) {
+              return interaction.reply({
+                content: 'This command is only available in the server',
+                flags: MessageFlags.Ephemeral,
+              });
+            }
+
+            if (interaction.channelId !== ChannelIds.COMMAND_CENTER) {
+              return interaction.reply({
+                content: `Please use this command inside ${channelMention(
+                  ChannelIds.COMMAND_CENTER,
+                )} channel`,
+                flags: MessageFlags.Ephemeral,
+              });
+            }
+
+            await interaction.deferReply();
+
+            await interaction.editReply({
+              content: "Let's construct a message...",
+            });
+            await sleep(1000);
+
+            const team1 = new TravelerTeam(interaction, user);
+            const team2 = new TravelerTeam(interaction, user, [team1.element!]);
+            const team3 = new TravelerTeam(interaction, user, [team1.element!, team2.element!]);
+            const team4 = new TravelerTeam(interaction, user, [
+              team1.element!,
+              team2.element!,
+              team3.element!,
+            ]);
+
+            const announceEmbed: APIEmbed = {
+              title: 'A new Abyssal Sovereign has risen!',
+              description: `Congratulations ${user} for getting ${roleMention(
+                ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN,
+              )}!\n\n__Teams they used:__\n${team1.toString()}\n${team2.toString()}\n${team3.toString()}\n${team4.toString()}`,
+            };
+
+            const announcementChannel = await interaction.guild.channels.fetch(
+              ChannelIds.ANNOUNCEMENT,
+            );
+            if (!announcementChannel?.isTextBased()) {
+              throw new Error('Need text channel to announce');
+            }
+            return announcementChannel.send({
+              embeds: [announceEmbed],
+              components: [
+                {
+                  type: ComponentType.ActionRow,
+                  components: [
+                    {
+                      type: ComponentType.Button,
+                      label: 'Watch their Attempt',
+                      style: ButtonStyle.Link,
+                      url: proofLink,
+                    },
+                  ],
+                },
+              ],
             });
           },
         },

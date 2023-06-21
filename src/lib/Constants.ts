@@ -1,4 +1,4 @@
-import { Colors, Emoji } from 'discord.js';
+import { Colors,Emoji } from 'discord.js';
 import { join } from 'path';
 
 export const rootDir = join(__dirname, '..', '..');
@@ -59,6 +59,7 @@ export enum ChannelIds {
   LEAKS_DISCUSSION = '803949792349650964',
   RNG_MUTE = '1005733473434206250',
   ARENA_OF_VOTERS = '897042006679883796',
+  ANNOUNCEMENT = '804636913771872256',
 }
 
 export enum ThreadIds {
