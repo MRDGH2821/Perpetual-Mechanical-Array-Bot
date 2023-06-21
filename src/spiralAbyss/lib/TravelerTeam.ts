@@ -199,12 +199,6 @@ export default class TravelerTeam {
   }
 
   async confirmTeam() {
-    if (!this.isElementSet()) {
-      await this.askElement();
-    }
-    if (!this.isTeamMade()) {
-      await this.askTeamMates();
-    }
     return this.interaction
       .editReply({
         content: `Confirm Team?\n\nTeam ${this.element}\n1. ${this.#teamMate1!.name} \n2.${
