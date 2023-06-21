@@ -1,7 +1,6 @@
 import { container } from '@sapphire/pieces';
 import { Subcommand } from '@sapphire/plugin-subcommands';
 import { Time } from '@sapphire/time-utilities';
-import { sleep } from '@sapphire/utilities';
 import {
   ApplicationCommandOptionType,
   ButtonStyle,
@@ -366,7 +365,7 @@ export default class GuildCommand extends Subcommand {
             await interaction.editReply({
               content: "Let's construct a message...",
             });
-            await sleep(1000);
+
             const user = proofMessage.author;
             const team1 = new TravelerTeam(interaction, user);
             const team2 = new TravelerTeam(interaction, user, [team1.element!]);
