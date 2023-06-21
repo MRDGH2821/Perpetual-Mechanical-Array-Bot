@@ -367,14 +367,17 @@ export default class GuildCommand extends Subcommand {
             });
 
             const user = proofMessage.author;
-            const team1 = new TravelerTeam(interaction, user);
-            const team2 = new TravelerTeam(interaction, user, [team1.element!]);
-            const team3 = new TravelerTeam(interaction, user, [team1.element!, team2.element!]);
-            const team4 = new TravelerTeam(interaction, user, [
+            const team1 = await new TravelerTeam(interaction, user).buildTeam();
+            const team2 = await new TravelerTeam(interaction, user, [team1.element!]).buildTeam();
+            const team3 = await new TravelerTeam(interaction, user, [
+              team1.element!,
+              team2.element!,
+            ]).buildTeam();
+            const team4 = await new TravelerTeam(interaction, user, [
               team1.element!,
               team2.element!,
               team3.element!,
-            ]);
+            ]).buildTeam();
 
             const announceEmbed: APIEmbed = {
               title: 'A new Abyssal Sovereign has risen!',

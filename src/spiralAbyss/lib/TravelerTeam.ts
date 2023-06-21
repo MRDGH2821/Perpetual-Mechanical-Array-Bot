@@ -37,11 +37,10 @@ export default class TravelerTeam {
     if (!this.interaction.deferred) {
       this.interaction.deferReply();
     }
-    this.buildTeam();
   }
 
-  async askElement() {
-    const element = await this.interaction
+  askElement() {
+    return this.interaction
       .editReply({
         content: 'Which team to make?',
         components: [
@@ -102,14 +101,14 @@ export default class TravelerTeam {
           dispose: true,
         }),
       )
-      .then((mtx) => mtx.values[0]);
-
-    this.element = parseElement(element);
+      .then((mtx) => {
+        this.element = parseElement(mtx.values[0]);
+        return mtx;
   }
 
-  async askTeamMates() {
+  async askTeamMates(interaction: StringSelectMenuInteraction | ButtonInteraction) {
     const teamId = `${this.element}_team`;
-    await this.interaction.showModal({
+    await interaction.showModal({
       title: `Which Characters did ${this.user.username} used with ${this.element} Traveler?`,
       custom_id: teamId,
       customId: teamId,
@@ -160,7 +159,7 @@ export default class TravelerTeam {
       matchNames: true,
     };
 
-    const team = await this.interaction
+    const team = await interaction
       .awaitModalSubmit({
         time: 3 * Time.Minute,
         async filter(itx) {
@@ -252,7 +251,7 @@ export default class TravelerTeam {
             break;
           }
           case 'remake_team': {
-            this.askTeamMates();
+            this.askTeamMates(itx);
             break;
           }
           default: {
@@ -265,8 +264,8 @@ export default class TravelerTeam {
 
   buildTeam() {
     return this.askElement()
-      .then(() => this.askTeamMates())
-      .then(() => this.confirmTeam());
+      .then((stx) => this.askTeamMates(stx))
+      .then(() => this.confirmTeam())
   }
 
   toString() {
