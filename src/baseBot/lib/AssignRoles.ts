@@ -475,7 +475,7 @@ export default class AssignRoles {
 
     this.#assignStats.forEach((stat) => {
       totalExp += stat.exp;
-      const line = `${roleMention(stat.role)}${stat.notes === 'none' ? ' ' : `:${stat.notes} `}(${
+      const line = `${roleMention(stat.role)}${stat.notes === 'none' ? ' ' : `: ${stat.notes} `}(${
         stat.exp
       })\n`;
       this.#embedDescription += line;
