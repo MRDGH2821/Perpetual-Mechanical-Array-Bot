@@ -7,12 +7,13 @@ import {
   ButtonStyle,
   ChannelType,
   ComponentType,
+  Message,
   MessageFlags,
   channelMention,
   roleMention,
   type APIEmbed,
 } from 'discord.js';
-import { PMAEventHandler, isStaff } from '../../baseBot/lib/Utilities';
+import { PMAEventHandler, guildMessageIDsExtractor, isStaff } from '../../baseBot/lib/Utilities';
 import { COLORS, ChannelIds, ICONS, ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import type { ButtonActionRow, JSONCmd } from '../../typeDefs/typeDefs';
@@ -94,12 +95,6 @@ const cmdDef: JSONCmd = {
       description: 'Announce the new Abyssal Sovereign',
       type: ApplicationCommandOptionType.Subcommand,
       options: [
-        {
-          name: 'user',
-          description: 'The user who achieved Abyssal Sovereign role',
-          type: ApplicationCommandOptionType.User,
-          required: true,
-        },
         {
           name: 'proof_link',
           description: 'Link to the proof of achievement',
@@ -333,7 +328,6 @@ export default class GuildCommand extends Subcommand {
           name: cmdDef.options![5].name,
           type: 'method',
           async chatInputRun(interaction) {
-            const user = interaction.options.getUser('user', true);
             const proofLink = interaction.options.getString('proof_link', true);
 
             if (!interaction.inCachedGuild() || !interaction.inGuild() || !interaction.guild) {
@@ -352,13 +346,28 @@ export default class GuildCommand extends Subcommand {
               });
             }
 
+            let proofMessage: Message | null = null;
+            const ids = guildMessageIDsExtractor(proofLink);
+            const channel = await interaction.guild.channels.fetch(ids.channelId);
+
+            if (channel?.isTextBased()) {
+              proofMessage = await channel.messages.fetch(ids.messageId);
+            }
+
+            if (!proofMessage) {
+              return interaction.reply({
+                content: 'Proof Message not found',
+                flags: MessageFlags.Ephemeral,
+              });
+            }
+
             await interaction.deferReply();
 
             await interaction.editReply({
               content: "Let's construct a message...",
             });
             await sleep(1000);
-
+            const user = proofMessage.author;
             const team1 = new TravelerTeam(interaction, user);
             const team2 = new TravelerTeam(interaction, user, [team1.element!]);
             const team3 = new TravelerTeam(interaction, user, [team1.element!, team2.element!]);
@@ -433,7 +442,7 @@ export default class GuildCommand extends Subcommand {
                       type: ComponentType.Button,
                       label: 'Watch their Attempt',
                       style: ButtonStyle.Link,
-                      url: proofLink,
+                      url: proofMessage.url,
                     },
                   ],
                 },
