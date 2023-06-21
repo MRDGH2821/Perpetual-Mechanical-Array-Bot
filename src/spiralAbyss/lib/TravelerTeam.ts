@@ -109,7 +109,7 @@ export default class TravelerTeam {
   async askTeamMates(interaction: StringSelectMenuInteraction | ButtonInteraction) {
     const teamId = `${this.element}_team`;
     await interaction.showModal({
-      title: `Which Characters did ${this.user.username} used with ${this.element} Traveler?`,
+      title: `Input ${this.user.username}'s ${this.element} Traveler Team`,
       custom_id: teamId,
       customId: teamId,
       components: [
