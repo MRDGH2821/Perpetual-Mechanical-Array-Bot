@@ -1,8 +1,15 @@
 import { type ChatInputOrContextMenuCommandInteraction } from '@sapphire/discord.js-utilities';
 import { Time } from '@sapphire/time-utilities';
 import { toTitleCase } from '@sapphire/utilities';
-import { ButtonStyle, ComponentType, TextInputStyle } from 'discord.js';
+import {
+  ButtonInteraction,
+  ButtonStyle,
+  ComponentType,
+  StringSelectMenuInteraction,
+  TextInputStyle,
+} from 'discord.js';
 import { characters, type Character } from 'genshin-db';
+import { isStaff } from '../../baseBot/lib/Utilities';
 import { crownProps } from '../../hallOfFame/lib/Utilities';
 import { EMOJIS } from '../../lib/Constants';
 import { parseElement } from '../../lib/utils';
@@ -95,15 +102,18 @@ export default class TravelerTeam {
       })
       .then((msg) =>
         msg.awaitMessageComponent({
-          filter: (i) => i.user.id === this.interaction.user.id,
+          filter: async (i) => {
+            await i.deferUpdate();
+            return isStaff(i.member);
+          },
           componentType: ComponentType.StringSelect,
           time: 1 * Time.Minute,
-          dispose: true,
         }),
       )
       .then((mtx) => {
         this.element = parseElement(mtx.values[0]);
         return mtx;
+      });
   }
 
   async askTeamMates(interaction: StringSelectMenuInteraction | ButtonInteraction) {
@@ -163,6 +173,7 @@ export default class TravelerTeam {
       .awaitModalSubmit({
         time: 3 * Time.Minute,
         async filter(itx) {
+          await itx.deferUpdate();
           return itx.customId === teamId;
         },
       })
@@ -201,9 +212,9 @@ export default class TravelerTeam {
   async confirmTeam() {
     return this.interaction
       .editReply({
-        content: `Confirm Team?\n\nTeam ${this.element}\n1. ${this.#teamMate1!.name} \n2.${
+        content: `Confirm Team?\n\nTeam ${this.element}\n1. ${this.#teamMate1!.name} \n2. ${
           this.#teamMate2!.name
-        } \n3.${this.#teamMate3!.name}`,
+        } \n3. ${this.#teamMate3!.name}`,
         components: [
           {
             type: ComponentType.ActionRow,
@@ -232,10 +243,12 @@ export default class TravelerTeam {
       })
       .then((msg) =>
         msg.awaitMessageComponent({
-          filter: (i) => i.user.id === this.interaction.user.id,
+          filter: async (i) => {
+            await i.deferUpdate();
+            return isStaff(i.member);
+          },
           componentType: ComponentType.Button,
           time: 1 * Time.Minute,
-          dispose: true,
         }),
       )
       .then((itx) => {
