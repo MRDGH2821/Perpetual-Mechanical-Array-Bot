@@ -1,5 +1,6 @@
 import { container } from '@sapphire/pieces';
 import { Subcommand } from '@sapphire/plugin-subcommands';
+import { Time } from '@sapphire/time-utilities';
 import { sleep } from '@sapphire/utilities';
 import {
   ApplicationCommandOptionType,
@@ -380,7 +381,49 @@ export default class GuildCommand extends Subcommand {
             if (!announcementChannel?.isTextBased()) {
               throw new Error('Need text channel to announce');
             }
-            return announcementChannel.send({
+
+            const prompt = await interaction
+              .editReply({
+                content: `Message constructed!\n\nSend message at ${announcementChannel} ?`,
+                embeds: [announceEmbed],
+                components: [
+                  {
+                    type: ComponentType.ActionRow,
+                    components: [
+                      {
+                        type: ComponentType.Button,
+                        label: 'Send',
+                        style: ButtonStyle.Success,
+                        customId: 'send',
+                      },
+                      {
+                        type: ComponentType.Button,
+                        label: 'Cancel',
+                        style: ButtonStyle.Danger,
+                        customId: 'cancel',
+                      },
+                    ],
+                  },
+                ],
+              })
+              .then((msg) =>
+                msg.awaitMessageComponent({
+                  filter: (btnCtx) => btnCtx.user.id === interaction.user.id,
+                  time: 3 * Time.Minute,
+                }),
+              );
+            if (prompt.customId === 'cancel') {
+              return prompt.editReply({
+                content: 'Cancelled',
+                components: [],
+              });
+            }
+
+            await prompt.editReply({
+              content: 'Sending message...',
+              components: [],
+            });
+            const announceMsg = await announcementChannel.send({
               embeds: [announceEmbed],
               components: [
                 {
@@ -391,6 +434,23 @@ export default class GuildCommand extends Subcommand {
                       label: 'Watch their Attempt',
                       style: ButtonStyle.Link,
                       url: proofLink,
+                    },
+                  ],
+                },
+              ],
+            });
+
+            return prompt.editReply({
+              content: `Message sent at ${announcementChannel}!`,
+              components: [
+                {
+                  type: ComponentType.ActionRow,
+                  components: [
+                    {
+                      type: ComponentType.Button,
+                      label: 'View Message',
+                      style: ButtonStyle.Link,
+                      url: announceMsg.url,
                     },
                   ],
                 },
