@@ -69,7 +69,7 @@ export function leaderboardProps(element: LBElements): LBProp {
   }
 }
 
-export function parseElement(element: string): LBElements {
+export function parseLBElement(element: string): LBElements {
   const possibleElement = element.toLowerCase();
 
   switch (true) {

@@ -10,7 +10,7 @@ import type {
   GroupCategoryType,
   LBElements,
 } from '../typeDefs/leaderboardTypeDefs';
-import { leaderboardProps, parseElement } from './Utilities';
+import { leaderboardProps, parseLBElement } from './Utilities';
 
 type DmgDoneByType = 'skill' | 'n5';
 
@@ -158,7 +158,7 @@ export default class LeaderboardCache {
   }
 
   static async registerScore(dbData: DBLeaderboardData): Promise<void> {
-    const element = parseElement(dbData.elementCategory);
+    const element = parseLBElement(dbData.elementCategory);
     const collection = this.#accessCache(element, dbData.typeCategory);
     return new Promise((res, rej) => {
       db.collection(`${dbData.elementCategory}-${dbData.typeCategory}`)

@@ -23,7 +23,7 @@ import {
   extractLinks,
   leaderboardProps,
   parseDamageCategory,
-  parseElement,
+  parseLBElement,
   parseGroupType,
 } from '../lib/Utilities';
 import type {
@@ -276,7 +276,7 @@ export default class GuildCommand extends Subcommand {
       })
       .then(async (modalCtx) => {
         const score = modalCtx.fields.getTextInputValue('score');
-        const element = parseElement(modalCtx.fields.getTextInputValue('element'));
+        const element = parseLBElement(modalCtx.fields.getTextInputValue('element'));
         const groupType = parseGroupType(modalCtx.fields.getTextInputValue('group_type'));
         const shouldForceUpdate =
           parseTruthy(modalCtx.fields.getTextInputValue('force_update')) || false;
