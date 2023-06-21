@@ -7,8 +7,9 @@ import {
   Message,
   MessageFlags,
   roleMention,
+  type APIEmbed,
 } from 'discord.js';
-import { COLORS, EMPTY_STRING, ROLE_IDS } from '../../lib/Constants';
+import { COLORS, EMPTY_STRING, ROLE_IDS, ThreadIds } from '../../lib/Constants';
 import type { ButtonActionRow, RegisterCrownArgs } from '../../typeDefs/typeDefs';
 import { PMAEventHandler, arrayIntersection, isStaff } from './Utilities';
 
@@ -524,6 +525,74 @@ export default class AssignRoles {
         });
 
         this.#reactEmoji('✅');
+
+        if (this.#ctx.isContextMenuCommand()) {
+          await this.sendLog();
+        }
       });
+  }
+
+  async sendLog() {
+    const channel = this.#proofMessage?.channel;
+
+    if (!channel) {
+      return;
+    }
+
+    if (channel.isDMBased()) return;
+
+    if (channel.isVoiceBased()) return;
+
+    if (!channel.isTextBased()) return;
+
+    const embed: APIEmbed = {
+      color: COLORS.EMBED_COLOR,
+      title: '**Roles successfully rewarded!**',
+      description: this.#embedDescription,
+    };
+
+    if (channel.isThread()) {
+      if (channel.id !== ThreadIds.ROLE_AWARD_LOGS) return;
+
+      channel.send({
+        embeds: [embed],
+        components: this.#proofMessage
+          ? [
+            {
+              type: ComponentType.ActionRow,
+              components: [
+                {
+                  type: ComponentType.Button,
+                  label: 'Jump to User Submission',
+                  style: ButtonStyle.Link,
+                  url: this.#proofMessage.url,
+                },
+              ],
+            },
+          ]
+          : undefined,
+      });
+    } else {
+      const thread = await channel.threads.fetch(ThreadIds.ROLE_AWARD_LOGS);
+
+      thread?.send({
+        embeds: [embed],
+        components: this.#proofMessage
+          ? [
+            {
+              type: ComponentType.ActionRow,
+              components: [
+                {
+                  type: ComponentType.Button,
+                  label: 'Jump to User Submission',
+                  style: ButtonStyle.Link,
+                  url: this.#proofMessage.url,
+                },
+              ],
+            },
+          ]
+          : undefined,
+      });
+    }
   }
 }
