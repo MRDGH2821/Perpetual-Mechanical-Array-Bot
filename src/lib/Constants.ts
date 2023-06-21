@@ -1,4 +1,4 @@
-import { Colors,Emoji } from 'discord.js';
+import { Colors, Emoji } from 'discord.js';
 import { join } from 'path';
 
 export const rootDir = join(__dirname, '..', '..');
@@ -66,6 +66,7 @@ export enum ThreadIds {
   LEADERBOARD_APPLICATION = '950365539073675274',
   LEADERBOARD_BETA_APPLICATION = '1020027164713811968',
   LB_REGISTRATION_LOGS = '1098939511276326992',
+  ROLE_AWARD_LOGS = '1028164665169170494',
 }
 
 export namespace ROLE_IDS {
