@@ -37,6 +37,7 @@ export default class TravelerTeam {
     if (!this.interaction.deferred) {
       this.interaction.deferReply();
     }
+    this.buildTeam();
   }
 
   async askElement() {
@@ -95,7 +96,7 @@ export default class TravelerTeam {
       })
       .then((msg) =>
         msg.awaitMessageComponent({
-          filter: (i) => i.user.id === this.user.id,
+          filter: (i) => i.user.id === this.interaction.user.id,
           componentType: ComponentType.StringSelect,
           time: 1 * Time.Minute,
           dispose: true,
@@ -238,7 +239,7 @@ export default class TravelerTeam {
       })
       .then((msg) =>
         msg.awaitMessageComponent({
-          filter: (i) => i.user.id === this.user.id,
+          filter: (i) => i.user.id === this.interaction.user.id,
           componentType: ComponentType.Button,
           time: 1 * Time.Minute,
           dispose: true,
