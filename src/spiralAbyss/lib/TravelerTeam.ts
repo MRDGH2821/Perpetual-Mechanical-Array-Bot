@@ -260,6 +260,7 @@ export default class TravelerTeam {
     return this.askElement()
       .then((stx) => this.askTeamMates(stx))
       .then(() => this.confirmTeam())
+      .then(() => this);
   }
 
   toString() {
