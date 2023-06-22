@@ -381,6 +381,7 @@ export default class GuildCommand extends Subcommand {
 
             const announceEmbed: APIEmbed = {
               title: 'A new Abyssal Sovereign has risen!',
+              color: 0x5f7eb1,
               description: `Congratulations ${user} for getting ${roleMention(
                 ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN,
               )}!\n\n__Teams they used:__\n${team1.toString()}\n${team2.toString()}\n${team3.toString()}\n${team4.toString()}`,
@@ -419,7 +420,13 @@ export default class GuildCommand extends Subcommand {
               })
               .then((msg) =>
                 msg.awaitMessageComponent({
-                  filter: (btnCtx) => btnCtx.user.id === interaction.user.id,
+                  async filter(i) {
+                    await i.deferUpdate();
+                    if (i.member) {
+                      return isStaff(i.member);
+                    }
+                    return false;
+                  },
                   time: 3 * Time.Minute,
                 }),
               );
