@@ -1,9 +1,9 @@
-import { type ChatInputOrContextMenuCommandInteraction } from '@sapphire/discord.js-utilities';
 import { Time } from '@sapphire/time-utilities';
 import { toTitleCase } from '@sapphire/utilities';
 import {
   ButtonInteraction,
   ButtonStyle,
+  ChatInputCommandInteraction,
   ComponentType,
   StringSelectMenuInteraction,
   TextInputStyle,
@@ -23,17 +23,17 @@ export default class TravelerTeam {
 
   #teamMate3?: Character;
 
-  interaction: ChatInputOrContextMenuCommandInteraction;
+  interaction: ChatInputCommandInteraction;
 
-  user: ChatInputOrContextMenuCommandInteraction['user'];
+  user: ChatInputCommandInteraction['user'];
 
   #doneElements: ELEMENTS[] = [];
 
   finalised: boolean = false;
 
   constructor(
-    interaction: ChatInputOrContextMenuCommandInteraction,
-    user: ChatInputOrContextMenuCommandInteraction['user'],
+    interaction: ChatInputCommandInteraction,
+    user: ChatInputCommandInteraction['user'],
     doneElements: ELEMENTS[] = [],
   ) {
     this.interaction = interaction;
