@@ -166,7 +166,7 @@ export default class TravelerTeam {
       matchNames: true,
     };
 
-    const team = await interaction
+    return interaction
       .awaitModalSubmit({
         time: 3 * Time.Minute,
         async filter(itx) {
@@ -184,18 +184,21 @@ export default class TravelerTeam {
         const char3 = characters(mate3, charSearchOpt);
 
         if (!char1 || !char2 || !char3) {
-          throw new Error('Invalid Character Name');
+          throw new Error('Invalid Character Name(s)', {
+            cause: `Got ${mate1}, ${mate2}, ${mate3} as team mates`,
+          });
         }
-        return {
-          char1,
-          char2,
-          char3,
-        };
-      });
-
-    this.#teamMate1 = team.char1;
-    this.#teamMate2 = team.char2;
-    this.#teamMate3 = team.char3;
+        this.#teamMate1 = char1;
+        this.#teamMate2 = char2;
+        this.#teamMate3 = char3;
+        return modalItx;
+      })
+      .catch((err) =>
+        this.interaction.editReply({
+          content: `Error: ${err.message}\nCause: ${err.cause}\n\nRe-run the command again to make the team.`,
+          components: [],
+        }),
+      );
   }
 
   isTeamMade() {
