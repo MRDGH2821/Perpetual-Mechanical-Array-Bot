@@ -103,7 +103,6 @@ export default class TravelerTeam {
         msg.awaitMessageComponent({
           componentType: ComponentType.StringSelect,
           time: 1 * Time.Minute,
-
           dispose: true,
         }),
       )
@@ -212,9 +211,9 @@ export default class TravelerTeam {
   async confirmTeam() {
     return this.interaction
       .editReply({
-        content: `Confirm Team?\n\nTeam ${this.element}\n1. ${this.#teamMate1!.name} \n2. ${
-          this.#teamMate2!.name
-        } \n3. ${this.#teamMate3!.name}`,
+        content: `Confirm Team?\n\nTeam **${toTitleCase(this.element!)}**\n1. ${
+          this.#teamMate1!.name
+        } \n2. ${this.#teamMate2!.name} \n3. ${this.#teamMate3!.name}`,
         components: [
           {
             type: ComponentType.ActionRow,
@@ -251,7 +250,7 @@ export default class TravelerTeam {
       });
   }
 
-  buildTeam() {
+  buildTeam(): Promise<this> {
     return this.askElement()
       .then((stx) => this.askTeamMates(stx))
       .then(() => this.confirmTeam())
