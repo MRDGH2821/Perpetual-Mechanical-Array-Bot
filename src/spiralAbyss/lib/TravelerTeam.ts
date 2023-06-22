@@ -231,12 +231,6 @@ export default class TravelerTeam {
                 label: 'Remake',
                 style: ButtonStyle.Primary,
               },
-              {
-                type: ComponentType.Button,
-                customId: 'cancel_team',
-                label: 'Cancel',
-                style: ButtonStyle.Danger,
-              },
             ],
           },
         ],
@@ -245,25 +239,15 @@ export default class TravelerTeam {
         msg.awaitMessageComponent({
           componentType: ComponentType.Button,
           time: 1 * Time.Minute,
-
           dispose: true,
         }),
       )
       .then((itx) => {
-        switch (itx.customId) {
-          case 'confirm_team': {
-            this.finalised = true;
-            break;
-          }
-          case 'remake_team': {
-            this.askTeamMates(itx);
-            break;
-          }
-          default: {
-            this.finalised = false;
-            break;
-          }
+        if (itx.customId === 'confirm_team') {
+          this.finalised = true;
+          return this;
         }
+        return this.buildTeam();
       });
   }
 
