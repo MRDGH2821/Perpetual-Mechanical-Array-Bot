@@ -9,7 +9,6 @@ import {
   TextInputStyle,
 } from 'discord.js';
 import { characters, type Character } from 'genshin-db';
-import { isStaff } from '../../baseBot/lib/Utilities';
 import { crownProps } from '../../hallOfFame/lib/Utilities';
 import { EMOJIS } from '../../lib/Constants';
 import { parseElement } from '../../lib/utils';
@@ -102,12 +101,10 @@ export default class TravelerTeam {
       })
       .then((msg) =>
         msg.awaitMessageComponent({
-          filter: async (i) => {
-            await i.deferUpdate();
-            return isStaff(i.member);
-          },
           componentType: ComponentType.StringSelect,
           time: 1 * Time.Minute,
+
+          dispose: true,
         }),
       )
       .then((mtx) => {
@@ -243,12 +240,10 @@ export default class TravelerTeam {
       })
       .then((msg) =>
         msg.awaitMessageComponent({
-          filter: async (i) => {
-            await i.deferUpdate();
-            return isStaff(i.member);
-          },
           componentType: ComponentType.Button,
           time: 1 * Time.Minute,
+
+          dispose: true,
         }),
       )
       .then((itx) => {
