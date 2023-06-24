@@ -5,7 +5,9 @@ import {
 } from '@sapphire/framework';
 import type { AutocompleteInteraction } from 'discord.js';
 import type { KitTechnology } from '../../../typeDefs/typeDefs';
-import { AMC_PROPS, DMC_PROPS, EMC_PROPS, GMC_PROPS } from '../../lib/TravelerTechnologies';
+import {
+  AMC_PROPS, DMC_PROPS, EMC_PROPS, GMC_PROPS,
+} from '../../lib/TravelerTechnologies';
 
 export default class TravelerTechAutocompleteHandler extends InteractionHandler {
   public constructor(ctx: PieceContext, options: InteractionHandler.Options) {
@@ -35,53 +37,39 @@ export default class TravelerTechAutocompleteHandler extends InteractionHandler 
 
     let choices: KitTechnology[] | undefined;
 
+    const findTech = (tech: KitTechnology) => tech.name.toLowerCase().includes(focusedOption);
+
     switch (cmdName) {
       case AMC_PROPS.skill.name: {
-        choices = AMC_PROPS.skill.techs.filter((tech) =>
-          tech.name.toLowerCase().includes(focusedOption),
-        );
+        choices = AMC_PROPS.skill.techs.filter(findTech);
         break;
       }
       case AMC_PROPS.burst.name: {
-        choices = AMC_PROPS.burst.techs.filter((tech) =>
-          tech.name.toLowerCase().includes(focusedOption),
-        );
+        choices = AMC_PROPS.burst.techs.filter(findTech);
         break;
       }
       case GMC_PROPS.skill.name: {
-        choices = GMC_PROPS.skill.techs.filter((tech) =>
-          tech.name.toLowerCase().includes(focusedOption),
-        );
+        choices = GMC_PROPS.skill.techs.filter(findTech);
         break;
       }
       case GMC_PROPS.burst.name: {
-        choices = GMC_PROPS.burst.techs.filter((tech) =>
-          tech.name.toLowerCase().includes(focusedOption),
-        );
+        choices = GMC_PROPS.burst.techs.filter(findTech);
         break;
       }
       case EMC_PROPS.skill.name: {
-        choices = EMC_PROPS.skill.techs.filter((tech) =>
-          tech.name.toLowerCase().includes(focusedOption),
-        );
+        choices = EMC_PROPS.skill.techs.filter(findTech);
         break;
       }
       case EMC_PROPS.burst.name: {
-        choices = EMC_PROPS.burst.techs.filter((tech) =>
-          tech.name.toLowerCase().includes(focusedOption),
-        );
+        choices = EMC_PROPS.burst.techs.filter(findTech);
         break;
       }
       case DMC_PROPS.skill.name: {
-        choices = DMC_PROPS.skill.techs.filter((tech) =>
-          tech.name.toLowerCase().includes(focusedOption),
-        );
+        choices = DMC_PROPS.skill.techs.filter(findTech);
         break;
       }
       case DMC_PROPS.burst.name: {
-        choices = DMC_PROPS.burst.techs.filter((tech) =>
-          tech.name.toLowerCase().includes(focusedOption),
-        );
+        choices = DMC_PROPS.burst.techs.filter(findTech);
         break;
       }
       default: {
