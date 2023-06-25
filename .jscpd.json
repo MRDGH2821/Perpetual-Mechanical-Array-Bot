@@ -1,18 +1,28 @@
 {
   "gitignore": true,
   "ignore": [
-    "**/node_modules/**",
+    "./src/listeners/**",
+    "**.lock**",
     "**/.git/**",
-    "**/.rbenv/**",
-    "**/.venv/**",
-    "**/*cache*/**",
     "**/.github/**",
     "**/.idea/**",
-    "**/report/**",
-    "**/*.svg",
-    "**/dist/**",
+    "**/.rbenv/**",
+    "**/.venv/**",
     "**/.yarn/**",
-    "**.lock**"
+    "**/*.svg",
+    "**/*cache*/**",
+    "**/dist/**",
+    "**/node_modules/**",
+    "**/report/**"
+  ],
+  "ignorePattern": [
+    "import.*from\\s*'.*'",
+    "export.*|constructor\\(.*|super\\(.*|...options.*|name:.*|description:.*",
+    "override register.*|registry.register.*|guildIds: \\[.*",
+    "components: \\[.*|type: Com.*|(Back to first place).*|style: .*|url: firstMsg.*",
+    "tvmGuild.*|forum.*el.*",
+    "Traveler Damage.*|Highest Damage.*|url: p.*|timestamp: n.*|color: p.*",
+    "name: E.*|value: 'N.*|publishE.*|embed.*"
   ],
   "reporters": ["html", "markdown"],
   "threshold": 5
