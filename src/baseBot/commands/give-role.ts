@@ -15,7 +15,9 @@ import {
   PermissionFlagsBits,
   type SelectMenuComponentOptionData,
 } from 'discord.js';
-import { COLORS, ChannelIds, EMOJIS, ROLE_IDS } from '../../lib/Constants';
+import {
+  COLORS, ChannelIds, EMOJIS, ROLE_IDS,
+} from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import type { JSONCmd } from '../../typeDefs/typeDefs';
 import AssignRoles from '../lib/AssignRoles';

@@ -1,5 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Events, Listener, container, type ListenerOptions } from '@sapphire/framework';
+import {
+  Events, Listener, container, type ListenerOptions,
+} from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { pickRandom } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
@@ -17,17 +19,16 @@ const isEnabled = () => parseBoolean(process.env.AUTORESPONSE_TIKTOK);
   name: 'TikTok Autoresponse',
 })
 export default class TikTokResponse extends Listener<typeof Events.MessageCreate> {
-  static Quote = () =>
-    pickRandom(
-      [
-        'Do this\n https://tenor.com/view/tiktok-tiktokbad-bad-trash-garbage-gif-21041014',
-        'https://cdn.discordapp.com/attachments/803459900180004904/1005441017375367208/image0.gif',
-        'https://tenor.com/view/tiktok-tiktok-cringe-watermark-tiktok-watermark-watermark-cringe-gif-22182993',
-        'Somebody mentioned TikTok?!?!?!??!? \n\n*Dies of cringe*',
-      ]
-        .concat(QuotesManager.getQuotes('TikTokGifs'), QuotesManager.getQuotes('TikTokQuotes'))
-        .flat(),
-    );
+  static Quote = () => pickRandom(
+    [
+      'Do this\n https://tenor.com/view/tiktok-tiktokbad-bad-trash-garbage-gif-21041014',
+      'https://cdn.discordapp.com/attachments/803459900180004904/1005441017375367208/image0.gif',
+      'https://tenor.com/view/tiktok-tiktok-cringe-watermark-tiktok-watermark-watermark-cringe-gif-22182993',
+      'Somebody mentioned TikTok?!?!?!??!? \n\n*Dies of cringe*',
+    ]
+      .concat(QuotesManager.getQuotes('TikTokGifs'), QuotesManager.getQuotes('TikTokQuotes'))
+      .flat(),
+  );
 
   public run(message: Message) {
     const { content } = message;

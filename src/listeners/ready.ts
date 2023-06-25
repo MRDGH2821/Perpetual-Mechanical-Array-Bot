@@ -1,6 +1,8 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, Store } from '@sapphire/framework';
-import { blue, gray, green, magenta, magentaBright, white, yellow } from 'colorette';
+import {
+  blue, gray, green, magenta, magentaBright, white, yellow,
+} from 'colorette';
 import { PMAEventHandler } from '../baseBot/lib/Utilities';
 import { setClient } from '../lib/ClientExtractor';
 
@@ -39,7 +41,7 @@ export default class ReadyEvent extends Listener {
 ${line01} ${pad}${blc('1.0.0')}
 ${line02} ${pad}[${success}] Gateway
 ${line03}${dev ? ` ${pad}${blc('<')}${llc('/')}${blc('>')} ${llc('DEVELOPMENT MODE')}` : ''}
-		`.trim(),
+    `.trim(),
     );
   }
 

@@ -9,7 +9,9 @@ import {
   roleMention,
   type APIEmbed,
 } from 'discord.js';
-import { COLORS, EMPTY_STRING, ROLE_IDS, ThreadIds } from '../../lib/Constants';
+import {
+  COLORS, EMPTY_STRING, ROLE_IDS, ThreadIds,
+} from '../../lib/Constants';
 import type { ButtonActionRow, RegisterCrownArgs } from '../../typeDefs/typeDefs';
 import { PMAEventHandler, arrayIntersection, isStaff } from './Utilities';
 
@@ -418,8 +420,7 @@ export default class AssignRoles {
             }
             if (clearType === 'sovereign') {
               conditionals.exp = 5000;
-              conditionals.notes =
-                'Cleared with 4 different Traveler elements with 4 different teams with no overlap between teammates';
+              conditionals.notes = 'Cleared with 4 different Traveler elements with 4 different teams with no overlap between teammates';
               conditionals.role = ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN;
               conditionals.emoji = '⚔️';
             }

@@ -278,8 +278,7 @@ export default class GuildCommand extends Subcommand {
         const score = modalCtx.fields.getTextInputValue('score');
         const element = parseLBElement(modalCtx.fields.getTextInputValue('element'));
         const groupType = parseGroupType(modalCtx.fields.getTextInputValue('group_type'));
-        const shouldForceUpdate =
-          parseTruthy(modalCtx.fields.getTextInputValue('force_update')) || false;
+        const shouldForceUpdate = parseTruthy(modalCtx.fields.getTextInputValue('force_update')) || false;
         await modalCtx.deferReply({
           ephemeral: true,
         });
@@ -300,9 +299,9 @@ export default class GuildCommand extends Subcommand {
   public async registerContestant(
     args: LBRegistrationArgs,
     interaction:
-      | Subcommand.ChatInputCommandInteraction
-      | Subcommand.ContextMenuCommandInteraction
-      | ModalSubmitInteraction,
+    | Subcommand.ChatInputCommandInteraction
+    | Subcommand.ContextMenuCommandInteraction
+    | ModalSubmitInteraction,
   ) {
     if (!interaction.deferred) {
       await interaction.deferReply();
@@ -385,10 +384,9 @@ export default class GuildCommand extends Subcommand {
       const { author, content, attachments } = args.proofMessage;
       const firstAtt = attachments.first();
 
-      const proofURL =
-        firstAtt?.url ||
-        firstAtt?.proxyURL ||
-        (assets.possibleLinks ? assets.possibleLinks[0] : 'https://youtube.com');
+      const proofURL = firstAtt?.url
+        || firstAtt?.proxyURL
+        || (assets.possibleLinks ? assets.possibleLinks[0] : 'https://youtube.com');
 
       embed.image = {
         url: proofURL,
@@ -478,8 +476,8 @@ export default class GuildCommand extends Subcommand {
         .then((msg) => {
           interaction.followUp({
             content:
-              firstAtt?.url ||
-              (assets.possibleLinks
+              firstAtt?.url
+              || (assets.possibleLinks
                 ? assets.possibleLinks[0]
                 : "No URLs/Videos found in contestant's message"),
             flags: MessageFlags.Ephemeral,

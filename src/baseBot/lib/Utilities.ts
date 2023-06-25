@@ -36,8 +36,8 @@ export function isStaff(
         'KickMembers',
         'ManageChannels',
         'ModerateMembers',
-      ]) ||
-      member.permissions.has('Administrator', true)
+      ])
+      || member.permissions.has('Administrator', true)
     ) {
       return true;
     }
@@ -77,7 +77,9 @@ type FreezeOptions = {
 export async function freezeMuteUser(options: FreezeOptions) {
   const pain1 = [EMOJIS.Aether_Pain1, EMOJIS.Lumine_Pain1];
   const pain2 = [EMOJIS.Aether_Pain2, EMOJIS.Lumine_Pain2];
-  const { member, duration, reason, chance, channel } = options;
+  const {
+    member, duration, reason, chance, channel,
+  } = options;
   const { logger } = container;
   const painEmotes = `${pickRandom(pain1)}${pickRandom(pain2)}`;
   const RNG = randomInt(0, 100);

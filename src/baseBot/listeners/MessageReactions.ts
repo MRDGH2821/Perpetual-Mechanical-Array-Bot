@@ -1,5 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { container, Events, Listener, type ListenerOptions } from '@sapphire/framework';
+import {
+  container, Events, Listener, type ListenerOptions,
+} from '@sapphire/framework';
 import { pickRandom } from '@sapphire/utilities';
 import type { EmojiIdentifierResolvable, Message } from 'discord.js';
 import { EMOJIS } from '../../lib/Constants';
@@ -54,13 +56,11 @@ export default class MessageReactions extends Listener<typeof Events.MessageCrea
         ],
       },
       {
-        condition: (content: string) =>
-          /(noodle)|<@!58143033065671434>|ramen|noods|<@&826393865275047946>/gimu.test(content),
+        condition: (content: string) => /(noodle)|<@!58143033065671434>|ramen|noods|<@&826393865275047946>/gimu.test(content),
         emojis: ['🍜', '🍝', '👶', '🤱', '🐣', '🍼', '🚼'],
       },
       {
-        condition: (content: string) =>
-          /(yawning|<@!98966314055405568>|<@98966314055405568>)/gimu.test(content),
+        condition: (content: string) => /(yawning|<@!98966314055405568>|<@98966314055405568>)/gimu.test(content),
         emojis: ['👴', '👑', '🐳', '🐋'],
       },
       {

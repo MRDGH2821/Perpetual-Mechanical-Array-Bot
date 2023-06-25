@@ -1,5 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { container, Events, Listener, type ListenerOptions } from '@sapphire/framework';
+import {
+  container, Events, Listener, type ListenerOptions,
+} from '@sapphire/framework';
 import { ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 

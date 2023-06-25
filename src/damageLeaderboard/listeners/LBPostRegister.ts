@@ -65,7 +65,7 @@ export default class LBPostRegister extends Listener {
         if (emojisDone.has(emoji)) {
           return args.proofMessage.react('#️⃣');
         }
-        container.logger.debug(`Emoji: `, emoji);
+        container.logger.debug('Emoji: ', emoji);
         return args.proofMessage.react(emoji.toString()).then((rt) => {
           emojisDone.add(emoji);
           return rt;
@@ -102,7 +102,7 @@ export default class LBPostRegister extends Listener {
     const thread = await channel.threads.fetch(ThreadIds.LB_REGISTRATION_LOGS);
 
     if (!thread?.isThread()) {
-      throw new Error(`Cannot fetch Leaderboard Registration log thread`);
+      throw new Error('Cannot fetch Leaderboard Registration log thread');
     }
     await thread.join();
 

@@ -2,7 +2,9 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { container, Listener, type ListenerOptions } from '@sapphire/framework';
 import type { APIEmbed, ForumChannel, TextChannel } from 'discord.js';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
-import { ChannelIds, COLORS, ICONS, ThreadIds } from '../../lib/Constants';
+import {
+  ChannelIds, COLORS, ICONS, ThreadIds,
+} from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import db from '../../lib/Firestore';
 
@@ -30,7 +32,7 @@ export default class LBSetup extends Listener {
         },
       )
       .then(() => {
-        logger.debug(`Channels registered in database for Leaderboard`);
+        logger.debug('Channels registered in database for Leaderboard');
         if (channels.textChannel) {
           this.setupSummaryChannel(channels.textChannel).catch(logger.error);
         }

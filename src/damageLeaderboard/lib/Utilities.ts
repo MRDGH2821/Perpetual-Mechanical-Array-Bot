@@ -1,5 +1,7 @@
 import { pickRandom } from '@sapphire/utilities';
-import { COLORS, EMOJIS, EMOJIS2, ICONS } from '../../lib/Constants';
+import {
+  COLORS, EMOJIS, EMOJIS2, ICONS,
+} from '../../lib/Constants';
 import type { ValueOf } from '../../typeDefs/typeDefs';
 import type {
   ElementDamageCategories,

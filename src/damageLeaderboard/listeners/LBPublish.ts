@@ -1,7 +1,9 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { container, Listener, type ListenerOptions } from '@sapphire/framework';
 import { toTitleCase } from '@sapphire/utilities';
-import { ButtonStyle, ComponentType, ForumChannel, type APIEmbed } from 'discord.js';
+import {
+  ButtonStyle, ComponentType, ForumChannel, type APIEmbed,
+} from 'discord.js';
 import { sequentialPromises } from 'yaspr';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import EnvConfig from '../../lib/EnvConfig';
@@ -44,15 +46,13 @@ export default class LBPublish extends Listener {
         },
       });
 
-      const insertDashLine = async () =>
-        thread.send({
-          content: LBPublish.dashLine,
-        });
+      const insertDashLine = async () => thread.send({
+        content: LBPublish.dashLine,
+      });
 
-      const insertEmbeds = async (embeds: APIEmbed[]) =>
-        thread.send({
-          embeds,
-        });
+      const insertEmbeds = async (embeds: APIEmbed[]) => thread.send({
+        embeds,
+      });
 
       await insertDashLine();
       const firstMsg = await insertEmbeds(openEmbeds);

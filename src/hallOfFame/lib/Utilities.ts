@@ -1,5 +1,7 @@
 import { pickRandom } from '@sapphire/utilities';
-import { COLORS, EMOJIS, EMOJIS2, ICONS } from '../../lib/Constants';
+import {
+  COLORS, EMOJIS, EMOJIS2, ICONS,
+} from '../../lib/Constants';
 import type { ELEMENTS, ValueOf } from '../../typeDefs/typeDefs';
 
 export type CrownProp = {

@@ -1,6 +1,8 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { container, Listener, type ListenerOptions } from '@sapphire/framework';
-import { ButtonStyle, ComponentType, ForumChannel, type APIEmbed } from 'discord.js';
+import {
+  ButtonStyle, ComponentType, ForumChannel, type APIEmbed,
+} from 'discord.js';
 import { sequentialPromises } from 'yaspr';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import EnvConfig from '../../lib/EnvConfig';
@@ -48,15 +50,13 @@ export default class HoFPublish extends Listener {
         },
       });
 
-      const insertDashLine = async () =>
-        thread.send({
-          content: HoFPublish.dashLine,
-        });
+      const insertDashLine = async () => thread.send({
+        content: HoFPublish.dashLine,
+      });
 
-      const insertEmbeds = async (embeds: APIEmbed[]) =>
-        thread.send({
-          embeds,
-        });
+      const insertEmbeds = async (embeds: APIEmbed[]) => thread.send({
+        embeds,
+      });
 
       await insertDashLine();
       const firstMsg = await insertEmbeds(oneCrownEmbeds);

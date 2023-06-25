@@ -1,5 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { container, Events, Listener, type ListenerOptions } from '@sapphire/framework';
+import {
+  container, Events, Listener, type ListenerOptions,
+} from '@sapphire/framework';
 import type { Interaction } from 'discord.js';
 import { COLORS } from '../../lib/Constants';
 import { serverLogChannel } from '../../lib/utils';

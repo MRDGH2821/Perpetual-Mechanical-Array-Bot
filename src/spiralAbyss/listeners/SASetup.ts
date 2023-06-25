@@ -24,7 +24,7 @@ export default class SASetup extends Listener {
         },
       )
       .then(() => {
-        logger.debug(`Forum channel registered in database for Spiral Abyss`);
+        logger.debug('Forum channel registered in database for Spiral Abyss');
       })
       .catch(logger.error);
   }

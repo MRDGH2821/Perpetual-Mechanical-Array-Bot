@@ -1,6 +1,8 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener, type ListenerOptions } from '@sapphire/framework';
-import { ButtonStyle, ComponentType, userMention, type Message } from 'discord.js';
+import {
+  ButtonStyle, ComponentType, userMention, type Message,
+} from 'discord.js';
 import { sequentialPromises } from 'yaspr';
 import AutoResponseTrigger from '../lib/AutoResponseTrigger';
 

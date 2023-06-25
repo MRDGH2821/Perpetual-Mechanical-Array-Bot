@@ -167,13 +167,11 @@ export default class UserCommand extends Subcommand {
         ],
         fetchReply: true,
       })
-      .then((msg) =>
-        msg.awaitMessageComponent({
-          filter: (i) => i.user.id === interaction.user.id,
-          componentType: ComponentType.Button,
-          dispose: true,
-        }),
-      )
+      .then((msg) => msg.awaitMessageComponent({
+        filter: (i) => i.user.id === interaction.user.id,
+        componentType: ComponentType.Button,
+        dispose: true,
+      }))
       .then((i) => {
         if (i.customId === 'yes') {
           const memberIDs = gangMembers.map((member) => member.id);

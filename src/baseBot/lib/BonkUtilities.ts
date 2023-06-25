@@ -120,10 +120,9 @@ export default class BonkUtilities {
    */
   isHorny(msg: string = this.message): boolean {
     const notHorny = /(n+(o|u)+t*)\s((h+o+r+n+(y|i)+)|(s+e+g+s+)|(s+e+x+))/gimu.test(msg);
-    const reallyHorny =
-      /\bh+o+r+n+(y|i){1,}\b/gimu.test(msg) ||
-      /\bs+e+g+s{1,}\b/gimu.test(msg) ||
-      /\bs+e+x{1,}\b/gimu.test(msg);
+    const reallyHorny = /\bh+o+r+n+(y|i){1,}\b/gimu.test(msg)
+      || /\bs+e+g+s{1,}\b/gimu.test(msg)
+      || /\bs+e+x{1,}\b/gimu.test(msg);
     if (reallyHorny && !notHorny) {
       container.logger.info('Horny msg detected!');
     }
