@@ -1,5 +1,4 @@
 {
-  "$schema": "https://json.schemastore.org/jscpd.json",
   "gitignore": true,
   "ignore": [
     "**/node_modules/**",
