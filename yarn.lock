@@ -3674,6 +3674,7 @@ __metadata:
     eslint-plugin-import: ^2.27.5
     firebase-admin: ^11.9.0
     genshin-db: ^4.3.9
+    jsonwebtoken: ^9.0.0
     node-schedule: ^2.1.1
     prettier: ^2.8.8
     prettier-config-mrdgh2821: ^3.0.0
