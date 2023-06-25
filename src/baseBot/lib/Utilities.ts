@@ -133,7 +133,7 @@ export async function freezeMuteUser(options: FreezeOptions) {
         .catch(async (assignErr) => {
           logger.debug(assignErr);
           await channel.send({
-            content: `Dammit, I cannot eve mute by mute role ${painEmotes}`,
+            content: `Dammit, I cannot even mute by mute role ${painEmotes}`,
           });
         });
     });
