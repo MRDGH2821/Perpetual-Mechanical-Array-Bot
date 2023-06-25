@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo "Installing Firefox..."
 sudo apt-get update
 export DEBIAN_FRONTEND=noninteractive
