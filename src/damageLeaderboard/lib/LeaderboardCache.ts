@@ -1,4 +1,5 @@
 import { container } from '@sapphire/pieces';
+import { s, type SchemaOf } from '@sapphire/shapeshift';
 import { chunk, deepClone, toTitleCase } from '@sapphire/utilities';
 import { Collection, User, type APIEmbed } from 'discord.js';
 import { parseBoolean } from '../../baseBot/lib/Utilities';
@@ -7,6 +8,7 @@ import db from '../../lib/Firestore';
 import { getUser } from '../../lib/utils';
 import type {
   DBLeaderboardData,
+  ElementDamageCategories,
   GroupCategoryType,
   LBElements,
 } from '../typeDefs/leaderboardTypeDefs';
@@ -23,6 +25,23 @@ type DamageCache = Partial<Record<DmgDoneByType, GroupCache>>;
 type CacheType = Record<LBElements, DamageCache>;
 
 const { logger } = container;
+
+type LeaderboardDBDataSchemaType = SchemaOf<DBLeaderboardData>;
+
+const LeaderboardDBDataSchema: LeaderboardDBDataSchemaType = s.object({
+  score: s.number.default(0),
+  userID: s.string,
+  proof: s.string.url({
+    allowedDomains: ['discord.com'],
+  }),
+  elementCategory: s
+    .literal<ElementDamageCategories>('anemo-dmg-skill')
+    .or(s.literal<ElementDamageCategories>('geo-dmg-skill'))
+    .or(s.literal<ElementDamageCategories>('electro-dmg-skill'))
+    .or(s.literal<ElementDamageCategories>('dendro-dmg-skill'))
+    .or(s.literal<ElementDamageCategories>('uni-dmg-n5')),
+  typeCategory: s.literal<GroupCategoryType>('open').or(s.literal<GroupCategoryType>('solo')),
+});
 
 export default class LeaderboardCache {
   static #usersPerPage = 7;
@@ -83,9 +102,11 @@ export default class LeaderboardCache {
         .orderBy('score', 'desc')
         .limit(topEntries)
         .get()
-        .then((query) =>
-          query.forEach((docSnap) => dataArray.push(docSnap.data() as DBLeaderboardData)),
-        )
+        .then((query) => query.forEach((docSnap) => {
+          const data = docSnap.data();
+          const parsedData = LeaderboardDBDataSchema.parse(data);
+          dataArray.push(parsedData);
+        }))
         .then(() => res(dataArray))
         .catch(rej);
     });
@@ -286,22 +307,18 @@ export default class LeaderboardCache {
       };
 
       this.#rankBuilder(element, 'open', 7)
-        .then((openRanks) =>
-          embed.fields?.push(
-            { name: '**Open Category Top 1-7**', value: openRanks[0], inline: true },
-            {
-              name: '**Open Category Top 8-14**',
-              value: openRanks[1],
-              inline: true,
-            },
-          ),
-        )
-        .then(() =>
-          embed.fields?.push({
-            name: EMPTY_STRING,
-            value: EMPTY_STRING,
-          }),
-        )
+        .then((openRanks) => embed.fields?.push(
+          { name: '**Open Category Top 1-7**', value: openRanks[0], inline: true },
+          {
+            name: '**Open Category Top 8-14**',
+            value: openRanks[1],
+            inline: true,
+          },
+        ))
+        .then(() => embed.fields?.push({
+          name: EMPTY_STRING,
+          value: EMPTY_STRING,
+        }))
         .then(() => this.#rankBuilder(element, 'solo', 7))
         .then((soloRanks) => {
           embed.fields?.push(

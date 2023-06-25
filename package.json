@@ -25,6 +25,7 @@
     "@sapphire/plugin-logger": "^3.0.4",
     "@sapphire/plugin-subcommands": "^4.0.1",
     "@sapphire/ratelimits": "^2.4.6",
+    "@sapphire/shapeshift": "^3.9.2",
     "@sapphire/time-utilities": "^1.7.9",
     "@sapphire/utilities": "^3.12.0",
     "colorette": "^2.0.20",

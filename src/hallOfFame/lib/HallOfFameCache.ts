@@ -1,4 +1,5 @@
 import { container } from '@sapphire/pieces';
+import { s, type SchemaOf } from '@sapphire/shapeshift';
 import { range } from '@sapphire/utilities';
 import { Collection, User, type APIEmbed } from 'discord.js';
 import { sequentialPromises } from 'yaspr';
@@ -22,6 +23,17 @@ type SubCache = { 1: DataCollection } & Partial<Record<CrownQuantity, DataCollec
 type CacheType = Partial<Record<ELEMENTS, SubCache>>;
 
 const { logger } = container;
+
+type HoFDataSchemaType = SchemaOf<DBHallOfFameData>;
+
+const HoFDataSchema: HoFDataSchemaType = s.object({
+  crowns: s
+    .literal<CrownQuantity>(1)
+    .or(s.literal<CrownQuantity>(2))
+    .or(s.literal<CrownQuantity>(3))
+    .default(1),
+  userID: s.string,
+});
 
 export default class HallOfFameCache {
   static #usersPerPage = 20;
@@ -68,9 +80,11 @@ export default class HallOfFameCache {
         .orderBy('crowns', 'desc')
         .limit(topEntries)
         .get()
-        .then((query) =>
-          query.forEach((docSnap) => dataArray.push(docSnap.data() as DBHallOfFameData)),
-        )
+        .then((query) => query.forEach((docSnap) => {
+          const data = docSnap.data();
+          const validatedData = HoFDataSchema.parse(data);
+          dataArray.push(validatedData);
+        }))
         .then(() => res(dataArray))
         .catch(rej);
     });
