@@ -1,3 +1,4 @@
+import { s } from '@sapphire/shapeshift';
 import { pickRandom } from '@sapphire/utilities';
 import {
   COLORS, EMOJIS, EMOJIS2, ICONS,
@@ -169,3 +170,7 @@ export function digitEmoji(digit: any) {
       throw new Error(`Invalid digit provided: ${digit}`);
   }
 }
+
+export const proofLinkValidator = s.string.url({
+  allowedDomains: ['discord.com'],
+});

@@ -12,7 +12,7 @@ import type {
   GroupCategoryType,
   LBElements,
 } from '../typeDefs/leaderboardTypeDefs';
-import { leaderboardProps, parseLBElement } from './Utilities';
+import { leaderboardProps, parseLBElement, proofLinkValidator } from './Utilities';
 
 type DmgDoneByType = 'skill' | 'n5';
 
@@ -31,9 +31,7 @@ type LeaderboardDBDataSchemaType = SchemaOf<DBLeaderboardData>;
 const LeaderboardDBDataSchema: LeaderboardDBDataSchemaType = s.object({
   score: s.number.default(0),
   userID: s.string,
-  proof: s.string.url({
-    allowedDomains: ['discord.com'],
-  }),
+  proof: proofLinkValidator,
   elementCategory: s
     .literal<ElementDamageCategories>('anemo-dmg-skill')
     .or(s.literal<ElementDamageCategories>('geo-dmg-skill'))
