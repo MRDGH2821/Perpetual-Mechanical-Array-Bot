@@ -89,7 +89,7 @@ export default class RNGMuteResponse extends Listener<typeof Events.MessageCreat
               return;
             }
             await freezeMuteUser({
-              chance: 10,
+              chance: message.content.includes('test mute') ? 100 : muteChance,
               channel: channel as TextChannel,
               duration: pickRandom(muteMinutes) * 1000 * 60,
               member: message.member!,
