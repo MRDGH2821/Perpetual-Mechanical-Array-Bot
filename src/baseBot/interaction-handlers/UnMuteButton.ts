@@ -27,8 +27,18 @@ export default class UnMuteButton extends InteractionHandler {
 
     const guild = await interaction.client.guilds.fetch(EnvConfig.guildId);
     const member = await guild.members.fetch(interaction.user);
+    const diff = Date.now() - interaction.message.createdTimestamp;
 
-    if (interaction.message.createdTimestamp - Date.now() < Time.Hour) {
+    /*
+    this.container.logger.debug({
+      createdTimestamp: interaction.message.createdTimestamp,
+      now: Date.now(),
+      diff,
+      oneHour: Time.Hour,
+    });
+*/
+
+    if (diff > Time.Hour) {
       this.container.logger.info(
         'Will not unmute user because 1 hour has passed since the unmute message being sent.',
         {
@@ -51,6 +61,7 @@ export default class UnMuteButton extends InteractionHandler {
     this.container.logger.debug('Editing msg to remove button');
     return interaction.editReply({
       content: 'Timeout/mute role is successfully removed',
+      components: [],
     });
   }
 }
