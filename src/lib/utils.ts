@@ -46,19 +46,23 @@ export function getSuccessLoggerData(guild: Guild | null, user: User, command: C
   const author = getAuthorInfo(user);
   const sentAt = getGuildInfo(guild);
 
-  return { shard, commandName, author, sentAt };
+  return {
+    shard,
+    commandName,
+    author,
+    sentAt,
+  };
 }
 
 export function logSuccessCommand(
   payload:
-    | ContextMenuCommandSuccessPayload
-    | ChatInputCommandSuccessPayload
-    | MessageCommandSuccessPayload,
+  | ContextMenuCommandSuccessPayload
+  | ChatInputCommandSuccessPayload
+  | MessageCommandSuccessPayload,
 ): void {
-  const successLoggerData: ReturnType<typeof getSuccessLoggerData> =
-    'interaction' in payload
-      ? getSuccessLoggerData(payload.interaction.guild, payload.interaction.user, payload.command)
-      : getSuccessLoggerData(payload.message.guild, payload.message.author, payload.command);
+  const successLoggerData: ReturnType<typeof getSuccessLoggerData> = 'interaction' in payload
+    ? getSuccessLoggerData(payload.interaction.guild, payload.interaction.user, payload.command)
+    : getSuccessLoggerData(payload.message.guild, payload.message.author, payload.command);
 
   container.logger.debug(
     `${successLoggerData.shard} - ${successLoggerData.commandName} ${successLoggerData.author} ${successLoggerData.sentAt}`,
@@ -132,8 +136,9 @@ export function getAbyssQuote() {
 export async function viewBook(book: APIEmbed[]) {
   const pg = new LazyPaginatedMessage();
 
-  const addEmbed = (embed: APIEmbed) =>
-    pg.addAsyncPageBuilder(async (builder) => builder.setEmbeds([embed]));
+  function addEmbed(embed: APIEmbed) {
+    return pg.addAsyncPageBuilder(async (builder) => builder.setEmbeds([embed]));
+  }
 
   await sequentialPromises(book, addEmbed);
 

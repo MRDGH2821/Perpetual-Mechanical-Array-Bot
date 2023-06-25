@@ -32,42 +32,42 @@ export default class SARestore extends Listener {
 
     const getMember = (id: string) => tvmGuild.members.fetch(id);
 
-    const assignRole = (roleId: ROLE_IDS.SpiralAbyss, userId: string) =>
-      getMember(userId).then((member) => member.roles.add(roleId));
+    function assignRole(roleId: ROLE_IDS.SpiralAbyss, userId: string) {
+      return getMember(userId).then((member) => member.roles.add(roleId));
+    }
 
     let countTraveler = 0;
     let countConqueror = 0;
     let countSovereign = 0;
 
+    const { ABYSSAL_CONQUEROR, ABYSSAL_SOVEREIGN, ABYSSAL_TRAVELER } = ROLE_IDS.SpiralAbyss;
+
     if (fileContent.traveler) {
-      const assignTraveler = (userId: string) =>
-        assignRole(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER, userId)
-          .then(() => {
-            countTraveler += 1;
-          })
-          .catch(container.logger.error);
+      const assignTraveler = (userId: string) => assignRole(ABYSSAL_TRAVELER, userId)
+        .then(() => {
+          countTraveler += 1;
+        })
+        .catch(container.logger.error);
 
       await sequentialPromises(fileContent.traveler, assignTraveler);
     }
 
     if (fileContent.conqueror) {
-      const assignConqueror = (userId: string) =>
-        assignRole(ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR, userId)
-          .then(() => {
-            countConqueror += 1;
-          })
-          .catch(container.logger.error);
+      const assignConqueror = (userId: string) => assignRole(ABYSSAL_CONQUEROR, userId)
+        .then(() => {
+          countConqueror += 1;
+        })
+        .catch(container.logger.error);
 
       await sequentialPromises(fileContent.conqueror, assignConqueror);
     }
 
     if (fileContent.sovereign) {
-      const assignSovereign = (userId: string) =>
-        assignRole(ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN, userId)
-          .then(() => {
-            countSovereign += 1;
-          })
-          .catch(container.logger.error);
+      const assignSovereign = (userId: string) => assignRole(ABYSSAL_SOVEREIGN, userId)
+        .then(() => {
+          countSovereign += 1;
+        })
+        .catch(container.logger.error);
 
       await sequentialPromises(fileContent.sovereign, assignSovereign);
     }
