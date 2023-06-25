@@ -44,11 +44,8 @@
     "@typescript-eslint/parser": "^5.60.0",
     "dotenv": "^16.3.1",
     "eslint": "^8.43.0",
-    "eslint-config-airbnb-ts-prettier": "^1.0.1",
+    "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-jsx-a11y": "^6.7.1",
-    "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "^2.8.8",
     "prettier-config-mrdgh2821": "^3.0.0",
     "prettier-plugin-organize-imports": "^3.2.2",
@@ -67,12 +64,6 @@
     "format": "prettier --write .",
     "lint": "eslint . --fix --ignore-path .gitignore",
     "docker:app": "docker compose up -d --build app"
-  },
-  "peerDependencies": {
-    "eslint-plugin-import": "*",
-    "eslint-plugin-jsx-a11y": "*",
-    "eslint-plugin-react": "*",
-    "eslint-plugin-react-hooks": "*"
   },
   "optionalDependencies": {
     "@sapphire/cli": "^1.6.1"
