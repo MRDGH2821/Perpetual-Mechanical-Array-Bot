@@ -88,7 +88,7 @@ export default class LBPublish extends Listener {
         const forumDB = docSnap.data();
 
         if (!forumDB) {
-          throw new Error('Cannot fetch Forum channel for Hall Of Fame');
+          throw new Error('Cannot fetch Forum channel for Damage Leaderboard');
         }
 
         const tvmGuild = await this.container.client.guilds.fetch(EnvConfig.guildId);
