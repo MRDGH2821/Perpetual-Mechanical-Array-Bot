@@ -166,13 +166,15 @@ export default class LeaderboardCache {
     return collection.get(userID);
   }
 
+  private static collectionToArray(element: LBElements, groupType: GroupCategoryType) {
+    return this.#accessCache(element, groupType)
+      .clone()
+      .sort((data1, data2) => data2.score - data1.score)
+      .map((data) => data);
+  }
+
   static async getRank(userID: User['id'], element: LBElements, groupType: GroupCategoryType) {
-    let collection = this.#accessCache(element, groupType).clone();
-
-    collection = collection.sort((data1, data2) => data2.score - data1.score);
-
-    const array = collection.map((data) => data.userID);
-
+    const array = this.collectionToArray(element, groupType).map((data) => data.userID);
     return array.indexOf(userID) + 1;
   }
 
@@ -197,11 +199,7 @@ export default class LeaderboardCache {
     groupType: GroupCategoryType,
     usersPerPage = this.#usersPerPage,
   ): Promise<string[]> {
-    let collection = this.#accessCache(element, groupType).clone();
-
-    collection = collection.sort((data1, data2) => data2.score - data1.score);
-
-    const array = collection.map((data) => data);
+    const array = this.collectionToArray(element, groupType);
 
     if (array.length < 1) {
       return ['No members found in this section'];
