@@ -25,12 +25,9 @@ import {
   parseDamageCategory,
   parseGroupType,
   parseLBElement,
+  proofLinkValidator,
 } from '../lib/Utilities';
-import type {
-  GroupCategoryType,
-  LBElements,
-  LBRegistrationArgs,
-} from '../typeDefs/leaderboardTypeDefs';
+import type { LBRegistrationArgs } from '../typeDefs/leaderboardTypeDefs';
 
 const cmdDef: JSONCmd = {
   name: 'leaderboard',
@@ -121,11 +118,8 @@ export default class GuildCommand extends Subcommand {
           name: cmdDef.options![0].name,
           type: 'method',
           async chatInputRun(interaction) {
-            const element = interaction.options.getString('element', true) as LBElements;
-            const groupType = interaction.options.getString(
-              'group_type',
-              true,
-            ) as GroupCategoryType;
+            const element = parseLBElement(interaction.options.getString('element', true));
+            const groupType = parseGroupType(interaction.options.getString('group_type', true));
             await interaction.deferReply({
               ephemeral: true,
             });
@@ -144,13 +138,30 @@ export default class GuildCommand extends Subcommand {
     });
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  private validateProofLink(link: string): boolean {
+    try {
+      proofLinkValidator.parse(link);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   public async parseRegistration(interaction: Subcommand.ChatInputCommandInteraction) {
     const contestant = interaction.options.getUser('contestant', true);
-    const element = interaction.options.getString('element', true) as LBElements;
-    const groupType = interaction.options.getString('group_type') as GroupCategoryType;
+    const element = parseLBElement(interaction.options.getString('element', true));
+    const groupType = parseGroupType(interaction.options.getString('group_type', true));
     const score = interaction.options.getInteger('score', true);
     const proofLink = interaction.options.getString('proof_link', true);
     const shouldForceUpdate = interaction.options.getBoolean('force_update') || false;
+
+    if (!this.validateProofLink(proofLink)) {
+      return interaction.reply({
+        content: 'Invalid proof link',
+        flags: MessageFlags.Ephemeral,
+      });
+    }
 
     const lbChannel = await interaction.guild?.channels.fetch(ChannelIds.SHOWCASE);
     if (!lbChannel?.isTextBased()) {
