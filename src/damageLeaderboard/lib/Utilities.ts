@@ -3,6 +3,7 @@ import { pickRandom } from '@sapphire/utilities';
 import {
   COLORS, EMOJIS, EMOJIS2, ICONS,
 } from '../../lib/Constants';
+import { parseElement } from '../../lib/utils';
 import type { ValueOf } from '../../typeDefs/typeDefs';
 import type {
   ElementDamageCategories,
@@ -73,27 +74,14 @@ export function leaderboardProps(element: LBElements): LBProp {
 }
 
 export function parseLBElement(element: string): LBElements {
-  const possibleElement = element.toLowerCase();
-
-  switch (true) {
-    case /\banemo\b/gimu.test(possibleElement):
-      return 'anemo';
-
-    case /\bgeo\b/gimu.test(possibleElement):
-      return 'geo';
-
-    case /\belectro\b/gimu.test(possibleElement):
-      return 'electro';
-
-    case /\bdendro\b/gimu.test(possibleElement):
-      return 'dendro';
-
-    case /\buni\b/gimu.test(possibleElement):
-      return 'uni';
-
-    default:
-      throw new Error(`Invalid element type ${possibleElement}`);
-  }
+  const possibleElement = parseElement(element);
+  return s
+    .literal<LBElements>('anemo')
+    .or(s.literal<LBElements>('geo'))
+    .or(s.literal<LBElements>('electro'))
+    .or(s.literal<LBElements>('dendro'))
+    .or(s.literal<LBElements>('uni'))
+    .parse(possibleElement);
 }
 
 export function parseGroupType(groupType: string): GroupCategoryType {
