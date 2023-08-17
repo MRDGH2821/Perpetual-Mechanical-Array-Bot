@@ -2,9 +2,6 @@ version: '3.9'
 
 services:
   app:
-    profiles:
-      - dev
-      - prod
     build:
       context: .
     container_name: perpetual-mechanical-array-bot
