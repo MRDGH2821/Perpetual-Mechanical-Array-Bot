@@ -1,5 +1,5 @@
-import { Colors, Emoji } from 'discord.js';
 import { join } from 'path';
+import { Colors, Emoji } from 'discord.js';
 
 export const rootDir = join(__dirname, '..', '..');
 export const srcDir = join(rootDir, 'src');

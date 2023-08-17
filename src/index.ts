@@ -1,8 +1,8 @@
+import { join } from 'node:path';
 import { LogLevel, SapphireClient } from '@sapphire/framework';
 import { getRootData } from '@sapphire/pieces';
 import type { ClientOptions } from 'discord.js';
 import { GatewayIntentBits, Partials } from 'discord.js';
-import { join } from 'node:path';
 import './lib/setup';
 import './scheduledTasks';
 

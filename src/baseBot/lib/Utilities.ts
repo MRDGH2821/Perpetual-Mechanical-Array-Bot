@@ -1,8 +1,10 @@
+import { randomInt } from 'crypto';
+import EventEmitter from 'events';
+import { setTimeout } from 'timers/promises';
 import { MessageLinkRegex } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/pieces';
 import { Time } from '@sapphire/time-utilities';
 import { pickRandom } from '@sapphire/utilities';
-import { randomInt } from 'crypto';
 import {
   ButtonStyle,
   ComponentType,
@@ -12,8 +14,6 @@ import {
   type APIEmbed,
   type APIInteractionGuildMember,
 } from 'discord.js';
-import EventEmitter from 'events';
-import { setTimeout } from 'timers/promises';
 import { EMOJIS, ROLE_IDS, STAFF_ARRAY } from '../../lib/Constants';
 
 export function arrayIntersection<T>(arr1: T[], arr2: T[]) {

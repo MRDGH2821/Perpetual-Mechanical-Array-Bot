@@ -1,7 +1,8 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
-import { ButtonStyle, ComponentType } from 'discord-api-types/v10';
-import { User, userMention } from 'discord.js';
+import {
+  ButtonStyle, ComponentType, User, userMention,
+} from 'discord.js';
 import { COLORS } from '../../lib/Constants';
 
 const pkg = require('../../../package.json');
