@@ -66,6 +66,12 @@ export default class LBSetup extends Listener {
       color: COLORS.DENDRO,
     };
 
+    const hydroSkillBoard: APIEmbed = {
+      title: 'Hydro Placeholder',
+      description: 'Will be updated soon',
+      color: COLORS.HYDRO,
+    };
+
     const uniSkillBoard: APIEmbed = {
       title: 'Universal placeholder',
       description: 'Will be updated soon',
@@ -77,9 +83,9 @@ export default class LBSetup extends Listener {
     );
     const subCmd = cmd?.options.find((option) => option.name === 'register');
 
-    const subCmdMention = `</${cmd?.name || 'leaderboard'} ${subCmd?.name || 'register'}:${
-      cmd?.id
-    }>`;
+    const subCmdMention = `</${cmd?.name || 'leaderboard'} ${
+      subCmd?.name || 'register'
+    }:${cmd?.id}>`;
     const information: APIEmbed = {
       color: COLORS.EMBED_COLOR,
       title: '**Traveler Mains Damage Leaderboards**',
@@ -147,33 +153,51 @@ export default class LBSetup extends Listener {
     await webhook.send({ embeds: [information] });
 
     await webhook.send({ embeds: [uniSkillBoard] }).then((message) => {
-      db.collection('leaderboards').doc('uni-dmg-n5').set({
-        messageID: message?.id,
-      });
+      db.collection('leaderboards')
+        .doc('uni-dmg-n5')
+        .set({
+          messageID: message?.id,
+        });
     });
 
     await webhook.send({ embeds: [anemoSkillBoard] }).then((message) => {
-      db.collection('leaderboards').doc('anemo-dmg-skill').set({
-        messageID: message?.id,
-      });
+      db.collection('leaderboards')
+        .doc('anemo-dmg-skill')
+        .set({
+          messageID: message?.id,
+        });
     });
 
     await webhook.send({ embeds: [geoSkillBoard] }).then((message) => {
-      db.collection('leaderboards').doc('geo-dmg-skill').set({
-        messageID: message?.id,
-      });
+      db.collection('leaderboards')
+        .doc('geo-dmg-skill')
+        .set({
+          messageID: message?.id,
+        });
     });
 
     await webhook.send({ embeds: [electroSkillBoard] }).then((message) => {
-      db.collection('leaderboards').doc('electro-dmg-skill').set({
-        messageID: message?.id,
-      });
+      db.collection('leaderboards')
+        .doc('electro-dmg-skill')
+        .set({
+          messageID: message?.id,
+        });
     });
 
     await webhook.send({ embeds: [dendroSkillBoard] }).then((message) => {
-      db.collection('leaderboards').doc('dendro-dmg-skill').set({
-        messageID: message?.id,
-      });
+      db.collection('leaderboards')
+        .doc('dendro-dmg-skill')
+        .set({
+          messageID: message?.id,
+        });
+    });
+
+    await webhook.send({ embeds: [hydroSkillBoard] }).then((message) => {
+      db.collection('leaderboards')
+        .doc('hydro-dmg-skill')
+        .set({
+          messageID: message?.id,
+        });
     });
 
     PMAEventHandler.emit('LBUpdate');

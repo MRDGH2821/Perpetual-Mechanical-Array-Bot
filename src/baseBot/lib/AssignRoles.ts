@@ -13,7 +13,7 @@ import {
   COLORS, EMPTY_STRING, ROLE_IDS, ThreadIds,
 } from '../../lib/Constants';
 import type { ButtonActionRow, RegisterCrownArgs } from '../../typeDefs/typeDefs';
-import { PMAEventHandler, arrayIntersection, isStaff } from './Utilities';
+import { arrayIntersection, isStaff, PMAEventHandler } from './Utilities';
 
 type AssignRoleOptions = {
   member: GuildMember;
@@ -187,6 +187,10 @@ export default class AssignRoles {
     if (roleID === ROLE_IDS.CROWN.DENDRO) {
       props.color = COLORS.DENDRO;
       props.emoji = '<:Dendro:803516669984505856>';
+    }
+    if (roleID === ROLE_IDS.CROWN.HYDRO) {
+      props.color = COLORS.HYDRO;
+      props.emoji = '<:Hydro:803516313782714378>';
     }
     return new Promise((res, rej) => {
       const crownAmtRow: ButtonActionRow = {
@@ -509,7 +513,7 @@ export default class AssignRoles {
               ],
             },
           ]
-          : undefined,
+          : [],
         options: {
           fetchReply: true,
         },

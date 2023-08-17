@@ -37,9 +37,12 @@ const LeaderboardDBDataSchema: LeaderboardDBDataSchemaType = s.object({
     .or(s.literal<ElementDamageCategories>('geo-dmg-skill'))
     .or(s.literal<ElementDamageCategories>('electro-dmg-skill'))
     .or(s.literal<ElementDamageCategories>('dendro-dmg-skill'))
+    .or(s.literal<ElementDamageCategories>('hydro-dmg-skill'))
     .or(s.literal<ElementDamageCategories>('uni-dmg-n5')),
   typeCategory: s.literal<GroupCategoryType>('open').or(s.literal<GroupCategoryType>('solo')),
 });
+
+const NOT_FOUND = 'No members found in this section';
 
 export default class LeaderboardCache {
   static #usersPerPage = 7;
@@ -64,6 +67,12 @@ export default class LeaderboardCache {
       },
     },
     dendro: {
+      skill: {
+        open: new Collection(),
+        solo: new Collection(),
+      },
+    },
+    hydro: {
       skill: {
         open: new Collection(),
         solo: new Collection(),
@@ -202,7 +211,7 @@ export default class LeaderboardCache {
     const array = this.collectionToArray(element, groupType);
 
     if (array.length < 1) {
-      return ['No members found in this section'];
+      return [NOT_FOUND, NOT_FOUND];
     }
 
     const chunks = chunk(array, usersPerPage);
@@ -224,6 +233,9 @@ export default class LeaderboardCache {
       const page = lines.join('\n');
       pages.push(page);
     }
+    if (pages.length <= 0) {
+      pages.push(NOT_FOUND, NOT_FOUND);
+    }
     return pages;
   }
 
@@ -242,7 +254,7 @@ export default class LeaderboardCache {
             const embed = deepClone(embedTemplate);
             embed.fields?.push({
               name: EMPTY_STRING,
-              value: page,
+              value: page || NOT_FOUND,
             });
 
             embed.footer = {
@@ -303,25 +315,29 @@ export default class LeaderboardCache {
       };
 
       this.#rankBuilder(element, 'open', 7)
-        .then((openRanks) => embed.fields?.push(
-          { name: '**Open Category Top 1-7**', value: openRanks[0], inline: true },
-          {
-            name: '**Open Category Top 8-14**',
-            value: openRanks[1],
-            inline: true,
-          },
-        ))
-        .then(() => embed.fields?.push({
-          name: EMPTY_STRING,
-          value: EMPTY_STRING,
-        }))
+        .then(
+          (openRanks) => embed.fields?.push(
+            { name: '**Open Category Top 1-7**', value: openRanks[0] || NOT_FOUND, inline: true },
+            {
+              name: '**Open Category Top 8-14**',
+              value: openRanks[1] || NOT_FOUND,
+              inline: true,
+            },
+          ),
+        )
+        .then(
+          () => embed.fields?.push({
+            name: EMPTY_STRING,
+            value: EMPTY_STRING,
+          }),
+        )
         .then(() => this.#rankBuilder(element, 'solo', 7))
         .then((soloRanks) => {
           embed.fields?.push(
-            { name: '**Solo Category Top 1-7**', value: soloRanks[0], inline: true },
+            { name: '**Solo Category Top 1-7**', value: soloRanks[0] || NOT_FOUND, inline: true },
             {
               name: '**Solo Category Top 8-14**',
-              value: soloRanks[1],
+              value: soloRanks[1] || NOT_FOUND,
               inline: true,
             },
           );

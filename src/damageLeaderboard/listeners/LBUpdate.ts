@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Listener, container } from '@sapphire/framework';
+import { container, Listener } from '@sapphire/framework';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import db from '../../lib/Firestore';
 import LeaderboardCache from '../lib/LeaderboardCache';
@@ -16,6 +16,7 @@ export default class LBUpdate extends Listener {
     const geoSkillBoard = await LeaderboardCache.generateSummaryEmbed('geo');
     const electroSkillBoard = await LeaderboardCache.generateSummaryEmbed('electro');
     const dendroSkillBoard = await LeaderboardCache.generateSummaryEmbed('dendro');
+    const hydroSkillBoard = await LeaderboardCache.generateSummaryEmbed('hydro');
     const uniSkillBoard = await LeaderboardCache.generateSummaryEmbed('uni');
 
     const leaderboardDB = db.collection('leaderboards');
@@ -24,6 +25,7 @@ export default class LBUpdate extends Listener {
     const geoMsg = (await leaderboardDB.doc('geo-dmg-skill').get()).data();
     const electroMsg = (await leaderboardDB.doc('electro-dmg-skill').get()).data();
     const dendroMsg = (await leaderboardDB.doc('dendro-dmg-skill').get()).data();
+    const hydroMsg = (await leaderboardDB.doc('hydro-dmg-skill').get()).data();
     const uniMsg = (await leaderboardDB.doc('uni-dmg-n5').get()).data();
     const webhookMsg = (await leaderboardDB.doc('webhook').get()).data() as {
       webhookID: string;
@@ -52,6 +54,12 @@ export default class LBUpdate extends Listener {
         .editMessage(dendroMsg?.messageID, { embeds: [dendroSkillBoard] })
         .catch((err) => {
           container.logger.fatal('Dendro leaderboard update failed');
+          container.logger.error(err);
+        }),
+      leaderboardHook
+        .editMessage(hydroMsg?.messageID, { embeds: [hydroSkillBoard] })
+        .catch((err) => {
+          container.logger.fatal('Hydro leaderboard update failed');
           container.logger.error(err);
         }),
       leaderboardHook.editMessage(uniMsg?.messageID, { embeds: [uniSkillBoard] }).catch((err) => {

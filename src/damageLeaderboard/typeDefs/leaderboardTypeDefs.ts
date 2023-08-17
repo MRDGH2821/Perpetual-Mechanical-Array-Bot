@@ -1,13 +1,8 @@
 import type { Message, User } from 'discord.js';
 
-export type ElementDamageCategories =
-  | 'anemo-dmg-skill'
-  | 'geo-dmg-skill'
-  | 'electro-dmg-skill'
-  | 'dendro-dmg-skill'
-  | 'uni-dmg-n5';
+export type ElementDamageCategories = `${SkillElements}-dmg-skill` | `${N5Elements}-dmg-n5`;
 
-export type SkillElements = 'anemo' | 'geo' | 'electro' | 'dendro';
+export type SkillElements = 'anemo' | 'geo' | 'electro' | 'dendro' | 'hydro';
 
 export type N5Elements = 'uni';
 

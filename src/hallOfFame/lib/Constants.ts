@@ -18,9 +18,20 @@ export const HALL_OF_FAME_ELEMENT_CHOICES = <{ name: string; value: ELEMENTS }[]
     value: 'dendro',
   },
   {
+    name: 'Monarque of Tides (Hydro)',
+    value: 'hydro',
+  },
+  {
     name: 'Arbitrator of Fate (Unaligned)',
     value: 'unaligned',
   },
 ];
 
-export const RELEASED_ELEMENTS: ELEMENTS[] = ['anemo', 'geo', 'electro', 'dendro', 'unaligned'];
+export const RELEASED_ELEMENTS: ELEMENTS[] = [
+  'anemo',
+  'geo',
+  'electro',
+  'dendro',
+  'hydro',
+  'unaligned',
+];

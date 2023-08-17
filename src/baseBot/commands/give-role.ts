@@ -16,7 +16,7 @@ import {
   type SelectMenuComponentOptionData,
 } from 'discord.js';
 import {
-  COLORS, ChannelIds, EMOJIS, ROLE_IDS,
+  ChannelIds, COLORS, EMOJIS, ROLE_IDS,
 } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import type { JSONCmd } from '../../typeDefs/typeDefs';
@@ -88,12 +88,10 @@ export default class GuildCommand extends Subcommand {
         {
           name: cmdDef.options![0].name,
           type: 'method',
-          chatInputRun: 'chatInputGet',
         },
         {
           name: cmdDef.options![1].name,
           type: 'method',
-          chatInputRun: 'chatInputGet',
         },
       ],
     });
@@ -242,6 +240,12 @@ export default class GuildCommand extends Subcommand {
         value: ROLE_IDS.CROWN.DENDRO,
       },
       {
+        description: 'Crowned their Hydro Traveler',
+        emoji: EMOJIS.Hydro || '🌊',
+        label: roles.get(ROLE_IDS.CROWN.HYDRO)?.name || 'Hydro Crown Role',
+        value: ROLE_IDS.CROWN.HYDRO,
+      },
+      {
         default: memberRoles.has(ROLE_IDS.CROWN.UNALIGNED),
         description: 'Crowned their Unaligned Traveler',
         emoji: pickRandom(['👑', '✨']),
@@ -319,7 +323,7 @@ export default class GuildCommand extends Subcommand {
     return selectedRoles;
   }
 
-  public async chatInputGet(interaction: Subcommand.ChatInputCommandInteraction) {
+  public async chatInputRun(interaction: Subcommand.ChatInputCommandInteraction) {
     await interaction.deferReply();
     let member = interaction.options.getMember('member');
     const proofLink = interaction.options.getString('proof_link');
@@ -338,7 +342,7 @@ export default class GuildCommand extends Subcommand {
       const ids = guildMessageIDsExtractor(proofLink);
       const channel = await interaction.guild?.channels.fetch(ids.channelId);
       if (channel?.isTextBased()) {
-        message = channel.messages.resolve(ids.messageId);
+        message = await channel.messages.fetch(ids.messageId);
       }
     } else {
       message = await this.messageCrawler(member);

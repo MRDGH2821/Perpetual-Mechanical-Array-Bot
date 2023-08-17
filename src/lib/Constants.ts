@@ -17,6 +17,7 @@ export enum COLORS {
   SUCCESS = 0x00c455,
   SPIRAL_ABYSS = 0x4d00f0,
   DENDRO = 0x94fe00,
+  HYDRO = 0x18aeee,
 }
 
 export enum ICONS {
@@ -24,6 +25,7 @@ export enum ICONS {
   GEO = 'https://cdn.discordapp.com/emojis/803516612430135326.png',
   ELECTRO = 'https://cdn.discordapp.com/emojis/803516644923146260.png',
   DENDRO = 'https://cdn.discordapp.com/emojis/803516669984505856.png',
+  HYDRO = 'https://cdn.discordapp.com/emojis/803516313782714378.png',
   COPIUM = 'https://cdn.discordapp.com/emojis/897176156057518130.png',
   VOID = 'https://cdn.discordapp.com/emojis/886587673408569394.png',
   SPIRAL_ABYSS = 'https://cdn.discordapp.com/emojis/806999511096361031.png',
@@ -97,6 +99,7 @@ export namespace ROLE_IDS {
     GEO = '816210137613205554',
     ELECTRO = '856509454970781696',
     DENDRO = '947887879084998696',
+    HYDRO = '1141336561577885758',
     UNALIGNED = '859430358419243038',
   }
 }
@@ -229,6 +232,10 @@ const CROWN_ROLES = [
   {
     name: 'Raja of Evergreens 👑🌲',
     value: ROLE_IDS.CROWN.DENDRO,
+  },
+  {
+    name: 'Monarque of Tides 👑🌊',
+    value: ROLE_IDS.CROWN.HYDRO,
   },
   {
     name: 'Arbitrator of Fate 👑',

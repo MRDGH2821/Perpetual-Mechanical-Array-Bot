@@ -65,6 +65,15 @@ They went extra mile to crown Unaligned Traveler in Archon Quest Chapter 2: Prol
         emoji: EMOJIS.Dendro,
         plural: 'Rajas of Evergreens',
       };
+    case 'hydro':
+      return {
+        icon: ICONS.HYDRO,
+        name: 'Monarque of Tides',
+        color: COLORS.HYDRO,
+        description: "Feel the Tides' Awakening!",
+        emoji: EMOJIS.Hydro,
+        plural: 'Monarques of Tides',
+      };
     default: {
       throw new Error(`Props for ${element} does not exist`);
     }

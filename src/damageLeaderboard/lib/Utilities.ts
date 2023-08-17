@@ -67,6 +67,13 @@ export function leaderboardProps(element: LBElements): LBProp {
         color: COLORS.DENDRO,
         emoji: EMOJIS.Dendro,
       };
+    case 'hydro':
+      return {
+        icon: ICONS.HYDRO,
+        name: 'Aquacrest Saber',
+        color: COLORS.HYDRO,
+        emoji: EMOJIS.Hydro,
+      };
     default: {
       throw new Error(`Props for ${element} does not exist`);
     }
@@ -80,6 +87,7 @@ export function parseLBElement(element: string): LBElements {
     .or(s.literal<LBElements>('geo'))
     .or(s.literal<LBElements>('electro'))
     .or(s.literal<LBElements>('dendro'))
+    .or(s.literal<LBElements>('hydro'))
     .or(s.literal<LBElements>('uni'))
     .parse(possibleElement);
 }
@@ -108,27 +116,23 @@ export function extractLinks(str: string) {
 
 export function parseDamageCategory(element: LBElements): ElementDamageCategories {
   const possibleElement = element.toLowerCase();
+  const parsedLBElement = parseLBElement(possibleElement);
 
-  switch (true) {
-    case /\banemo\b/gimu.test(possibleElement): {
-      return 'anemo-dmg-skill';
-    }
-    case /\bgeo\b/gimu.test(possibleElement): {
-      return 'geo-dmg-skill';
-    }
-    case /\belectro\b/gimu.test(possibleElement): {
-      return 'electro-dmg-skill';
-    }
-    case /\bdendro\b/gimu.test(possibleElement): {
-      return 'dendro-dmg-skill';
-    }
-    case /\buni\b/gimu.test(possibleElement): {
-      return 'uni-dmg-n5';
-    }
-    default: {
-      throw new Error(`This is not a valid element: ${element}`);
-    }
+  const categories: Record<LBElements, ElementDamageCategories> = {
+    anemo: 'anemo-dmg-skill',
+    dendro: 'dendro-dmg-skill',
+    electro: 'electro-dmg-skill',
+    geo: 'geo-dmg-skill',
+    hydro: 'hydro-dmg-skill',
+    uni: 'uni-dmg-n5',
+  };
+
+  const category = categories[parsedLBElement];
+
+  if (category) {
+    return category;
   }
+  throw new Error(`This is not a valid element: ${element}`);
 }
 
 export function digitEmoji(digit: any) {

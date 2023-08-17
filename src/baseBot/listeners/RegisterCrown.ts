@@ -36,6 +36,10 @@ export default class RegisterCrownEvent extends Listener {
         collectionName = 'dendro-crown';
         break;
       }
+      case ROLE_IDS.CROWN.HYDRO: {
+        collectionName = 'hydro-crown';
+        break;
+      }
       case ROLE_IDS.CROWN.UNALIGNED: {
         collectionName = 'unaligned-crown';
         quantity = 1;

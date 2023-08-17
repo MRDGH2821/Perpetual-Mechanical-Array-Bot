@@ -59,6 +59,11 @@ export default class HallOfFameCache {
       2: new Collection(),
       3: new Collection(),
     },
+    hydro: {
+      1: new Collection(),
+      2: new Collection(),
+      3: new Collection(),
+    },
     unaligned: {
       1: new Collection(),
     },
