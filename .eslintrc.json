@@ -4,6 +4,7 @@
   "parserOptions": {
     "project": ["tsconfig.json", "tsconfig.eslint.json"]
   },
+  "plugins": ["eslint-plugin-unused-imports"],
   "ignorePatterns": ["./.pnp.*", "./.yarn"],
   "rules": {
     "no-console": "off",
