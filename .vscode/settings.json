@@ -10,7 +10,6 @@
   "files.autoSave": "onFocusChange",
   "files.eol": "\n",
   "window.autoDetectColorScheme": true,
-  "eslint.packageManager": "yarn",
   "git.autofetch": true,
   "git.mergeEditor": true,
   "javascript.preferences.importModuleSpecifier": "project-relative",
