@@ -194,4 +194,49 @@ export default class HallOfFameCache {
         .catch(rej);
     });
   }
+
+  static isUserInCache(userID: User['id']) {
+    const anemo = {
+      1: this.#accessCache('anemo', 1).has(userID),
+      2: this.#accessCache('anemo', 2).has(userID),
+      3: this.#accessCache('anemo', 3).has(userID),
+    };
+
+    const geo = {
+      1: this.#accessCache('geo', 1).has(userID),
+      2: this.#accessCache('geo', 2).has(userID),
+      3: this.#accessCache('geo', 3).has(userID),
+    };
+
+    const electro = {
+      1: this.#accessCache('electro', 1).has(userID),
+      2: this.#accessCache('electro', 2).has(userID),
+      3: this.#accessCache('electro', 3).has(userID),
+    };
+
+    const dendro = {
+      1: this.#accessCache('dendro', 1).has(userID),
+      2: this.#accessCache('dendro', 2).has(userID),
+      3: this.#accessCache('dendro', 3).has(userID),
+    };
+
+    const hydro = {
+      1: this.#accessCache('hydro', 1).has(userID),
+      2: this.#accessCache('hydro', 2).has(userID),
+      3: this.#accessCache('hydro', 3).has(userID),
+    };
+
+    const unaligned = {
+      1: this.#accessCache('unaligned', 1).has(userID),
+    };
+
+    return {
+      anemo,
+      geo,
+      electro,
+      dendro,
+      hydro,
+      unaligned,
+    };
+  }
 }
