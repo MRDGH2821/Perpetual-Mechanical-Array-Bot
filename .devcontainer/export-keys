@@ -6,18 +6,30 @@ if [[ -n "${CODESPACES}" ]]; then
   printf "Running in GitHub Codespaces.\nNo need to export any keys."
   # Add your specific commands for GitHub Codespaces here, if needed
 else
-  echo "Running on Linux or macOS host"
-  # Add your GPG export and import commands here for Linux and macOS
 
-  fileContent=$(cat .devcontainer/gpg/gpg-key-id.txt)
+  if [[ "$(uname)" == "Linux" ]]; then
+    echo "Running on Linux host, no export required"
+  else
 
-  echo "Exporting Public Keys"
-  gpg -a --output .devcontainer/gpg/public-keys.asc --yes --export "$fileContent"
+    echo "Running on Linux or macOS host"
+    # Add your GPG export and import commands here for Linux and macOS
 
-  echo "Exporting Private Key"
-  gpg -a --passphrase-file=.devcontainer/gpg/gpg-key-password.txt --output .devcontainer/gpg/private-keys.asc --yes --export-secret-keys "$fileContent"
+    fileContent=$(cat .devcontainer/gpg/gpg-key-id.txt)
 
-  echo "Exporting Trust DB"
-  gpg -a --export-ownertrust >.devcontainer/gpg/owner-trust-db.txt
+    echo "Exporting Public Key"
+    gpg -a --passphrase-file .devcontainer/gpg/gpg-key-password.txt --output .devcontainer/gpg/public-keys.asc --yes --export "$fileContent"
+    echo "Exported Public Key"
+    echo " "
 
+    echo "Exporting Private Key"
+    gpg -a --passphrase-file .devcontainer/gpg/gpg-key-password.txt --output .devcontainer/gpg/private-keys.asc --yes --export-secret-keys "$fileContent"
+    echo "Exported Private Key"
+    echo " "
+
+    echo "Exporting Trust DB"
+    gpg -a --passphrase-file .devcontainer/gpg/gpg-key-password.txt --export-ownertrust >.devcontainer/gpg/owner-trust-db.txt
+    echo "Exported Trust DB"
+    echo " "
+
+  fi
 fi
