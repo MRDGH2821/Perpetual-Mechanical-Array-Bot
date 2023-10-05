@@ -4,7 +4,8 @@
     "rootDir": "src",
     "outDir": "dist",
     "tsBuildInfoFile": "dist/.tsbuildinfo",
-    "composite": true
+    "composite": true,
+    "experimentalDecorators": true
   },
   "include": ["src"],
   "watchOptions": {
@@ -12,5 +13,4 @@
     "watchDirectory": "dynamicPriorityPolling",
     "fallbackPolling": "priorityInterval"
   }
-
 }
