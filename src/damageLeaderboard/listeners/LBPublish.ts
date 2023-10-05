@@ -22,7 +22,7 @@ export default class LBPublish extends Listener {
   static dashLine = '-------------------------------------';
 
   public async run() {
-    async function publish(element: LBElements, HallOfFameForum: ForumChannel) {
+    async function publish(element: LBElements, WeeklyForum: ForumChannel) {
       const openEmbeds = await LeaderboardCache.generateEmbeds(element, 'open');
       const soloEmbeds = await LeaderboardCache.generateEmbeds(element, 'solo');
 
@@ -31,7 +31,7 @@ export default class LBPublish extends Listener {
 
       const iconPic = Buffer.from(await (await fetch(props.icon)).arrayBuffer());
 
-      const thread = await HallOfFameForum.threads.create({
+      const thread = await WeeklyForum.threads.create({
         name: `${toTitleCase(element)}: ${
           props.name
         } leaderboard as of ${currentDate.toUTCString()} `,
