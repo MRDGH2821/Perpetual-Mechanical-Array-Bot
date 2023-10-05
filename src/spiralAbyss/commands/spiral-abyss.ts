@@ -1,7 +1,9 @@
 import { Subcommand } from '@sapphire/plugin-subcommands';
-import { ApplicationCommandOptionType } from 'discord.js';
+import { ApplicationCommandOptionType, time } from 'discord.js';
+import { COLORS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import { viewBook } from '../../lib/utils';
+import { SAJobSchedule } from '../../scheduledTasks';
 import type { JSONCmd } from '../../typeDefs/typeDefs';
 import { SPIRAL_ABYSS_TYPE_CHOICES } from '../lib/Constants';
 import SpiralAbyssCache from '../lib/SpiralAbyssCache';
@@ -24,6 +26,11 @@ const cmdDef: JSONCmd = {
           choices: SPIRAL_ABYSS_TYPE_CHOICES,
         },
       ],
+    },
+    {
+      type: ApplicationCommandOptionType.Subcommand,
+      name: 'when-refresh',
+      description: 'When does the Spiral Abyss refresh?',
     },
   ],
 };
@@ -51,6 +58,29 @@ export default class GuildCommand extends Subcommand {
             const embeds = await SpiralAbyssCache.generateEmbeds(clearType, 10);
             const pager = await viewBook(embeds);
             return pager(interaction);
+          },
+        },
+        {
+          name: cmdDef.options![1].name,
+          type: 'method',
+          async chatInputRun(interaction) {
+            const SAPublishDate = SAJobSchedule.nextInvocation();
+
+            return interaction.editReply({
+              embeds: [
+                {
+                  color: COLORS.EMBED_COLOR,
+                  title: 'Spiral Abyss Refresh Schedule',
+                  description: `Next refresh is scheduled at: ${time(SAPublishDate)} (${time(
+                    SAPublishDate,
+                    'R',
+                  )})`,
+                  footer: {
+                    text: 'Note: It will roughly take 30 mins to reflect new data in respective channel',
+                  },
+                },
+              ],
+            });
           },
         },
       ],

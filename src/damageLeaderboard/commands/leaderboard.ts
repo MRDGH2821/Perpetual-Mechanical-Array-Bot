@@ -4,18 +4,20 @@ import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
   ButtonStyle,
-  channelMention,
   ComponentType,
   Message,
   MessageFlags,
   ModalSubmitInteraction,
   TextInputStyle,
+  channelMention,
+  time,
   type APIEmbed,
 } from 'discord.js';
-import { guildMessageIDsExtractor, isStaff, PMAEventHandler } from '../../baseBot/lib/Utilities';
-import { ChannelIds, COLORS, ICONS } from '../../lib/Constants';
+import { PMAEventHandler, guildMessageIDsExtractor, isStaff } from '../../baseBot/lib/Utilities';
+import { COLORS, ChannelIds, ICONS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import { parseTruthy, viewBook } from '../../lib/utils';
+import { LBFJobSchedule, LBUJobSchedule } from '../../scheduledTasks';
 import type { ButtonActionRow, JSONCmd } from '../../typeDefs/typeDefs';
 import { LEADERBOARD_DAMAGE_TYPE_CHOICES } from '../lib/Constants';
 import LeaderboardCache from '../lib/LeaderboardCache';
@@ -104,6 +106,11 @@ const cmdDef: JSONCmd = {
         },
       ],
     },
+    {
+      type: ApplicationCommandOptionType.Subcommand,
+      name: 'when-refresh',
+      description: 'When will the leaderboard refresh?',
+    },
   ],
 };
 export default class GuildCommand extends Subcommand {
@@ -133,6 +140,29 @@ export default class GuildCommand extends Subcommand {
           name: cmdDef.options![1].name,
           type: 'method',
           chatInputRun: 'parseRegistration',
+        },
+        {
+          name: cmdDef.options![2].name,
+          type: 'method',
+          chatInputRun(interaction) {
+            const forumPublish = LBFJobSchedule.nextInvocation();
+            const lbUpdate = LBUJobSchedule.nextInvocation();
+            return interaction.reply({
+              embeds: [
+                {
+                  color: COLORS.EMBED_COLOR,
+                  title: 'Leaderboard Refresh Schedule',
+                  description: `Next refresh is scheduled at:\n\n**Weekly Leaderboard**: ${time(forumPublish)} (${time(
+                    forumPublish,
+                    'R',
+                  )}) \n**Summary Leaderboard**: ${time(lbUpdate)} (${time(lbUpdate, 'R')})`,
+                  footer: {
+                    text: 'Note: It will roughly take 30 mins to reflect new data in respective channel',
+                  },
+                },
+              ],
+            });
+          },
         },
       ],
     });
@@ -191,7 +221,9 @@ export default class GuildCommand extends Subcommand {
     const { content } = message;
     const possibleScores = content.match(/\d+/gimu);
     const possibleGroupTypes = content.match(/(solo)|(open)/gimu);
-    const possibleElements = content.match(/(anemo)|(geo)|(electro)|(dendro)|(hydro)|(uni|universal)/gimu);
+    const possibleElements = content.match(
+      /(anemo)|(geo)|(electro)|(dendro)|(hydro)|(uni|universal)/gimu,
+    );
 
     return {
       contestant,
@@ -411,9 +443,8 @@ export default class GuildCommand extends Subcommand {
           value: `**Contestant**: ${
             author.id === args.contestant.id
               ? 'Verified'
-              : `Cannot Verify (most likely submission done on behalf of ${
-                args.contestant?.tag
-              } by ${author.tag})\n**Score**: ${
+              : `Cannot Verify (most likely submission done on behalf of ${args.contestant
+                ?.tag} by ${author.tag})\n**Score**: ${
                 content.match(`${args.score}`)?.length
                   ? 'Verified'
                   : "Cannot Verify (most likely because contestant didn't put score as text while uploading proof)"

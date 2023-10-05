@@ -1,7 +1,9 @@
 import { Subcommand } from '@sapphire/plugin-subcommands';
-import { ApplicationCommandOptionType } from 'discord.js';
+import { ApplicationCommandOptionType, time } from 'discord.js';
+import { COLORS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import { viewBook } from '../../lib/utils';
+import { HoFJobSchedule } from '../../scheduledTasks';
 import type { ELEMENTS, JSONCmd } from '../../typeDefs/typeDefs';
 import { HALL_OF_FAME_ELEMENT_CHOICES } from '../lib/Constants';
 import HallOfFameCache from '../lib/HallOfFameCache';
@@ -35,6 +37,11 @@ const cmdDef: JSONCmd = {
         },
       ],
     },
+    {
+      type: ApplicationCommandOptionType.Subcommand,
+      name: 'when-refresh',
+      description: 'When does the Hall of Fame refresh?',
+    },
   ],
 };
 export default class GuildCommand extends Subcommand {
@@ -62,6 +69,28 @@ export default class GuildCommand extends Subcommand {
             const embeds = await HallOfFameCache.generateEmbeds(element, qty, 10);
             const pager = await viewBook(embeds);
             return pager(interaction);
+          },
+        },
+        {
+          name: cmdDef.options![1].name,
+          type: 'method',
+          chatInputRun(interaction) {
+            const hofPublish = HoFJobSchedule.nextInvocation();
+            return interaction.editReply({
+              embeds: [
+                {
+                  title: 'Hall of Fame Refresh Schedule',
+                  description: `Next refresh is scheduled at: ${time(hofPublish)} (${time(
+                    hofPublish,
+                    'R',
+                  )})`,
+                  color: COLORS.EMBED_COLOR,
+                  footer: {
+                    text: 'Note: It will roughly take 30 mins to reflect new data in respective channel',
+                  },
+                },
+              ],
+            });
           },
         },
       ],
