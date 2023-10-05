@@ -15,8 +15,11 @@ import {
   PermissionFlagsBits,
   type SelectMenuComponentOptionData,
 } from 'discord.js';
+import HallOfFameCache from '../../hallOfFame/lib/HallOfFameCache';
 import {
-  ChannelIds, COLORS, EMOJIS, ROLE_IDS,
+  COLORS,
+  ChannelIds,
+  EMOJIS, ROLE_IDS,
 } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import type { JSONCmd } from '../../typeDefs/typeDefs';
@@ -165,27 +168,13 @@ export default class GuildCommand extends Subcommand {
     if (!roles) {
       throw new Error('Fetching roles failed');
     }
+    const crownData = HallOfFameCache.isUserInCache(member.id);
     const optionsArr: SelectMenuComponentOptionData[] = [
       {
-        default: memberRoles.has(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER),
-        description: 'Completed Spiral Abyss 36/36 using Traveler',
-        emoji: pickRandom([EMOJIS.DvalinHYPE, '😎']),
-        label: roles.get(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER)?.name || 'Abyssal Traveler',
+        description: 'Completed a Spiral Abyss Criteria',
+        emoji: pickRandom([EMOJIS.DullBlade, EMOJIS.DvalinHYPE, '🌀', '⚔️', '😎']),
+        label: 'Triumphed over Abyss',
         value: ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER,
-      },
-      {
-        default: memberRoles.has(ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR),
-        description: '36/36 with 3 different Traveler elements ',
-        emoji: '🌀',
-        label: roles.get(ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR)?.name || 'Abyssal Conqueror',
-        value: ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR,
-      },
-      {
-        // default: memberRoles.has(ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN),
-        description: '36/36 using 4 distinct Traveler elements & 4 distinct teams ',
-        emoji: pickRandom([EMOJIS.DullBlade, '⚔️']),
-        label: roles.get(ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN)?.name || 'Abyssal Sovereign',
-        value: ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN,
       },
       {
         default: memberRoles.has(ROLE_IDS.REPUTATION.MONDSTADT),
@@ -216,30 +205,35 @@ export default class GuildCommand extends Subcommand {
         value: ROLE_IDS.REPUTATION.SUMERU,
       },
       {
+        default: crownData.anemo[3],
         description: 'Crowned their Anemo Traveler',
         emoji: EMOJIS.Anemo || '🌪️',
         label: roles.get(ROLE_IDS.CROWN.ANEMO)?.name || 'Anemo Crown Role',
         value: ROLE_IDS.CROWN.ANEMO,
       },
       {
+        default: crownData.geo[3],
         description: 'Crowned their Geo Traveler',
         emoji: EMOJIS.Geo || '🪨',
         label: roles.get(ROLE_IDS.CROWN.GEO)?.name || 'Geo Crown Role',
         value: ROLE_IDS.CROWN.GEO,
       },
       {
+        default: crownData.electro[3],
         description: 'Crowned their Electro Traveler',
         emoji: EMOJIS.Electro || '⚡',
         label: roles.get(ROLE_IDS.CROWN.ELECTRO)?.name || 'Electro Crown Role',
         value: ROLE_IDS.CROWN.ELECTRO,
       },
       {
+        default: crownData.dendro[3],
         description: 'Crowned their Dendro Traveler',
         emoji: EMOJIS.Dendro || '🌲',
         label: roles.get(ROLE_IDS.CROWN.DENDRO)?.name || 'Dendro Crown Role',
         value: ROLE_IDS.CROWN.DENDRO,
       },
       {
+        default: crownData.hydro[3],
         description: 'Crowned their Hydro Traveler',
         emoji: EMOJIS.Hydro || '🌊',
         label: roles.get(ROLE_IDS.CROWN.HYDRO)?.name || 'Hydro Crown Role',
@@ -259,20 +253,7 @@ export default class GuildCommand extends Subcommand {
         label: roles.get(ROLE_IDS.OTHERS.WHALE)?.name || 'Whale Role',
         value: ROLE_IDS.OTHERS.WHALE,
       },
-    ].filter((option) => {
-      // if option is crown role
-      if (Object.values(ROLE_IDS.CROWN).map(String).includes(option.value)) {
-        // hide unaligned crown role once obtained
-        return !(option.value === ROLE_IDS.CROWN.UNALIGNED && option.default === true);
-      }
-      // if option is spiral abyss role
-      if (Object.values(ROLE_IDS.SpiralAbyss).map(String).includes(option.value)) {
-        // do not hide the role
-        return true;
-      }
-      // return rest of the options
-      return !memberRoles.has(option.value);
-    });
+    ].filter((option) => !option.default);
     await interaction
       .editReply({
         embeds: [
