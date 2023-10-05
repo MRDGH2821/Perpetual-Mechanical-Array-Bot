@@ -1,37 +1,64 @@
-import { LogLevel, Logger } from '@sapphire/framework';
-import { Range, RecurrenceRule, scheduleJob } from 'node-schedule';
+import { Logger, LogLevel } from '@sapphire/framework';
+import { scheduleJob } from 'node-schedule';
 import { PMAEventHandler } from './baseBot/lib/Utilities';
 
 const logger = new Logger(LogLevel.Debug);
 
 logger.info('Starting Schedules');
-const HoFRule = new RecurrenceRule(undefined, undefined, 5, undefined, 0, 0, 0, 'Etc/UTC');
 
-export const HoFJobSchedule = scheduleJob(HoFRule, () => {
-  logger.info('--------Automated Schedule---------');
-  PMAEventHandler.emit('HoFRefresh');
-  setTimeout(() => PMAEventHandler.emit('HoFPublish'), 1000 * 60 * 30);
-});
-
-const SARule = new RecurrenceRule(undefined, undefined, [1, 16], undefined, 9, 0, 0, 'Etc/UTC');
-
-export const SAJobSchedule = scheduleJob(SARule, () => {
-  PMAEventHandler.emit('spiralAbyssRefresh');
-  setTimeout(() => PMAEventHandler.emit('spiralAbyssPublish'), 1000 * 60 * 30);
-});
-
-const LBFRule = new RecurrenceRule(
-  undefined,
-  undefined,
-  undefined,
-  new Range(0, 7),
-  3,
-  0,
-  0,
-  'Etc/UTC',
+export const HoFJobSchedule = scheduleJob(
+  {
+    date: 5,
+    hour: 0,
+    minute: 0,
+    second: 0,
+    tz: 'Etc/UTC',
+  },
+  () => {
+    logger.info('--------Automated Schedule---------');
+    PMAEventHandler.emit('HoFRefresh');
+    setTimeout(() => PMAEventHandler.emit('HoFPublish'), 1000 * 60 * 30);
+  },
 );
 
-export const LBFJobSchedule = scheduleJob(LBFRule, () => {
-  PMAEventHandler.emit('LBRefresh');
-  setTimeout(() => PMAEventHandler.emit('LBFPublish'), 1000 * 60 * 30);
-});
+export const SAJobSchedule = scheduleJob(
+  {
+    date: [1, 16],
+    hour: 9,
+    minute: 0,
+    second: 0,
+    tz: 'Etc/UTC',
+  },
+  () => {
+    PMAEventHandler.emit('SARefresh');
+    setTimeout(() => PMAEventHandler.emit('SAPublish'), 1000 * 60 * 30);
+  },
+);
+
+export const LBFJobSchedule = scheduleJob(
+  {
+    dayOfWeek: 6,
+    hour: 3,
+    minute: 0,
+    second: 0,
+    tz: 'Etc/UTC',
+  },
+  () => {
+    PMAEventHandler.emit('LBRefresh');
+    setTimeout(() => PMAEventHandler.emit('LBFPublish'), 1000 * 60 * 30);
+  },
+);
+
+export const LBUJobSchedule = scheduleJob(
+  {
+    dayOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    hour: 3,
+    minute: 0,
+    second: 0,
+    tz: 'Etc/UTC',
+  },
+  () => {
+    PMAEventHandler.emit('LBRefresh');
+    setTimeout(() => PMAEventHandler.emit('LBUpdate'), 1000 * 60 * 30);
+  },
+);
