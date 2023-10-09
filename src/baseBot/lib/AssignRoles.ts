@@ -353,6 +353,13 @@ export default class AssignRoles {
         },
         {
           type: ComponentType.Button,
+          label: 'No Change',
+          emoji: '😅',
+          style: ButtonStyle.Primary,
+          customId: 'no_change',
+        },
+        {
+          type: ComponentType.Button,
           label: 'Criteria not Satisfied!',
           emoji: '❌',
           style: ButtonStyle.Danger,
@@ -418,7 +425,7 @@ export default class AssignRoles {
               emoji: '🤔',
             };
 
-            if (clearType === 'not_satisfied') {
+            if (clearType === 'not_satisfied' || clearType === 'no_change') {
               await restoreRoles('none', this.#member);
               return;
             }
@@ -435,7 +442,7 @@ export default class AssignRoles {
               conditionals.role = ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR;
               conditionals.emoji = '🌀';
             }
-
+            // Assign default stuff if no condition is satisfied
             result = conditionals;
             await this.#member.roles.add(result.role).then(async (member) => {
               this.#assignStats.push(result);
