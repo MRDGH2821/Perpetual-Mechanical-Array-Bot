@@ -4,7 +4,7 @@
   "parserOptions": {
     "project": ["tsconfig.json", "tsconfig.eslint.json"]
   },
-  "plugins": ["eslint-plugin-unused-imports"],
+  "plugins": ["@typescript-eslint/eslint-plugin", "eslint-plugin-unused-imports"],
   "ignorePatterns": ["./.pnp.*", "./.yarn"],
   "rules": {
     "no-console": "off",
@@ -20,6 +20,7 @@
           "onLoad"
         ]
       }
-    ]
+    ],
+    "unused-imports/no-unused-imports": "error"
   }
 }
