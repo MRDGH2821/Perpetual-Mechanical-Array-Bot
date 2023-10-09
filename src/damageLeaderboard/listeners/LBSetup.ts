@@ -5,7 +5,6 @@ import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import {
   ChannelIds, COLORS, ICONS, ThreadIds,
 } from '../../lib/Constants';
-import EnvConfig from '../../lib/EnvConfig';
 import db from '../../lib/Firestore';
 
 type LBSetupArgs = {
@@ -117,7 +116,7 @@ export default class LBSetup extends Listener {
 
     const webhooks = await channel.guild.fetchWebhooks();
 
-    const botHooks = webhooks.filter((hook) => hook.owner?.id === EnvConfig.clientId);
+    const botHooks = webhooks.filter((hook) => hook.owner?.id === this.container.client.user?.id);
 
     let webhook = botHooks.filter((hook) => hook.name === 'Damage Leaderboard').first();
     const webhookOptions = {

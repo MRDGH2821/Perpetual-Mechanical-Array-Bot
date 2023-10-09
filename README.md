@@ -24,9 +24,8 @@ If you wish to run this bot follow the given steps.
 
 1. Create a new [bot](https://discord.com/developers/applications)
 2. Make a copy of [`sample.env`](./sample.env) file & rename it to `.env`
-3. Copy Application ID & paste into `CLIENT_ID` field
-4. Copy Token (from `Bot` page) & paste into `DISCORD_TOKEN` field
-5. Copy Server ID & paste into `GUILD_ID` field
+3. Copy Token (from `Bot` page) & paste into `DISCORD_TOKEN` field
+4. Copy Server ID & paste into `GUILD_ID` field
 
 #### Code preparation
 
