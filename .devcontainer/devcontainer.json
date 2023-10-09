@@ -1,6 +1,6 @@
 {
   "name": "Node.js & TypeScript",
-  "image": "mcr.microsoft.com/devcontainers/typescript-node",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:18",
   "features": {
     "ghcr.io/devcontainers-contrib/features/shfmt:1.0.0": {},
     "ghcr.io/devcontainers/features/desktop-lite:1": {},
