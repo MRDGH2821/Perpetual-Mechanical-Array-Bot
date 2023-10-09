@@ -66,7 +66,7 @@ export default class GuildCommand extends Subcommand {
           async chatInputRun(interaction) {
             const SAPublishDate = SAJobSchedule.nextInvocation();
 
-            return interaction.editReply({
+            return interaction.reply({
               embeds: [
                 {
                   color: COLORS.EMBED_COLOR,

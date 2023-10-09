@@ -76,7 +76,7 @@ export default class GuildCommand extends Subcommand {
           type: 'method',
           chatInputRun(interaction) {
             const hofPublish = HoFJobSchedule.nextInvocation();
-            return interaction.editReply({
+            return interaction.reply({
               embeds: [
                 {
                   title: 'Hall of Fame Refresh Schedule',
