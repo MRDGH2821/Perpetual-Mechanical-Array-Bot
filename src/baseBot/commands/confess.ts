@@ -7,18 +7,18 @@ import {
   ApplicationCommandType,
   Attachment,
   ButtonStyle,
+  channelMention,
   ComponentType,
   GuildMember,
   Message,
   MessageFlags,
   MessagePayload,
-  TextInputStyle,
-  channelMention,
   roleMention,
+  TextInputStyle,
   type APIEmbed,
   type ApplicationCommandSubCommandData,
 } from 'discord.js';
-import { COLORS, ChannelIds, ROLE_IDS } from '../../lib/Constants';
+import { ChannelIds, COLORS, ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import { parseTruthy, serverLogChannel, userLink } from '../../lib/utils';
 import type { JSONCmd } from '../../typeDefs/typeDefs';

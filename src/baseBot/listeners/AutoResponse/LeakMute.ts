@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import {
-  Events, Listener, container, type ListenerOptions,
+  container, Events, Listener, type ListenerOptions,
 } from '@sapphire/framework';
 import { pickRandom } from '@sapphire/utilities';
 import type { Message, TextChannel } from 'discord.js';

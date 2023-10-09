@@ -17,9 +17,7 @@ import {
 } from 'discord.js';
 import HallOfFameCache from '../../hallOfFame/lib/HallOfFameCache';
 import {
-  COLORS,
-  ChannelIds,
-  EMOJIS, ROLE_IDS,
+  ChannelIds, COLORS, EMOJIS, ROLE_IDS,
 } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import type { JSONCmd } from '../../typeDefs/typeDefs';

@@ -4,17 +4,17 @@ import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
   ButtonStyle,
+  channelMention,
   ComponentType,
   Message,
   MessageFlags,
   ModalSubmitInteraction,
   TextInputStyle,
-  channelMention,
   time,
   type APIEmbed,
 } from 'discord.js';
-import { PMAEventHandler, guildMessageIDsExtractor, isStaff } from '../../baseBot/lib/Utilities';
-import { COLORS, ChannelIds, ICONS } from '../../lib/Constants';
+import { guildMessageIDsExtractor, isStaff, PMAEventHandler } from '../../baseBot/lib/Utilities';
+import { ChannelIds, COLORS, ICONS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import { parseTruthy, viewBook } from '../../lib/utils';
 import { LBFJobSchedule, LBUJobSchedule } from '../../scheduledTasks';
@@ -152,10 +152,11 @@ export default class GuildCommand extends Subcommand {
                 {
                   color: COLORS.EMBED_COLOR,
                   title: 'Leaderboard Refresh Schedule',
-                  description: `Next refresh is scheduled at:\n\n**Weekly Leaderboard**: ${time(forumPublish)} (${time(
+                  description: `Next refresh is scheduled at:\n\n**Weekly Leaderboard**: ${time(
                     forumPublish,
-                    'R',
-                  )}) \n**Summary Leaderboard**: ${time(lbUpdate)} (${time(lbUpdate, 'R')})`,
+                  )} (${time(forumPublish, 'R')}) \n**Summary Leaderboard**: ${time(
+                    lbUpdate,
+                  )} (${time(lbUpdate, 'R')})`,
                   footer: {
                     text: 'Note: It will roughly take 30 mins to reflect new data in respective channel',
                   },

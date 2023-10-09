@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Listener, container, type ListenerOptions } from '@sapphire/framework';
+import { container, Listener, type ListenerOptions } from '@sapphire/framework';
 import { time } from 'discord.js';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import { ChannelIds } from '../../lib/Constants';
