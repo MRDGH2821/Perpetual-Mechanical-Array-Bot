@@ -301,6 +301,15 @@ export default class AssignRoles {
       traveler: this.#member.roles.cache.has(SpiralAbyss.ABYSSAL_TRAVELER),
     };
 
+    let previousRole = 'none';
+    if (beforeRemoval.sovereign) {
+      previousRole = roleMention(ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN);
+    } else if (beforeRemoval.conqueror) {
+      previousRole = roleMention(ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR);
+    } else if (beforeRemoval.traveler) {
+      previousRole = roleMention(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER);
+    }
+
     await this.#member.roles.remove(Object.values(SpiralAbyss), 'Removing old roles');
 
     async function restoreRoles(newRoleID: string, target: GuildMember) {
@@ -373,7 +382,9 @@ export default class AssignRoles {
           {
             title: '**Cleared Spiral Abyss?**',
             color: COLORS.EMBED_COLOR,
-            description: `How did ${this.#member} satisfy the Condition?`,
+            description: `How did ${
+              this.#member
+            } satisfy the Condition?\nPrevious Role: ${previousRole}`,
             fields: [
               {
                 name: 'Abyssal Traveler 😎',
