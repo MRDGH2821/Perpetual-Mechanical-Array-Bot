@@ -4,10 +4,10 @@
     "**/node_modules/**",
     "**/vscode-extension/**",
     "**/.git/**",
-    ".vscode",
-    "megalinter",
+    ".vscode/**",
+    "megalinter/**",
     "package-lock.json",
-    "report",
+    "report/**",
     "**/.yarn/**",
     "yarn.lock"
   ],
