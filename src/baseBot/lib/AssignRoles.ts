@@ -2,6 +2,7 @@ import type { ChatInputOrContextMenuCommandInteraction } from '@sapphire/discord
 import { pickRandom, range } from '@sapphire/utilities';
 import {
   ButtonStyle,
+  channelMention,
   ComponentType,
   GuildMember,
   Message,
@@ -58,6 +59,8 @@ export default class AssignRoles {
   #ctx: ChatInputOrContextMenuCommandInteraction;
 
   #assignStats: RoleAssignStats[] = [];
+
+  #totalExp = 0;
 
   constructor(options: AssignRoleOptions) {
     let filteredRoles = options.selectedRolesIDs;
@@ -494,10 +497,8 @@ export default class AssignRoles {
       await this.#awardSpiralAbyssRole();
     }
 
-    let totalExp = 0;
-
     this.#assignStats.forEach((stat) => {
-      totalExp += stat.exp;
+      this.#totalExp += stat.exp;
       const line = `${roleMention(stat.role)}${stat.notes === 'none' ? ' ' : `: ${stat.notes} `}(${
         stat.exp
       })\n`;
@@ -505,7 +506,7 @@ export default class AssignRoles {
       this.#reactEmoji(stat.emoji);
     });
 
-    this.#embedDescription += `\n**Total exp:** ${totalExp}`;
+    this.#embedDescription += `\n**Total exp:** ${this.#totalExp}`;
 
     await this.#ctx
       .editReply({
@@ -537,30 +538,38 @@ export default class AssignRoles {
         },
       })
       .then(async () => {
-        await this.#ctx.followUp({
-          flags: MessageFlags.Ephemeral,
-          content: `>award ${this.#member.id} ${totalExp}`,
-        });
-        await this.#ctx.followUp({
-          flags: MessageFlags.Ephemeral,
-          content:
-            'Copy paste that command. And a message by <@485962834782453762> should come up like [this](https://i.imgur.com/yQvOAzZ.png)',
-        });
+        if (this.#totalExp === 0) {
+          return this.#ctx.followUp({
+            content: 'No roles were actually awarded.',
+            flags: MessageFlags.Ephemeral,
+          });
+          // return;
+        }
 
         this.#reactEmoji('✅');
 
         if (this.#ctx.isContextMenuCommand()) {
           await this.sendLog();
         }
+        await this.#ctx.followUp({
+          flags: MessageFlags.Ephemeral,
+          content: `>award ${this.#member.id} ${this.#totalExp}`,
+        });
+        return this.#ctx.followUp({
+          flags: MessageFlags.Ephemeral,
+          content: `Copy that command and paste at ${channelMention(
+            ThreadIds.ROLE_AWARD_LOGS,
+          )}. Then a message by <@485962834782453762> should come up like [this](https://i.imgur.com/yQvOAzZ.png)`,
+        });
       });
   }
 
   async sendLog() {
+    if (this.#totalExp < 1) return;
+
     const channel = this.#proofMessage?.channel;
 
-    if (!channel) {
-      return;
-    }
+    if (!channel) return;
 
     if (channel.isDMBased()) return;
 
