@@ -9,6 +9,7 @@ import { pickRandom } from '@sapphire/utilities';
 import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
+  ButtonStyle,
   ComponentType,
   GuildMember,
   Message,
@@ -147,6 +148,53 @@ export default class GuildCommand extends Subcommand {
     return messagesWithAttachments.first();
   }
 
+  private async shouldShowAllRoles(
+    interaction: ChatInputOrContextMenuCommandInteraction,
+  ): Promise<boolean> {
+    return interaction
+      .editReply({
+        embeds: [
+          {
+            color: COLORS.EMBED_COLOR,
+            title: 'Should I show all roles?',
+            description: 'Should I show all roles? \nOr hide already assigned roles?',
+          },
+        ],
+        components: [
+          {
+            type: ComponentType.ActionRow,
+            components: [
+              {
+                type: ComponentType.Button,
+                label: 'Show All Roles',
+                style: ButtonStyle.Secondary,
+                customId: 'show_all_roles',
+              },
+              {
+                type: ComponentType.Button,
+                label: 'Hide Assigned Roles',
+                style: ButtonStyle.Success,
+                customId: 'hide_assigned_roles',
+              },
+            ],
+          },
+        ],
+      })
+      .then(async (msg) => msg.awaitMessageComponent({
+        componentType: ComponentType.Button,
+        dispose: true,
+        async filter(i) {
+          await i.deferUpdate();
+          if (i.member) {
+            return isStaff(i.member);
+          }
+
+          return false;
+        },
+      }))
+      .then((btnCtx) => btnCtx.customId === 'show_all_roles');
+  }
+
   private async selectRoles(
     interaction: ChatInputOrContextMenuCommandInteraction,
     member: GuildMember,
@@ -160,8 +208,10 @@ export default class GuildCommand extends Subcommand {
       ],
     });
 
+    const showAllRoles = await this.shouldShowAllRoles(interaction);
+
     const memberRoles = member.roles.cache;
-    const roles = interaction.guild?.roles.cache;
+    const roles = await interaction.guild?.roles.fetch();
     let selectedRoles: string[] = [];
     if (!roles) {
       throw new Error('Fetching roles failed');
@@ -251,7 +301,7 @@ export default class GuildCommand extends Subcommand {
         label: roles.get(ROLE_IDS.OTHERS.WHALE)?.name || 'Whale Role',
         value: ROLE_IDS.OTHERS.WHALE,
       },
-    ].filter((option) => !option.default);
+    ].filter((option) => (showAllRoles ? true : !option.default));
     await interaction
       .editReply({
         embeds: [
