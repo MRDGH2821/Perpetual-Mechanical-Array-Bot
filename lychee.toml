@@ -1,1 +1,2 @@
-exclude_path = ["./.yarn/**"]
+exclude_path = ["./.yarn/**", "./node_modules"]
+exclude = ["yarn@.*"]

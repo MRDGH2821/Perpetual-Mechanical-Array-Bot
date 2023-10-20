@@ -5,7 +5,7 @@
     "project": ["tsconfig.json", "tsconfig.eslint.json"]
   },
   "plugins": ["@typescript-eslint/eslint-plugin", "eslint-plugin-unused-imports"],
-  "ignorePatterns": ["./.pnp.*", "./.yarn"],
+  "ignorePatterns": ["./.pnp.*", "./.yarn", "./dist"],
   "rules": {
     "no-console": "off",
     "class-methods-use-this": [
