@@ -11,7 +11,8 @@
     "ghcr.io/devcontainers/features/docker-in-docker:2": {},
     "ghcr.io/lee-orr/rusty-dev-containers/cargo-binstall:0": {
       "packages": "lychee"
-    }
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {}
   },
 
   "forwardPorts": [5901, 6080],
