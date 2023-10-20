@@ -12,6 +12,9 @@
     "**/.yarn/**",
     "yarn.lock"
   ],
+  "ignoreRegExpList": [
+    "megalinter_file_names_cspell.txt"
+  ],
   "language": "en,en-GB,en-US,zh-CN,zh-TW,zh,ja-JP,ja,fr-FR,fr",
   "noConfigSearch": true,
   "useGitignore": true,
