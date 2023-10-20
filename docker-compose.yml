@@ -7,3 +7,5 @@ services:
     container_name: perpetual-mechanical-array-bot
     env_file: .env
     restart: always
+    volumes:
+      - ./firebase-service-acc:./firebase-service-acc:ro
