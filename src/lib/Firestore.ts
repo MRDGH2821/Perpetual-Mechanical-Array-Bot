@@ -27,6 +27,14 @@ if (process.env.NODE_ENV !== 'development') {
   // console.log(certPath);
   process.env.GOOGLE_APPLICATION_CREDENTIALS = certPath;
 }
+
+const filePath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+
+if (!fs.existsSync(filePath!)) {
+  console.log("Can't find firebase service account file.");
+  process.exit(1);
+}
+
 initializeApp();
 const db = getFirestore();
 db.settings({ ignoreUndefinedProperties: true });
