@@ -8,4 +8,4 @@ services:
     env_file: .env
     restart: always
     volumes:
-      - ./firebase-service-acc:./firebase-service-acc:ro
+      - ./firebase-service-acc:/app/firebase-service-acc:ro
