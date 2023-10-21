@@ -23,6 +23,8 @@ Make a copy of [`sample.env`](./sample.env) file & rename it to `.env`.
 3. Copy that key into [`firebase-service-acc`](./firebase-service-acc/) folder
 4. Rename that key file into something simple, for eg - `firebase-admin-key.json`
 5. Copy the file name & paste it into `GOOGLE_APPLICATION_CREDENTIALS` field of the `.env` file
+    OR
+6. Copy `client_email`, `private_key` & `project_id` from `Firebase admin key` file & paste it into respective field of `.env` file. Make sure to copy with double quotes.
 
 #### Discord Bot Token
 

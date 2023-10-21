@@ -5,6 +5,7 @@ import type { ClientOptions } from 'discord.js';
 import { GatewayIntentBits, Partials } from 'discord.js';
 import './lib/setup';
 import './scheduledTasks';
+import { cred } from './lib/Firestore';
 
 class CustomClient extends SapphireClient {
   private rootData = getRootData();
@@ -40,6 +41,9 @@ const client = new CustomClient({
 
 const main = async () => {
   try {
+    if (!cred.cert && !cred.path) {
+      throw new Error('Cannot find Firebase credentials');
+    }
     client.logger.info('Logging in');
     await client.login();
     client.logger.info('Logged in');

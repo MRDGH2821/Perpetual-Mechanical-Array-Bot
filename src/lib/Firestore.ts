@@ -1,6 +1,6 @@
 import fs from 'fs';
 import * as path from 'path';
-import { initializeApp } from 'firebase-admin/app';
+import { applicationDefault, cert, initializeApp } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 import './EnvConfig';
 
@@ -28,18 +28,39 @@ if (process.env.NODE_ENV !== 'development') {
   process.env.GOOGLE_APPLICATION_CREDENTIALS = certPath;
 }
 
-const filePath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+const credFilePath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
 
-if (!fs.existsSync(filePath!)) {
-  console.log("Can't find firebase service account file.");
-  process.exit(1);
+function certCred() {
+  if (
+    !process.env.FIREBASE_CLIENT_EMAIL
+    || !process.env.FIREBASE_PRIVATE_KEY
+    || !process.env.FIREBASE_PROJECT_ID
+  ) {
+    return undefined;
+  }
+
+  return cert({
+    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    privateKey: process.env.FIREBASE_PRIVATE_KEY,
+    projectId: process.env.FIREBASE_PROJECT_ID,
+  });
 }
 
-initializeApp();
+if (!fs.existsSync(credFilePath!) && !certCred()) {
+  throw new Error("Can't find firebase service account credentials.");
+}
+
+initializeApp({
+  credential: fs.existsSync(credFilePath!) ? applicationDefault() : certCred(),
+});
 const db = getFirestore();
 db.settings({ ignoreUndefinedProperties: true });
 
 export default db;
+export const cred = {
+  cert: certCred(),
+  path: credFilePath,
+};
 
 async function deleteQueryBatch(query: FirebaseFirestore.Query, resolve: Function) {
   const snapshot = await query.get();
