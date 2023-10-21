@@ -6,7 +6,7 @@
     "tsBuildInfoFile": "dist/.tsbuildinfo",
     "composite": true,
     "experimentalDecorators": true,
-    "skipLibCheck": true,
+    "skipLibCheck": true
   },
   "include": ["src"],
   "watchOptions": {
