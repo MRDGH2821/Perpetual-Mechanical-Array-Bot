@@ -14,6 +14,13 @@
         "close": false,
         "group": "Clean"
       }
+    },
+    {
+      "label": "Mega Lint",
+      "detail": "Runs the Mega Linter",
+      "type": "process",
+      "command": "npx",
+      "args": ["-y", "mega-linter-runner", "--flavor", "javascript"]
     }
   ]
 }
