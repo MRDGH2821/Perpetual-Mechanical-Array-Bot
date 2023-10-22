@@ -60,8 +60,8 @@ After Docker is installed, run the following command to start the bot.
 
 ```sh
 # This will install dependencies and transpile Typescript code to Javascript code
-yarn install
-yarn run build
+npm install
+npm run build
 
 # This will create a container from scratch
 docker compose up -d
@@ -98,8 +98,8 @@ Clone the repo, complete the [pre-requisites](#pre-requisites) and do:
 Execute the following:
 
 ```sh
-yarn install
-yarn run dev:start
+npm install
+npm run dev:start
 ```
 
 ## Contributing & Testing
@@ -112,7 +112,7 @@ If you wish to do some modifications/testing:
 2. Run:
 
 ```sh
-yarn run watch:start
+npm run watch:start
 ```
 
 In case of error 401 or 403, you may have to kick out the bot, generate new invite link with bot & application.command scope, invite back the bot & run the command again.

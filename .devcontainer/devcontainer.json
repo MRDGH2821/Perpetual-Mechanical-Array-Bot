@@ -17,7 +17,7 @@
 
   "forwardPorts": [5901, 6080],
   "initializeCommand": [".devcontainer/export-keys"],
-  "onCreateCommand": "sudo yarn install",
+  "onCreateCommand": "sudo npm install",
   "postCreateCommand": "sudo bash .devcontainer/import-keys.sh",
 
   "customizations": {

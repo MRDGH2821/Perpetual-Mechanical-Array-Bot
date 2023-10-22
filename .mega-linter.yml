@@ -23,16 +23,12 @@ SPELL_CSPELL_ANALYZE_FILE_NAMES: false
 PRINT_ALPACA: false
 
 PRE_COMMANDS:
-  - command: 'corepack enable'
-    cwd: 'workspace'
-  - command: 'corepack prepare yarn@stable --activate'
-    cwd: 'workspace'
-  - command: 'yarn install'
+  - command: 'npm install'
     cwd: 'workspace'
 POST_COMMANDS:
-  - command: 'yarn run format'
+  - command: 'npm run format'
     cwd: 'workspace'
-  - command: 'yarn run lint'
+  - command: 'npm run lint'
     cwd: 'workspace'
 IGNORE_GITIGNORED_FILES: true
 
