@@ -98,9 +98,6 @@ config.ts
 # Ignore heapsnapshot and log files
 *.heapsnapshot
 
-# Ignore npm lockfiles file
-package-lock.json
-
 # Environment variables
 .env.*
 .env.dev
