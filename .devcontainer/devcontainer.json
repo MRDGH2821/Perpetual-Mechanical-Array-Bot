@@ -12,7 +12,11 @@
     "ghcr.io/lee-orr/rusty-dev-containers/cargo-binstall:0": {
       "packages": "lychee"
     },
-    "ghcr.io/devcontainers/features/github-cli:1": {}
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/azure-cli:1": {},
+    "ghcr.io/stuartleeks/dev-container-features/azure-cli-persistence:0": {
+      "version": "latest"
+    }
   },
 
   "forwardPorts": [5901, 6080],
