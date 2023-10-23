@@ -15,7 +15,7 @@ WORKDIR /app
 COPY ./firebase-service-acc ./firebase-service-acc
 COPY package.json ./
 
-RUN npm install --omit=dev --omit=optional
+RUN npm install --omit=dev
 COPY --from=builder /app/dist ./dist
 
 RUN useradd pma-bot
