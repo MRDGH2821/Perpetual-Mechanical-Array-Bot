@@ -22,6 +22,15 @@ RUN useradd pma-bot
 
 USER pma-bot
 
+LABEL org.opencontainers.image.authors="MRDGH2821 <https://github.com/MRDGH2821>"
+LABEL org.opencontainers.image.url=https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot
+LABEL org.opencontainers.image.documentation=https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot#readme
+LABEL org.opencontainers.image.source=https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot
+LABEL org.opencontainers.image.licenses=Unlicense
+LABEL org.opencontainers.image.title="Perpetual Mechanical Array Bot"
+LABEL org.opencontainers.image.description="Discord Bot for [Traveler Mains Server](https://discord.gg/RsdUnupKpj)"
+LABEL org.opencontainers.image.base.name=docker.io/library/node:lts-slim
+
 HEALTHCHECK NONE
 
 ENTRYPOINT [ "npm", "start" ]

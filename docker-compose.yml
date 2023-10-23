@@ -9,3 +9,12 @@ services:
     restart: always
     volumes:
       - ./firebase-service-acc:/app/firebase-service-acc:ro
+    labels:
+      - org.opencontainers.image.authors="MRDGH2821 <https://github.com/MRDGH2821>"
+      - org.opencontainers.image.url=https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot
+      - org.opencontainers.image.documentation=https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot#readme
+      - org.opencontainers.image.source=https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot
+      - org.opencontainers.image.licenses=Unlicense
+      - org.opencontainers.image.title="Perpetual Mechanical Array Bot"
+      - org.opencontainers.image.description="Discord Bot for [Traveler Mains Server](https://discord.gg/RsdUnupKpj)"
+      - org.opencontainers.image.base.name=docker.io/library/node:lts-slim
