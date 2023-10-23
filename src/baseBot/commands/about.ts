@@ -1,15 +1,23 @@
+import { readFileSync } from 'fs';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
+import { DurationFormatter } from '@sapphire/time-utilities';
 import {
   ButtonStyle, ComponentType, User, userMention,
 } from 'discord.js';
 import { COLORS } from '../../lib/Constants';
 
-const pkg = require('../../../package.json');
+const pkg = JSON.parse(
+  readFileSync('package.json', {
+    encoding: 'utf-8',
+  }),
+);
 
 const deps = Object.entries(pkg.dependencies)
   .map(([depName, depVer]) => `\`${depName}\`: ${depVer}`)
   .join('\n');
+
+const uptimeD = new DurationFormatter();
 
 @ApplyOptions<Command.Options>({
   name: 'about',
@@ -35,6 +43,14 @@ export default class UserCommand extends Command {
           description: `Version ${pkg.version}\nModified by: ${
             owner || '*cannot be determined*'
           }\nCreated by: ${userMention('867811595266424852')}\n\nThe bot uses:\n${deps}`,
+          fields: [
+            {
+              name: '**Uptime**',
+              value: `Bot uptime: ${uptimeD.format(
+                interaction.client.uptime,
+              )}\nProcess uptime: ${uptimeD.format(process.uptime() * 1000)}`,
+            },
+          ],
         },
       ],
       components: [
