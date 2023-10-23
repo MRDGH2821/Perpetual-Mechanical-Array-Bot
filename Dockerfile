@@ -18,9 +18,7 @@ COPY package.json ./
 RUN npm install --omit=dev
 COPY --from=builder /app/dist ./dist
 
-RUN useradd pma-bot
-
-USER pma-bot
+USER node
 
 LABEL org.opencontainers.image.authors="MRDGH2821 <https://github.com/MRDGH2821>"
 LABEL org.opencontainers.image.url=https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot
