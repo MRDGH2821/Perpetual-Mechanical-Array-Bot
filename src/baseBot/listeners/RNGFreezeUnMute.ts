@@ -22,8 +22,11 @@ export default class RNGFreezeUnMuteEvent extends Listener<typeof Events.ShardRe
     }
     let length = 0;
     freezeRNGRole.members.forEach((member) => {
-      member.roles.remove(freezeRNGRole, 'Bot restarted, cannot have them muted for long duration');
-      length += 1;
+      member.roles
+        .remove(freezeRNGRole, 'Bot restarted, cannot have them muted for long duration')
+        .then(() => {
+          length += 1;
+        });
     });
     container.logger.info(`Unmuted ${length} users`);
   }
