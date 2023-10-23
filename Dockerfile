@@ -29,6 +29,6 @@ LABEL org.opencontainers.image.title="Perpetual Mechanical Array Bot"
 LABEL org.opencontainers.image.description="Discord Bot for [Traveler Mains Server](https://discord.gg/RsdUnupKpj)"
 LABEL org.opencontainers.image.base.name=docker.io/library/node:lts-slim
 
-HEALTHCHECK NONE
+HEALTHCHECK CMD curl -k -f http://localhost:9000 || exit 1
 
 ENTRYPOINT [ "npm", "start" ]

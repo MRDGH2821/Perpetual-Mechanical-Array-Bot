@@ -18,3 +18,8 @@ services:
       - org.opencontainers.image.title="Perpetual Mechanical Array Bot"
       - org.opencontainers.image.description="Discord Bot for [Traveler Mains Server](https://discord.gg/RsdUnupKpj)"
       - org.opencontainers.image.base.name=docker.io/library/node:lts-slim
+    healthcheck:
+      test: ['CMD', 'curl', '-k', '-f', 'http://localhost:9000/']
+      interval: 30s
+      timeout: 10s
+      retries: 5

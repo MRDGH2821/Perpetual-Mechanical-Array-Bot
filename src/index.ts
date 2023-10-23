@@ -5,6 +5,7 @@ import type { ClientOptions } from 'discord.js';
 import { GatewayIntentBits, Partials } from 'discord.js';
 import './lib/setup';
 import './scheduledTasks';
+import './healthInfo';
 import { cred } from './lib/Firestore';
 
 class CustomClient extends SapphireClient {
