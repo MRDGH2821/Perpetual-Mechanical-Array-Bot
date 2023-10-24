@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { container, Listener, type ListenerOptions } from '@sapphire/framework';
+import { Listener, type ListenerOptions } from '@sapphire/framework';
 import { toTitleCase } from '@sapphire/utilities';
 import {
   ButtonStyle, ComponentType, ForumChannel, type APIEmbed,
@@ -21,65 +21,65 @@ import type { LBElements } from '../typeDefs/leaderboardTypeDefs';
 export default class LBPublish extends Listener {
   static dashLine = '-------------------------------------';
 
-  public async run() {
-    async function publish(element: LBElements, WeeklyForum: ForumChannel) {
-      const openEmbeds = await LeaderboardCache.generateEmbeds(element, 'open');
-      const soloEmbeds = await LeaderboardCache.generateEmbeds(element, 'solo');
+  public async publish(element: LBElements, WeeklyForum: ForumChannel) {
+    const openEmbeds = await LeaderboardCache.generateEmbeds(element, 'open');
+    const soloEmbeds = await LeaderboardCache.generateEmbeds(element, 'solo');
 
-      const currentDate = new Date();
-      const props = leaderboardProps(element);
+    const currentDate = new Date();
+    const props = leaderboardProps(element);
 
-      const iconPic = Buffer.from(await (await fetch(props.icon)).arrayBuffer());
+    const iconPic = Buffer.from(await (await fetch(props.icon)).arrayBuffer());
 
-      const thread = await WeeklyForum.threads.create({
-        name: `${toTitleCase(element)}: ${
-          props.name
-        } leaderboard as of ${currentDate.toUTCString()} `,
-        message: {
-          content: `${props.name}`,
-          files: [
+    const thread = await WeeklyForum.threads.create({
+      name: `${toTitleCase(element)}: ${
+        props.name
+      } leaderboard as of ${currentDate.toUTCString()} `,
+      message: {
+        content: `${props.name}`,
+        files: [
+          {
+            attachment: iconPic,
+            name: 'Icon.png',
+          },
+        ],
+      },
+    });
+
+    const insertDashLine = async () => thread.send({
+      content: LBPublish.dashLine,
+    });
+
+    const insertEmbeds = async (embeds: APIEmbed[]) => thread.send({
+      embeds,
+    });
+
+    await insertDashLine();
+    const firstMsg = await insertEmbeds(openEmbeds);
+
+    await insertDashLine();
+    await insertEmbeds(soloEmbeds);
+
+    this.container.logger.info(`Damage Leaderboard for Element: ${element} sent!`);
+    return thread.send({
+      content: LBPublish.dashLine,
+      components: [
+        {
+          type: ComponentType.ActionRow,
+          components: [
             {
-              attachment: iconPic,
-              name: 'Icon.png',
+              type: ComponentType.Button,
+              label: 'Back to first place',
+              style: ButtonStyle.Link,
+              emoji: '⬆',
+              url: firstMsg.url,
             },
           ],
         },
-      });
+      ],
+    });
+  }
 
-      const insertDashLine = async () => thread.send({
-        content: LBPublish.dashLine,
-      });
-
-      const insertEmbeds = async (embeds: APIEmbed[]) => thread.send({
-        embeds,
-      });
-
-      await insertDashLine();
-      const firstMsg = await insertEmbeds(openEmbeds);
-
-      await insertDashLine();
-      await insertEmbeds(soloEmbeds);
-
-      container.logger.info(`Damage Leaderboard for Element: ${element} sent!`);
-      return thread.send({
-        content: LBPublish.dashLine,
-        components: [
-          {
-            type: ComponentType.ActionRow,
-            components: [
-              {
-                type: ComponentType.Button,
-                label: 'Back to first place',
-                style: ButtonStyle.Link,
-                emoji: '⬆',
-                url: firstMsg.url,
-              },
-            ],
-          },
-        ],
-      });
-    }
-
+  public async run() {
     await db
       .collection('leaderboard-config')
       .doc('channel')
@@ -99,7 +99,7 @@ export default class LBPublish extends Listener {
           throw new Error('Could not obtain text forum channel');
         }
 
-        const publisher = (element: LBElements) => publish(element, forumChannel);
+        const publisher = (element: LBElements) => this.publish(element, forumChannel);
 
         await sequentialPromises(LEADERBOARD_ELEMENTS, publisher);
       });

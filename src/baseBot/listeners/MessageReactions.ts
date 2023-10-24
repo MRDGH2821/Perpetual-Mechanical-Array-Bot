@@ -1,7 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import {
-  container, Events, Listener, type ListenerOptions,
-} from '@sapphire/framework';
+import { Events, Listener, type ListenerOptions } from '@sapphire/framework';
 import { pickRandom } from '@sapphire/utilities';
 import type { EmojiIdentifierResolvable, Message } from 'discord.js';
 import { EMOJIS } from '../../lib/Constants';
@@ -77,33 +75,33 @@ export default class MessageReactions extends Listener<typeof Events.MessageCrea
       },
     ];
 
+  public async reactEmoji(message: Message, emoji: EmojiIdentifierResolvable) {
+    const getEmojiId = () => {
+      if (Object.values(EMOJIS).map(String).includes(emoji.toString())) {
+        const matches = emoji.toString().match(/\d{17,21}/);
+        return matches![0];
+      }
+      return null;
+    };
+    const emojiId = getEmojiId();
+    const emote = emojiId ? this.container.client.emojis.resolve(emojiId) : emoji;
+
+    try {
+      message.react(emote || emoji);
+    } catch (e) {
+      this.container.logger.warn(
+        `Emoji ${emoji} is not a valid emoji, or the bot doesn't have access to it.`,
+      );
+    }
+  }
+
   public run(message: Message) {
     const { content } = message;
-    const { logger } = container;
-
-    async function reactEmoji(emoji: EmojiIdentifierResolvable) {
-      const getEmojiId = () => {
-        if (Object.values(EMOJIS).map(String).includes(emoji.toString())) {
-          const matches = emoji.toString().match(/\d{17,21}/);
-
-          return matches![0];
-        }
-        return null;
-      };
-      const emojiId = getEmojiId();
-      const emote = emojiId ? container.client.emojis.resolve(emojiId) : emoji;
-
-      try {
-        message.react(emote || emoji);
-      } catch (e) {
-        logger.warn(`Emoji ${emoji} is not a valid emoji, or the bot doesn't have access to it.`);
-      }
-    }
 
     MessageReactions.emojisWithCondition.forEach((prop) => {
       if (prop.condition(content)) {
         const emote = pickRandom(prop.emojis);
-        reactEmoji(emote);
+        this.reactEmoji(message, emote);
       }
     });
   }

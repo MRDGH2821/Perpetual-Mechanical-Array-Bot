@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { container, Listener, type ListenerOptions } from '@sapphire/framework';
+import { Listener, type ListenerOptions } from '@sapphire/framework';
 import {
   ButtonStyle, ComponentType, ForumChannel, type APIEmbed,
 } from 'discord.js';
@@ -20,50 +20,50 @@ import type { SpiralAbyssClearTypes } from '../typeDefs/spiralAbyssTypes';
 export default class SAPublish extends Listener {
   static dashLine = '-------------------------------------';
 
-  public async run() {
-    async function publish(clearType: SpiralAbyssClearTypes, SpiralAbyssForum: ForumChannel) {
-      const clearEmbeds = await SpiralAbyssCache.generateEmbeds(clearType);
+  public async publish(clearType: SpiralAbyssClearTypes, SpiralAbyssForum: ForumChannel) {
+    const clearEmbeds = await SpiralAbyssCache.generateEmbeds(clearType);
 
-      const currentDate = new Date();
-      const props = SAProps(clearType);
-      const thread = await SpiralAbyssForum.threads.create({
-        name: `${props.name}s as of ${currentDate.toUTCString()} `,
-        message: {
-          content: `${props.description}`,
+    const currentDate = new Date();
+    const props = SAProps(clearType);
+    const thread = await SpiralAbyssForum.threads.create({
+      name: `${props.name}s as of ${currentDate.toUTCString()} `,
+      message: {
+        content: `${props.description}`,
+      },
+    });
+
+    const insertDashLine = async () => thread.send({
+      content: SAPublish.dashLine,
+    });
+
+    const insertEmbeds = async (embeds: APIEmbed[]) => thread.send({
+      embeds,
+    });
+
+    await insertDashLine();
+    const firstMsg = await insertEmbeds(clearEmbeds);
+
+    this.container.logger.info(`${props.name} embeds sent!`);
+    return thread.send({
+      content: SAPublish.dashLine,
+      components: [
+        {
+          type: ComponentType.ActionRow,
+          components: [
+            {
+              type: ComponentType.Button,
+              label: 'Back to first place',
+              style: ButtonStyle.Link,
+              emoji: '⬆',
+              url: firstMsg.url,
+            },
+          ],
         },
-      });
+      ],
+    });
+  }
 
-      const insertDashLine = async () => thread.send({
-        content: SAPublish.dashLine,
-      });
-
-      const insertEmbeds = async (embeds: APIEmbed[]) => thread.send({
-        embeds,
-      });
-
-      await insertDashLine();
-      const firstMsg = await insertEmbeds(clearEmbeds);
-
-      container.logger.info(`${props.name} embeds sent!`);
-      return thread.send({
-        content: SAPublish.dashLine,
-        components: [
-          {
-            type: ComponentType.ActionRow,
-            components: [
-              {
-                type: ComponentType.Button,
-                label: 'Back to first place',
-                style: ButtonStyle.Link,
-                emoji: '⬆',
-                url: firstMsg.url,
-              },
-            ],
-          },
-        ],
-      });
-    }
-
+  public async run() {
     await db
       .collection('spiral-abyss-config')
       .doc('channel')
@@ -83,7 +83,7 @@ export default class SAPublish extends Listener {
           throw new Error('Could not obtain text forum channel');
         }
 
-        const publisher = (clearType: SpiralAbyssClearTypes) => publish(clearType, forumChannel);
+        const publisher = (clrType: SpiralAbyssClearTypes) => this.publish(clrType, forumChannel);
 
         await sequentialPromises(VALID_ABYSS_CLEAR_TYPES, publisher);
       });

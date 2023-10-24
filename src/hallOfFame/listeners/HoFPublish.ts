@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { container, Listener, type ListenerOptions } from '@sapphire/framework';
+import { Listener, type ListenerOptions } from '@sapphire/framework';
 import {
   ButtonStyle, ComponentType, ForumChannel, type APIEmbed,
 } from 'discord.js';
@@ -20,77 +20,77 @@ import { crownProps } from '../lib/Utilities';
 export default class HoFPublish extends Listener {
   static dashLine = '-------------------------------------';
 
-  public async run() {
-    async function publish(element: ELEMENTS, HallOfFameForum: ForumChannel) {
-      const isUnaligned = () => element === 'unaligned';
-      const oneCrownEmbeds = await HallOfFameCache.generateEmbeds(element, 1);
+  public async publish(element: ELEMENTS, HallOfFameForum: ForumChannel) {
+    const isUnaligned = () => element === 'unaligned';
+    const oneCrownEmbeds = await HallOfFameCache.generateEmbeds(element, 1);
 
-      const twoCrownEmbeds = isUnaligned()
-        ? undefined
-        : await HallOfFameCache.generateEmbeds(element, 2);
+    const twoCrownEmbeds = isUnaligned()
+      ? undefined
+      : await HallOfFameCache.generateEmbeds(element, 2);
 
-      const threeCrownEmbeds = isUnaligned()
-        ? undefined
-        : await HallOfFameCache.generateEmbeds(element, 3);
+    const threeCrownEmbeds = isUnaligned()
+      ? undefined
+      : await HallOfFameCache.generateEmbeds(element, 3);
 
-      const currentDate = new Date();
-      const props = crownProps(element);
+    const currentDate = new Date();
+    const props = crownProps(element);
 
-      const iconPic = Buffer.from(await (await fetch(props.icon)).arrayBuffer());
-      const thread = await HallOfFameForum.threads.create({
-        name: `${props.plural} as of ${currentDate.toUTCString()} `,
-        message: {
-          content: `${props.description}`,
-          files: [
+    const iconPic = Buffer.from(await (await fetch(props.icon)).arrayBuffer());
+    const thread = await HallOfFameForum.threads.create({
+      name: `${props.plural} as of ${currentDate.toUTCString()} `,
+      message: {
+        content: `${props.description}`,
+        files: [
+          {
+            attachment: iconPic,
+            name: 'Icon.png',
+          },
+        ],
+      },
+    });
+
+    const insertDashLine = async () => thread.send({
+      content: HoFPublish.dashLine,
+    });
+
+    const insertEmbeds = async (embeds: APIEmbed[]) => thread.send({
+      embeds,
+    });
+
+    await insertDashLine();
+    const firstMsg = await insertEmbeds(oneCrownEmbeds);
+
+    if (twoCrownEmbeds) {
+      await insertDashLine();
+      await insertEmbeds(twoCrownEmbeds);
+    }
+
+    if (threeCrownEmbeds) {
+      await insertDashLine();
+      await insertEmbeds(threeCrownEmbeds);
+    }
+
+    this.container.logger.info(`Hall of fame for Element: ${element} sent!`);
+    return thread.send({
+      content: HoFPublish.dashLine,
+      components: [
+        {
+          type: ComponentType.ActionRow,
+          components: [
             {
-              attachment: iconPic,
-              name: 'Icon.png',
+              type: ComponentType.Button,
+              label: 'Back to first place',
+              style: ButtonStyle.Link,
+              emoji: '⬆',
+              url: firstMsg.url,
             },
           ],
         },
-      });
+      ],
+    });
+  }
 
-      const insertDashLine = async () => thread.send({
-        content: HoFPublish.dashLine,
-      });
-
-      const insertEmbeds = async (embeds: APIEmbed[]) => thread.send({
-        embeds,
-      });
-
-      await insertDashLine();
-      const firstMsg = await insertEmbeds(oneCrownEmbeds);
-
-      if (twoCrownEmbeds) {
-        await insertDashLine();
-        await insertEmbeds(twoCrownEmbeds);
-      }
-
-      if (threeCrownEmbeds) {
-        await insertDashLine();
-        await insertEmbeds(threeCrownEmbeds);
-      }
-
-      container.logger.info(`Hall of fame for Element: ${element} sent!`);
-      return thread.send({
-        content: HoFPublish.dashLine,
-        components: [
-          {
-            type: ComponentType.ActionRow,
-            components: [
-              {
-                type: ComponentType.Button,
-                label: 'Back to first place',
-                style: ButtonStyle.Link,
-                emoji: '⬆',
-                url: firstMsg.url,
-              },
-            ],
-          },
-        ],
-      });
-    }
-
+  public async run() {
     await db
       .collection('hall-of-fame-config')
       .doc('channel')
@@ -110,7 +110,7 @@ export default class HoFPublish extends Listener {
           throw new Error('Could not obtain text forum channel');
         }
 
-        const publisher = (element: ELEMENTS) => publish(element, forumChannel);
+        const publisher = (element: ELEMENTS) => this.publish(element, forumChannel);
 
         await sequentialPromises(RELEASED_ELEMENTS, publisher);
       });
