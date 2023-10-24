@@ -23,7 +23,7 @@ SPELL_CSPELL_ANALYZE_FILE_NAMES: false
 PRINT_ALPACA: false
 
 PRE_COMMANDS:
-  - command: 'npm install'
+  - command: 'npm ci --force --include=dev'
     cwd: 'workspace'
 POST_COMMANDS:
   - command: 'npm run format'
