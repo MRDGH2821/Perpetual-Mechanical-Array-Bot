@@ -51,5 +51,6 @@
     }
   },
 
-  "remoteUser": "root"
+  "remoteUser": "node",
+  "containerUser": "node"
 }
