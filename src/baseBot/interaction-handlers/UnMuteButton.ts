@@ -1,6 +1,7 @@
 import {
   InteractionHandler,
   InteractionHandlerTypes,
+  container,
   type PieceContext,
 } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
@@ -57,8 +58,8 @@ export default class UnMuteButton extends InteractionHandler {
     const unMuteReason = "Removed freeze mute role on user's request (muted by RNG luck)";
     await member.roles
       .remove(ROLE_IDS.OTHERS.FROZEN_RNG, unMuteReason)
-      .catch(this.container.logger.debug);
-    await member.disableCommunicationUntil(null, unMuteReason).catch(this.container.logger.debug);
+      .catch(container.logger.debug);
+    await member.disableCommunicationUntil(null, unMuteReason).catch(container.logger.debug);
 
     this.container.logger.debug('Editing msg to remove button');
     return interaction.editReply({
