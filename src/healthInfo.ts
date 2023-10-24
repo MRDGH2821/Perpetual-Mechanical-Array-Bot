@@ -1,4 +1,5 @@
 import http from 'http';
+import { pmaLogger } from './pma-logger';
 
 const port = 9000;
 
@@ -21,5 +22,5 @@ http
     }
   })
   .listen(port, () => {
-    console.log(`Health Server running on port ${port}`);
+    pmaLogger.info(`Health Server running on port ${port}`);
   });

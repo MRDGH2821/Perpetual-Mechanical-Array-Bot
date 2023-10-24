@@ -1,8 +1,6 @@
-import { Logger, LogLevel } from '@sapphire/framework';
 import { scheduleJob } from 'node-schedule';
+import { pmaLogger as logger } from './pma-logger';
 import { PMAEventHandler } from './baseBot/lib/Utilities';
-
-const logger = new Logger(LogLevel.Debug);
 
 logger.info('Starting Schedules');
 

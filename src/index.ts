@@ -1,12 +1,13 @@
 import { join } from 'node:path';
 import { LogLevel, SapphireClient } from '@sapphire/framework';
 import { getRootData } from '@sapphire/pieces';
-import type { ClientOptions } from 'discord.js';
 import { GatewayIntentBits, Partials } from 'discord.js';
+import type { ClientOptions } from 'discord.js';
+import { cred } from './lib/Firestore';
+import { pmaLogger } from './pma-logger';
+import './healthInfo';
 import './lib/setup';
 import './scheduledTasks';
-import './healthInfo';
-import { cred } from './lib/Firestore';
 
 class CustomClient extends SapphireClient {
   private rootData = getRootData();
@@ -24,6 +25,8 @@ const client = new CustomClient({
   defaultPrefix: 'pma!',
   caseInsensitiveCommands: true,
   logger: {
+    depth: 2,
+    instance: pmaLogger,
     level: LogLevel.Debug,
   },
   intents: [
