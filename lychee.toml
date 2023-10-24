@@ -1,2 +1,2 @@
 exclude_path = ["./.yarn/**", "./node_modules"]
-exclude = ["yarn@.*"]
+exclude = ["yarn@.*", "localhost:9000"]
