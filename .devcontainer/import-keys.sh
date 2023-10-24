@@ -14,7 +14,7 @@ else
 
 	if [ -f ".devcontainer/gpg/private-keys.asc" ]; then
 		echo "Importing Private Keys"
-		sudo gpg -a --passphrase-file=.devcontainer/gpg/gpg-key-password.txt --allow-secret-key-import --import .devcontainer/gpg/private-keys.asc
+		sudo gpg -a --pinentry-mode loopback --passphrase-file=.devcontainer/gpg/gpg-key-password.txt --allow-secret-key-import --import .devcontainer/gpg/private-keys.asc
 	else
 		echo "private-keys.asc file not found"
 	fi
