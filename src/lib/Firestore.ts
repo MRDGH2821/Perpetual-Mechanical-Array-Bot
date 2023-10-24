@@ -4,6 +4,7 @@ import { applicationDefault, cert, initializeApp } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 import { pmaLogger as logger } from '../pma-logger';
 import './EnvConfig';
+import { decodeBase64 } from './Firestore-Crypt';
 
 const baseDir = path.resolve(process.cwd(), 'firebase-service-acc');
 function searchCredFilePath(dir = baseDir): string | undefined {
@@ -41,10 +42,10 @@ function searchCredEnv() {
     || !process.env.FIREBASE_PRIVATE_KEY
     || !process.env.FIREBASE_PROJECT_ID
   ) {
-    logger.warn('Firebase credentials not found in environment variables.');
+    logger.warn('Firebase credentials not found in 3 environment variables.');
     return undefined;
   }
-
+  logger.info('Using firebase service account credentials from 3 environment variables.');
   return cert({
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
     privateKey: process.env.FIREBASE_PRIVATE_KEY,
@@ -52,19 +53,32 @@ function searchCredEnv() {
   });
 }
 
-if (!fs.existsSync(credFilePath!) && !searchCredEnv()) {
+function searchBase64CredEnv() {
+  if (!process.env.FIREBASE_SERVICE_ACCOUNT_BASE64) {
+    logger.warn('Firebase credentials not found in base64 environment variable.');
+    return undefined;
+  }
+  logger.info('Using firebase service account credentials from base64 environment variable.');
+  const decoded = decodeBase64(process.env.FIREBASE_SERVICE_ACCOUNT_BASE64);
+  const cred = JSON.parse(decoded);
+  return cert(cred);
+}
+
+const finalCred = searchBase64CredEnv() || searchCredEnv() || applicationDefault();
+
+if (!finalCred) {
   throw new Error("Can't find firebase service account credentials.");
 }
 
 initializeApp({
-  credential: fs.existsSync(credFilePath!) ? applicationDefault() : searchCredEnv(),
+  credential: finalCred,
 });
 const db = getFirestore();
 db.settings({ ignoreUndefinedProperties: true });
 
 export default db;
 export const cred = {
-  cert: searchCredEnv(),
+  cert: finalCred,
   path: credFilePath,
 };
 
