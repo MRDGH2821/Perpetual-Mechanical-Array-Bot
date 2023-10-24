@@ -34,6 +34,13 @@ export default class GuildCommand extends Command {
             name: 'ping_archons',
             description: 'Should I ping archons too?',
             type: ApplicationCommandOptionType.Boolean,
+            required: false,
+          },
+          {
+            name: 'text',
+            description: 'Text to send',
+            type: ApplicationCommandOptionType.String,
+            required: false,
           },
         ],
       },
@@ -45,6 +52,7 @@ export default class GuildCommand extends Command {
 
   public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
     const toPingArchons = interaction.options.getBoolean('ping_archons') || false;
+    const text = interaction.options.getString('text') || '';
 
     const voterChannel = interaction.guild?.channels.cache.get(ChannelIds.ARENA_OF_VOTERS);
 
@@ -54,7 +62,7 @@ export default class GuildCommand extends Command {
 
     const content = `${roleMention(ROLE_IDS.OTHERS.GLADIATORS)}${
       toPingArchons ? roleMention(ROLE_IDS.OTHERS.ARCHONS) : ' '
-    }`;
+    }\n${text}`;
 
     voterChannel.send({
       content,
