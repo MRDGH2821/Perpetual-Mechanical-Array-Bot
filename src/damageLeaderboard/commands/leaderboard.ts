@@ -194,13 +194,20 @@ export default class GuildCommand extends Subcommand {
       });
     }
 
+    const ids = guildMessageIDsExtractor(proofLink);
+
+    if (ids.channelId !== ChannelIds.SHOWCASE) {
+      return interaction.reply({
+        content: `Proof Link should be from ${channelMention(ChannelIds.SHOWCASE)}`,
+        flags: MessageFlags.Ephemeral,
+      });
+    }
+
     const lbChannel = await interaction.guild?.channels.fetch(ChannelIds.SHOWCASE);
     if (!lbChannel?.isTextBased()) {
       throw new Error('Cannot fetch showcase text channel');
     }
-    const proofMessage = await lbChannel.messages.fetch(
-      guildMessageIDsExtractor(proofLink).messageId,
-    );
+    const proofMessage = await lbChannel.messages.fetch(ids.messageId);
 
     return this.registerContestant(
       {
@@ -351,6 +358,14 @@ export default class GuildCommand extends Subcommand {
       await interaction.deferReply();
     }
 
+    const ids = guildMessageIDsExtractor(args.proofMessage.url);
+
+    if (ids.channelId !== ChannelIds.SHOWCASE) {
+      return interaction.editReply({
+        content: `Proof Link should be from ${channelMention(ChannelIds.SHOWCASE)}`,
+      });
+    }
+
     const oldScoreData = LeaderboardCache.getScore(
       args.contestant.id,
       args.element,
@@ -373,14 +388,6 @@ export default class GuildCommand extends Subcommand {
         url: '',
       },
     };
-
-    const ids = guildMessageIDsExtractor(args.proofMessage.url);
-
-    if (ids.channelId !== ChannelIds.SHOWCASE) {
-      return interaction.editReply({
-        content: `Proof Link should be from ${channelMention(ChannelIds.SHOWCASE)}`,
-      });
-    }
 
     if (args.shouldForceUpdate === false && oldScoreData && oldScoreData!.score > args.score) {
       return interaction.editReply({
