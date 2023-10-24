@@ -22,6 +22,7 @@
     "docker:app": "docker compose up -d --build app",
     "format": "prettier --write .",
     "format-lint": "npm run format && npm run lint",
+    "generate-base64": "node generate-base64-cred.mjs",
     "lint": "eslint . --fix --ignore-path .gitignore",
     "start": "node dist/index.js",
     "watch": "tsc -w",
