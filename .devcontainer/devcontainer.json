@@ -9,14 +9,7 @@
       "packages": "firefox-esr"
     },
     "ghcr.io/devcontainers/features/docker-in-docker:2": {},
-    "ghcr.io/lee-orr/rusty-dev-containers/cargo-binstall:0": {
-      "packages": "lychee"
-    },
-    "ghcr.io/devcontainers/features/github-cli:1": {},
-    "ghcr.io/devcontainers/features/azure-cli:1": {},
-    "ghcr.io/stuartleeks/dev-container-features/azure-cli-persistence:0": {
-      "version": "latest"
-    }
+    "ghcr.io/devcontainers/features/github-cli:1": {}
   },
 
   "forwardPorts": [5901, 6080],
