@@ -18,7 +18,7 @@ export default class RefreshQuotesEvent extends Listener {
     QUOTE_CATEGORIES.forEach((category) => {
       const promise = QuotesManager.prepareCache(category)
         .then(() => {
-          logger.info(`Quotes refreshed from ${category}`);
+          logger.debug(`Quotes refreshed from ${category}`);
         })
         .catch(logger.error);
       promises.push(promise);
