@@ -2,6 +2,7 @@ import fs from 'fs';
 import * as path from 'path';
 import { applicationDefault, cert, initializeApp } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
+import { pmaLogger as logger } from '../pma-logger';
 import './EnvConfig';
 
 const baseDir = path.resolve(process.cwd(), 'firebase-service-acc');
@@ -12,16 +13,22 @@ function searchCredFilePath(dir = baseDir): string | undefined {
     try {
       const credPath = path.resolve(dir, credFile);
       cert(credPath);
-      console.info('Using firebase service account credentials from:', credPath);
+      logger.info('Using firebase service account credentials from:', credPath);
       return credPath;
     } catch (e) {
-      console.error(e);
+      logger.error(e);
+      logger.warn('Invalid firebase service account credentials file:', credFile);
+      return undefined;
     }
-    return path.resolve(dir, credFile);
+  } else {
+    logger.warn('No firebase service account credentials file found in:', dir);
   }
   return undefined;
 }
-if (process.env.NODE_ENV !== 'development') {
+if (process.env.NODE_ENV === 'development') {
+  logger.info('Searching for Firebase credentials file in:', baseDir);
+  searchCredFilePath();
+} else {
   process.env.FIRESTORE_EMULATOR_HOST = '';
   process.env.GOOGLE_APPLICATION_CREDENTIALS = searchCredFilePath();
 }
@@ -34,6 +41,7 @@ function searchCredEnv() {
     || !process.env.FIREBASE_PRIVATE_KEY
     || !process.env.FIREBASE_PROJECT_ID
   ) {
+    logger.warn('Firebase credentials not found in environment variables.');
     return undefined;
   }
 
