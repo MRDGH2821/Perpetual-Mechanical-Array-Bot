@@ -1,7 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import {
-  Events, Listener, type ListenerOptions,
-} from '@sapphire/framework';
+import { Events, Listener, type ListenerOptions } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { pickRandom } from '@sapphire/utilities';
 import type { Message } from 'discord.js';

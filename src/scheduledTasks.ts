@@ -1,6 +1,6 @@
 import { scheduleJob } from 'node-schedule';
-import { pmaLogger as logger } from './pma-logger';
 import { PMAEventHandler } from './baseBot/lib/Utilities';
+import { pmaLogger as logger } from './pma-logger';
 
 logger.info('Starting Schedules');
 
