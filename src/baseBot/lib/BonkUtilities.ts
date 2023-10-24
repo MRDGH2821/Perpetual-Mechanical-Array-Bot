@@ -1,4 +1,4 @@
-import { container } from '@sapphire/pieces';
+import { container } from '@sapphire/framework';
 import { EMOJIS } from '../../lib/Constants';
 import QuotesManager from './QuotesManager';
 

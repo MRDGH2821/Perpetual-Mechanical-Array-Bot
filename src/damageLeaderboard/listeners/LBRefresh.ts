@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { container, Listener, type ListenerOptions } from '@sapphire/framework';
+import { Listener, type ListenerOptions } from '@sapphire/framework';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import LeaderboardCache from '../lib/LeaderboardCache';
 
@@ -12,9 +12,9 @@ import LeaderboardCache from '../lib/LeaderboardCache';
 export default class LBRefresh extends Listener {
   public run() {
     process.env.LEADERBOARD_READY = 'false';
-    container.logger.info('Preparing Leaderboard Cache');
+    this.container.logger.info('Preparing Leaderboard Cache');
     LeaderboardCache.prepareCache().then(() => {
-      container.logger.info('Leaderboard Cache Ready!');
+      this.container.logger.info('Leaderboard Cache Ready!');
       process.env.LEADERBOARD_READY = 'true';
     });
   }

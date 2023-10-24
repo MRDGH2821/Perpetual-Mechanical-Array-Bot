@@ -1,4 +1,4 @@
-import { container } from '@sapphire/pieces';
+import { container } from '@sapphire/framework';
 import { pickRandom } from '@sapphire/utilities';
 import type { Message, MessageMentionOptions } from 'discord.js';
 import CoolDownManager from '../../lib/CoolDownManager';

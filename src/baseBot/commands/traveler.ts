@@ -1,4 +1,3 @@
-import { container } from '@sapphire/pieces';
 import { Subcommand, type SubcommandMapping } from '@sapphire/plugin-subcommands';
 import {
   ApplicationCommandOptionType,
@@ -113,16 +112,16 @@ export default class GuildCommand extends Subcommand {
     if (subCommand === 'guide') {
       return interaction.reply({ content: eleProp.guide });
     }
-    container.logger.debug('Obtaining tech input');
+    this.container.logger.debug('Obtaining tech input');
     const techId = interaction.options.getString('tech', true);
 
-    container.logger.debug('Searching for tech');
+    this.container.logger.debug('Searching for tech');
     const tech = getTech({
       element: element as ELEMENTS,
       type: isSkill(subCommand) ? 'skill' : 'burst',
       id: techId,
     });
-    container.logger.debug(tech);
+    this.container.logger.debug(tech);
 
     if (tech) {
       const { gif } = tech;

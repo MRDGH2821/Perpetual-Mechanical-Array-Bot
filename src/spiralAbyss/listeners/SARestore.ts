@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
-import { container, Listener, type ListenerOptions } from '@sapphire/framework';
+import { Listener, type ListenerOptions } from '@sapphire/framework';
 import { Attachment, User } from 'discord.js';
 import { sequentialPromises } from 'yaspr';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
@@ -21,10 +21,10 @@ type SpiralAbyssRestoreArgs = {
 })
 export default class SARestore extends Listener {
   public async run(args: SpiralAbyssRestoreArgs) {
-    const tvmGuild = await container.client.guilds.fetch(EnvConfig.guildId);
+    const tvmGuild = await this.container.client.guilds.fetch(EnvConfig.guildId);
     const archivesChannel = await tvmGuild.channels.fetch(ChannelIds.ARCHIVES);
 
-    container.logger.debug(args.backupFile);
+    this.container.logger.debug(args.backupFile);
     const fileContent = await fetch<Partial<BackupCacheFileType>>(
       args.backupFile.url,
       FetchResultTypes.JSON,
@@ -47,7 +47,7 @@ export default class SARestore extends Listener {
         .then(() => {
           countTraveler += 1;
         })
-        .catch(container.logger.error);
+        .catch(this.container.logger.error);
 
       await sequentialPromises(fileContent.traveler, assignTraveler);
     }
@@ -57,7 +57,7 @@ export default class SARestore extends Listener {
         .then(() => {
           countConqueror += 1;
         })
-        .catch(container.logger.error);
+        .catch(this.container.logger.error);
 
       await sequentialPromises(fileContent.conqueror, assignConqueror);
     }
@@ -67,7 +67,7 @@ export default class SARestore extends Listener {
         .then(() => {
           countSovereign += 1;
         })
-        .catch(container.logger.error);
+        .catch(this.container.logger.error);
 
       await sequentialPromises(fileContent.sovereign, assignSovereign);
     }

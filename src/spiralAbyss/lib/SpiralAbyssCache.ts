@@ -1,4 +1,4 @@
-import { container } from '@sapphire/pieces';
+import { container } from '@sapphire/framework';
 import {
   Collection, Role, time, type APIEmbed,
 } from 'discord.js';

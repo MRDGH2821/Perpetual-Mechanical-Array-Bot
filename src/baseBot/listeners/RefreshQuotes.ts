@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { container, Listener, type ListenerOptions } from '@sapphire/framework';
+import { Listener, type ListenerOptions } from '@sapphire/framework';
 import { QUOTE_CATEGORIES } from '../../lib/DynamicConstants';
 import QuotesManager from '../lib/QuotesManager';
 import { PMAEventHandler } from '../lib/Utilities';
@@ -12,7 +12,7 @@ import { PMAEventHandler } from '../lib/Utilities';
 })
 export default class RefreshQuotesEvent extends Listener {
   public async run() {
-    const { logger } = container;
+    const { logger } = this.container;
     const promises: Promise<void>[] = [];
     logger.info('Refreshing quotes');
     QUOTE_CATEGORIES.forEach((category) => {

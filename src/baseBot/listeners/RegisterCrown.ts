@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { container, Listener, type ListenerOptions } from '@sapphire/framework';
+import { Listener, type ListenerOptions } from '@sapphire/framework';
 import { ROLE_IDS } from '../../lib/Constants';
 import db from '../../lib/Firestore';
 import type { RegisterCrownArgs } from '../../typeDefs/typeDefs';
@@ -58,8 +58,8 @@ export default class RegisterCrownEvent extends Listener {
       .doc(crownData.userID)
       .set(crownData)
       .then(() => {
-        container.logger.debug(`Crown data added in ${collectionName}!`);
+        this.container.logger.debug(`Crown data added in ${collectionName}!`);
       })
-      .catch(container.logger.debug);
+      .catch(this.container.logger.debug);
   }
 }

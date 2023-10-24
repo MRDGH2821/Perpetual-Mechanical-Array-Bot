@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import {
-  container, Events, Listener, type ListenerOptions,
+  Events, Listener, type ListenerOptions,
 } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { pickRandom } from '@sapphire/utilities';
@@ -60,10 +60,10 @@ export default class TikTokResponse extends Listener<typeof Events.MessageCreate
             rateLimit.add('TikTok_ICD', 3000);
             this.deleteMsg(msg);
           })
-          .catch(container.logger.debug);
+          .catch(this.container.logger.debug);
       }
     } catch (e) {
-      container.logger.debug(e);
+      this.container.logger.debug(e);
     }
   }
 

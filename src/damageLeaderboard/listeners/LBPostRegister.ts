@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { container, Listener, type ListenerOptions } from '@sapphire/framework';
+import { Listener, type ListenerOptions } from '@sapphire/framework';
 import {
   ButtonStyle,
   channelMention,
@@ -28,10 +28,10 @@ export default class LBPostRegister extends Listener {
       const rank = await LeaderboardCache.getRank(args.contestant.id, args.element, args.groupType);
       const props = leaderboardProps(args.element);
 
-      await args.proofMessage.react(props.emoji).catch(container.logger.error);
-      container.logger.debug({ rank });
+      await args.proofMessage.react(props.emoji).catch(this.container.logger.error);
+      this.container.logger.debug({ rank });
       if (rank >= 100 || rank < 1) {
-        container.logger.warn('Rank not in top 100, exiting.');
+        this.container.logger.warn('Rank not in top 100, exiting.');
         return;
       }
       this.sendLog(args, rank, oldScoreData);
@@ -39,7 +39,7 @@ export default class LBPostRegister extends Listener {
         await args.proofMessage.react('⭐');
       }
 
-      container.logger.debug('Will react with emoji');
+      this.container.logger.debug('Will react with emoji');
       if (rank === 1) {
         await args.proofMessage.react('🥇');
         return;
@@ -54,35 +54,35 @@ export default class LBPostRegister extends Listener {
         await args.proofMessage.react('🥉');
         return;
       }
-      container.logger.debug('Will react with digits');
+      this.container.logger.debug('Will react with digits');
       const digits = rank.toString().split('');
-      container.logger.debug({ rank, digits });
+      this.container.logger.debug({ rank, digits });
       const digitEmojis = digits.map((digit) => digitEmoji(digit));
-      container.logger.debug({ digitEmojis });
+      this.container.logger.debug({ digitEmojis });
 
       const emojisDone = new Set<EmojiIdentifierResolvable>();
       const reactWord = async (emoji: EmojiIdentifierResolvable) => {
         if (emojisDone.has(emoji)) {
           return args.proofMessage.react('#️⃣');
         }
-        container.logger.debug('Emoji: ', emoji);
+        this.container.logger.debug('Emoji: ', emoji);
         return args.proofMessage.react(emoji.toString()).then((rt) => {
           emojisDone.add(emoji);
           return rt;
         });
       };
 
-      await sequentialPromises(digitEmojis, reactWord).catch(container.logger.error);
+      await sequentialPromises(digitEmojis, reactWord).catch(this.container.logger.error);
       // reactWord(':thinking:');
     } catch (e) {
-      container.logger.error(e);
+      this.container.logger.error(e);
     }
   }
 
   // eslint-disable-next-line class-methods-use-this
   public async sendLog(args: LBRegistrationArgs, rank: number, oldScoreData?: DBLeaderboardData) {
     const { channel } = args.proofMessage;
-    container.logger.debug('Preparing to send leaderboard registration log');
+    this.container.logger.debug('Preparing to send leaderboard registration log');
     if (channel.isDMBased()) {
       throw new Error('Cannot fetch Traveler mains server channel');
     }
@@ -173,7 +173,7 @@ export default class LBPostRegister extends Listener {
         ],
       })
       .then(() => {
-        container.logger.debug('Leaderboard Registration log sent!');
+        this.container.logger.debug('Leaderboard Registration log sent!');
       });
   }
 }

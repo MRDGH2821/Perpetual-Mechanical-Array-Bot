@@ -55,8 +55,10 @@ export default class UnMuteButton extends InteractionHandler {
 
     this.container.logger.debug('Removing roles/timeout');
     const unMuteReason = "Removed freeze mute role on user's request (muted by RNG luck)";
-    await member.roles.remove(ROLE_IDS.OTHERS.FROZEN_RNG, unMuteReason).catch(console.debug);
-    await member.disableCommunicationUntil(null, unMuteReason).catch(console.debug);
+    await member.roles
+      .remove(ROLE_IDS.OTHERS.FROZEN_RNG, unMuteReason)
+      .catch(this.container.logger.debug);
+    await member.disableCommunicationUntil(null, unMuteReason).catch(this.container.logger.debug);
 
     this.container.logger.debug('Editing msg to remove button');
     return interaction.editReply({

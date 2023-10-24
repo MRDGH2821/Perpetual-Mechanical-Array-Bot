@@ -1,4 +1,4 @@
-import { container } from '@sapphire/pieces';
+import { container } from '@sapphire/framework';
 import { s, type SchemaOf } from '@sapphire/shapeshift';
 import { chunk, deepClone, toTitleCase } from '@sapphire/utilities';
 import { Collection, User, type APIEmbed } from 'discord.js';

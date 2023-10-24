@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { container, Listener, type ListenerOptions } from '@sapphire/framework';
+import { Listener, type ListenerOptions } from '@sapphire/framework';
 import type { APIEmbed, ForumChannel, TextChannel } from 'discord.js';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import {
@@ -18,7 +18,7 @@ type LBSetupArgs = {
 })
 export default class LBSetup extends Listener {
   public async run(channels: LBSetupArgs) {
-    const { logger } = container;
+    const { logger } = this.container;
     logger.debug('Got', channels);
 
     await db
@@ -77,7 +77,7 @@ export default class LBSetup extends Listener {
       color: COLORS.UNIVERSAL,
     };
 
-    const cmd = container.client.application?.commands.cache.find(
+    const cmd = this.container.client.application?.commands.cache.find(
       (command) => command.name === 'leaderboard',
     );
     const subCmd = cmd?.options.find((option) => option.name === 'register');
@@ -146,8 +146,8 @@ export default class LBSetup extends Listener {
         webhookID: webhook.id,
         channelID: webhook.channelId,
       })
-      .then(() => container.logger.debug('Webhook details saved in database'))
-      .catch(container.logger.error);
+      .then(() => this.container.logger.debug('Webhook details saved in database'))
+      .catch(this.container.logger.error);
 
     await webhook.send({ embeds: [information] });
 

@@ -1,7 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import {
-  container, Events, Listener, type ListenerOptions,
-} from '@sapphire/framework';
+import { Events, Listener, type ListenerOptions } from '@sapphire/framework';
 import type { Interaction } from 'discord.js';
 import { COLORS } from '../../lib/Constants';
 import { serverLogChannel } from '../../lib/utils';
@@ -33,7 +31,7 @@ export default class CommandLogs extends Listener<typeof Events.ChatInputCommand
       subCommand.group = interaction.options.getSubcommandGroup() || 'none';
       subCommand.cmd = interaction.options.getSubcommand() || 'none';
     } catch (e) {
-      container.logger.debug('There are no sub commands in this guild command');
+      this.container.logger.debug('There are no sub commands in this guild command');
     }
 
     logChannel.send({

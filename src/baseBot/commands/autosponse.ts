@@ -1,4 +1,3 @@
-import { container } from '@sapphire/pieces';
 import { Subcommand } from '@sapphire/plugin-subcommands';
 import { Time } from '@sapphire/time-utilities';
 import {
@@ -133,7 +132,7 @@ export default class GuildCommand extends Subcommand {
         flags: MessageFlags.Ephemeral,
       },
     });
-    container.logger.debug(`AUTORESPONSE_${name} = `, process.env[`AUTORESPONSE_${name}`]);
+    this.container.logger.debug(`AUTORESPONSE_${name} = `, process.env[`AUTORESPONSE_${name}`]);
     setTimeout(() => {
       process.env[`AUTORESPONSE_${name}`] = 'true';
     }, hours * Time.Hour);

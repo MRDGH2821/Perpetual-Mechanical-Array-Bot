@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { container, Listener } from '@sapphire/framework';
+import { Listener } from '@sapphire/framework';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import db from '../../lib/Firestore';
 import LeaderboardCache from '../lib/LeaderboardCache';
@@ -32,44 +32,44 @@ export default class LBUpdate extends Listener {
       channelID: string;
     };
 
-    const leaderboardHook = await container.client.fetchWebhook(webhookMsg.webhookID);
+    const leaderboardHook = await this.container.client.fetchWebhook(webhookMsg.webhookID);
     await Promise.all([
       leaderboardHook
         .editMessage(anemoMsg?.messageID, { embeds: [anemoSkillBoard] })
         .catch((err) => {
-          container.logger.fatal('Anemo leaderboard update failed');
-          container.logger.error(err);
+          this.container.logger.fatal('Anemo leaderboard update failed');
+          this.container.logger.error(err);
         }),
       leaderboardHook.editMessage(geoMsg?.messageID, { embeds: [geoSkillBoard] }).catch((err) => {
-        container.logger.fatal('Geo leaderboard update failed');
-        container.logger.error(err);
+        this.container.logger.fatal('Geo leaderboard update failed');
+        this.container.logger.error(err);
       }),
       leaderboardHook
         .editMessage(electroMsg?.messageID, { embeds: [electroSkillBoard] })
         .catch((err) => {
-          container.logger.fatal('Electro leaderboard update failed');
-          container.logger.error(err);
+          this.container.logger.fatal('Electro leaderboard update failed');
+          this.container.logger.error(err);
         }),
       leaderboardHook
         .editMessage(dendroMsg?.messageID, { embeds: [dendroSkillBoard] })
         .catch((err) => {
-          container.logger.fatal('Dendro leaderboard update failed');
-          container.logger.error(err);
+          this.container.logger.fatal('Dendro leaderboard update failed');
+          this.container.logger.error(err);
         }),
       leaderboardHook
         .editMessage(hydroMsg?.messageID, { embeds: [hydroSkillBoard] })
         .catch((err) => {
-          container.logger.fatal('Hydro leaderboard update failed');
-          container.logger.error(err);
+          this.container.logger.fatal('Hydro leaderboard update failed');
+          this.container.logger.error(err);
         }),
       leaderboardHook.editMessage(uniMsg?.messageID, { embeds: [uniSkillBoard] }).catch((err) => {
-        container.logger.fatal('Uni leaderboard update failed');
-        container.logger.error(err);
+        this.container.logger.fatal('Uni leaderboard update failed');
+        this.container.logger.error(err);
       }),
     ])
       .then(() => {
-        container.logger.info('Leaderboard summary channel updated!');
+        this.container.logger.info('Leaderboard summary channel updated!');
       })
-      .catch(container.logger.error);
+      .catch(this.container.logger.error);
   }
 }

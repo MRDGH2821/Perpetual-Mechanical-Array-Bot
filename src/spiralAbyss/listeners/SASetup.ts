@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { container, Listener, type ListenerOptions } from '@sapphire/framework';
+import { Listener, type ListenerOptions } from '@sapphire/framework';
 import type { ForumChannel } from 'discord.js';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import db from '../../lib/Firestore';
@@ -11,8 +11,7 @@ import db from '../../lib/Firestore';
 })
 export default class SASetup extends Listener {
   public async run(forumChannel: ForumChannel) {
-    const { logger } = container;
-    logger.debug(`Got ${forumChannel}`);
+    this.container.logger.debug(`Got ${forumChannel}`);
 
     await db
       .collection('spiral-abyss-config')
@@ -24,8 +23,8 @@ export default class SASetup extends Listener {
         },
       )
       .then(() => {
-        logger.debug('Forum channel registered in database for Spiral Abyss');
+        this.container.logger.debug('Forum channel registered in database for Spiral Abyss');
       })
-      .catch(logger.error);
+      .catch(this.container.logger.error);
   }
 }

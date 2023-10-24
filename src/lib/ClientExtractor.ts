@@ -1,10 +1,10 @@
-import type { SapphireClient } from '@sapphire/framework';
+import { container, type SapphireClient } from '@sapphire/framework';
 
 const clients: SapphireClient[] = [];
 
 export function setClient(client: SapphireClient) {
   clients.push(client);
-  console.debug('Client set');
+  container.logger.debug('Client set');
 }
 
 export function getClient() {

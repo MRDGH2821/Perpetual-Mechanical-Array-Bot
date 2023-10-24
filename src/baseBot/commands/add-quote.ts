@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Command, container } from '@sapphire/framework';
+import { Command } from '@sapphire/framework';
 import { ApplicationCommandOptionType, PermissionFlagsBits } from 'discord.js';
 import { COLORS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
@@ -130,7 +130,7 @@ export default class GuildCommand extends Command {
         PMAEventHandler.emit('RefreshQuotes');
       })
       .catch((err) => {
-        container.logger.error(err);
+        this.container.logger.error(err);
         interaction.reply({
           embeds: [
             {

@@ -2,7 +2,7 @@ import { randomInt } from 'crypto';
 import EventEmitter from 'events';
 import { setTimeout } from 'timers/promises';
 import { MessageLinkRegex } from '@sapphire/discord.js-utilities';
-import { container } from '@sapphire/pieces';
+import { container } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { pickRandom } from '@sapphire/utilities';
 import {

@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { container, Listener, type ListenerOptions } from '@sapphire/framework';
+import { Listener, type ListenerOptions } from '@sapphire/framework';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import HallOfFameCache from '../lib/HallOfFameCache';
 
@@ -12,9 +12,9 @@ import HallOfFameCache from '../lib/HallOfFameCache';
 export default class HoFRefresh extends Listener {
   public run() {
     process.env.HALL_OF_FAME_READY = 'false';
-    container.logger.info('Preparing Hall Of Fame Cache');
+    this.container.logger.info('Preparing Hall Of Fame Cache');
     HallOfFameCache.prepareCache().then(() => {
-      container.logger.info('Hall of Fame Cache Ready!');
+      this.container.logger.info('Hall of Fame Cache Ready!');
       process.env.HALL_OF_FAME_READY = 'true';
     });
   }

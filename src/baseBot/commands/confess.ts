@@ -1,5 +1,5 @@
 import { isGuildMember } from '@sapphire/discord.js-utilities';
-import { Command, container } from '@sapphire/framework';
+import { Command } from '@sapphire/framework';
 import { Subcommand } from '@sapphire/plugin-subcommands';
 import { Time } from '@sapphire/time-utilities';
 import {
@@ -243,7 +243,7 @@ export default class GuildCommand extends Subcommand {
             flags: MessageFlags.Ephemeral,
           });
         })
-        .catch(container.logger.error);
+        .catch(this.container.logger.error);
     } else {
       await interaction.reply({
         content: 'Cannot reply to random message outside confession channel',
@@ -275,7 +275,7 @@ export default class GuildCommand extends Subcommand {
     let reply: SendConfessionArgs['reply'];
     if (ogConfessionLink) {
       const ids = guildMessageIDsExtractor(ogConfessionLink);
-      container.logger.debug({ ids });
+      this.container.logger.debug({ ids });
 
       const channel = await interaction.guild?.channels.fetch(ChannelIds.CONFESSIONS);
       if (!channel?.isTextBased()) {
@@ -303,7 +303,7 @@ export default class GuildCommand extends Subcommand {
       imageAttachment,
       imageLink,
       reply,
-    }).catch(container.logger.error);
+    }).catch(this.container.logger.error);
 
     await interaction.editReply({
       content: `Confession sent!\nCheck out ${channelMention(ChannelIds.CONFESSIONS)}`,
@@ -399,7 +399,7 @@ export default class GuildCommand extends Subcommand {
           embeds: [isAnon ? anonEmbed : confessEmbed],
           components,
         })
-        .catch(container.logger.error);
+        .catch(this.container.logger.error);
     } else {
       await confessChannel
         .send({
@@ -407,7 +407,7 @@ export default class GuildCommand extends Subcommand {
           embeds: [isAnon ? anonEmbed : confessEmbed],
           components,
         })
-        .catch(container.logger.error);
+        .catch(this.container.logger.error);
     }
 
     await logChannel
@@ -428,6 +428,6 @@ export default class GuildCommand extends Subcommand {
         ],
         components,
       })
-      .catch(container.logger.error);
+      .catch(this.container.logger.error);
   }
 }
