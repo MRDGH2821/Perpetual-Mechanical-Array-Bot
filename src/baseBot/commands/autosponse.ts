@@ -120,7 +120,7 @@ export default class GuildCommand extends Subcommand {
     process.env[`AUTORESPONSE_${name}`] = String(isToEnable());
 
     const content = isToEnable()
-      ? `\`${name} autoresponse is now enabled.\``
+      ? `\`${name}\` autoresponse is now enabled.`
       : `${name} is now disabled for ${hours}h.\nIt will be enabled in ${time(
         new Date(hours * Time.Hour + Date.now()),
         'R',
