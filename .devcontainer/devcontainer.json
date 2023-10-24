@@ -49,8 +49,5 @@
         "wdhongtw.gpg-indicator"
       ]
     }
-  },
-
-  "remoteUser": "node",
-  "containerUser": "node"
+  }
 }
