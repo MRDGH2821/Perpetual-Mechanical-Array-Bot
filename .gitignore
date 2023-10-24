@@ -129,6 +129,8 @@ pnpm-lock.*
 report/*
 src/lib/firebase-service-acc/*.json
 firebase-service-acc/*.json
+firebase-service-acc/*.jsonc
+firebase-service-acc/*.txt
 .devcontainer/gpg/*
 !.devcontainer/gpg/README.md
 
