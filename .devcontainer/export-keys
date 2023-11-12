@@ -5,6 +5,7 @@
 if [[ -n "${CODESPACES}" ]] || [[ "$(uname)" == "Linux" ]]; then
   printf "Running in GitHub Codespaces/Linux host.\nNo need to export any keys."
   # Add your specific commands for GitHub Codespaces here, if needed
+  exit
 else
 
   echo "Running on MacOS host."
@@ -27,5 +28,7 @@ else
   gpg -a --pinentry-mode loopback --passphrase-file .devcontainer/gpg/gpg-key-password.txt --export-ownertrust >.devcontainer/gpg/owner-trust-db.txt
   echo "Exported Trust DB"
   echo " "
+
+  exit
 
 fi
