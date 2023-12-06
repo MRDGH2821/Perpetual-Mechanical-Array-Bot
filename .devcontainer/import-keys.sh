@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 # Check if the script is running on GitHub Codespaces
 if [[ -n "${CODESPACES}" ]]; then

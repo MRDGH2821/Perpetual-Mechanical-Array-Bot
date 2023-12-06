@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Linux and macOS-specific commands for initialization
 
 # Check if the script is running on GitHub Codespaces
