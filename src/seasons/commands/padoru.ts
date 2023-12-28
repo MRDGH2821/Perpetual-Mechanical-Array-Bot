@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
-import { ApplicationCommandOptionType } from 'discord.js';
-import { EMOJIS } from '../../lib/Constants';
+import { ApplicationCommandOptionType, roleMention } from 'discord.js';
+import { EMOJIS, ROLE_IDS } from '../../lib/Constants';
 
 const { LuminePadoru } = EMOJIS;
 
@@ -23,6 +23,12 @@ export default class UserCommand extends Command {
           max_value: 50,
           maxValue: 50,
         },
+        {
+          name: 'ping_archons',
+          description: 'Ping Archons?',
+          type: ApplicationCommandOptionType.Boolean,
+          required: false,
+        },
       ],
     });
   }
@@ -38,15 +44,24 @@ export default class UserCommand extends Command {
 
   public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
     const padoruCount = interaction.options.getInteger('padoru_count') || 5;
+    const pingArchons = interaction.options.getBoolean('ping_archons') || false;
+
+    const padoruPoem = [
+      'Hashire Sori Yo',
+      'Kaze No You Ni',
+      'Tsukimihara Wo',
+      'Padoru Padoru!',
+    ].map((line) => `${pingArchons ? `${roleMention(ROLE_IDS.OTHERS.ARCHONS)} ` : ''}${line}`);
+
     return interaction
       .reply({
         content: `Merry Christmas ${interaction.user}!`,
         fetchReply: true,
       })
-      .then(async (msg) => msg.channel.send('Hashire Sori Yo'))
-      .then(async (msg) => msg.channel.send('Kaze No You Ni'))
-      .then(async (msg) => msg.channel.send('Tsukimihara Wo'))
-      .then(async (msg) => msg.channel.send('Padoru Padoru!'))
+      .then(async (msg) => msg.channel.send(padoruPoem[0]))
+      .then(async (msg) => msg.channel.send(padoruPoem[1]))
+      .then(async (msg) => msg.channel.send(padoruPoem[2]))
+      .then(async (msg) => msg.channel.send(padoruPoem[3]))
       .then(async (msg) => msg.channel?.send(this.multiplyString(LuminePadoru, padoruCount)));
   }
 }
