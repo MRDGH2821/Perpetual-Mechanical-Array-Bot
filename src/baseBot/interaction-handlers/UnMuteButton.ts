@@ -1,8 +1,7 @@
 import {
+  container,
   InteractionHandler,
   InteractionHandlerTypes,
-  container,
-  type PieceContext,
 } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { type ButtonInteraction } from 'discord.js';
@@ -10,7 +9,7 @@ import { ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 
 export default class UnMuteButton extends InteractionHandler {
-  public constructor(ctx: PieceContext, options: InteractionHandler.Options) {
+  public constructor(ctx: InteractionHandler.LoaderContext, options: InteractionHandler.Options) {
     super(ctx, {
       ...options,
       interactionHandlerType: InteractionHandlerTypes.Button,

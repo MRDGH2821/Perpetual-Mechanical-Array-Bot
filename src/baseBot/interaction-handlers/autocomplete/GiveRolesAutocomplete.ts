@@ -1,13 +1,12 @@
 import {
   InteractionHandler,
   InteractionHandlerTypes,
-  type PieceContext,
 } from '@sapphire/framework';
 import type { AutocompleteInteraction } from 'discord.js';
 import { ACHIEVEMENT_ROLES } from '../../../lib/Constants';
 
 export default class GiveRolesAutocompleteHandler extends InteractionHandler {
-  public constructor(ctx: PieceContext, options: InteractionHandler.Options) {
+  public constructor(ctx: InteractionHandler.LoaderContext, options: InteractionHandler.Options) {
     super(ctx, {
       ...options,
       interactionHandlerType: InteractionHandlerTypes.Autocomplete,

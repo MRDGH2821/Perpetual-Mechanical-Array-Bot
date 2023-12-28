@@ -1,7 +1,6 @@
 import {
   InteractionHandler,
   InteractionHandlerTypes,
-  type PieceContext,
 } from '@sapphire/framework';
 import type { AutocompleteInteraction } from 'discord.js';
 import type { KitTechnology } from '../../../typeDefs/typeDefs';
@@ -10,7 +9,7 @@ import {
 } from '../../lib/TravelerTechnologies';
 
 export default class TravelerTechAutocompleteHandler extends InteractionHandler {
-  public constructor(ctx: PieceContext, options: InteractionHandler.Options) {
+  public constructor(ctx: InteractionHandler.LoaderContext, options: InteractionHandler.Options) {
     super(ctx, {
       ...options,
       interactionHandlerType: InteractionHandlerTypes.Autocomplete,
