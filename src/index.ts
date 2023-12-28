@@ -18,6 +18,7 @@ class CustomClient extends SapphireClient {
     this.stores.registerPath(join(this.rootData.root, 'hallOfFame'));
     this.stores.registerPath(join(this.rootData.root, 'spiralAbyss'));
     this.stores.registerPath(join(this.rootData.root, 'damageLeaderboard'));
+    this.stores.registerPath(join(this.rootData.root, 'seasons'));
   }
 }
 
@@ -25,7 +26,6 @@ const client = new CustomClient({
   defaultPrefix: 'pma!',
   caseInsensitiveCommands: true,
   logger: {
-    depth: 2,
     instance: pmaLogger,
     level: LogLevel.Debug,
   },
