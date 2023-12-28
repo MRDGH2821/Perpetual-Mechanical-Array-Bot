@@ -2,7 +2,7 @@
 FROM node:lts-alpine AS builder
 WORKDIR /app
 
-RUN apk update && apk add bash=~5 curl=~8 npm=~9 --no-cache
+RUN apk update && apk add bash=~5 curl=~8 --no-cache
 
 COPY . .
 
