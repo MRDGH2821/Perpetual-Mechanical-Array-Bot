@@ -1,5 +1,5 @@
 {
-  "name": "Node.js & TypeScript",
+  "name": "PMA Bot Dev Container",
   "image": "mcr.microsoft.com/devcontainers/typescript-node:20",
   "features": {
     "ghcr.io/devcontainers/features/desktop-lite:1": {},
