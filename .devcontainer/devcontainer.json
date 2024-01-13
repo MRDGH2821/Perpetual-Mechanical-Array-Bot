@@ -10,14 +10,11 @@
     "ghcr.io/devcontainers/features/docker-in-docker:2": {},
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
-
-  "forwardPorts": [5901, 6080],
-  "initializeCommand": [".devcontainer/export-keys"],
-  "postCreateCommand": {
-    "install-packages": "npm install",
-    "import-keys": "sudo bash .devcontainer/import-keys.sh"
-  },
-
+  "forwardPorts": [
+    5901,
+    6080
+  ],
+  "postCreateCommand": "npm install",
   "customizations": {
     "vscode": {
       "extensions": [
