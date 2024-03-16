@@ -315,22 +315,18 @@ export default class LeaderboardCache {
       };
 
       this.#rankBuilder(element, 'open', 7)
-        .then(
-          (openRanks) => embed.fields?.push(
-            { name: '**Open Category Top 1-7**', value: openRanks[0] || NOT_FOUND, inline: true },
-            {
-              name: '**Open Category Top 8-14**',
-              value: openRanks[1] || NOT_FOUND,
-              inline: true,
-            },
-          ),
-        )
-        .then(
-          () => embed.fields?.push({
-            name: EMPTY_STRING,
-            value: EMPTY_STRING,
-          }),
-        )
+        .then((openRanks) => embed.fields?.push(
+          { name: '**Open Category Top 1-7**', value: openRanks[0] || NOT_FOUND, inline: true },
+          {
+            name: '**Open Category Top 8-14**',
+            value: openRanks[1] || NOT_FOUND,
+            inline: true,
+          },
+        ))
+        .then(() => embed.fields?.push({
+          name: EMPTY_STRING,
+          value: EMPTY_STRING,
+        }))
         .then(() => this.#rankBuilder(element, 'solo', 7))
         .then((soloRanks) => {
           embed.fields?.push(

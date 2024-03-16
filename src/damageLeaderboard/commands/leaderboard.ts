@@ -451,8 +451,9 @@ export default class GuildCommand extends Subcommand {
           value: `**Contestant**: ${
             author.id === args.contestant.id
               ? 'Verified'
-              : `Cannot Verify (most likely submission done on behalf of ${args.contestant
-                ?.tag} by ${author.tag})\n**Score**: ${
+              : `Cannot Verify (most likely submission done on behalf of ${
+                args.contestant?.tag
+              } by ${author.tag})\n**Score**: ${
                 content.match(`${args.score}`)?.length
                   ? 'Verified'
                   : "Cannot Verify (most likely because contestant didn't put score as text while uploading proof)"

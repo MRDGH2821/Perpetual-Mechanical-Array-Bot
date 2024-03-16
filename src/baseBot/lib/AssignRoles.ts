@@ -385,9 +385,7 @@ export default class AssignRoles {
           {
             title: '**Cleared Spiral Abyss?**',
             color: COLORS.EMBED_COLOR,
-            description: `How did ${
-              this.#member
-            } satisfy the Condition?\nPrevious Role: ${previousRole}`,
+            description: `How did ${this.#member} satisfy the Condition?\nPrevious Role: ${previousRole}`,
             fields: [
               {
                 name: 'Abyssal Traveler 😎',

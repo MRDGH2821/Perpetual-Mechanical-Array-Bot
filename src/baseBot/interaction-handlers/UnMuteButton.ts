@@ -1,8 +1,4 @@
-import {
-  container,
-  InteractionHandler,
-  InteractionHandlerTypes,
-} from '@sapphire/framework';
+import { container, InteractionHandler, InteractionHandlerTypes } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { type ButtonInteraction } from 'discord.js';
 import { ROLE_IDS } from '../../lib/Constants';

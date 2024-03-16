@@ -1,7 +1,4 @@
-import {
-  InteractionHandler,
-  InteractionHandlerTypes,
-} from '@sapphire/framework';
+import { InteractionHandler, InteractionHandlerTypes } from '@sapphire/framework';
 import type { AutocompleteInteraction } from 'discord.js';
 import type { KitTechnology } from '../../../typeDefs/typeDefs';
 import {

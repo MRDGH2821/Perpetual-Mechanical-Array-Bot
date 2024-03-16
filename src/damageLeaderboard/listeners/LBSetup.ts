@@ -152,51 +152,39 @@ export default class LBSetup extends Listener {
     await webhook.send({ embeds: [information] });
 
     await webhook.send({ embeds: [uniSkillBoard] }).then((message) => {
-      db.collection('leaderboards')
-        .doc('uni-dmg-n5')
-        .set({
-          messageID: message?.id,
-        });
+      db.collection('leaderboards').doc('uni-dmg-n5').set({
+        messageID: message?.id,
+      });
     });
 
     await webhook.send({ embeds: [anemoSkillBoard] }).then((message) => {
-      db.collection('leaderboards')
-        .doc('anemo-dmg-skill')
-        .set({
-          messageID: message?.id,
-        });
+      db.collection('leaderboards').doc('anemo-dmg-skill').set({
+        messageID: message?.id,
+      });
     });
 
     await webhook.send({ embeds: [geoSkillBoard] }).then((message) => {
-      db.collection('leaderboards')
-        .doc('geo-dmg-skill')
-        .set({
-          messageID: message?.id,
-        });
+      db.collection('leaderboards').doc('geo-dmg-skill').set({
+        messageID: message?.id,
+      });
     });
 
     await webhook.send({ embeds: [electroSkillBoard] }).then((message) => {
-      db.collection('leaderboards')
-        .doc('electro-dmg-skill')
-        .set({
-          messageID: message?.id,
-        });
+      db.collection('leaderboards').doc('electro-dmg-skill').set({
+        messageID: message?.id,
+      });
     });
 
     await webhook.send({ embeds: [dendroSkillBoard] }).then((message) => {
-      db.collection('leaderboards')
-        .doc('dendro-dmg-skill')
-        .set({
-          messageID: message?.id,
-        });
+      db.collection('leaderboards').doc('dendro-dmg-skill').set({
+        messageID: message?.id,
+      });
     });
 
     await webhook.send({ embeds: [hydroSkillBoard] }).then((message) => {
-      db.collection('leaderboards')
-        .doc('hydro-dmg-skill')
-        .set({
-          messageID: message?.id,
-        });
+      db.collection('leaderboards').doc('hydro-dmg-skill').set({
+        messageID: message?.id,
+      });
     });
 
     PMAEventHandler.emit('LBUpdate');
