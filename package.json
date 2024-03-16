@@ -18,7 +18,8 @@
   "scripts": {
     "build": "tsc",
     "dev": "npm run build && npm run dev:start",
-    "dev:start": "node -r dotenv/config dist/index.js",
+    "predev:start": "npm run build",
+    "dev:start": "node --env-file .env -r dist/index.js",
     "docker:app": "docker compose up -d --build app",
     "format": "prettier --write .",
     "format-lint": "npm run format && npm run lint",
