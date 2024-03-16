@@ -251,7 +251,7 @@ export default class GuildCommand extends Subcommand {
                         {
                           name: 'Abyssal Sovereign',
                           value:
-                            'Complete 36/36 stars with at least four different elements & four different teams with no overlap between teammates*.\nTotal exp: `5000`',
+                            'Complete 36/36 stars with all traveler elements having different teams with no overlap between teammates*.\nTotal exp: `5000`',
                         },
                         {
                           name: '\u200B',
