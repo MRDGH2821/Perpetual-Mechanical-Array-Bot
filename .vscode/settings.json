@@ -1,19 +1,20 @@
 {
-  "search.exclude": {
-    "**/.yarn": true,
-    "**/.pnp.*": true
-  },
-  "npm.packageManager": "npm",
-  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
-  "git.enableCommitSigning": true,
   "editor.minimap.enabled": false,
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
   "files.autoSave": "onFocusChange",
   "files.eol": "\n",
-  "window.autoDetectColorScheme": true,
   "git.autofetch": true,
+  "git.enableCommitSigning": true,
   "git.mergeEditor": true,
   "javascript.preferences.importModuleSpecifier": "project-relative",
   "javascript.updateImportsOnFileMove.enabled": "always",
+  "npm.packageManager": "npm",
+  "search.exclude": {
+    "**/.pnp.*": true,
+    "**/.yarn": true
+  },
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "typescript.preferences.importModuleSpecifier": "project-relative"
+  "typescript.preferences.importModuleSpecifier": "project-relative",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "window.autoDetectColorScheme": true
 }
