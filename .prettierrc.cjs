@@ -1,3 +1,6 @@
+/**
+ * @type {import('prettier').Options}
+ */
 module.exports = {
   ...require('prettier-config-mrdgh2821'),
   arrowParens: 'always',
@@ -6,8 +9,7 @@ module.exports = {
   embeddedLanguageFormatting: 'auto',
   endOfLine: 'lf',
   htmlWhitespaceSensitivity: 'css',
-  importOrderParserPlugins: ['typescript', 'decorators'],
-  plugins: ['@ianvs/prettier-plugin-sort-imports', 'prettier-plugin-packagejson'],
+  plugins: ['prettier-plugin-packagejson'],
   printWidth: 100,
   proseWrap: 'preserve',
   quoteProps: 'as-needed',
@@ -17,4 +19,14 @@ module.exports = {
   tabWidth: 2,
   trailingComma: 'all',
   useTabs: false,
+  overrides: [
+    {
+      files: '*.json',
+      options: {
+        parser: 'json',
+        plugins: ['prettier-plugin-packagejson'],
+        trailingComma: 'none',
+      },
+    }
+  ],
 };
