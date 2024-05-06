@@ -4,7 +4,6 @@
     "airbnb-base",
     "airbnb-typescript/base",
     "plugin:promise/recommended",
-    "plugin:switch-case/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:eslint-comments/recommended",
     "plugin:prettier/recommended"
@@ -19,7 +18,6 @@
     "@typescript-eslint",
     "unused-imports",
     "simple-import-sort",
-    "switch-case",
     "const-case",
     "promise",
     "prettier"
@@ -32,10 +30,15 @@
     "class-methods-use-this": [
       "error",
       {
-        "exceptMethods": ["run", "chatInputRun", "autocompleteRun", "sendLog"]
+        "exceptMethods": [
+          "run",
+          "chatInputRun",
+          "autocompleteRun",
+          "sendLog",
+          "registerApplicationCommands"
+        ]
       }
     ],
-    "const-case/uppercase": "error",
     "eslint-comments/no-unused-disable": "error",
     "implicit-arrow-linebreak": "off",
     "no-new-object": "off",

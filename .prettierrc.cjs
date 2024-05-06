@@ -27,6 +27,6 @@ module.exports = {
         plugins: ['prettier-plugin-packagejson'],
         trailingComma: 'none',
       },
-    }
+    },
   ],
 };
