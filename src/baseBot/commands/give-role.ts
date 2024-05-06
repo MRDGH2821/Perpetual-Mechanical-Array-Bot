@@ -252,6 +252,13 @@ export default class GuildCommand extends Subcommand {
         value: ROLE_IDS.REPUTATION.SUMERU,
       },
       {
+        default: memberRoles.has(ROLE_IDS.REPUTATION.FONTAINE),
+        description: '100% Map + Subregions + Achievements + Max Reputation',
+        emoji: '⚓',
+        label: roles.get(ROLE_IDS.REPUTATION.FONTAINE)?.name || 'Fabulous in Fontaine',
+        value: ROLE_IDS.REPUTATION.FONTAINE,
+      },
+      {
         default: crownData.anemo[3],
         description: 'Crowned their Anemo Traveler',
         emoji: EMOJIS.Anemo || '🌪️',

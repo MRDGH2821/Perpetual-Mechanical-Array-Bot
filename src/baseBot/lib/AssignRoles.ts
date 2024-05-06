@@ -14,7 +14,7 @@ type AssignRoleOptions = {
   interaction: ChatInputOrContextMenuCommandInteraction;
 };
 
-type RegionEmoji = '🤔' | '🕊️' | '⚖️' | '⛩️' | '🌴';
+type RegionEmoji = '🤔' | '🕊️' | '⚖️' | '⛩️' | '🌴' | '⚓';
 
 type CrownEmoji =
   | '🤔'
@@ -102,7 +102,10 @@ export default class AssignRoles {
               emoji = '🌴';
               break;
             }
-
+            case ROLE_IDS.REPUTATION.FONTAINE: {
+              emoji = '⚓';
+              break;
+            }
             default: {
               emoji = '🤔';
               break;

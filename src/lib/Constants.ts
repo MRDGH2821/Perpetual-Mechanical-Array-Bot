@@ -94,6 +94,7 @@ export namespace ROLE_IDS {
     LIYUE = '804595502960214026',
     INAZUMA = '809026481112088596',
     SUMERU = '803429260316508172',
+    FONTAINE = '1233870493530984548',
   }
   export enum CROWN {
     ANEMO = '815938264875532298',
@@ -214,6 +215,10 @@ const REP_ROLES = [
   {
     name: 'Scholarly in Sumeru 🚶🤓',
     value: ROLE_IDS.REPUTATION.SUMERU,
+  },
+  {
+    name: 'Fabulous in Fontaine 🚶⚓',
+    value: ROLE_IDS.REPUTATION.FONTAINE,
   },
 ];
 
