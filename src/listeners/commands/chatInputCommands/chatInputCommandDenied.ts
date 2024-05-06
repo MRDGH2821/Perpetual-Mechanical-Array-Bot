@@ -1,6 +1,5 @@
-/* eslint-disable consistent-return */
-import type { ChatInputCommandDeniedPayload, Events } from '@sapphire/framework';
-import { Listener, UserError } from '@sapphire/framework';
+import type { ChatInputCommandDeniedPayload, Events, UserError } from '@sapphire/framework';
+import { Listener } from '@sapphire/framework';
 
 export default class ChatInputCommandDeniedEvent extends Listener<
   typeof Events.ChatInputCommandDenied
@@ -11,7 +10,7 @@ export default class ChatInputCommandDeniedEvent extends Listener<
   ) {
     // `context: { silent: true }` should make UserError silent:
     // Use cases for this are for example permissions error when running the `eval` command.
-    if (Reflect.get(Object(context), 'silent')) return;
+    if (Reflect.get(Object(context), 'silent')) return true;
 
     if (interaction.deferred || interaction.replied) {
       return interaction.editReply({

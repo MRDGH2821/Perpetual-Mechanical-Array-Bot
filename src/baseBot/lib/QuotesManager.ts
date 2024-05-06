@@ -6,7 +6,7 @@ export default class QuotesManager {
   static #DBquotes = new Collection() as DBQuotesCollection;
 
   static async #fetchDBQuotes(option: DBQuotes): Promise<string[]> {
-    return new Promise((res) => {
+    return new Promise((resolve, reject) => {
       let quotesArray: string[] = [];
       db.collection('quotes-gifs-reasons')
         .doc(option)
@@ -15,12 +15,13 @@ export default class QuotesManager {
           const data = docSnap.data();
           if (data) {
             quotesArray = data.array as unknown as string[];
-            res(quotesArray);
-          } else {
-            res([]);
+            return resolve(quotesArray);
           }
+          return resolve([]);
+
           // rej(new Error(`No quotes/GIFs/reasons exist for "${option}"`));
-        });
+        })
+        .catch(reject);
     });
   }
 

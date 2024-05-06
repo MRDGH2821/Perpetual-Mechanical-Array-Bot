@@ -1,14 +1,12 @@
 import { Time } from '@sapphire/time-utilities';
 import { toTitleCase } from '@sapphire/utilities';
-import {
+import type {
   ButtonInteraction,
-  ButtonStyle,
   ChatInputCommandInteraction,
-  ComponentType,
   StringSelectMenuInteraction,
-  TextInputStyle,
 } from 'discord.js';
-import { characters, type Character } from 'genshin-db';
+import { ButtonStyle, ComponentType, TextInputStyle } from 'discord.js';
+import { type Character, characters } from 'genshin-db';
 import { crownProps } from '../../hallOfFame/lib/Utilities';
 import { EMOJIS } from '../../lib/Constants';
 import { parseElement } from '../../lib/utils';
@@ -99,11 +97,13 @@ export default class TravelerTeam {
           },
         ],
       })
-      .then((msg) => msg.awaitMessageComponent({
-        componentType: ComponentType.StringSelect,
-        time: 1 * Time.Minute,
-        dispose: true,
-      }))
+      .then((msg) =>
+        msg.awaitMessageComponent({
+          componentType: ComponentType.StringSelect,
+          time: 1 * Time.Minute,
+          dispose: true,
+        }),
+      )
       .then((mtx) => {
         this.element = parseElement(mtx.values[0]);
         return mtx;
@@ -190,10 +190,12 @@ export default class TravelerTeam {
         this.#teamMate3 = char3;
         return modalItx;
       })
-      .catch((err) => this.interaction.editReply({
-        content: `Error: ${err.message}\nCause: ${err.cause}\n\nRe-run the command again to make the team.`,
-        components: [],
-      }));
+      .catch((err) =>
+        this.interaction.editReply({
+          content: `Error: ${err.message}\nCause: ${err.cause}\n\nRe-run the command again to make the team.`,
+          components: [],
+        }),
+      );
   }
 
   isTeamMade() {
@@ -230,11 +232,13 @@ export default class TravelerTeam {
           },
         ],
       })
-      .then((msg) => msg.awaitMessageComponent({
-        componentType: ComponentType.Button,
-        time: 1 * Time.Minute,
-        dispose: true,
-      }))
+      .then((msg) =>
+        msg.awaitMessageComponent({
+          componentType: ComponentType.Button,
+          time: 1 * Time.Minute,
+          dispose: true,
+        }),
+      )
       .then((itx) => {
         if (itx.customId === 'confirm_team') {
           this.finalised = true;
@@ -257,7 +261,8 @@ export default class TravelerTeam {
       const element = toTitleCase(this.element);
       const traveler = `**${element} Traveler**`;
 
-      if (!this.#teamMate1 || !this.#teamMate2 || !this.#teamMate3) throw new Error('Team not finalised');
+      if (!this.#teamMate1 || !this.#teamMate2 || !this.#teamMate3)
+        throw new Error('Team not finalised');
       const name1 = this.#teamMate1.name;
       const name2 = this.#teamMate2.name;
       const name3 = this.#teamMate3.name;

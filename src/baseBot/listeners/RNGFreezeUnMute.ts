@@ -24,7 +24,14 @@ export default class RNGFreezeUnMuteEvent extends Listener<typeof Events.ShardRe
         .remove(freezeRNGRole, 'Bot restarted, cannot have them muted for long duration')
         .then(() => {
           length += 1;
-        });
+          return length;
+        })
+        .catch((error) =>
+          this.container.logger.error(
+            'Unexpected error while un-muting users freezed by RNG',
+            error,
+          ),
+        );
     });
     this.container.logger.info(`Unmuted ${length} users`);
   }

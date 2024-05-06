@@ -1,8 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, type ListenerOptions } from '@sapphire/framework';
-import {
-  ButtonStyle, ComponentType, ForumChannel, type APIEmbed,
-} from 'discord.js';
+import { type APIEmbed, ButtonStyle, ComponentType, ForumChannel } from 'discord.js';
 import { sequentialPromises } from 'yaspr';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import EnvConfig from '../../lib/EnvConfig';
@@ -32,13 +30,15 @@ export default class SAPublish extends Listener {
       },
     });
 
-    const insertDashLine = async () => thread.send({
-      content: SAPublish.dashLine,
-    });
+    const insertDashLine = async () =>
+      thread.send({
+        content: SAPublish.dashLine,
+      });
 
-    const insertEmbeds = async (embeds: APIEmbed[]) => thread.send({
-      embeds,
-    });
+    const insertEmbeds = async (embeds: APIEmbed[]) =>
+      thread.send({
+        embeds,
+      });
 
     await insertDashLine();
     const firstMsg = await insertEmbeds(clearEmbeds);
@@ -85,7 +85,7 @@ export default class SAPublish extends Listener {
 
         const publisher = (clrType: SpiralAbyssClearTypes) => this.publish(clrType, forumChannel);
 
-        await sequentialPromises(VALID_ABYSS_CLEAR_TYPES, publisher);
+        return sequentialPromises(VALID_ABYSS_CLEAR_TYPES, publisher);
       });
     // .catch(container.logger.error);
   }

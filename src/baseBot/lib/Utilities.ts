@@ -1,19 +1,14 @@
-import { randomInt } from 'crypto';
-import EventEmitter from 'events';
-import { setTimeout } from 'timers/promises';
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable promise/no-nesting */
 import { MessageLinkRegex } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/framework';
 import { Time } from '@sapphire/time-utilities';
 import { pickRandom } from '@sapphire/utilities';
-import {
-  ButtonStyle,
-  ComponentType,
-  GuildMember,
-  TextChannel,
-  time,
-  type APIEmbed,
-  type APIInteractionGuildMember,
-} from 'discord.js';
+import { randomInt } from 'crypto';
+import type { APIEmbed, APIInteractionGuildMember, TextChannel } from 'discord.js';
+import { ButtonStyle, ComponentType, GuildMember, time } from 'discord.js';
+import EventEmitter from 'events';
+import { setTimeout } from 'timers/promises';
 import { EMOJIS, ROLE_IDS, STAFF_ARRAY } from '../../lib/Constants';
 
 export function arrayIntersection<T>(arr1: T[], arr2: T[]) {
@@ -36,8 +31,8 @@ export function isStaff(
         'KickMembers',
         'ManageChannels',
         'ModerateMembers',
-      ])
-      || member.permissions.has('Administrator', true)
+      ]) ||
+      member.permissions.has('Administrator', true)
     ) {
       return true;
     }
@@ -77,9 +72,7 @@ type FreezeOptions = {
 export async function freezeMuteUser(options: FreezeOptions) {
   const pain1 = [EMOJIS.Aether_Pain1, EMOJIS.Lumine_Pain1];
   const pain2 = [EMOJIS.Aether_Pain2, EMOJIS.Lumine_Pain2];
-  const {
-    member, duration, reason, chance, channel,
-  } = options;
+  const { member, duration, reason, chance, channel } = options;
   const { logger } = container;
   const painEmotes = `${pickRandom(pain1)}${pickRandom(pain2)}`;
   const RNG = randomInt(0, 100);
@@ -108,11 +101,11 @@ export async function freezeMuteUser(options: FreezeOptions) {
       communicationDisabledUntil: newDate.toISOString(),
       reason: `${reason} (muted by RNG)`,
     })
-    .then(async () => {
-      await channel.send({
+    .then(() =>
+      channel.send({
         embeds: [muteEmbed],
-      });
-    })
+      }),
+    )
     .catch(async (err) => {
       logger.debug(err);
 
@@ -124,12 +117,12 @@ export async function freezeMuteUser(options: FreezeOptions) {
 
       await member.roles
         .add(ROLE_IDS.OTHERS.FROZEN_RNG, `${reason} (muted by RNG)`)
-        .then(async () => {
-          await channel.send({
+        .then(() =>
+          channel.send({
             content: 'HAHA Take that!',
             embeds: [muteEmbed],
-          });
-        })
+          }),
+        )
         .catch(async (assignErr) => {
           logger.debug(assignErr);
           await channel.send({
@@ -139,7 +132,7 @@ export async function freezeMuteUser(options: FreezeOptions) {
     });
 
   await setTimeout(5 * Time.Second);
-  await member.createDM(true).then((dmChannel) => {
+  await member.createDM(true).then((dmChannel) =>
     dmChannel
       .send({
         content: 'Click on Unmute button if you wish to be unmuted',
@@ -159,7 +152,7 @@ export async function freezeMuteUser(options: FreezeOptions) {
       })
       .then((msg) => {
         logger.info(`Unmute message sent to ${member.user.tag}`);
-        setTimeout(duration)
+        return setTimeout(duration)
           .then(() => msg.delete())
           .then(() => logger.info('Deleted unmute message to prevent abuse'));
       })
@@ -168,6 +161,6 @@ export async function freezeMuteUser(options: FreezeOptions) {
         await channel.send({
           content: `${member} your DMs are closed, thus couldn't send you a message by which you can unmute yourself`,
         });
-      });
-  });
+      }),
+  );
 }

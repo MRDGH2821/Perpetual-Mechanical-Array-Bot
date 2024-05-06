@@ -57,9 +57,7 @@ export default class RegisterCrownEvent extends Listener {
       .collection(collectionName)
       .doc(crownData.userID)
       .set(crownData)
-      .then(() => {
-        this.container.logger.debug(`Crown data added in ${collectionName}!`);
-      })
+      .then(() => this.container.logger.debug(`Crown data added in ${collectionName}!`))
       .catch(this.container.logger.debug);
   }
 }

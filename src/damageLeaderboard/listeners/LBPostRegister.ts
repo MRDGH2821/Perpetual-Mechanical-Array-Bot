@@ -4,8 +4,8 @@ import {
   ButtonStyle,
   channelMention,
   ComponentType,
-  hyperlink,
   type EmojiIdentifierResolvable,
+  hyperlink,
 } from 'discord.js';
 import { sequentialPromises } from 'yaspr';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
@@ -79,7 +79,6 @@ export default class LBPostRegister extends Listener {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
   public async sendLog(args: LBRegistrationArgs, rank: number, oldScoreData?: DBLeaderboardData) {
     const { channel } = args.proofMessage;
     this.container.logger.debug('Preparing to send leaderboard registration log');
@@ -172,8 +171,9 @@ export default class LBPostRegister extends Listener {
           },
         ],
       })
-      .then(() => {
-        this.container.logger.debug('Leaderboard Registration log sent!');
-      });
+      .then(() => this.container.logger.debug('Leaderboard Registration log sent!'))
+      .catch((error) =>
+        this.container.logger.error('Error sending leaderboard registration log:', error),
+      );
   }
 }

@@ -38,7 +38,7 @@ export default class AutoResponseTrigger {
     return Promise.resolve(true);
   }
 
-  actionFn?: (botMessage: Message, sourceMessage: Message) => Promise<any>;
+  actionFn?: (botMessage: Message, sourceMessage: Message) => Promise<unknown>;
 
   async customAction() {
     if (this.actionFn) {
@@ -106,12 +106,12 @@ export default class AutoResponseTrigger {
     return this;
   }
 
-  setCustomCondition(conditionFn: (...args: any) => Promise<boolean>) {
+  setCustomCondition(conditionFn: (...args: unknown[]) => Promise<boolean>) {
     this.conditionFn = conditionFn;
     return this;
   }
 
-  setCustomAction(actionFn: (botMessage: Message, sourceMessage: Message) => Promise<any>) {
+  setCustomAction(actionFn: (botMessage: Message, sourceMessage: Message) => Promise<unknown>) {
     this.actionFn = actionFn;
     return this;
   }

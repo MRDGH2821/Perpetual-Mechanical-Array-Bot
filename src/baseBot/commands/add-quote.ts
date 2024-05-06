@@ -127,7 +127,7 @@ export default class GuildCommand extends Command {
             },
           ],
         });
-        PMAEventHandler.emit('RefreshQuotes');
+        return PMAEventHandler.emit('RefreshQuotes');
       })
       .catch((err) => {
         this.container.logger.error(err);

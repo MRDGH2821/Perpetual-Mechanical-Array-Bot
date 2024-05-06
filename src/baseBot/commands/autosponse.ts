@@ -106,7 +106,6 @@ export default class GuildCommand extends Subcommand {
     });
   }
 
-  // eslint-disable-next-line class-methods-use-this
   public async chatRun(interaction: Subcommand.ChatInputCommandInteraction) {
     await interaction.deferReply({
       ephemeral: true,
@@ -122,9 +121,9 @@ export default class GuildCommand extends Subcommand {
     const content = isToEnable()
       ? `\`${name}\` autoresponse is now enabled.`
       : `${name} is now disabled for ${hours}h.\nIt will be enabled in ${time(
-        new Date(hours * Time.Hour + Date.now()),
-        'R',
-      )} \n\nDo note that if the bot restarts, it will be enabled again irrespective of given duration`;
+          new Date(hours * Time.Hour + Date.now()),
+          'R',
+        )} \n\nDo note that if the bot restarts, it will be enabled again irrespective of given duration`;
 
     await interaction.editReply({
       content,

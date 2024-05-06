@@ -1,5 +1,5 @@
-import { ApplicationCommandRegistries, RegisterBehavior } from '@sapphire/framework';
 import '@sapphire/plugin-logger/register';
+import { ApplicationCommandRegistries, RegisterBehavior } from '@sapphire/framework';
 import * as colorette from 'colorette';
 
 // Unless explicitly defined, set NODE_ENV as development:

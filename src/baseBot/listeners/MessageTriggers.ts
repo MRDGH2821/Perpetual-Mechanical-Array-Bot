@@ -1,8 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener, type ListenerOptions } from '@sapphire/framework';
-import {
-  ButtonStyle, ComponentType, userMention, type Message,
-} from 'discord.js';
+import { ButtonStyle, ComponentType, type Message, userMention } from 'discord.js';
 import { sequentialPromises } from 'yaspr';
 import AutoResponseTrigger from '../lib/AutoResponseTrigger';
 
@@ -125,7 +123,7 @@ export default class MessageTriggers extends Listener<typeof Events.MessageCreat
         .then((botMsg) => {
           trigger.refreshCoolDown();
           trigger.setBotMessage(botMsg);
-          trigger.customAction();
+          return trigger.customAction();
         })
         .catch(this.container.logger.debug);
     };

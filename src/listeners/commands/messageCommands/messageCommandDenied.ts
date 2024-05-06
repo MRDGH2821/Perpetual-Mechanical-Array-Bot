@@ -1,5 +1,5 @@
-import type { Events, MessageCommandDeniedPayload } from '@sapphire/framework';
-import { Listener, UserError } from '@sapphire/framework';
+import type { Events, MessageCommandDeniedPayload, UserError } from '@sapphire/framework';
+import { Listener } from '@sapphire/framework';
 
 export default class MessageCommandDeniedEvent extends Listener<
   typeof Events.MessageCommandDenied

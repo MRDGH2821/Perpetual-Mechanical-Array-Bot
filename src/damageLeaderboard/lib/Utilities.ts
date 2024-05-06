@@ -1,8 +1,6 @@
 import { s } from '@sapphire/shapeshift';
 import { pickRandom } from '@sapphire/utilities';
-import {
-  COLORS, EMOJIS, EMOJIS2, ICONS,
-} from '../../lib/Constants';
+import { COLORS, EMOJIS, EMOJIS2, ICONS } from '../../lib/Constants';
 import { parseElement } from '../../lib/utils';
 import type { ValueOf } from '../../typeDefs/typeDefs';
 import type {
@@ -135,8 +133,8 @@ export function parseDamageCategory(element: LBElements): ElementDamageCategorie
   throw new Error(`This is not a valid element: ${element}`);
 }
 
-export function digitEmoji(digit: any) {
-  const parsed = digit instanceof Number ? digit : parseInt(digit, 10);
+export function digitEmoji(digit: unknown) {
+  const parsed = digit instanceof Number ? digit : parseInt(String(digit), 10);
   switch (parsed) {
     case 0:
       return '0️⃣';

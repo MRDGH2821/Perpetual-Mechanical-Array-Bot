@@ -67,9 +67,7 @@ export default class LBUpdate extends Listener {
         this.container.logger.error(err);
       }),
     ])
-      .then(() => {
-        this.container.logger.info('Leaderboard summary channel updated!');
-      })
+      .then(() => this.container.logger.info('Leaderboard summary channel updated!'))
       .catch(this.container.logger.error);
   }
 }

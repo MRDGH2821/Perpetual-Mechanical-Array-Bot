@@ -1,10 +1,6 @@
 import { Subcommand, type SubcommandMapping } from '@sapphire/plugin-subcommands';
-import {
-  ApplicationCommandOptionType,
-  ChatInputCommandInteraction,
-  MessageFlags,
-  type ApplicationCommandOptionData,
-} from 'discord.js';
+import type { ApplicationCommandOptionData, ChatInputCommandInteraction } from 'discord.js';
+import { ApplicationCommandOptionType, MessageFlags } from 'discord.js';
 import EnvConfig from '../../lib/EnvConfig';
 import type { ELEMENTS, JSONCmd } from '../../typeDefs/typeDefs';
 import { getElementProp, getTech, isSkill } from '../lib/TravelerTechnologies';
@@ -104,7 +100,6 @@ export default class GuildCommand extends Subcommand {
     });
   }
 
-  // eslint-disable-next-line class-methods-use-this
   public async runCmd(interaction: ChatInputCommandInteraction) {
     const element = interaction.options.getSubcommandGroup(true);
     const subCommand = interaction.options.getSubcommand(true);

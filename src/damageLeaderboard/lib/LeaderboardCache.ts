@@ -1,7 +1,8 @@
 import { container } from '@sapphire/framework';
 import { s, type SchemaOf } from '@sapphire/shapeshift';
 import { chunk, deepClone, toTitleCase } from '@sapphire/utilities';
-import { Collection, User, type APIEmbed } from 'discord.js';
+import type { APIEmbed, User } from 'discord.js';
+import { Collection } from 'discord.js';
 import { parseBoolean } from '../../baseBot/lib/Utilities';
 import { EMPTY_STRING } from '../../lib/Constants';
 import db from '../../lib/Firestore';
@@ -99,7 +100,7 @@ export default class LeaderboardCache {
     groupType: GroupCategoryType,
     topEntries = 0,
   ): Promise<DBLeaderboardData[]> {
-    return new Promise((res, rej) => {
+    return new Promise((resolve, reject) => {
       const dataArray: DBLeaderboardData[] = [];
 
       this.#accessCache(element, groupType);
@@ -109,13 +110,15 @@ export default class LeaderboardCache {
         .orderBy('score', 'desc')
         .limit(topEntries)
         .get()
-        .then((query) => query.forEach((docSnap) => {
-          const data = docSnap.data();
-          const parsedData = LeaderboardDBDataSchema.parse(data);
-          dataArray.push(parsedData);
-        }))
-        .then(() => res(dataArray))
-        .catch(rej);
+        .then((query) =>
+          query.forEach((docSnap) => {
+            const data = docSnap.data();
+            const parsedData = LeaderboardDBDataSchema.parse(data);
+            dataArray.push(parsedData);
+          }),
+        )
+        .then(() => resolve(dataArray))
+        .catch(reject);
     });
   }
 
@@ -190,16 +193,16 @@ export default class LeaderboardCache {
   static async registerScore(dbData: DBLeaderboardData): Promise<void> {
     const element = parseLBElement(dbData.elementCategory);
     const collection = this.#accessCache(element, dbData.typeCategory);
-    return new Promise((res, rej) => {
+    return new Promise((resolve, reject) => {
       db.collection(`${dbData.elementCategory}-${dbData.typeCategory}`)
         .doc(dbData.userID)
         .set(dbData)
         .then(() => {
           container.logger.debug('Leaderboard Entry Submitted!');
           collection.set(dbData.userID, dbData);
-          res();
+          return resolve();
         })
-        .catch(rej);
+        .catch(reject);
     });
   }
 
@@ -245,7 +248,7 @@ export default class LeaderboardCache {
     embedTemplate: APIEmbed,
     usersPerPage = this.#usersPerPage,
   ): Promise<APIEmbed[]> {
-    return new Promise((res, rej) => {
+    return new Promise((resolve, reject) => {
       this.#rankBuilder(element, groupType, usersPerPage)
         .then((rankPages) => {
           const embeds: Array<typeof embedTemplate> = [];
@@ -263,9 +266,9 @@ export default class LeaderboardCache {
 
             embeds.push(embed);
           });
-          res(embeds);
+          return resolve(embeds);
         })
-        .catch(rej);
+        .catch(reject);
     });
   }
 
@@ -275,7 +278,7 @@ export default class LeaderboardCache {
     usersPerPage = this.#usersPerPage,
   ): Promise<APIEmbed[]> {
     const props = leaderboardProps(element);
-    return new Promise((res, rej) => {
+    return new Promise((resolve, reject) => {
       const collection = this.#accessCache(element, groupType);
 
       logger.debug('Building embeds for: ', {
@@ -294,7 +297,7 @@ export default class LeaderboardCache {
         fields: [],
       };
 
-      this.#rankEmbedGenerator(element, groupType, embed, usersPerPage).then(res).catch(rej);
+      this.#rankEmbedGenerator(element, groupType, embed, usersPerPage).then(resolve).catch(reject);
     });
   }
 
@@ -302,7 +305,7 @@ export default class LeaderboardCache {
     const props = leaderboardProps(element);
 
     container.logger.debug('Generating Leaderboard summary for:', element);
-    return new Promise<APIEmbed>((res, rej) => {
+    return new Promise<APIEmbed>((resolve, reject) => {
       const embed: APIEmbed = {
         title: `${toTitleCase(element)} Traveler Damage Leaderboard`,
         color: props.color,
@@ -315,20 +318,24 @@ export default class LeaderboardCache {
       };
 
       this.#rankBuilder(element, 'open', 7)
-        .then((openRanks) => embed.fields?.push(
-          { name: '**Open Category Top 1-7**', value: openRanks[0] || NOT_FOUND, inline: true },
-          {
-            name: '**Open Category Top 8-14**',
-            value: openRanks[1] || NOT_FOUND,
-            inline: true,
-          },
-        ))
-        .then(() => embed.fields?.push({
-          name: EMPTY_STRING,
-          value: EMPTY_STRING,
-        }))
+        .then((openRanks) =>
+          embed.fields?.push(
+            { name: '**Open Category Top 1-7**', value: openRanks[0] || NOT_FOUND, inline: true },
+            {
+              name: '**Open Category Top 8-14**',
+              value: openRanks[1] || NOT_FOUND,
+              inline: true,
+            },
+          ),
+        )
+        .then(() =>
+          embed.fields?.push({
+            name: EMPTY_STRING,
+            value: EMPTY_STRING,
+          }),
+        )
         .then(() => this.#rankBuilder(element, 'solo', 7))
-        .then((soloRanks) => {
+        .then((soloRanks) =>
           embed.fields?.push(
             { name: '**Solo Category Top 1-7**', value: soloRanks[0] || NOT_FOUND, inline: true },
             {
@@ -336,11 +343,11 @@ export default class LeaderboardCache {
               value: soloRanks[1] || NOT_FOUND,
               inline: true,
             },
-          );
-        })
-        .catch(rej);
+          ),
+        )
+        .catch(reject);
 
-      res(embed);
+      resolve(embed);
     });
   }
 }

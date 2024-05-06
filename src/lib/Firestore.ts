@@ -1,9 +1,9 @@
-import fs from 'fs';
-import * as path from 'path';
+import './EnvConfig';
 import { applicationDefault, cert, initializeApp } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
+import fs from 'fs';
+import * as path from 'path';
 import { pmaLogger as logger } from '../pma-logger';
-import './EnvConfig';
 import { decodeBase64 } from './Firestore-Crypt';
 
 const baseDir = path.resolve(process.cwd(), 'firebase-service-acc');
@@ -38,9 +38,9 @@ const credFilePath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
 
 function searchCredEnv() {
   if (
-    !process.env.FIREBASE_CLIENT_EMAIL
-    || !process.env.FIREBASE_PRIVATE_KEY
-    || !process.env.FIREBASE_PROJECT_ID
+    !process.env.FIREBASE_CLIENT_EMAIL ||
+    !process.env.FIREBASE_PRIVATE_KEY ||
+    !process.env.FIREBASE_PROJECT_ID
   ) {
     logger.warn('Firebase credentials not found in 3 environment variables.');
     return undefined;
@@ -82,7 +82,10 @@ export const cred = {
   path: credFilePath,
 };
 
-async function deleteQueryBatch(query: FirebaseFirestore.Query, resolve: Function) {
+async function deleteQueryBatch(
+  query: FirebaseFirestore.Query,
+  resolve: (value?: unknown) => void,
+) {
   const snapshot = await query.get();
 
   const batchSize = snapshot.size;

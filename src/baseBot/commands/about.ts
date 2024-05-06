@@ -1,10 +1,8 @@
-import { readFileSync } from 'fs';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { DurationFormatter } from '@sapphire/time-utilities';
-import {
-  ButtonStyle, ComponentType, User, userMention,
-} from 'discord.js';
+import { ButtonStyle, ComponentType, User, userMention } from 'discord.js';
+import { readFileSync } from 'fs';
 import { COLORS } from '../../lib/Constants';
 
 const pkg = JSON.parse(
@@ -32,9 +30,10 @@ export default class UserCommand extends Command {
   }
 
   public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
-    const owner: User | undefined = interaction.client.application.owner instanceof User
-      ? interaction.client.application.owner
-      : interaction.client.application.owner?.owner?.user;
+    const owner: User | undefined =
+      interaction.client.application.owner instanceof User
+        ? interaction.client.application.owner
+        : interaction.client.application.owner?.owner?.user;
     return interaction.reply({
       embeds: [
         {

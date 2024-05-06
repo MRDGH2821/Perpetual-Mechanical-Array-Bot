@@ -6,9 +6,9 @@ export default class SACacheCheck extends Precondition {
     return SpiralAbyssCache.isCacheReady()
       ? this.ok()
       : this.error({
-        context: 'Spiral Abyss cache not ready',
-        message: 'Please wait before using Spiral Abyss commands as cache is not ready',
-      });
+          context: 'Spiral Abyss cache not ready',
+          message: 'Please wait before using Spiral Abyss commands as cache is not ready',
+        });
   }
 }
 

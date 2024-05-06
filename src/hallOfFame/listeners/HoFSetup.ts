@@ -23,9 +23,7 @@ export default class HoFSetup extends Listener {
           merge: true,
         },
       )
-      .then(() => {
-        logger.debug('Forum channel registered in database for Hall Of Fame');
-      })
+      .then(() => logger.debug('Forum channel registered in database for Hall Of Fame'))
       .catch(logger.error);
   }
 }

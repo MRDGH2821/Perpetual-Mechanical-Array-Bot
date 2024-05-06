@@ -11,11 +11,11 @@ export default class ChatInputCommandErrorEvent extends Listener<
     const errMsg = `${err}\n\n${codeBlock('md', JSON.stringify(err, null, 2))}`;
     return interaction.deferred
       ? interaction.editReply({
-        content: `An error occurred\n\n${errMsg}`,
-      })
+          content: `An error occurred\n\n${errMsg}`,
+        })
       : interaction.reply({
-        content: `An error occurred\n\n${errMsg}`,
-        flags: MessageFlags.Ephemeral,
-      });
+          content: `An error occurred\n\n${errMsg}`,
+          flags: MessageFlags.Ephemeral,
+        });
   }
 }

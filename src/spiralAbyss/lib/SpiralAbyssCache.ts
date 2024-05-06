@@ -1,7 +1,5 @@
 import { container } from '@sapphire/framework';
-import {
-  Collection, Role, time, type APIEmbed,
-} from 'discord.js';
+import { type APIEmbed, Collection, type Role, time } from 'discord.js';
 import { parseBoolean } from '../../baseBot/lib/Utilities';
 import { EMPTY_STRING, ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
@@ -61,7 +59,7 @@ export default class SpiralAbyssCache {
     } catch (e) {
       container.logger.error(e);
       container.logger.debug('Setting self in cache');
-      const self = await guild.members.me?.fetch(true)!;
+      const self = await guild.members.me?.fetch(true);
       const members: Role['members'] = new Collection();
       members.set(self.id, self);
       return members;
@@ -90,7 +88,7 @@ export default class SpiralAbyssCache {
     date = new Date(),
   ): Promise<APIEmbed[]> {
     const props = SAProps(clearType);
-    return new Promise((res, rej) => {
+    return new Promise((resolve, reject) => {
       const collection = this.accessCache(clearType);
       logger.debug('Building embeds for: ', {
         'Clear Type': clearType,
@@ -118,15 +116,15 @@ export default class SpiralAbyssCache {
           value: 'No members found in this section',
         });
 
-        res([embed]);
+        resolve([embed]);
       } else {
         publishEmbedsGenerator({
           users,
           embedTemplate: embed,
           usersPerPage,
         })
-          .then(res)
-          .catch(rej);
+          .then(resolve)
+          .catch(reject);
       }
     });
   }

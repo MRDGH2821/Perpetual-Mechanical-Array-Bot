@@ -1,6 +1,7 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable consistent-return */
-import type { ContextMenuCommandDeniedPayload, Events } from '@sapphire/framework';
-import { Listener, UserError } from '@sapphire/framework';
+import type { ContextMenuCommandDeniedPayload, Events, UserError } from '@sapphire/framework';
+import { Listener } from '@sapphire/framework';
 
 export default class ContextMenuCommandDeniedEvent extends Listener<
   typeof Events.ContextMenuCommandDenied

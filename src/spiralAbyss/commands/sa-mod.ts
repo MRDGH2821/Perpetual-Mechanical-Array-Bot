@@ -1,21 +1,18 @@
 import { container } from '@sapphire/pieces';
 import { Subcommand } from '@sapphire/plugin-subcommands';
 import { Time } from '@sapphire/time-utilities';
+import type { APIEmbed, Message } from 'discord.js';
 import {
   ApplicationCommandOptionType,
   ButtonStyle,
   channelMention,
   ChannelType,
   ComponentType,
-  Message,
   MessageFlags,
   roleMention,
-  type APIEmbed,
 } from 'discord.js';
 import { guildMessageIDsExtractor, isStaff, PMAEventHandler } from '../../baseBot/lib/Utilities';
-import {
-  ChannelIds, COLORS, ICONS, ROLE_IDS,
-} from '../../lib/Constants';
+import { ChannelIds, COLORS, ICONS, ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import type { ButtonActionRow, JSONCmd } from '../../typeDefs/typeDefs';
 import SpiralAbyssCache from '../lib/SpiralAbyssCache';
@@ -160,8 +157,10 @@ export default class GuildCommand extends Subcommand {
           async chatInputRun(interaction) {
             const shouldRemoveRoles = interaction.options.getBoolean('remove_roles', true);
             const shouldPublishNames = interaction.options.getBoolean('publish_names') === true;
-            const shouldSendAnnouncement = interaction.options.getBoolean('send_announcement') === true;
-            const shouldAnnounceWithPing = interaction.options.getBoolean('announce_with_ping') === true;
+            const shouldSendAnnouncement =
+              interaction.options.getBoolean('send_announcement') === true;
+            const shouldAnnounceWithPing =
+              interaction.options.getBoolean('announce_with_ping') === true;
 
             const status = `1. Will publish names: \`${shouldPublishNames}\`\n2. Will remove roles: \`${shouldRemoveRoles}\`\n3. Send Announcement message: \`${shouldSendAnnouncement}\` \n4. Will Announce with ping: \`${shouldAnnounceWithPing}\``;
 
@@ -200,14 +199,16 @@ export default class GuildCommand extends Subcommand {
                 components: [verifyRow],
                 flags: MessageFlags.Ephemeral,
               })
-              .then((msg) => msg.awaitMessageComponent({
-                componentType: ComponentType.Button,
-                dispose: true,
-                async filter(itx) {
-                  await itx.deferUpdate();
-                  return isStaff(itx.member);
-                },
-              }))
+              .then((msg) =>
+                msg.awaitMessageComponent({
+                  componentType: ComponentType.Button,
+                  dispose: true,
+                  async filter(itx) {
+                    await itx.deferUpdate();
+                    return isStaff(itx.member);
+                  },
+                }),
+              )
               .then(async (btnCtx) => {
                 PMAEventHandler.emit('SABackup');
                 if (btnCtx.customId === 'confirm_reset') {
@@ -273,9 +274,9 @@ export default class GuildCommand extends Subcommand {
 
                     channel.send({
                       content: shouldAnnounceWithPing
-                        ? roleMention(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER)
-                          + roleMention(ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR)
-                          + roleMention(ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN)
+                        ? roleMention(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER) +
+                          roleMention(ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR) +
+                          roleMention(ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN)
                         : roleMention(ROLE_IDS.OTHERS.ARCHONS),
                       embeds: [announceEmb],
                       components: [],
@@ -416,16 +417,18 @@ export default class GuildCommand extends Subcommand {
                   },
                 ],
               })
-              .then((msg) => msg.awaitMessageComponent({
-                async filter(i) {
-                  await i.deferUpdate();
-                  if (i.member) {
-                    return isStaff(i.member);
-                  }
-                  return false;
-                },
-                time: 3 * Time.Minute,
-              }));
+              .then((msg) =>
+                msg.awaitMessageComponent({
+                  async filter(i) {
+                    await i.deferUpdate();
+                    if (i.member) {
+                      return isStaff(i.member);
+                    }
+                    return false;
+                  },
+                  time: 3 * Time.Minute,
+                }),
+              );
             if (prompt.customId === 'cancel') {
               return prompt.editReply({
                 content: 'Cancelled',

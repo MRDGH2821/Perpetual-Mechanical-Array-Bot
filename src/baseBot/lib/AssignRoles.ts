@@ -1,18 +1,9 @@
 import type { ChatInputOrContextMenuCommandInteraction } from '@sapphire/discord.js-utilities';
 import { pickRandom, range } from '@sapphire/utilities';
-import {
-  ButtonStyle,
-  channelMention,
-  ComponentType,
-  GuildMember,
-  Message,
-  MessageFlags,
-  roleMention,
-  type APIEmbed,
-} from 'discord.js';
-import {
-  COLORS, EMPTY_STRING, ROLE_IDS, ThreadIds,
-} from '../../lib/Constants';
+import type { APIEmbed, GuildMember, Message } from 'discord.js';
+import { ButtonStyle, channelMention, ComponentType, MessageFlags, roleMention } from 'discord.js';
+import { COLORS, EMPTY_STRING, ROLE_IDS, ThreadIds } from '../../lib/Constants';
+import { pmaLogger } from '../../pma-logger';
 import type { ButtonActionRow, RegisterCrownArgs } from '../../typeDefs/typeDefs';
 import { arrayIntersection, isStaff, PMAEventHandler } from './Utilities';
 
@@ -90,7 +81,7 @@ export default class AssignRoles {
 
     await this.#member.roles
       .add(repRoles, 'Completed regional exploration & achievements')
-      .then(() => {
+      .then(() =>
         repRoles.forEach((role) => {
           let emoji: RegionEmoji = '🤔';
 
@@ -123,21 +114,21 @@ export default class AssignRoles {
             role,
             emoji,
           });
-        });
-      });
+        }),
+      );
   }
 
   async #awardWhaleRole() {
     const { WHALE } = ROLE_IDS.OTHERS;
     const WhaleEmojis: WhaleEmoji[] = ['🐋', '🐳', '💰'];
-    await this.#member.roles.add(WHALE, 'Spent some excess dollars in game....').then(() => {
+    await this.#member.roles.add(WHALE, 'Spent some excess dollars in game....').then(() =>
       this.#assignStats.push({
         exp: 250,
         notes: 'none',
         role: WHALE,
         emoji: pickRandom(WhaleEmojis),
-      });
-    });
+      }),
+    );
   }
 
   async #awardUnalignedCrownRole() {
@@ -148,7 +139,7 @@ export default class AssignRoles {
         quantity: 1,
         target: this.#member,
       });
-      this.#assignStats.push({
+      return this.#assignStats.push({
         exp: 30000,
         notes: 'Paid attention in the game!',
         role: UNALIGNED,
@@ -195,7 +186,7 @@ export default class AssignRoles {
       props.color = COLORS.HYDRO;
       props.emoji = '<:Hydro:803516313782714378>';
     }
-    return new Promise((res, rej) => {
+    return new Promise((resolve, reject) => {
       const crownAmtRow: ButtonActionRow = {
         type: ComponentType.ActionRow,
         components: [
@@ -236,42 +227,40 @@ export default class AssignRoles {
             fetchReply: true,
           },
         })
-        .then(async (msg) => {
-          await msg
-            .awaitMessageComponent({
-              async filter(i) {
-                await i.deferUpdate();
-                if (i.member) {
-                  return isStaff(i.member);
-                }
-                return false;
-              },
-              componentType: ComponentType.Button,
-              dispose: true,
-            })
-            .then((btnCtx) => {
-              const quantity = parseInt(btnCtx.customId.at(-1) || '1', 10);
-              let exp = 250;
-              range(1, quantity, 1).forEach((number) => {
-                exp *= number;
-              });
-              AssignRoles.registerCrown({
-                crownID: roleID,
-                quantity,
-                target: this.#member,
-              });
-              this.#member.roles.add(roleID).then(() => {
-                res({
-                  exp,
-                  notes: `${quantity} crown(s)`,
-                  role: roleID,
-                  emoji: props.emoji,
-                });
-              });
-            })
-            .catch(rej);
+        .then((msg) =>
+          msg.awaitMessageComponent({
+            async filter(i) {
+              await i.deferUpdate();
+              if (i.member) {
+                return isStaff(i.member);
+              }
+              return false;
+            },
+            componentType: ComponentType.Button,
+            dispose: true,
+          }),
+        )
+        .then((btnCtx) => {
+          const quantity = parseInt(btnCtx.customId.at(-1) || '1', 10);
+          let exp = 250;
+          range(1, quantity, 1).forEach((number) => {
+            exp *= number;
+          });
+          AssignRoles.registerCrown({
+            crownID: roleID,
+            quantity,
+            target: this.#member,
+          });
+          return this.#member.roles.add(roleID).then(() => {
+            return resolve({
+              exp,
+              notes: `${quantity} crown(s)`,
+              role: roleID,
+              emoji: props.emoji,
+            });
+          });
         })
-        .catch(rej);
+        .catch(reject);
     });
   }
 
@@ -334,8 +323,8 @@ export default class AssignRoles {
           'Cleared Spiral Abyss at Traveler Difficulty',
         );
       }
-      return new Promise((res) => {
-        res('No roles assigned');
+      return new Promise((resolve) => {
+        resolve('No roles assigned');
       });
     }
 
@@ -408,65 +397,66 @@ export default class AssignRoles {
           fetchReply: true,
         },
       })
-      .then(async (msg) => {
-        await msg
-          .awaitMessageComponent({
-            async filter(i) {
-              await i.deferUpdate();
-              if (i.member) {
-                return isStaff(i.member);
-              }
-              return false;
-            },
-            componentType: ComponentType.Button,
-          })
-          .then(async (btnCtx) => {
-            const clearType = btnCtx.customId;
-
-            const conditionals: RoleAssignStats = {
-              exp: 500,
-              notes: 'Cleared 36/36 with Traveler',
-              role: ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER,
-              emoji: '😎',
-            };
-
-            let result: RoleAssignStats = {
-              exp: 0,
-              notes: 'none',
-              role: '',
-              emoji: '🤔',
-            };
-
-            if (clearType === 'not_satisfied' || clearType === 'no_change') {
-              await restoreRoles('none', this.#member);
-              return;
+      .then((msg) =>
+        msg.awaitMessageComponent({
+          async filter(i) {
+            await i.deferUpdate();
+            if (i.member) {
+              return isStaff(i.member);
             }
-            if (clearType === 'sovereign') {
-              conditionals.exp = 5000;
-              conditionals.notes = 'Cleared with 4 different Traveler elements with 4 different teams with no overlap between teammates';
-              conditionals.role = ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN;
-              conditionals.emoji = '⚔️';
-            }
+            return false;
+          },
+          componentType: ComponentType.Button,
+        }),
+      )
+      .then(async (btnCtx) => {
+        const clearType = btnCtx.customId;
 
-            if (clearType === 'conqueror') {
-              conditionals.exp = 1500;
-              conditionals.notes = 'Cleared with 3 different traveler elements';
-              conditionals.role = ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR;
-              conditionals.emoji = '🌀';
-            }
-            // Assign default stuff if no condition is satisfied
-            result = conditionals;
-            await this.#member.roles.add(result.role).then(async (member) => {
-              this.#assignStats.push(result);
+        const conditionals: RoleAssignStats = {
+          exp: 500,
+          notes: 'Cleared 36/36 with Traveler',
+          role: ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER,
+          emoji: '😎',
+        };
 
-              await this.#member.roles.remove(Object.values(SpiralAbyss), 'Removing old roles');
-              await restoreRoles(conditionals.role, member);
-            });
-          });
-      });
+        let result: RoleAssignStats = {
+          exp: 0,
+          notes: 'none',
+          role: '',
+          emoji: '🤔',
+        };
+
+        if (clearType === 'not_satisfied' || clearType === 'no_change') {
+          await restoreRoles('none', this.#member);
+          return null;
+        }
+        if (clearType === 'sovereign') {
+          conditionals.exp = 5000;
+          conditionals.notes =
+            'Cleared with 4 different Traveler elements with 4 different teams with no overlap between teammates';
+          conditionals.role = ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN;
+          conditionals.emoji = '⚔️';
+        }
+
+        if (clearType === 'conqueror') {
+          conditionals.exp = 1500;
+          conditionals.notes = 'Cleared with 3 different traveler elements';
+          conditionals.role = ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR;
+          conditionals.emoji = '🌀';
+        }
+        // Assign default stuff if no condition is satisfied
+        result = conditionals;
+        return this.#member.roles.add(result.role).then(async (member) => {
+          this.#assignStats.push(result);
+
+          await this.#member.roles.remove(Object.values(SpiralAbyss), 'Removing old roles');
+          return restoreRoles(conditionals.role, member);
+        });
+      })
+      .catch((error) => pmaLogger.error(error));
   }
 
-  #hasSelectedRolesFrom(arr: any[]): boolean {
+  #hasSelectedRolesFrom(arr: unknown[]): boolean {
     return arrayIntersection(this.#selectedRoleIDs, arr).length > 0;
   }
 
@@ -518,18 +508,18 @@ export default class AssignRoles {
         ],
         components: this.#proofMessage
           ? [
-            {
-              type: ComponentType.ActionRow,
-              components: [
-                {
-                  type: ComponentType.Button,
-                  label: 'Jump to User Submission',
-                  style: ButtonStyle.Link,
-                  url: this.#proofMessage.url,
-                },
-              ],
-            },
-          ]
+              {
+                type: ComponentType.ActionRow,
+                components: [
+                  {
+                    type: ComponentType.Button,
+                    label: 'Jump to User Submission',
+                    style: ButtonStyle.Link,
+                    url: this.#proofMessage.url,
+                  },
+                ],
+              },
+            ]
           : [],
         options: {
           fetchReply: true,
@@ -588,18 +578,18 @@ export default class AssignRoles {
         embeds: [embed],
         components: this.#proofMessage
           ? [
-            {
-              type: ComponentType.ActionRow,
-              components: [
-                {
-                  type: ComponentType.Button,
-                  label: 'Jump to User Submission',
-                  style: ButtonStyle.Link,
-                  url: this.#proofMessage.url,
-                },
-              ],
-            },
-          ]
+              {
+                type: ComponentType.ActionRow,
+                components: [
+                  {
+                    type: ComponentType.Button,
+                    label: 'Jump to User Submission',
+                    style: ButtonStyle.Link,
+                    url: this.#proofMessage.url,
+                  },
+                ],
+              },
+            ]
           : undefined,
       });
     } else {
@@ -609,18 +599,18 @@ export default class AssignRoles {
         embeds: [embed],
         components: this.#proofMessage
           ? [
-            {
-              type: ComponentType.ActionRow,
-              components: [
-                {
-                  type: ComponentType.Button,
-                  label: 'Jump to User Submission',
-                  style: ButtonStyle.Link,
-                  url: this.#proofMessage.url,
-                },
-              ],
-            },
-          ]
+              {
+                type: ComponentType.ActionRow,
+                components: [
+                  {
+                    type: ComponentType.Button,
+                    label: 'Jump to User Submission',
+                    style: ButtonStyle.Link,
+                    url: this.#proofMessage.url,
+                  },
+                ],
+              },
+            ]
           : undefined,
       });
     }

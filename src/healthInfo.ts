@@ -15,8 +15,8 @@ http
     };
     try {
       res.end(JSON.stringify(healthMessage));
-    } catch (error: any) {
-      healthMessage.message = error;
+    } catch (error) {
+      healthMessage.message = JSON.stringify({ error });
       res.writeHead(503);
       res.end(JSON.stringify(healthMessage));
     }

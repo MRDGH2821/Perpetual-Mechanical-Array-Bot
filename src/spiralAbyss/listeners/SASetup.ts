@@ -22,9 +22,9 @@ export default class SASetup extends Listener {
           merge: true,
         },
       )
-      .then(() => {
-        this.container.logger.debug('Forum channel registered in database for Spiral Abyss');
-      })
+      .then(() =>
+        this.container.logger.debug('Forum channel registered in database for Spiral Abyss'),
+      )
       .catch(this.container.logger.error);
   }
 }

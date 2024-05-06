@@ -1,22 +1,24 @@
 import { isGuildMember } from '@sapphire/discord.js-utilities';
-import { Command } from '@sapphire/framework';
+import type { Command } from '@sapphire/framework';
 import { Subcommand } from '@sapphire/plugin-subcommands';
 import { Time } from '@sapphire/time-utilities';
+import type {
+  APIEmbed,
+  ApplicationCommandSubCommandData,
+  Attachment,
+  GuildMember,
+  Message,
+  MessagePayload,
+} from 'discord.js';
 import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
-  Attachment,
   ButtonStyle,
   channelMention,
   ComponentType,
-  GuildMember,
-  Message,
   MessageFlags,
-  MessagePayload,
   roleMention,
   TextInputStyle,
-  type APIEmbed,
-  type ApplicationCommandSubCommandData,
 } from 'discord.js';
 import { ChannelIds, COLORS, ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';

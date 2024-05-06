@@ -13,9 +13,14 @@ export default class LBRefresh extends Listener {
   public run() {
     process.env.LEADERBOARD_READY = 'false';
     this.container.logger.info('Preparing Leaderboard Cache');
-    LeaderboardCache.prepareCache().then(() => {
-      this.container.logger.info('Leaderboard Cache Ready!');
-      process.env.LEADERBOARD_READY = 'true';
-    });
+    LeaderboardCache.prepareCache()
+      .then(() => {
+        process.env.LEADERBOARD_READY = 'true';
+        return this.container.logger.info('Leaderboard Cache Ready!');
+      })
+      .catch((error) => {
+        this.container.logger.error('Error preparing Leaderboard Cache:', error);
+        process.env.LEADERBOARD_READY = 'false';
+      });
   }
 }

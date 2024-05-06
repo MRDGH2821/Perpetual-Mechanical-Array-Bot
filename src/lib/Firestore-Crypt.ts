@@ -1,6 +1,6 @@
 import { Buffer } from 'buffer';
 
-export function encodeBase64(obj: any): any {
+export function encodeBase64(obj: unknown) {
   const jsonString = JSON.stringify(obj);
   return Buffer.from(jsonString).toString('base64');
 }

@@ -1,13 +1,7 @@
 import { isGuildMember } from '@sapphire/discord.js-utilities';
 import { Subcommand } from '@sapphire/plugin-subcommands';
-import {
-  ApplicationCommandOptionType,
-  ButtonStyle,
-  Collection,
-  ComponentType,
-  GuildMember,
-  MessageFlags,
-} from 'discord.js';
+import type { Collection, GuildMember } from 'discord.js';
+import { ApplicationCommandOptionType, ButtonStyle, ComponentType, MessageFlags } from 'discord.js';
 import { COLORS, ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import type { JSONCmd } from '../../typeDefs/typeDefs';
@@ -167,11 +161,13 @@ export default class UserCommand extends Subcommand {
         ],
         fetchReply: true,
       })
-      .then((msg) => msg.awaitMessageComponent({
-        filter: (i) => i.user.id === interaction.user.id,
-        componentType: ComponentType.Button,
-        dispose: true,
-      }))
+      .then((msg) =>
+        msg.awaitMessageComponent({
+          filter: (i) => i.user.id === interaction.user.id,
+          componentType: ComponentType.Button,
+          dispose: true,
+        }),
+      )
       .then((i) => {
         if (i.customId === 'yes') {
           const memberIDs = gangMembers.map((member) => member.id);

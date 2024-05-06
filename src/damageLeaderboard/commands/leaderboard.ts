@@ -1,17 +1,15 @@
 import { Subcommand } from '@sapphire/plugin-subcommands';
 import { Time } from '@sapphire/time-utilities';
+import type { APIEmbed, Message, ModalSubmitInteraction } from 'discord.js';
 import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
   ButtonStyle,
   channelMention,
   ComponentType,
-  Message,
   MessageFlags,
-  ModalSubmitInteraction,
   TextInputStyle,
   time,
-  type APIEmbed,
 } from 'discord.js';
 import { guildMessageIDsExtractor, isStaff, PMAEventHandler } from '../../baseBot/lib/Utilities';
 import { ChannelIds, COLORS, ICONS } from '../../lib/Constants';
@@ -329,7 +327,8 @@ export default class GuildCommand extends Subcommand {
         const score = modalCtx.fields.getTextInputValue('score');
         const element = parseLBElement(modalCtx.fields.getTextInputValue('element'));
         const groupType = parseGroupType(modalCtx.fields.getTextInputValue('group_type'));
-        const shouldForceUpdate = parseTruthy(modalCtx.fields.getTextInputValue('force_update')) || false;
+        const shouldForceUpdate =
+          parseTruthy(modalCtx.fields.getTextInputValue('force_update')) || false;
         await modalCtx.deferReply({
           ephemeral: true,
         });
@@ -350,9 +349,9 @@ export default class GuildCommand extends Subcommand {
   public async registerContestant(
     args: LBRegistrationArgs,
     interaction:
-    | Subcommand.ChatInputCommandInteraction
-    | Subcommand.ContextMenuCommandInteraction
-    | ModalSubmitInteraction,
+      | Subcommand.ChatInputCommandInteraction
+      | Subcommand.ContextMenuCommandInteraction
+      | ModalSubmitInteraction,
   ) {
     if (!interaction.deferred) {
       await interaction.deferReply();
@@ -435,9 +434,10 @@ export default class GuildCommand extends Subcommand {
       const { author, content, attachments } = args.proofMessage;
       const firstAtt = attachments.first();
 
-      const proofURL = firstAtt?.url
-        || firstAtt?.proxyURL
-        || (assets.possibleLinks ? assets.possibleLinks[0] : 'https://youtube.com');
+      const proofURL =
+        firstAtt?.url ||
+        firstAtt?.proxyURL ||
+        (assets.possibleLinks ? assets.possibleLinks[0] : 'https://youtube.com');
 
       embed.image = {
         url: proofURL,
@@ -452,12 +452,12 @@ export default class GuildCommand extends Subcommand {
             author.id === args.contestant.id
               ? 'Verified'
               : `Cannot Verify (most likely submission done on behalf of ${
-                args.contestant?.tag
-              } by ${author.tag})\n**Score**: ${
-                content.match(`${args.score}`)?.length
-                  ? 'Verified'
-                  : "Cannot Verify (most likely because contestant didn't put score as text while uploading proof)"
-              }`
+                  args.contestant?.tag
+                } by ${author.tag})\n**Score**: ${
+                  content.match(`${args.score}`)?.length
+                    ? 'Verified'
+                    : "Cannot Verify (most likely because contestant didn't put score as text while uploading proof)"
+                }`
           }`,
         },
         {
@@ -527,8 +527,8 @@ export default class GuildCommand extends Subcommand {
         .then((msg) => {
           interaction.followUp({
             content:
-              firstAtt?.url
-              || (assets.possibleLinks
+              firstAtt?.url ||
+              (assets.possibleLinks
                 ? assets.possibleLinks[0]
                 : "No URLs/Videos found in contestant's message"),
             flags: MessageFlags.Ephemeral,

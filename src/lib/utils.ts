@@ -1,21 +1,21 @@
 import { LazyPaginatedMessage } from '@sapphire/discord.js-utilities';
 import {
-  container,
   type ChatInputCommandSuccessPayload,
   type Command,
+  container,
   type ContextMenuCommandSuccessPayload,
   type MessageCommandSuccessPayload,
 } from '@sapphire/framework';
 import { chunk, deepClone, pickRandom } from '@sapphire/utilities';
 import { cyan } from 'colorette';
-import {
+import type {
+  APIEmbed,
+  APIUser,
   ButtonInteraction,
   ChatInputCommandInteraction,
   Guild,
-  User,
-  type APIEmbed,
-  type APIUser,
 } from 'discord.js';
+import { User } from 'discord.js';
 import { sequentialPromises } from 'yaspr';
 import type { ELEMENTS } from '../typeDefs/typeDefs';
 import { getClient } from './ClientExtractor';
@@ -56,13 +56,14 @@ export function getSuccessLoggerData(guild: Guild | null, user: User, command: C
 
 export function logSuccessCommand(
   payload:
-  | ContextMenuCommandSuccessPayload
-  | ChatInputCommandSuccessPayload
-  | MessageCommandSuccessPayload,
+    | ContextMenuCommandSuccessPayload
+    | ChatInputCommandSuccessPayload
+    | MessageCommandSuccessPayload,
 ): void {
-  const successLoggerData: ReturnType<typeof getSuccessLoggerData> = 'interaction' in payload
-    ? getSuccessLoggerData(payload.interaction.guild, payload.interaction.user, payload.command)
-    : getSuccessLoggerData(payload.message.guild, payload.message.author, payload.command);
+  const successLoggerData: ReturnType<typeof getSuccessLoggerData> =
+    'interaction' in payload
+      ? getSuccessLoggerData(payload.interaction.guild, payload.interaction.user, payload.command)
+      : getSuccessLoggerData(payload.message.guild, payload.message.author, payload.command);
 
   container.logger.debug(
     `${successLoggerData.shard} - ${successLoggerData.commandName} ${successLoggerData.author} ${successLoggerData.sentAt}`,
@@ -84,7 +85,7 @@ export function publishEmbedsGenerator(
   options: PublishEmbedBuilderOption,
 ): Promise<PublishEmbedBuilderOption['embedTemplate'][]> {
   const { embedTemplate, users, usersPerPage } = options;
-  return new Promise((res, rej) => {
+  return new Promise((resolve, reject) => {
     try {
       const chunks = chunk(users, usersPerPage);
       const embeds: (typeof embedTemplate)[] = [];
@@ -110,9 +111,9 @@ export function publishEmbedsGenerator(
 
         embeds.push(embed);
       });
-      res(embeds);
+      resolve(embeds);
     } catch (e) {
-      rej(e);
+      reject(e);
     }
   });
 }

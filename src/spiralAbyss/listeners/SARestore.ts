@@ -1,7 +1,9 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable promise/always-return */
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { Listener, type ListenerOptions } from '@sapphire/framework';
-import { Attachment, User } from 'discord.js';
+import type { Attachment, User } from 'discord.js';
 import { sequentialPromises } from 'yaspr';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import { ChannelIds, COLORS, ROLE_IDS } from '../../lib/Constants';
@@ -43,31 +45,34 @@ export default class SARestore extends Listener {
     const { ABYSSAL_CONQUEROR, ABYSSAL_SOVEREIGN, ABYSSAL_TRAVELER } = ROLE_IDS.SpiralAbyss;
 
     if (fileContent.traveler) {
-      const assignTraveler = (userId: string) => assignRole(ABYSSAL_TRAVELER, userId)
-        .then(() => {
-          countTraveler += 1;
-        })
-        .catch(this.container.logger.error);
+      const assignTraveler = (userId: string) =>
+        assignRole(ABYSSAL_TRAVELER, userId)
+          .then(() => {
+            countTraveler += 1;
+          })
+          .catch(this.container.logger.error);
 
       await sequentialPromises(fileContent.traveler, assignTraveler);
     }
 
     if (fileContent.conqueror) {
-      const assignConqueror = (userId: string) => assignRole(ABYSSAL_CONQUEROR, userId)
-        .then(() => {
-          countConqueror += 1;
-        })
-        .catch(this.container.logger.error);
+      const assignConqueror = (userId: string) =>
+        assignRole(ABYSSAL_CONQUEROR, userId)
+          .then(() => {
+            countConqueror += 1;
+          })
+          .catch(this.container.logger.error);
 
       await sequentialPromises(fileContent.conqueror, assignConqueror);
     }
 
     if (fileContent.sovereign) {
-      const assignSovereign = (userId: string) => assignRole(ABYSSAL_SOVEREIGN, userId)
-        .then(() => {
-          countSovereign += 1;
-        })
-        .catch(this.container.logger.error);
+      const assignSovereign = (userId: string) =>
+        assignRole(ABYSSAL_SOVEREIGN, userId)
+          .then(() => {
+            countSovereign += 1;
+          })
+          .catch(this.container.logger.error);
 
       await sequentialPromises(fileContent.sovereign, assignSovereign);
     }

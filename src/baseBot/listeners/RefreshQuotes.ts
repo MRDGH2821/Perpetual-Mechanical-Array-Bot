@@ -17,17 +17,13 @@ export default class RefreshQuotesEvent extends Listener {
     logger.info('Refreshing quotes');
     QUOTE_CATEGORIES.forEach((category) => {
       const promise = QuotesManager.prepareCache(category)
-        .then(() => {
-          logger.debug(`Quotes refreshed from ${category}`);
-        })
+        .then(() => logger.debug(`Quotes refreshed from ${category}`))
         .catch(logger.error);
       promises.push(promise);
     });
 
     await Promise.all(promises)
-      .then(() => {
-        logger.info('Quotes refresh done');
-      })
+      .then(() => logger.info('Quotes refresh done'))
       .catch(logger.error);
   }
 }

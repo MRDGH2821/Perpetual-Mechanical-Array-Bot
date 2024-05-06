@@ -2,9 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, type ListenerOptions } from '@sapphire/framework';
 import type { APIEmbed, ForumChannel, TextChannel } from 'discord.js';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
-import {
-  ChannelIds, COLORS, ICONS, ThreadIds,
-} from '../../lib/Constants';
+import { ChannelIds, COLORS, ICONS, ThreadIds } from '../../lib/Constants';
 import db from '../../lib/Firestore';
 
 type LBSetupArgs = {
@@ -33,13 +31,13 @@ export default class LBSetup extends Listener {
       .then(() => {
         logger.debug('Channels registered in database for Leaderboard');
         if (channels.textChannel) {
-          this.setupSummaryChannel(channels.textChannel).catch(logger.error);
+          return this.setupSummaryChannel(channels.textChannel);
         }
+        throw new Error('Incorrect channel type for leaderboard setup');
       })
       .catch(logger.error);
   }
 
-  // eslint-disable-next-line class-methods-use-this
   public async setupSummaryChannel(channel: TextChannel) {
     const anemoSkillBoard: APIEmbed = {
       title: 'Anemo placeholder',
@@ -151,41 +149,41 @@ export default class LBSetup extends Listener {
 
     await webhook.send({ embeds: [information] });
 
-    await webhook.send({ embeds: [uniSkillBoard] }).then((message) => {
+    await webhook.send({ embeds: [uniSkillBoard] }).then((message) =>
       db.collection('leaderboards').doc('uni-dmg-n5').set({
         messageID: message?.id,
-      });
-    });
+      }),
+    );
 
-    await webhook.send({ embeds: [anemoSkillBoard] }).then((message) => {
+    await webhook.send({ embeds: [anemoSkillBoard] }).then((message) =>
       db.collection('leaderboards').doc('anemo-dmg-skill').set({
         messageID: message?.id,
-      });
-    });
+      }),
+    );
 
-    await webhook.send({ embeds: [geoSkillBoard] }).then((message) => {
+    await webhook.send({ embeds: [geoSkillBoard] }).then((message) =>
       db.collection('leaderboards').doc('geo-dmg-skill').set({
         messageID: message?.id,
-      });
-    });
+      }),
+    );
 
-    await webhook.send({ embeds: [electroSkillBoard] }).then((message) => {
+    await webhook.send({ embeds: [electroSkillBoard] }).then((message) =>
       db.collection('leaderboards').doc('electro-dmg-skill').set({
         messageID: message?.id,
-      });
-    });
+      }),
+    );
 
-    await webhook.send({ embeds: [dendroSkillBoard] }).then((message) => {
+    await webhook.send({ embeds: [dendroSkillBoard] }).then((message) =>
       db.collection('leaderboards').doc('dendro-dmg-skill').set({
         messageID: message?.id,
-      });
-    });
+      }),
+    );
 
-    await webhook.send({ embeds: [hydroSkillBoard] }).then((message) => {
+    await webhook.send({ embeds: [hydroSkillBoard] }).then((message) =>
       db.collection('leaderboards').doc('hydro-dmg-skill').set({
         messageID: message?.id,
-      });
-    });
+      }),
+    );
 
     PMAEventHandler.emit('LBUpdate');
   }

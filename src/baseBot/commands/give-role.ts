@@ -1,25 +1,22 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable class-methods-use-this */
 import {
+  type ChatInputOrContextMenuCommandInteraction,
   HttpUrlRegex,
   isGuildMember,
-  type ChatInputOrContextMenuCommandInteraction,
 } from '@sapphire/discord.js-utilities';
 import { Subcommand } from '@sapphire/plugin-subcommands';
 import { pickRandom } from '@sapphire/utilities';
+import type { GuildMember, Message, SelectMenuComponentOptionData } from 'discord.js';
 import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
   ButtonStyle,
   ComponentType,
-  GuildMember,
-  Message,
   PermissionFlagsBits,
-  type SelectMenuComponentOptionData,
 } from 'discord.js';
 import HallOfFameCache from '../../hallOfFame/lib/HallOfFameCache';
-import {
-  ChannelIds, COLORS, EMOJIS, ROLE_IDS,
-} from '../../lib/Constants';
+import { ChannelIds, COLORS, EMOJIS, ROLE_IDS } from '../../lib/Constants';
 import EnvConfig from '../../lib/EnvConfig';
 import type { JSONCmd } from '../../typeDefs/typeDefs';
 import AssignRoles from '../lib/AssignRoles';
@@ -180,18 +177,20 @@ export default class GuildCommand extends Subcommand {
           },
         ],
       })
-      .then(async (msg) => msg.awaitMessageComponent({
-        componentType: ComponentType.Button,
-        dispose: true,
-        async filter(i) {
-          await i.deferUpdate();
-          if (i.member) {
-            return isStaff(i.member);
-          }
+      .then(async (msg) =>
+        msg.awaitMessageComponent({
+          componentType: ComponentType.Button,
+          dispose: true,
+          async filter(i) {
+            await i.deferUpdate();
+            if (i.member) {
+              return isStaff(i.member);
+            }
 
-          return false;
-        },
-      }))
+            return false;
+          },
+        }),
+      )
       .then((btnCtx) => btnCtx.customId === 'show_all_roles');
   }
 
@@ -329,24 +328,24 @@ export default class GuildCommand extends Subcommand {
           fetchReply: true,
         },
       })
-      .then(async (msg) => {
-        await msg
-          .awaitMessageComponent({
-            componentType: ComponentType.StringSelect,
-            dispose: true,
-            async filter(i) {
-              await i.deferUpdate();
-              if (i.member) {
-                return isStaff(i.member);
-              }
-              return false;
-            },
-          })
-          .then((selectCtx) => {
-            if (!selectCtx.isStringSelectMenu()) return;
-            const { values } = selectCtx;
-            selectedRoles = selectedRoles.concat(values).flat();
-          });
+      .then((msg) =>
+        msg.awaitMessageComponent({
+          componentType: ComponentType.StringSelect,
+          dispose: true,
+          async filter(i) {
+            await i.deferUpdate();
+            if (i.member) {
+              return isStaff(i.member);
+            }
+            return false;
+          },
+        }),
+      )
+      .then((selectCtx) => {
+        if (!selectCtx.isStringSelectMenu()) return 0;
+        const { values } = selectCtx;
+        selectedRoles = selectedRoles.concat(values).flat();
+        return selectedRoles;
       });
 
     return selectedRoles;

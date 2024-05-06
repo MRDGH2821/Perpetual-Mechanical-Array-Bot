@@ -37,9 +37,9 @@ export default class BattleCasterOnly extends Precondition {
     return isBattleCaster
       ? this.ok()
       : this.error({
-        identifier: 'battle-caster-only',
-        message: 'This command is available only for Battle Casters',
-      });
+          identifier: 'battle-caster-only',
+          message: 'This command is available only for Battle Casters',
+        });
   }
 }
 

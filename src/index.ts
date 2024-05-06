@@ -1,13 +1,13 @@
-import { join } from 'node:path';
-import { LogLevel, SapphireClient } from '@sapphire/framework';
-import { getRootData } from '@sapphire/pieces';
-import { GatewayIntentBits, Partials } from 'discord.js';
-import type { ClientOptions } from 'discord.js';
-import { cred } from './lib/Firestore';
-import { pmaLogger } from './pma-logger';
 import './healthInfo';
 import './lib/setup';
 import './scheduledTasks';
+import { join } from 'node:path';
+import { LogLevel, SapphireClient } from '@sapphire/framework';
+import { getRootData } from '@sapphire/pieces';
+import type { ClientOptions } from 'discord.js';
+import { GatewayIntentBits, Partials } from 'discord.js';
+import { cred } from './lib/Firestore';
+import { pmaLogger } from './pma-logger';
 
 class CustomClient extends SapphireClient {
   private rootData = getRootData();

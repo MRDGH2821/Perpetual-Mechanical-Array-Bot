@@ -1,7 +1,7 @@
 import { container } from '@sapphire/framework';
 import { s, type SchemaOf } from '@sapphire/shapeshift';
 import { range } from '@sapphire/utilities';
-import { Collection, User, type APIEmbed } from 'discord.js';
+import { type APIEmbed, Collection, type User } from 'discord.js';
 import { sequentialPromises } from 'yaspr';
 import { parseBoolean } from '../../baseBot/lib/Utilities';
 import { EMPTY_STRING } from '../../lib/Constants';
@@ -74,24 +74,26 @@ export default class HallOfFameCache {
   }
 
   static #fetchDB(element: ELEMENTS, topEntries = 0): Promise<DBHallOfFameData[]> {
-    return new Promise((res, rej) => {
+    return new Promise((resolve, reject) => {
       const dataArray: DBHallOfFameData[] = [];
 
       const cache = this.#cache[element];
       if (!cache) {
-        rej(new Error(`Cache for ${element} does not exist`));
+        reject(new Error(`Cache for ${element} does not exist`));
       }
       db.collection(`${element}-crown`)
         .orderBy('crowns', 'desc')
         .limit(topEntries)
         .get()
-        .then((query) => query.forEach((docSnap) => {
-          const data = docSnap.data();
-          const validatedData = HoFDataSchema.parse(data);
-          dataArray.push(validatedData);
-        }))
-        .then(() => res(dataArray))
-        .catch(rej);
+        .then((query) =>
+          query.forEach((docSnap) => {
+            const data = docSnap.data();
+            const validatedData = HoFDataSchema.parse(data);
+            dataArray.push(validatedData);
+          }),
+        )
+        .then(() => resolve(dataArray))
+        .catch(reject);
     });
   }
 
@@ -150,7 +152,7 @@ export default class HallOfFameCache {
     usersPerPage = this.#usersPerPage,
   ): Promise<APIEmbed[]> {
     const props = crownProps(element);
-    return new Promise((res, rej) => {
+    return new Promise((resolve, reject) => {
       const collection = this.#accessCache(element, quantity);
 
       logger.debug('Building embeds for: ', {
@@ -180,18 +182,17 @@ export default class HallOfFameCache {
               value: 'No members found in this section',
             });
 
-            res([embed]);
-          } else {
-            publishEmbedsGenerator({
-              users,
-              embedTemplate: embed,
-              usersPerPage,
-            })
-              .then(res)
-              .catch(rej);
+            return resolve([embed]);
           }
+          return publishEmbedsGenerator({
+            users,
+            embedTemplate: embed,
+            usersPerPage,
+          })
+            .then(resolve)
+            .catch(reject);
         })
-        .catch(rej);
+        .catch(reject);
     });
   }
 

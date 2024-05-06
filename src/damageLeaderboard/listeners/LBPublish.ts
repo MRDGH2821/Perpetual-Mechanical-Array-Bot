@@ -1,9 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, type ListenerOptions } from '@sapphire/framework';
 import { toTitleCase } from '@sapphire/utilities';
-import {
-  ButtonStyle, ComponentType, ForumChannel, type APIEmbed,
-} from 'discord.js';
+import { type APIEmbed, ButtonStyle, ComponentType, ForumChannel } from 'discord.js';
 import { sequentialPromises } from 'yaspr';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import EnvConfig from '../../lib/EnvConfig';
@@ -45,13 +43,15 @@ export default class LBPublish extends Listener {
       },
     });
 
-    const insertDashLine = async () => thread.send({
-      content: LBPublish.dashLine,
-    });
+    const insertDashLine = async () =>
+      thread.send({
+        content: LBPublish.dashLine,
+      });
 
-    const insertEmbeds = async (embeds: APIEmbed[]) => thread.send({
-      embeds,
-    });
+    const insertEmbeds = async (embeds: APIEmbed[]) =>
+      thread.send({
+        embeds,
+      });
 
     await insertDashLine();
     const firstMsg = await insertEmbeds(openEmbeds);
@@ -101,7 +101,7 @@ export default class LBPublish extends Listener {
 
         const publisher = (element: LBElements) => this.publish(element, forumChannel);
 
-        await sequentialPromises(LEADERBOARD_ELEMENTS, publisher);
+        return sequentialPromises(LEADERBOARD_ELEMENTS, publisher);
       });
     // .catch(container.logger.error);
   }

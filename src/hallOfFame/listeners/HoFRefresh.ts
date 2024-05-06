@@ -13,9 +13,14 @@ export default class HoFRefresh extends Listener {
   public run() {
     process.env.HALL_OF_FAME_READY = 'false';
     this.container.logger.info('Preparing Hall Of Fame Cache');
-    HallOfFameCache.prepareCache().then(() => {
-      this.container.logger.info('Hall of Fame Cache Ready!');
-      process.env.HALL_OF_FAME_READY = 'true';
-    });
+    HallOfFameCache.prepareCache()
+      .then(() => {
+        process.env.HALL_OF_FAME_READY = 'true';
+        return this.container.logger.info('Hall of Fame Cache Ready!');
+      })
+      .catch((error) => {
+        this.container.logger.error('Error preparing Hall of Fame Cache:', error);
+        process.env.HALL_OF_FAME_READY = 'false';
+      });
   }
 }
