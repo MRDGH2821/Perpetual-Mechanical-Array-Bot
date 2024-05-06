@@ -46,7 +46,7 @@ export default class GuildCommand extends Subcommand {
         {
           name: cmdDef.options![0].name,
           type: 'method',
-          chatInputRun(interaction) {
+          async chatInputRun(interaction) {
             PMAEventHandler.emit('HoFRefresh');
             return interaction.reply({
               content:
@@ -58,7 +58,7 @@ export default class GuildCommand extends Subcommand {
         {
           name: cmdDef.options![1].name,
           type: 'method',
-          chatInputRun(interaction) {
+          async chatInputRun(interaction) {
             PMAEventHandler.emit('HoFPublish');
             return interaction.reply({
               content: 'Hall of Fame will be published soon.',
@@ -69,7 +69,7 @@ export default class GuildCommand extends Subcommand {
         {
           name: cmdDef.options![2].name,
           type: 'method',
-          chatInputRun(interaction) {
+          async chatInputRun(interaction) {
             const forumChannel = interaction.options.getChannel<ChannelType.GuildForum>(
               'forum_channel',
               true,

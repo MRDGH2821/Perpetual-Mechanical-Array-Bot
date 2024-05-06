@@ -1,6 +1,6 @@
 import type { LBElements } from '../typeDefs/leaderboardTypeDefs';
 
-export const LEADERBOARD_DAMAGE_TYPE_CHOICES = <{ name: string; value: LBElements }[]>[
+export const LEADERBOARD_DAMAGE_TYPE_CHOICES = [
   {
     name: "Universal: Traveler's Normal Attack 5th hit",
     value: 'uni',
@@ -25,7 +25,7 @@ export const LEADERBOARD_DAMAGE_TYPE_CHOICES = <{ name: string; value: LBElement
     name: 'Hydro: Aquacrest Saber - Last shot damage',
     value: 'hydro',
   },
-];
+] as Array<{ name: string; value: LBElements }>;
 
 export const LEADERBOARD_ELEMENTS: LBElements[] = [
   'anemo',

@@ -43,7 +43,7 @@ export default class TravelerTeam {
     }
   }
 
-  askElement() {
+  async askElement() {
     return this.interaction
       .editReply({
         content: 'Which team to make?',
@@ -97,7 +97,7 @@ export default class TravelerTeam {
           },
         ],
       })
-      .then((msg) =>
+      .then(async (msg) =>
         msg.awaitMessageComponent({
           componentType: ComponentType.StringSelect,
           time: 1 * Time.Minute,
@@ -190,7 +190,7 @@ export default class TravelerTeam {
         this.#teamMate3 = char3;
         return modalItx;
       })
-      .catch((err) =>
+      .catch(async (err) =>
         this.interaction.editReply({
           content: `Error: ${err.message}\nCause: ${err.cause}\n\nRe-run the command again to make the team.`,
           components: [],
@@ -232,14 +232,14 @@ export default class TravelerTeam {
           },
         ],
       })
-      .then((msg) =>
+      .then(async (msg) =>
         msg.awaitMessageComponent({
           componentType: ComponentType.Button,
           time: 1 * Time.Minute,
           dispose: true,
         }),
       )
-      .then((itx) => {
+      .then(async (itx) => {
         if (itx.customId === 'confirm_team') {
           this.finalised = true;
           return this;
@@ -248,10 +248,10 @@ export default class TravelerTeam {
       });
   }
 
-  buildTeam(): Promise<this> {
+  async buildTeam(): Promise<this> {
     return this.askElement()
-      .then((stx) => this.askTeamMates(stx))
-      .then(() => this.confirmTeam())
+      .then(async (stx) => this.askTeamMates(stx))
+      .then(async () => this.confirmTeam())
       .then(() => this);
   }
 
@@ -261,8 +261,9 @@ export default class TravelerTeam {
       const element = toTitleCase(this.element);
       const traveler = `**${element} Traveler**`;
 
-      if (!this.#teamMate1 || !this.#teamMate2 || !this.#teamMate3)
+      if (!this.#teamMate1 || !this.#teamMate2 || !this.#teamMate3) {
         throw new Error('Team not finalised');
+      }
       const name1 = this.#teamMate1.name;
       const name2 = this.#teamMate2.name;
       const name3 = this.#teamMate3.name;

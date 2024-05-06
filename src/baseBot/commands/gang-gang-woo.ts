@@ -86,10 +86,10 @@ export default class UserCommand extends Subcommand {
     });
   }
 
-  public gangMembers(format: 'string' | 'object' = 'string') {
+  public async gangMembers(format: 'string' | 'object' = 'string') {
     return this.container.client.guilds
       .fetch(EnvConfig.guildId)
-      .then((guild) => guild.roles.fetch(ROLE_IDS.OTHERS.GANG_GANG_WOO))
+      .then(async (guild) => guild.roles.fetch(ROLE_IDS.OTHERS.GANG_GANG_WOO))
       .then((role) => {
         if (!role) {
           return 'No members found.';
@@ -161,17 +161,17 @@ export default class UserCommand extends Subcommand {
         ],
         fetchReply: true,
       })
-      .then((msg) =>
+      .then(async (msg) =>
         msg.awaitMessageComponent({
           filter: (i) => i.user.id === interaction.user.id,
           componentType: ComponentType.Button,
           dispose: true,
         }),
       )
-      .then((i) => {
+      .then(async (i) => {
         if (i.customId === 'yes') {
           const memberIDs = gangMembers.map((member) => member.id);
-          gangMembers.forEach((member) => member.roles.remove(ROLE_IDS.OTHERS.GANG_GANG_WOO));
+          gangMembers.forEach(async (member) => member.roles.remove(ROLE_IDS.OTHERS.GANG_GANG_WOO));
           return interaction.editReply({
             content: 'Removed all members from Gang Gang Woo role.',
             components: [],

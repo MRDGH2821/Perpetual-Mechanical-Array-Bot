@@ -83,7 +83,8 @@ export default class SAPublish extends Listener {
           throw new Error('Could not obtain text forum channel');
         }
 
-        const publisher = (clrType: SpiralAbyssClearTypes) => this.publish(clrType, forumChannel);
+        const publisher = async (clrType: SpiralAbyssClearTypes) =>
+          this.publish(clrType, forumChannel);
 
         return sequentialPromises(VALID_ABYSS_CLEAR_TYPES, publisher);
       });

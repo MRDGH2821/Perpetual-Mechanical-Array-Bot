@@ -5,10 +5,10 @@ import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import { ChannelIds, COLORS, ICONS, ThreadIds } from '../../lib/Constants';
 import db from '../../lib/Firestore';
 
-type LBSetupArgs = {
+interface LBSetupArgs {
   forumChannel?: ForumChannel;
   textChannel?: TextChannel;
-};
+}
 @ApplyOptions<ListenerOptions>({
   emitter: PMAEventHandler,
   event: 'LBSetup',
@@ -28,7 +28,7 @@ export default class LBSetup extends Listener {
           merge: true,
         },
       )
-      .then(() => {
+      .then(async () => {
         logger.debug('Channels registered in database for Leaderboard');
         if (channels.textChannel) {
           return this.setupSummaryChannel(channels.textChannel);
@@ -149,37 +149,37 @@ export default class LBSetup extends Listener {
 
     await webhook.send({ embeds: [information] });
 
-    await webhook.send({ embeds: [uniSkillBoard] }).then((message) =>
+    await webhook.send({ embeds: [uniSkillBoard] }).then(async (message) =>
       db.collection('leaderboards').doc('uni-dmg-n5').set({
         messageID: message?.id,
       }),
     );
 
-    await webhook.send({ embeds: [anemoSkillBoard] }).then((message) =>
+    await webhook.send({ embeds: [anemoSkillBoard] }).then(async (message) =>
       db.collection('leaderboards').doc('anemo-dmg-skill').set({
         messageID: message?.id,
       }),
     );
 
-    await webhook.send({ embeds: [geoSkillBoard] }).then((message) =>
+    await webhook.send({ embeds: [geoSkillBoard] }).then(async (message) =>
       db.collection('leaderboards').doc('geo-dmg-skill').set({
         messageID: message?.id,
       }),
     );
 
-    await webhook.send({ embeds: [electroSkillBoard] }).then((message) =>
+    await webhook.send({ embeds: [electroSkillBoard] }).then(async (message) =>
       db.collection('leaderboards').doc('electro-dmg-skill').set({
         messageID: message?.id,
       }),
     );
 
-    await webhook.send({ embeds: [dendroSkillBoard] }).then((message) =>
+    await webhook.send({ embeds: [dendroSkillBoard] }).then(async (message) =>
       db.collection('leaderboards').doc('dendro-dmg-skill').set({
         messageID: message?.id,
       }),
     );
 
-    await webhook.send({ embeds: [hydroSkillBoard] }).then((message) =>
+    await webhook.send({ embeds: [hydroSkillBoard] }).then(async (message) =>
       db.collection('leaderboards').doc('hydro-dmg-skill').set({
         messageID: message?.id,
       }),

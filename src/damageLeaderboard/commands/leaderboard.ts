@@ -142,7 +142,7 @@ export default class GuildCommand extends Subcommand {
         {
           name: cmdDef.options![2].name,
           type: 'method',
-          chatInputRun(interaction) {
+          async chatInputRun(interaction) {
             const forumPublish = LBFJobSchedule.nextInvocation();
             const lbUpdate = LBUJobSchedule.nextInvocation();
             return interaction.reply({
@@ -388,7 +388,7 @@ export default class GuildCommand extends Subcommand {
       },
     };
 
-    if (args.shouldForceUpdate === false && oldScoreData && oldScoreData!.score > args.score) {
+    if (!args.shouldForceUpdate && oldScoreData && oldScoreData.score > args.score) {
       return interaction.editReply({
         embeds: [
           {
@@ -524,7 +524,7 @@ export default class GuildCommand extends Subcommand {
           embeds: [embed],
           components: [approveRow, linkRow],
         })
-        .then((msg) => {
+        .then(async (msg) => {
           interaction.followUp({
             content:
               firstAtt?.url ||
@@ -539,17 +539,17 @@ export default class GuildCommand extends Subcommand {
             dispose: true,
             async filter(itx) {
               await itx.deferUpdate();
-              if (!isStaff(itx.member!)) {
+              if (!isStaff(itx.member)) {
                 itx.followUp({
                   content: 'Ping a mod to get approval!',
                   flags: MessageFlags.Ephemeral,
                 });
               }
-              return isStaff(itx.member!);
+              return isStaff(itx.member);
             },
           });
         })
-        .then((btnCtx) => {
+        .then(async (btnCtx) => {
           if (btnCtx.customId === 'accepted') {
             const successEmbed: APIEmbed = {
               ...embed,
@@ -565,7 +565,7 @@ export default class GuildCommand extends Subcommand {
               score: args.score,
               typeCategory: parseGroupType(args.groupType),
               userID: args.contestant.id,
-            }).then(() => {
+            }).then(async () => {
               PMAEventHandler.emit('LBPostRegister', args, oldScoreData);
               return btnCtx.editReply({
                 embeds: [successEmbed],
@@ -589,7 +589,7 @@ export default class GuildCommand extends Subcommand {
     } catch (e) {
       this.container.logger.error(e);
 
-      return interaction.editReply({
+      return await interaction.editReply({
         embeds: [
           {
             title: '**An error occurred**',

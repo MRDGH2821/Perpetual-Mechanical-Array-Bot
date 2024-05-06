@@ -76,19 +76,19 @@ export async function getUser(id: User['id']) {
   return client.users.fetch(id);
 }
 
-type PublishEmbedBuilderOption = {
+interface PublishEmbedBuilderOption {
   users: User[];
   usersPerPage: number;
   embedTemplate: APIEmbed;
-};
-export function publishEmbedsGenerator(
+}
+export async function publishEmbedsGenerator(
   options: PublishEmbedBuilderOption,
-): Promise<PublishEmbedBuilderOption['embedTemplate'][]> {
+): Promise<Array<PublishEmbedBuilderOption['embedTemplate']>> {
   const { embedTemplate, users, usersPerPage } = options;
   return new Promise((resolve, reject) => {
     try {
       const chunks = chunk(users, usersPerPage);
-      const embeds: (typeof embedTemplate)[] = [];
+      const embeds: Array<typeof embedTemplate> = [];
       chunks.forEach((piece) => {
         let value = '';
         const embed = deepClone(embedTemplate);
@@ -143,7 +143,8 @@ export async function viewBook(book: APIEmbed[]) {
 
   await sequentialPromises(book, addEmbed);
 
-  return (interaction: ChatInputCommandInteraction | ButtonInteraction) => pg.run(interaction);
+  return async (interaction: ChatInputCommandInteraction | ButtonInteraction) =>
+    pg.run(interaction);
 }
 
 export function parseTruthy(text: string) {

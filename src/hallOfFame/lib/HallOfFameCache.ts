@@ -11,10 +11,10 @@ import type { ELEMENTS } from '../../typeDefs/typeDefs';
 import { crownProps } from './Utilities';
 
 type CrownQuantity = 1 | 2 | 3;
-type DBHallOfFameData = {
+interface DBHallOfFameData {
   crowns: CrownQuantity;
   userID: User['id'];
-};
+}
 
 type DataCollection = Collection<User['id'], DBHallOfFameData>;
 
@@ -73,7 +73,7 @@ export default class HallOfFameCache {
     return parseBoolean(process.env.HALL_OF_FAME_READY);
   }
 
-  static #fetchDB(element: ELEMENTS, topEntries = 0): Promise<DBHallOfFameData[]> {
+  static async #fetchDB(element: ELEMENTS, topEntries = 0): Promise<DBHallOfFameData[]> {
     return new Promise((resolve, reject) => {
       const dataArray: DBHallOfFameData[] = [];
 
@@ -146,7 +146,7 @@ export default class HallOfFameCache {
     }
   }
 
-  static generateEmbeds(
+  static async generateEmbeds(
     element: ELEMENTS,
     quantity: CrownQuantity,
     usersPerPage = this.#usersPerPage,
@@ -175,7 +175,7 @@ export default class HallOfFameCache {
         collection.map((data) => data.userID),
         getUser,
       )
-        .then((users) => {
+        .then(async (users) => {
           if (users.length < 1) {
             embed.fields?.push({
               name: EMPTY_STRING,

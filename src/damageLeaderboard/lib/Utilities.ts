@@ -9,12 +9,12 @@ import type {
   LBElements,
 } from '../typeDefs/leaderboardTypeDefs';
 
-export type LBProp = {
+export interface LBProp {
   icon: ICONS;
   name: string;
   color: COLORS;
   emoji: ValueOf<typeof EMOJIS>;
-};
+}
 
 export function leaderboardProps(element: LBElements): LBProp {
   switch (element) {

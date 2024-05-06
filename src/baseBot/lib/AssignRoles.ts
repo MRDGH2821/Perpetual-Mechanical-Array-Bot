@@ -7,12 +7,12 @@ import { pmaLogger } from '../../pma-logger';
 import type { ButtonActionRow, RegisterCrownArgs } from '../../typeDefs/typeDefs';
 import { arrayIntersection, isStaff, PMAEventHandler } from './Utilities';
 
-type AssignRoleOptions = {
+interface AssignRoleOptions {
   member: GuildMember;
   selectedRolesIDs: string[];
   message: Message | null | undefined;
   interaction: ChatInputOrContextMenuCommandInteraction;
-};
+}
 
 type RegionEmoji = '🤔' | '🕊️' | '⚖️' | '⛩️' | '🌴' | '⚓';
 
@@ -31,12 +31,12 @@ type AbyssEmoji = '🤔' | '😎' | '🌀' | '⚔️';
 
 type WhaleEmoji = '🐋' | '🐳' | '💰';
 
-type RoleAssignStats = {
+interface RoleAssignStats {
   exp: number;
   notes: string;
   role: string;
   emoji: '❌' | RegionEmoji | CrownEmoji | AbyssEmoji | WhaleEmoji;
-};
+}
 
 export default class AssignRoles {
   #member: GuildMember;
@@ -230,7 +230,7 @@ export default class AssignRoles {
             fetchReply: true,
           },
         })
-        .then((msg) =>
+        .then(async (msg) =>
           msg.awaitMessageComponent({
             async filter(i) {
               await i.deferUpdate();
@@ -243,7 +243,7 @@ export default class AssignRoles {
             dispose: true,
           }),
         )
-        .then((btnCtx) => {
+        .then(async (btnCtx) => {
           const quantity = parseInt(btnCtx.customId.at(-1) || '1', 10);
           let exp = 250;
           range(1, quantity, 1).forEach((number) => {
@@ -400,7 +400,7 @@ export default class AssignRoles {
           fetchReply: true,
         },
       })
-      .then((msg) =>
+      .then(async (msg) =>
         msg.awaitMessageComponent({
           async filter(i) {
             await i.deferUpdate();

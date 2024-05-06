@@ -114,7 +114,7 @@ export default class GuildCommand extends Subcommand {
         {
           name: cmdDef.options![0].name,
           type: 'method',
-          chatInputRun(interaction) {
+          async chatInputRun(interaction) {
             PMAEventHandler.emit('SARefresh');
             return interaction.reply({
               content:
@@ -126,7 +126,7 @@ export default class GuildCommand extends Subcommand {
         {
           name: cmdDef.options![1].name,
           type: 'method',
-          chatInputRun(interaction) {
+          async chatInputRun(interaction) {
             PMAEventHandler.emit('SAPublish');
             return interaction.reply({
               content: 'Spiral Abyss will be published soon.',
@@ -137,7 +137,7 @@ export default class GuildCommand extends Subcommand {
         {
           name: cmdDef.options![2].name,
           type: 'method',
-          chatInputRun(interaction) {
+          async chatInputRun(interaction) {
             const forumChannel = interaction.options.getChannel<ChannelType.GuildForum>(
               'forum_channel',
               true,
@@ -156,11 +156,9 @@ export default class GuildCommand extends Subcommand {
           type: 'method',
           async chatInputRun(interaction) {
             const shouldRemoveRoles = interaction.options.getBoolean('remove_roles', true);
-            const shouldPublishNames = interaction.options.getBoolean('publish_names') === true;
-            const shouldSendAnnouncement =
-              interaction.options.getBoolean('send_announcement') === true;
-            const shouldAnnounceWithPing =
-              interaction.options.getBoolean('announce_with_ping') === true;
+            const shouldPublishNames = interaction.options.getBoolean('publish_names');
+            const shouldSendAnnouncement = interaction.options.getBoolean('send_announcement');
+            const shouldAnnounceWithPing = interaction.options.getBoolean('announce_with_ping');
 
             const status = `1. Will publish names: \`${shouldPublishNames}\`\n2. Will remove roles: \`${shouldRemoveRoles}\`\n3. Send Announcement message: \`${shouldSendAnnouncement}\` \n4. Will Announce with ping: \`${shouldAnnounceWithPing}\``;
 
@@ -199,7 +197,7 @@ export default class GuildCommand extends Subcommand {
                 components: [verifyRow],
                 flags: MessageFlags.Ephemeral,
               })
-              .then((msg) =>
+              .then(async (msg) =>
                 msg.awaitMessageComponent({
                   componentType: ComponentType.Button,
                   dispose: true,
@@ -417,7 +415,7 @@ export default class GuildCommand extends Subcommand {
                   },
                 ],
               })
-              .then((msg) =>
+              .then(async (msg) =>
                 msg.awaitMessageComponent({
                   async filter(i) {
                     await i.deferUpdate();

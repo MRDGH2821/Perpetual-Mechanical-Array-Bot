@@ -73,7 +73,7 @@ export default class GuildCommand extends Subcommand {
         {
           name: cmdDef.options![0].name,
           type: 'method',
-          chatInputRun(interaction) {
+          async chatInputRun(interaction) {
             PMAEventHandler.emit('LBRefresh');
             return interaction.reply({
               content:
@@ -85,7 +85,7 @@ export default class GuildCommand extends Subcommand {
         {
           name: cmdDef.options![1].name,
           type: 'method',
-          chatInputRun(interaction) {
+          async chatInputRun(interaction) {
             PMAEventHandler.emit('LBUpdate');
             return interaction.reply({
               content: 'Leaderboards will be updated soon.',
@@ -101,7 +101,7 @@ export default class GuildCommand extends Subcommand {
               name: 'summary_channel',
               type: 'method',
 
-              chatInputRun(interaction) {
+              async chatInputRun(interaction) {
                 const textChannel = interaction.options.getChannel<ChannelType.GuildText>(
                   'channel',
                   true,
@@ -118,7 +118,7 @@ export default class GuildCommand extends Subcommand {
             {
               name: 'forum_channel',
               type: 'method',
-              chatInputRun(interaction) {
+              async chatInputRun(interaction) {
                 const forumChannel = interaction.options.getChannel<ChannelType.GuildForum>(
                   'forum_channel',
                   true,
@@ -137,7 +137,7 @@ export default class GuildCommand extends Subcommand {
         {
           name: cmdDef.options![3].name,
           type: 'method',
-          chatInputRun(interaction) {
+          async chatInputRun(interaction) {
             PMAEventHandler.emit('LBPublish');
             return interaction.reply({
               content: 'Leaderboards will be published soon.',

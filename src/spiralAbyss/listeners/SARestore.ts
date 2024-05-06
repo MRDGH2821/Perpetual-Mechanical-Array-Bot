@@ -11,10 +11,10 @@ import EnvConfig from '../../lib/EnvConfig';
 import SpiralAbyssCache from '../lib/SpiralAbyssCache';
 import type { BackupCacheFileType } from '../typeDefs/spiralAbyssTypes';
 
-type SpiralAbyssRestoreArgs = {
+interface SpiralAbyssRestoreArgs {
   backupFile: Attachment;
   user: User;
-};
+}
 
 @ApplyOptions<ListenerOptions>({
   emitter: PMAEventHandler,
@@ -32,10 +32,10 @@ export default class SARestore extends Listener {
       FetchResultTypes.JSON,
     );
 
-    const getMember = (id: string) => tvmGuild.members.fetch(id);
+    const getMember = async (id: string) => tvmGuild.members.fetch(id);
 
-    function assignRole(roleId: ROLE_IDS.SpiralAbyss, userId: string) {
-      return getMember(userId).then((member) => member.roles.add(roleId));
+    async function assignRole(roleId: ROLE_IDS.SpiralAbyss, userId: string) {
+      return getMember(userId).then(async (member) => member.roles.add(roleId));
     }
 
     let countTraveler = 0;
@@ -45,7 +45,7 @@ export default class SARestore extends Listener {
     const { ABYSSAL_CONQUEROR, ABYSSAL_SOVEREIGN, ABYSSAL_TRAVELER } = ROLE_IDS.SpiralAbyss;
 
     if (fileContent.traveler) {
-      const assignTraveler = (userId: string) =>
+      const assignTraveler = async (userId: string) =>
         assignRole(ABYSSAL_TRAVELER, userId)
           .then(() => {
             countTraveler += 1;
@@ -56,7 +56,7 @@ export default class SARestore extends Listener {
     }
 
     if (fileContent.conqueror) {
-      const assignConqueror = (userId: string) =>
+      const assignConqueror = async (userId: string) =>
         assignRole(ABYSSAL_CONQUEROR, userId)
           .then(() => {
             countConqueror += 1;
@@ -67,7 +67,7 @@ export default class SARestore extends Listener {
     }
 
     if (fileContent.sovereign) {
-      const assignSovereign = (userId: string) =>
+      const assignSovereign = async (userId: string) =>
         assignRole(ABYSSAL_SOVEREIGN, userId)
           .then(() => {
             countSovereign += 1;

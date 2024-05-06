@@ -11,10 +11,10 @@ import BonkUtilities from '../lib/BonkUtilities';
   enabled: true,
 })
 export default class MessageReactions extends Listener<typeof Events.MessageCreate> {
-  static emojisWithCondition: {
+  static emojisWithCondition: Array<{
     condition: (content: string) => boolean;
     emojis: string[];
-  }[] = [
+  }> = [
     {
       condition: (content: string) => /\b(c+o+o+k+i+e+s*)\b|🍪|🥠/gimu.test(content),
       emojis: ['🍪', '🥠'],
@@ -81,7 +81,7 @@ export default class MessageReactions extends Listener<typeof Events.MessageCrea
     const getEmojiId = () => {
       if (Object.values(EMOJIS).map(String).includes(emoji.toString())) {
         const matches = emoji.toString().match(/\d{17,21}/);
-        return matches![0];
+        return matches ? matches[0] : null;
       }
       return null;
     };

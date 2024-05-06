@@ -110,7 +110,7 @@ export default class HoFPublish extends Listener {
           throw new Error('Could not obtain text forum channel');
         }
 
-        const publisher = (element: ELEMENTS) => this.publish(element, forumChannel);
+        const publisher = async (element: ELEMENTS) => this.publish(element, forumChannel);
 
         return sequentialPromises(RELEASED_ELEMENTS, publisher);
       });

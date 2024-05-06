@@ -99,7 +99,7 @@ export default class LBPublish extends Listener {
           throw new Error('Could not obtain text forum channel');
         }
 
-        const publisher = (element: LBElements) => this.publish(element, forumChannel);
+        const publisher = async (element: LBElements) => this.publish(element, forumChannel);
 
         return sequentialPromises(LEADERBOARD_ELEMENTS, publisher);
       });

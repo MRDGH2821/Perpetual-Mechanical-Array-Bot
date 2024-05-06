@@ -1,7 +1,7 @@
 export type SpiralAbyssClearTypes = 'traveler' | 'conqueror' | 'sovereign';
 
-export type BackupCacheFileType = {
+export interface BackupCacheFileType {
   traveler: string[];
   conqueror: string[];
   sovereign: string[];
-};
+}

@@ -10,19 +10,19 @@ export type LBElements = SkillElements | N5Elements;
 
 export type GroupCategoryType = 'open' | 'solo';
 
-export type LBRegistrationArgs = {
+export interface LBRegistrationArgs {
   contestant: User;
   element: LBElements;
   groupType: GroupCategoryType;
   score: number;
   proofMessage: Message;
   shouldForceUpdate: boolean;
-};
+}
 
-export type DBLeaderboardData = {
+export interface DBLeaderboardData {
   elementCategory: ElementDamageCategories;
   proof: string;
   score: number;
   typeCategory: GroupCategoryType;
   userID: User['id'];
-};
+}

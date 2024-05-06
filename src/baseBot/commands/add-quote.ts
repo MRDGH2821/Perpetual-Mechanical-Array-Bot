@@ -34,7 +34,7 @@ export default class GuildCommand extends Command {
             description:
               'Enter a quote/gif/reason. You can also tag people or add emojis from current server',
             required: true,
-            choices: <{ name: string; value: DBQuotes }[]>[
+            choices: [
               {
                 name: 'FBI Quotes',
                 value: 'FBIQuotes',
@@ -103,7 +103,7 @@ export default class GuildCommand extends Command {
                 name: 'Yoyoverse Quotes',
                 value: 'yoyoverseQuotes',
               },
-            ],
+            ] as Array<{ name: string; value: DBQuotes }>,
           },
         ],
       },

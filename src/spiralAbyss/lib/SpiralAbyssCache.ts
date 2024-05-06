@@ -59,7 +59,7 @@ export default class SpiralAbyssCache {
     } catch (e) {
       container.logger.error(e);
       container.logger.debug('Setting self in cache');
-      const self = await guild.members.me?.fetch(true);
+      const self = await guild.members.me!.fetch(true)!;
       const members: Role['members'] = new Collection();
       members.set(self.id, self);
       return members;
@@ -82,7 +82,7 @@ export default class SpiralAbyssCache {
     };
   }
 
-  static generateEmbeds(
+  static async generateEmbeds(
     clearType: SpiralAbyssClearTypes,
     usersPerPage = this.#usersPerPage,
     date = new Date(),

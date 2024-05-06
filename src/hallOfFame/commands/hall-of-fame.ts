@@ -74,7 +74,7 @@ export default class GuildCommand extends Subcommand {
         {
           name: cmdDef.options![1].name,
           type: 'method',
-          chatInputRun(interaction) {
+          async chatInputRun(interaction) {
             const hofPublish = HoFJobSchedule.nextInvocation();
             return interaction.reply({
               embeds: [

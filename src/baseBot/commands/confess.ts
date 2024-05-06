@@ -26,7 +26,7 @@ import { parseTruthy, serverLogChannel, userLink } from '../../lib/utils';
 import type { JSONCmd } from '../../typeDefs/typeDefs';
 import { guildMessageIDsExtractor } from '../lib/Utilities';
 
-type SendConfessionArgs = {
+interface SendConfessionArgs {
   confession: string;
   shouldSkipMultiline: boolean;
   isAnon: boolean;
@@ -37,7 +37,7 @@ type SendConfessionArgs = {
   reply?: {
     originalMessage: Message;
   };
-};
+}
 
 const subCmdOpt: ApplicationCommandSubCommandData['options'] = [
   {
@@ -213,7 +213,7 @@ export default class GuildCommand extends Subcommand {
             return itx.customId === 'confess_modal';
           },
         })
-        .then((modalCtx) => {
+        .then(async (modalCtx) => {
           const confessionReply = modalCtx.fields.getTextInputValue('confession_reply');
           const anonymous = modalCtx.fields.getTextInputValue('anonymous');
           const pingArchons = modalCtx.fields.getTextInputValue('ping_archons');

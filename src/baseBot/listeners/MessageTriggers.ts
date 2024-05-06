@@ -120,7 +120,7 @@ export default class MessageTriggers extends Listener<typeof Events.MessageCreat
           content: quote,
           allowedMentions: trigger.allowedMentions,
         })
-        .then((botMsg) => {
+        .then(async (botMsg) => {
           trigger.refreshCoolDown();
           trigger.setBotMessage(botMsg);
           return trigger.customAction();

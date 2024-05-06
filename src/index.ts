@@ -10,7 +10,7 @@ import { cred } from './lib/Firestore';
 import { pmaLogger } from './pma-logger';
 
 class CustomClient extends SapphireClient {
-  private rootData = getRootData();
+  private readonly rootData = getRootData();
 
   public constructor(options: ClientOptions) {
     super(options);

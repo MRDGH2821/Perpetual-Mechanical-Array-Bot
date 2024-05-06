@@ -2,14 +2,14 @@ import { pickRandom } from '@sapphire/utilities';
 import { COLORS, EMOJIS, EMOJIS2, ICONS } from '../../lib/Constants';
 import type { ELEMENTS, ValueOf } from '../../typeDefs/typeDefs';
 
-export type CrownProp = {
+export interface CrownProp {
   icon: ICONS;
   name: string;
   description: string;
   color: COLORS;
   emoji: ValueOf<typeof EMOJIS>;
   plural: string;
-};
+}
 
 export function crownProps(element: ELEMENTS): CrownProp {
   switch (element) {

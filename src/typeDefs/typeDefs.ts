@@ -20,22 +20,22 @@ export type ELEMENTS =
   | 'unaligned'
   | 'uni';
 
-export type KitTechnology = {
+export interface KitTechnology {
   gif: string;
   id: string;
   name: string;
-};
+}
 
-export type TravelerKitTechs = {
+export interface TravelerKitTechs {
   SKILL_TECHS: KitTechnology[];
   BURST_TECHS: KitTechnology[];
-};
+}
 
-export type KitProp = {
+export interface KitProp {
   name: string;
   description: string;
   techs: KitTechnology[];
-};
+}
 
 export type DamageType = 'skill' | 'burst';
 
@@ -72,11 +72,11 @@ export type DBQuotes = GIFCategory | ReasonCategory | QuoteCategory;
 
 export type DBQuotesCollection = Collection<DBQuotes, string[]>;
 
-export type RegisterCrownArgs = {
+export interface RegisterCrownArgs {
   quantity: number;
   target: GuildMember;
   crownID: ROLE_IDS.CROWN;
-};
+}
 
 export type ValueOf<T> = T[keyof T];
 

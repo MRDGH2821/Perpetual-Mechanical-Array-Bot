@@ -6,10 +6,10 @@ import type { DBQuotes } from '../../typeDefs/typeDefs';
 import QuotesManager from './QuotesManager';
 import { parseBoolean } from './Utilities';
 
-type TriggerCondition = {
+interface TriggerCondition {
   envName?: string;
   searchString: string | RegExp;
-};
+}
 
 const defaultCDM = new CoolDownManager();
 export default class AutoResponseTrigger {

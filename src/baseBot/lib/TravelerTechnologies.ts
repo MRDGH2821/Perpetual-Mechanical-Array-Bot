@@ -226,11 +226,11 @@ export function isBurst(input: string) {
   return !!BURST_NAMES.find((name) => name.toLowerCase().includes(input.toLowerCase()));
 }
 
-type FindTechArgs = {
+interface FindTechArgs {
   element: ELEMENTS;
   type: DamageType;
   id: KitTechnology['id'];
-};
+}
 type FindPropArgs = Omit<FindTechArgs, 'id'>;
 export function getKitProp(options: FindPropArgs): KitProp {
   const { element, type } = options;

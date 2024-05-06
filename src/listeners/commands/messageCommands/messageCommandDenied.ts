@@ -13,6 +13,9 @@ export default class MessageCommandDeniedEvent extends Listener<
     if (Reflect.get(Object(context), 'silent')) return;
 
     // eslint-disable-next-line consistent-return
-    return message.reply({ content, allowedMentions: { users: [message.author.id], roles: [] } });
+    return message.reply({
+      content,
+      allowedMentions: { users: [message.author.id], roles: [] },
+    });
   }
 }

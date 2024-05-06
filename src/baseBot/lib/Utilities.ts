@@ -62,13 +62,13 @@ export function parseBoolean(str: string | null | undefined) {
   return false;
 }
 
-type FreezeOptions = {
+interface FreezeOptions {
   member: GuildMember;
   channel: TextChannel;
   chance: number;
   duration: number;
   reason: string;
-};
+}
 export async function freezeMuteUser(options: FreezeOptions) {
   const pain1 = [EMOJIS.Aether_Pain1, EMOJIS.Lumine_Pain1];
   const pain2 = [EMOJIS.Aether_Pain2, EMOJIS.Lumine_Pain2];
@@ -101,7 +101,7 @@ export async function freezeMuteUser(options: FreezeOptions) {
       communicationDisabledUntil: newDate.toISOString(),
       reason: `${reason} (muted by RNG)`,
     })
-    .then(() =>
+    .then(async () =>
       channel.send({
         embeds: [muteEmbed],
       }),
@@ -117,7 +117,7 @@ export async function freezeMuteUser(options: FreezeOptions) {
 
       await member.roles
         .add(ROLE_IDS.OTHERS.FROZEN_RNG, `${reason} (muted by RNG)`)
-        .then(() =>
+        .then(async () =>
           channel.send({
             content: 'HAHA Take that!',
             embeds: [muteEmbed],
@@ -132,7 +132,7 @@ export async function freezeMuteUser(options: FreezeOptions) {
     });
 
   await setTimeout(5 * Time.Second);
-  await member.createDM(true).then((dmChannel) =>
+  await member.createDM(true).then(async (dmChannel) =>
     dmChannel
       .send({
         content: 'Click on Unmute button if you wish to be unmuted',
@@ -150,10 +150,10 @@ export async function freezeMuteUser(options: FreezeOptions) {
           },
         ],
       })
-      .then((msg) => {
+      .then(async (msg) => {
         logger.info(`Unmute message sent to ${member.user.tag}`);
         return setTimeout(duration)
-          .then(() => msg.delete())
+          .then(async () => msg.delete())
           .then(() => logger.info('Deleted unmute message to prevent abuse'));
       })
       .catch(async (err) => {

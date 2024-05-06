@@ -13,7 +13,7 @@ import { PMAEventHandler } from '../lib/Utilities';
 export default class RefreshQuotesEvent extends Listener {
   public async run() {
     const { logger } = this.container;
-    const promises: Promise<void>[] = [];
+    const promises: Array<Promise<void>> = [];
     logger.info('Refreshing quotes');
     QUOTE_CATEGORIES.forEach((category) => {
       const promise = QuotesManager.prepareCache(category)

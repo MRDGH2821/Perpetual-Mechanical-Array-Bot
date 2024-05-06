@@ -335,7 +335,7 @@ export default class GuildCommand extends Subcommand {
           fetchReply: true,
         },
       })
-      .then((msg) =>
+      .then(async (msg) =>
         msg.awaitMessageComponent({
           componentType: ComponentType.StringSelect,
           dispose: true,

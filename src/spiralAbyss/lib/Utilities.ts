@@ -4,13 +4,13 @@ import type { SpiralAbyssClearTypes } from '../typeDefs/spiralAbyssTypes';
 
 type ValueOf<T> = T[keyof T];
 
-export type SpiralAbyssProp = {
+export interface SpiralAbyssProp {
   icon: ICONS;
   name: string;
   description: string;
   color: COLORS;
   emoji: ValueOf<typeof EMOJIS> | string;
-};
+}
 
 export function SAProps(clearType: SpiralAbyssClearTypes): SpiralAbyssProp {
   switch (clearType) {

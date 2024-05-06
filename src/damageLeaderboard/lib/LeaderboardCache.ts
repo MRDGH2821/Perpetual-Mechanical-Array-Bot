@@ -95,7 +95,7 @@ export default class LeaderboardCache {
     return element === 'uni' ? 'n5' : 'skill';
   }
 
-  static #fetchDB(
+  static async #fetchDB(
     element: LBElements,
     groupType: GroupCategoryType,
     topEntries = 0,
@@ -158,7 +158,7 @@ export default class LeaderboardCache {
 
   static async #prepareDamageCache(element: LBElements) {
     const categories: GroupCategoryType[] = ['solo', 'open'];
-    categories.forEach((category) => this.#prepareGroupCache(element, category));
+    categories.forEach(async (category) => this.#prepareGroupCache(element, category));
   }
 
   static async prepareCache() {
@@ -272,7 +272,7 @@ export default class LeaderboardCache {
     });
   }
 
-  static generateEmbeds(
+  static async generateEmbeds(
     element: LBElements,
     groupType: GroupCategoryType,
     usersPerPage = this.#usersPerPage,
@@ -301,7 +301,7 @@ export default class LeaderboardCache {
     });
   }
 
-  static generateSummaryEmbed(element: LBElements) {
+  static async generateSummaryEmbed(element: LBElements) {
     const props = leaderboardProps(element);
 
     container.logger.debug('Generating Leaderboard summary for:', element);
@@ -334,7 +334,7 @@ export default class LeaderboardCache {
             value: EMPTY_STRING,
           }),
         )
-        .then(() => this.#rankBuilder(element, 'solo', 7))
+        .then(async () => this.#rankBuilder(element, 'solo', 7))
         .then((soloRanks) =>
           embed.fields?.push(
             { name: '**Solo Category Top 1-7**', value: soloRanks[0] || NOT_FOUND, inline: true },
