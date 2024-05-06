@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [4.6.1](https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot/compare/v4.6.0...v4.6.1) (2024-05-06)
+
+
+### Bug Fixes
+
+* fix function type ([ba09746](https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot/commit/ba09746b800d41e9d7c79253d277351b8aeb51ef))
+
 ## [4.6.0](https://github.com/MRDGH2821/Perpetual-Mechanical-Array-Bot/compare/v4.5.2...v4.6.0) (2024-05-06)
 
 
