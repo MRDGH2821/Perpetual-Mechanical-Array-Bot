@@ -10,6 +10,9 @@ interface TriggerCondition {
   envName?: string;
   searchString: string | RegExp;
 }
+type ConditionFunction =
+  | ((...args: unknown[]) => Promise<boolean>)
+  | ((message: Message) => Promise<boolean>);
 
 const defaultCDM = new CoolDownManager();
 export default class AutoResponseTrigger {
@@ -106,7 +109,7 @@ export default class AutoResponseTrigger {
     return this;
   }
 
-  setCustomCondition(conditionFn: (...args: unknown[]) => Promise<boolean>) {
+  setCustomCondition(conditionFn: ConditionFunction) {
     this.conditionFn = conditionFn;
     return this;
   }
