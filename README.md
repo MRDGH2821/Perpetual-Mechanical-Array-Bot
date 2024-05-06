@@ -1,4 +1,6 @@
-# Perpetual Mechanical Array Bot
+# Lumine (Operating PMA) Bot
+
+_Previously known as `Perpetual Mechanical Array bot`_
 
 Discord Bot for [Traveler Mains Server](https://discord.gg/RsdUnupKpj)
 
