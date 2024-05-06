@@ -21,6 +21,37 @@
       "type": "process",
       "command": "npx",
       "args": ["-y", "mega-linter-runner", "--flavor", "javascript"]
+    },
+    {
+      "label": "Clean Node Modules",
+      "detail": "Removes the node_modules directory",
+      "type": "shell",
+      "linux": {
+        "command": "sudo",
+        "args": ["rm", "-rf", "-d", "-v", "${workspaceFolder}/node_modules"]
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "close": true,
+        "group": "Clean"
+      }
+    },
+    {
+      "label": "Install Node Modules",
+      "detail": "Installs the node_modules directory",
+      "type": "shell",
+      "command": "npm",
+      "args": ["install"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "showReuseMessage": true,
+        "close": true,
+        "group": "Build"
+      },
+      "dependsOn": ["Clean Node Modules"]
     }
   ]
 }
