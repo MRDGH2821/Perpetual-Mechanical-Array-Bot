@@ -1,4 +1,7 @@
 {
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "editor.minimap.enabled": false,
   "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
   "files.autoSave": "onFocusChange",
@@ -9,6 +12,7 @@
   "javascript.preferences.importModuleSpecifier": "project-relative",
   "javascript.updateImportsOnFileMove.enabled": "always",
   "npm.packageManager": "npm",
+  "prettier.prettierPath": "./node_modules/prettier",
   "search.exclude": {
     "**/.pnp.*": true,
     "**/.yarn": true
