@@ -4,7 +4,8 @@
   "features": {
     "ghcr.io/dhoeric/features/hadolint:1": {},
     "ghcr.io/devcontainers/features/docker-in-docker:2": {},
-    "ghcr.io/trunk-io/devcontainer-feature/trunk": {}
+    "ghcr.io/trunk-io/devcontainer-feature/trunk": {},
+    "ghcr.io/devcontainers-contrib/features/postgres-asdf": {}
   },
   "forwardPorts": [5901, 6080],
   "postCreateCommand": "npm install",
