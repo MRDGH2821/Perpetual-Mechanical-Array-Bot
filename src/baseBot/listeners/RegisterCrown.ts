@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, type ListenerOptions } from '@sapphire/framework';
 import { ROLE_IDS } from '../../lib/Constants';
-import db from '../../lib/Firestore';
+import db from '../../lib/Database/Firestore';
 import type { RegisterCrownArgs } from '../../typeDefs/typeDefs';
 import { PMAEventHandler } from '../lib/Utilities';
 

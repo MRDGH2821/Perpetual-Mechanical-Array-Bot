@@ -5,7 +5,7 @@ import type { APIEmbed, User } from 'discord.js';
 import { Collection } from 'discord.js';
 import { parseBoolean } from '../../baseBot/lib/Utilities';
 import { EMPTY_STRING } from '../../lib/Constants';
-import db from '../../lib/Firestore';
+import db from '../../lib/Database/Firestore';
 import { getUser } from '../../lib/utils';
 import type {
   DBLeaderboardData,

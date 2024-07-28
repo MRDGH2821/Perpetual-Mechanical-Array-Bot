@@ -4,7 +4,7 @@ import { type APIEmbed, ButtonStyle, ComponentType, ForumChannel } from 'discord
 import { sequentialPromises } from 'yaspr';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import EnvConfig from '../../lib/EnvConfig';
-import db from '../../lib/Firestore';
+import db from '../../lib/Database/Firestore';
 import { VALID_ABYSS_CLEAR_TYPES } from '../lib/Constants';
 import SpiralAbyssCache from '../lib/SpiralAbyssCache';
 import { SAProps } from '../lib/Utilities';

@@ -6,7 +6,7 @@ import { LogLevel, SapphireClient } from '@sapphire/framework';
 import { getRootData } from '@sapphire/pieces';
 import type { ClientOptions } from 'discord.js';
 import { GatewayIntentBits, Partials } from 'discord.js';
-import { cred } from './lib/Firestore';
+import { cred } from './lib/Database/Firestore';
 import { pmaLogger } from './pma-logger';
 
 class CustomClient extends SapphireClient {

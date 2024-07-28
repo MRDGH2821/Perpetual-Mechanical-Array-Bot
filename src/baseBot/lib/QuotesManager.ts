@@ -1,5 +1,5 @@
 import { Collection } from 'discord.js';
-import db from '../../lib/Firestore';
+import db from '../../lib/Database/Firestore';
 import type { DBQuotes, DBQuotesCollection } from '../../typeDefs/typeDefs';
 
 export default class QuotesManager {

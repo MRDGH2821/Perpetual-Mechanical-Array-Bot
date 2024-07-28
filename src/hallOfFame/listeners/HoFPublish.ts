@@ -4,7 +4,7 @@ import { type APIEmbed, ButtonStyle, ComponentType, ForumChannel } from 'discord
 import { sequentialPromises } from 'yaspr';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import EnvConfig from '../../lib/EnvConfig';
-import db from '../../lib/Firestore';
+import db from '../../lib/Database/Firestore';
 import type { ELEMENTS } from '../../typeDefs/typeDefs';
 import { RELEASED_ELEMENTS } from '../lib/Constants';
 import HallOfFameCache from '../lib/HallOfFameCache';

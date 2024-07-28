@@ -2,7 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, type ListenerOptions } from '@sapphire/framework';
 import type { ForumChannel } from 'discord.js';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
-import db from '../../lib/Firestore';
+import db from '../../lib/Database/Firestore';
 
 @ApplyOptions<ListenerOptions>({
   emitter: PMAEventHandler,

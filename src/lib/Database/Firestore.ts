@@ -1,9 +1,9 @@
-import './EnvConfig';
+import '../EnvConfig';
 import { applicationDefault, cert, initializeApp } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 import fs from 'fs';
 import * as path from 'path';
-import { pmaLogger as logger } from '../pma-logger';
+import { pmaLogger as logger } from '../../pma-logger';
 import { decodeBase64 } from './Firestore-Crypt';
 
 const baseDir = path.resolve(process.cwd(), 'firebase-service-acc');

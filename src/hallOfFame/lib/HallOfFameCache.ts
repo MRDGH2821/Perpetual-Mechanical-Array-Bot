@@ -5,7 +5,7 @@ import { type APIEmbed, Collection, type User } from 'discord.js';
 import { sequentialPromises } from 'yaspr';
 import { parseBoolean } from '../../baseBot/lib/Utilities';
 import { EMPTY_STRING } from '../../lib/Constants';
-import db from '../../lib/Firestore';
+import db from '../../lib/Database/Firestore';
 import { getUser, publishEmbedsGenerator } from '../../lib/utils';
 import type { ELEMENTS } from '../../typeDefs/typeDefs';
 import { crownProps } from './Utilities';

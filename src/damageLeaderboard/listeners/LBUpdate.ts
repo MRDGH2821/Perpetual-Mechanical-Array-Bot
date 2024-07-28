@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
-import db from '../../lib/Firestore';
+import db from '../../lib/Database/Firestore';
 import LeaderboardCache from '../lib/LeaderboardCache';
 
 @ApplyOptions<Listener.Options>({

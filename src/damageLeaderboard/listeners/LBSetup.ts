@@ -3,7 +3,7 @@ import { Listener, type ListenerOptions } from '@sapphire/framework';
 import type { APIEmbed, ForumChannel, TextChannel } from 'discord.js';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import { ChannelIds, COLORS, ICONS, ThreadIds } from '../../lib/Constants';
-import db from '../../lib/Firestore';
+import db from '../../lib/Database/Firestore';
 
 interface LBSetupArgs {
   forumChannel?: ForumChannel;

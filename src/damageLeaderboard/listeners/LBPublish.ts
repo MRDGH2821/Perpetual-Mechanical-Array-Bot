@@ -5,7 +5,7 @@ import { type APIEmbed, ButtonStyle, ComponentType, ForumChannel } from 'discord
 import { sequentialPromises } from 'yaspr';
 import { PMAEventHandler } from '../../baseBot/lib/Utilities';
 import EnvConfig from '../../lib/EnvConfig';
-import db from '../../lib/Firestore';
+import db from '../../lib/Database/Firestore';
 import { LEADERBOARD_ELEMENTS } from '../lib/Constants';
 import LeaderboardCache from '../lib/LeaderboardCache';
 import { leaderboardProps } from '../lib/Utilities';
