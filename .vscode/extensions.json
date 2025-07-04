@@ -13,17 +13,17 @@
     "exiasr.hadolint",
     "foxundermoon.shell-format",
     "idered.npm",
-    "michaelcurrin.auto-commit-msg",
-    "ms-azuretools.vscode-docker",
+    "kamikillerto.vscode-colorize",
+    "ms-azuretools.vscode-containers",
     "oderwat.indent-rainbow",
     "p42ai.refactor",
     "redhat.vscode-yaml",
-    "sohamkamani.code-eol",
     "spmeesseman.vscode-taskexplorer",
     "streetsidesoftware.code-spell-checker",
     "timonwong.shellcheck",
     "trunk.io",
     "usernamehw.errorlens",
+    "vivaxy.vscode-conventional-commits",
     "wdhongtw.gpg-indicator"
   ]
 }
