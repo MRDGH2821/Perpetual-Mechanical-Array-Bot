@@ -8,9 +8,22 @@
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "conventionalCommits.scopes": [
+    "database",
+    "deps",
+    "devcontainer",
+    "eslint",
+    "prettier",
+    "trunk",
+    "vscode"
+  ],
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.minimap.enabled": false,
-  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
   "files.autoSave": "onFocusChange",
   "files.eol": "\n",
   "git.autofetch": true,

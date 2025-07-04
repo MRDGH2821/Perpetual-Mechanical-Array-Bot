@@ -1,3 +1,14 @@
 {
-  "exclude": ["./old-src/**/*", "./out/*", "./dist/*", "./dist"]
+  "compilerOptions": {
+    "strictNullChecks": true
+  },
+  "exclude": ["dist", "megalinter-reports", "node_modules", "reports"],
+  "include": [
+    "./.commitlintrc.cts",
+    "./.husky/install.mjs",
+    "./buildLibs/*",
+    "./eslint.config.ts",
+    "package-lock.json",
+    "package.json"
+  ]
 }

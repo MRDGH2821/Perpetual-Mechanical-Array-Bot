@@ -1,17 +1,18 @@
 {
-  "extends": "@sapphire/ts-config",
   "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "dist",
-    "tsBuildInfoFile": "dist/.tsbuildinfo",
-    "composite": true,
+    "allowJs": true,
+    "exactOptionalPropertyTypes": true,
     "experimentalDecorators": true,
-    "skipLibCheck": true
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "noUncheckedIndexedAccess": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "skipLibCheck": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "tsBuildInfoFile": "dist/.tsbuildinfo"
   },
-  "include": ["src"],
-  "watchOptions": {
-    "watchFile": "dynamicPriorityPolling",
-    "watchDirectory": "dynamicPriorityPolling",
-    "fallbackPolling": "priorityInterval"
-  }
+  "extends": "@sapphire/ts-config",
+  "include": ["src/**/*"]
 }
