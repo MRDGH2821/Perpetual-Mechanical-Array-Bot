@@ -1,15 +1,15 @@
-import http from 'http';
-import { pmaLogger } from './pma-logger';
+import http from "http";
+import { pmaLogger } from "./pma-logger.js";
 
-const port = 9000;
+const port = 9_000;
 
 http
   .createServer((_, res) => {
     const uptime = process.uptime();
-    res.setHeader('Content-Type', 'application/json');
+    res.setHeader("Content-Type", "application/json");
     res.writeHead(200);
     const healthMessage = {
-      message: 'PMA-Bot is healthy',
+      message: "PMA-Bot is healthy",
       uptime,
       timestamp: Date.now(),
     };

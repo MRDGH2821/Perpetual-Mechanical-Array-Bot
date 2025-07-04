@@ -1,14 +1,14 @@
-import { container } from '@sapphire/framework';
-import { pickRandom } from '@sapphire/utilities';
-import type { Message, MessageMentionOptions } from 'discord.js';
-import CoolDownManager from '../../lib/CoolDownManager';
-import type { DBQuotes } from '../../typeDefs/typeDefs';
-import QuotesManager from './QuotesManager';
-import { parseBoolean } from './Utilities';
+import { container } from "@sapphire/framework";
+import { pickRandom } from "@sapphire/utilities";
+import type { Message, MessageMentionOptions } from "discord.js";
+import CoolDownManager from "../../lib/CoolDownManager.js";
+import type { DBQuotes } from "../../typeDefs/typeDefs.js";
+import QuotesManager from "./QuotesManager.js";
+import { parseBoolean } from "./Utilities.js";
 
-interface TriggerCondition {
+type TriggerCondition = {
   envName?: string;
-  searchString: string | RegExp;
+  searchString: RegExp | string;
 }
 type ConditionFunction =
   | ((...args: unknown[]) => Promise<boolean>)
@@ -25,8 +25,8 @@ export default class AutoResponseTrigger {
   quoteCategories: DBQuotes[];
 
   coolDown?: {
-    time: number;
     instance: CoolDownManager;
+    time: number;
   };
 
   conditionFn?: (sourceMessage: Message) => Promise<boolean>;
@@ -34,11 +34,13 @@ export default class AutoResponseTrigger {
   async customCondition() {
     if (this.conditionFn) {
       if (!this.sourceMessage) {
-        throw new Error('No source message set');
+        throw new Error("No source message set");
       }
+
       return this.conditionFn(this.sourceMessage);
     }
-    return Promise.resolve(true);
+
+    return true;
   }
 
   actionFn?: (botMessage: Message, sourceMessage: Message) => Promise<unknown>;
@@ -46,14 +48,17 @@ export default class AutoResponseTrigger {
   async customAction() {
     if (this.actionFn) {
       if (!this.botMessage) {
-        throw new Error('No bot message set');
+        throw new Error("No bot message set");
       }
+
       if (!this.sourceMessage) {
-        throw new Error('No source message set');
+        throw new Error("No source message set");
       }
+
       return this.actionFn(this.botMessage, this.sourceMessage);
     }
-    return Promise.resolve();
+
+    
   }
 
   allowedMentions: MessageMentionOptions = {
@@ -79,13 +84,13 @@ export default class AutoResponseTrigger {
       repliedUser: false,
     },
   }: {
-    name: string;
-    quotes: string[];
-    conditions: TriggerCondition;
-    quoteCategories: DBQuotes[];
-    coolDownTime?: number;
-    coolDownInstance?: CoolDownManager;
     allowedMentions?: MessageMentionOptions;
+    conditions: TriggerCondition;
+    coolDownInstance?: CoolDownManager;
+    coolDownTime?: number;
+    name: string;
+    quoteCategories: DBQuotes[];
+    quotes: string[];
   }) {
     this.name = name;
     this.quotes = quotes;
@@ -114,16 +119,21 @@ export default class AutoResponseTrigger {
     return this;
   }
 
-  setCustomAction(actionFn: (botMessage: Message, sourceMessage: Message) => Promise<unknown>) {
+  setCustomAction(
+    actionFn: (botMessage: Message, sourceMessage: Message) => Promise<unknown>,
+  ) {
     this.actionFn = actionFn;
     return this;
   }
 
   #prepareQuotes() {
-    const quotesDB: string[] = [`There should be a quote for \`${this.name}\` here 🤔`];
-    this.quoteCategories.forEach((quoteName) => {
+    const quotesDB: string[] = [
+      `There should be a quote for \`${this.name}\` here 🤔`,
+    ];
+    for (const quoteName of this.quoteCategories) {
       quotesDB.push(...QuotesManager.getQuotes(quoteName));
-    });
+    }
+
     this.quotes.push(...quotesDB);
 
     this.quotes = this.quotes.flat();
@@ -146,7 +156,7 @@ export default class AutoResponseTrigger {
 
   async canAct(text?: string) {
     if (!this.sourceMessage) {
-      throw new Error('No source message set');
+      throw new Error("No source message set");
     }
 
     const content = text || this.sourceMessage.content;
@@ -154,7 +164,7 @@ export default class AutoResponseTrigger {
 
     const isEnvPassed = envName ? parseBoolean(process.env[envName]) : true;
 
-    const searchRegex = new RegExp(searchString, 'gimu');
+    const searchRegex = new RegExp(searchString, "gimu");
     const matches = content.match(searchRegex);
     const hasSearchPassed = matches ? matches.length > 0 : false;
 
@@ -173,7 +183,9 @@ export default class AutoResponseTrigger {
     }
     */
 
-    return isEnvPassed && hasSearchPassed && isCooled && hasCustomConditionPassed;
+    return (
+      isEnvPassed && hasSearchPassed && isCooled && hasCustomConditionPassed
+    );
   }
 
   refreshCoolDown() {
@@ -181,7 +193,7 @@ export default class AutoResponseTrigger {
   }
 
   async log(context?: string) {
-    if (this.sourceMessage?.author.username === 'MRDGH2821') {
+    if (this.sourceMessage?.author.username === "MRDGH2821") {
       container.logger.debug({
         name: this.name,
         context,

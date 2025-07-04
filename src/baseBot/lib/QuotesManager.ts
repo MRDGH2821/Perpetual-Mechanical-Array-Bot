@@ -1,6 +1,6 @@
-import { Collection } from 'discord.js';
-import db from '../../lib/Database/Firestore';
-import type { DBQuotes, DBQuotesCollection } from '../../typeDefs/typeDefs';
+import { Collection } from "discord.js";
+import db from "../../lib/Database/Firestore.js";
+import type { DBQuotes, DBQuotesCollection } from "../../typeDefs/typeDefs.js";
 
 export default class QuotesManager {
   static #DBquotes = new Collection() as DBQuotesCollection;
@@ -8,16 +8,17 @@ export default class QuotesManager {
   static async #fetchDBQuotes(option: DBQuotes): Promise<string[]> {
     return new Promise((resolve, reject) => {
       let quotesArray: string[] = [];
-      db.collection('quotes-gifs-reasons')
+      db.collection("quotes-gifs-reasons")
         .doc(option)
         .get()
         .then((docSnap) => {
           const data = docSnap.data();
           if (data) {
             quotesArray = data.array as unknown as string[];
-            return resolve(quotesArray);
+            resolve(quotesArray); return;
           }
-          return resolve([]);
+
+          resolve([]);
 
           // rej(new Error(`No quotes/GIFs/reasons exist for "${option}"`));
         })
@@ -36,6 +37,7 @@ export default class QuotesManager {
     if (quotesArray) {
       return quotesArray;
     }
+
     return [];
     // throw new Error(`No quotes/GIFs/reasons exist for "${option}"`);
   }
@@ -44,7 +46,7 @@ export default class QuotesManager {
     const newArray = this.getQuotes(option);
     newArray.push(quote);
     const data = { array: newArray };
-    await db.collection('quotes-gifs-reasons').doc(option).set(data, {
+    await db.collection("quotes-gifs-reasons").doc(option).set(data, {
       merge: true,
     });
   }

@@ -3,7 +3,7 @@ Original Author - Aroleaf
 https://github.com/Khaenri-ah/ruinguard-core/blob/main/src/CooldownManager.ts
 */
 
-import { Collection } from 'discord.js';
+import { Collection } from "discord.js";
 
 export default class CoolDownManager {
   coolDown: number;

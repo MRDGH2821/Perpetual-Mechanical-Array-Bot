@@ -1,23 +1,27 @@
-import { container } from '@sapphire/framework';
-import { s, type SchemaOf } from '@sapphire/shapeshift';
-import { chunk, deepClone, toTitleCase } from '@sapphire/utilities';
-import type { APIEmbed, User } from 'discord.js';
-import { Collection } from 'discord.js';
-import { parseBoolean } from '../../baseBot/lib/Utilities';
-import { EMPTY_STRING } from '../../lib/Constants';
-import db from '../../lib/Database/Firestore';
-import { getUser } from '../../lib/utils';
+import { container } from "@sapphire/framework";
+import { s, type SchemaOf } from "@sapphire/shapeshift";
+import { chunk, deepClone, toTitleCase } from "@sapphire/utilities";
+import type { APIEmbed, User } from "discord.js";
+import { Collection } from "discord.js";
+import { parseBoolean } from "../../baseBot/lib/Utilities.js";
+import { EMPTY_STRING } from "../../lib/Constants.js";
+import db from "../../lib/Database/Firestore.js";
+import { getUser } from "../../lib/utils.js";
 import type {
   DBLeaderboardData,
   ElementDamageCategories,
   GroupCategoryType,
   LBElements,
-} from '../typeDefs/leaderboardTypeDefs';
-import { leaderboardProps, parseLBElement, proofLinkValidator } from './Utilities';
+} from "../typeDefs/leaderboardTypeDefs.js";
+import {
+  leaderboardProps,
+  parseLBElement,
+  proofLinkValidator,
+} from "./Utilities.js";
 
-type DmgDoneByType = 'skill' | 'n5';
+type DmgDoneByType = "n5" | "skill";
 
-type DataCollection = Collection<User['id'], DBLeaderboardData>;
+type DataCollection = Collection<User["id"], DBLeaderboardData>;
 
 type GroupCache = Record<GroupCategoryType, DataCollection>;
 
@@ -30,20 +34,22 @@ const { logger } = container;
 type LeaderboardDBDataSchemaType = SchemaOf<DBLeaderboardData>;
 
 const LeaderboardDBDataSchema: LeaderboardDBDataSchemaType = s.object({
-  score: s.number.default(0),
-  userID: s.string,
+  score: s.number().default(0),
+  userID: s.string().regex(/^\d+$/),
   proof: proofLinkValidator,
   elementCategory: s
-    .literal<ElementDamageCategories>('anemo-dmg-skill')
-    .or(s.literal<ElementDamageCategories>('geo-dmg-skill'))
-    .or(s.literal<ElementDamageCategories>('electro-dmg-skill'))
-    .or(s.literal<ElementDamageCategories>('dendro-dmg-skill'))
-    .or(s.literal<ElementDamageCategories>('hydro-dmg-skill'))
-    .or(s.literal<ElementDamageCategories>('uni-dmg-n5')),
-  typeCategory: s.literal<GroupCategoryType>('open').or(s.literal<GroupCategoryType>('solo')),
+    .literal<ElementDamageCategories>("anemo-dmg-skill")
+    .or(s.literal<ElementDamageCategories>("geo-dmg-skill"))
+    .or(s.literal<ElementDamageCategories>("electro-dmg-skill"))
+    .or(s.literal<ElementDamageCategories>("dendro-dmg-skill"))
+    .or(s.literal<ElementDamageCategories>("hydro-dmg-skill"))
+    .or(s.literal<ElementDamageCategories>("uni-dmg-n5")),
+  typeCategory: s
+    .literal<GroupCategoryType>("open")
+    .or(s.literal<GroupCategoryType>("solo")),
 });
 
-const NOT_FOUND = 'No members found in this section';
+const NOT_FOUND = "No members found in this section";
 
 export default class LeaderboardCache {
   static #usersPerPage = 7;
@@ -87,12 +93,12 @@ export default class LeaderboardCache {
     },
   };
 
-  static isCacheReady() {
+  public static isCacheReady() {
     return parseBoolean(process.env.HALL_OF_FAME_READY);
   }
 
   static #getDamageType(element: LBElements) {
-    return element === 'uni' ? 'n5' : 'skill';
+    return element === "uni" ? "n5" : "skill";
   }
 
   static async #fetchDB(
@@ -107,22 +113,25 @@ export default class LeaderboardCache {
       const damageCategory = `${element}-dmg-${this.#getDamageType(element)}`;
 
       db.collection(`${damageCategory}-${groupType.toLowerCase()}`)
-        .orderBy('score', 'desc')
+        .orderBy("score", "desc")
         .limit(topEntries)
         .get()
-        .then((query) =>
-          query.forEach((docSnap) => {
+        .then((query) => {
+          for (const docSnap of query.docs) {
             const data = docSnap.data();
             const parsedData = LeaderboardDBDataSchema.parse(data);
             dataArray.push(parsedData);
-          }),
-        )
+          }
+        })
         .then(() => resolve(dataArray))
         .catch(reject);
     });
   }
 
-  static #accessCache(element: LBElements, groupType: GroupCategoryType): DataCollection {
+  static #accessCache(
+    element: LBElements,
+    groupType: GroupCategoryType,
+  ): DataCollection {
     const cache = this.#cache[element];
     if (!cache) {
       throw new Error(`Cache for ${element} does not exist`);
@@ -141,14 +150,17 @@ export default class LeaderboardCache {
     return groupCache[groupType];
   }
 
-  static async #prepareGroupCache(element: LBElements, groupType: GroupCategoryType) {
+  static async #prepareGroupCache(
+    element: LBElements,
+    groupType: GroupCategoryType,
+  ) {
     const DBData = await this.#fetchDB(element, groupType);
 
     try {
       const collection = this.#accessCache(element, groupType);
-      DBData.forEach((data) => {
+      for (const data of DBData) {
         collection.set(data.userID, data);
-      });
+      }
     } catch {
       logger.debug(`Skipping ${element}-dmg-${groupType}`);
     }
@@ -157,40 +169,53 @@ export default class LeaderboardCache {
   }
 
   static async #prepareDamageCache(element: LBElements) {
-    const categories: GroupCategoryType[] = ['solo', 'open'];
-    categories.forEach(async (category) => this.#prepareGroupCache(element, category));
+    const categories: GroupCategoryType[] = ["solo", "open"];
+    for (const category of categories) {
+      await this.#prepareGroupCache(element, category);
+    }
   }
 
-  static async prepareCache() {
+  public static async prepareCache() {
     const validElements = Object.keys(this.#cache) as LBElements[];
 
     // await sequentialPromises(validElements, this.#prepareSubCache);
 
-    // eslint-disable-next-line no-restricted-syntax
     for (const ele of validElements) {
-      // eslint-disable-next-line no-await-in-loop
       await this.#prepareDamageCache(ele);
     }
   }
 
-  static getScore(userID: User['id'], element: LBElements, groupType: GroupCategoryType) {
+  public static getScore(
+    userID: User["id"],
+    element: LBElements,
+    groupType: GroupCategoryType,
+  ) {
     const collection = this.#accessCache(element, groupType);
     return collection.get(userID);
   }
 
-  private static collectionToArray(element: LBElements, groupType: GroupCategoryType) {
+  private static collectionToArray(
+    element: LBElements,
+    groupType: GroupCategoryType,
+  ) {
     return this.#accessCache(element, groupType)
       .clone()
       .sort((data1, data2) => data2.score - data1.score)
       .map((data) => data);
   }
 
-  static async getRank(userID: User['id'], element: LBElements, groupType: GroupCategoryType) {
-    const array = this.collectionToArray(element, groupType).map((data) => data.userID);
+  public static async getRank(
+    userID: User["id"],
+    element: LBElements,
+    groupType: GroupCategoryType,
+  ) {
+    const array = this.collectionToArray(element, groupType).map(
+      (data) => data.userID,
+    );
     return array.indexOf(userID) + 1;
   }
 
-  static async registerScore(dbData: DBLeaderboardData): Promise<void> {
+  public static async registerScore(dbData: DBLeaderboardData): Promise<void> {
     const element = parseLBElement(dbData.elementCategory);
     const collection = this.#accessCache(element, dbData.typeCategory);
     return new Promise((resolve, reject) => {
@@ -198,9 +223,9 @@ export default class LeaderboardCache {
         .doc(dbData.userID)
         .set(dbData)
         .then(() => {
-          container.logger.debug('Leaderboard Entry Submitted!');
+          container.logger.debug("Leaderboard Entry Submitted!");
           collection.set(dbData.userID, dbData);
-          return resolve();
+          resolve();
         })
         .catch(reject);
     });
@@ -221,24 +246,26 @@ export default class LeaderboardCache {
 
     let rank = 1;
     const pages: string[] = [];
-    // eslint-disable-next-line no-restricted-syntax
+
     for (const piece of chunks) {
       const lines: string[] = [];
-      // eslint-disable-next-line no-restricted-syntax
+
       for (const data of piece) {
-        // eslint-disable-next-line no-await-in-loop
         const user = await getUser(data.userID);
         const { tag } = user;
         const line = `${rank}. \`${tag}\` [${data.score}](${data.proof})`;
         rank += 1;
         lines.push(line);
       }
-      const page = lines.join('\n');
+
+      const page = lines.join("\n");
       pages.push(page);
     }
+
     if (pages.length <= 0) {
       pages.push(NOT_FOUND, NOT_FOUND);
     }
+
     return pages;
   }
 
@@ -251,9 +278,9 @@ export default class LeaderboardCache {
     return new Promise((resolve, reject) => {
       this.#rankBuilder(element, groupType, usersPerPage)
         .then((rankPages) => {
-          const embeds: Array<typeof embedTemplate> = [];
+          const embeds: (typeof embedTemplate)[] = [];
 
-          rankPages.forEach((page) => {
+          for (const page of rankPages) {
             const embed = deepClone(embedTemplate);
             embed.fields?.push({
               name: EMPTY_STRING,
@@ -265,14 +292,15 @@ export default class LeaderboardCache {
             };
 
             embeds.push(embed);
-          });
-          return resolve(embeds);
+          }
+
+          resolve(embeds);
         })
         .catch(reject);
     });
   }
 
-  static async generateEmbeds(
+  public static async generateEmbeds(
     element: LBElements,
     groupType: GroupCategoryType,
     usersPerPage = this.#usersPerPage,
@@ -281,7 +309,7 @@ export default class LeaderboardCache {
     return new Promise((resolve, reject) => {
       const collection = this.#accessCache(element, groupType);
 
-      logger.debug('Building embeds for: ', {
+      logger.debug("Building embeds for: ", {
         element,
         users: collection.size,
       });
@@ -297,14 +325,16 @@ export default class LeaderboardCache {
         fields: [],
       };
 
-      this.#rankEmbedGenerator(element, groupType, embed, usersPerPage).then(resolve).catch(reject);
+      this.#rankEmbedGenerator(element, groupType, embed, usersPerPage)
+        .then(resolve)
+        .catch(reject);
     });
   }
 
-  static async generateSummaryEmbed(element: LBElements) {
+  public static async generateSummaryEmbed(element: LBElements) {
     const props = leaderboardProps(element);
 
-    container.logger.debug('Generating Leaderboard summary for:', element);
+    container.logger.debug("Generating Leaderboard summary for:", element);
     return new Promise<APIEmbed>((resolve, reject) => {
       const embed: APIEmbed = {
         title: `${toTitleCase(element)} Traveler Damage Leaderboard`,
@@ -317,13 +347,17 @@ export default class LeaderboardCache {
         fields: [],
       };
 
-      this.#rankBuilder(element, 'open', 7)
+      this.#rankBuilder(element, "open", 7)
         .then((openRanks) =>
           embed.fields?.push(
-            { name: '**Open Category Top 1-7**', value: openRanks[0] || NOT_FOUND, inline: true },
             {
-              name: '**Open Category Top 8-14**',
-              value: openRanks[1] || NOT_FOUND,
+              name: "**Open Category Top 1-7**",
+              value: openRanks[0] ?? NOT_FOUND,
+              inline: true,
+            },
+            {
+              name: "**Open Category Top 8-14**",
+              value: openRanks[1] ?? NOT_FOUND,
               inline: true,
             },
           ),
@@ -334,13 +368,17 @@ export default class LeaderboardCache {
             value: EMPTY_STRING,
           }),
         )
-        .then(async () => this.#rankBuilder(element, 'solo', 7))
+        .then(async () => this.#rankBuilder(element, "solo", 7))
         .then((soloRanks) =>
           embed.fields?.push(
-            { name: '**Solo Category Top 1-7**', value: soloRanks[0] || NOT_FOUND, inline: true },
             {
-              name: '**Solo Category Top 8-14**',
-              value: soloRanks[1] || NOT_FOUND,
+              name: "**Solo Category Top 1-7**",
+              value: soloRanks[0] ?? NOT_FOUND,
+              inline: true,
+            },
+            {
+              name: "**Solo Category Top 8-14**",
+              value: soloRanks[1] ?? NOT_FOUND,
               inline: true,
             },
           ),

@@ -1,25 +1,30 @@
-import { ApplyOptions } from '@sapphire/decorators';
-import { Listener, type ListenerOptions } from '@sapphire/framework';
-import { type APIEmbed, ButtonStyle, ComponentType, ForumChannel } from 'discord.js';
-import { sequentialPromises } from 'yaspr';
-import { PMAEventHandler } from '../../baseBot/lib/Utilities';
-import EnvConfig from '../../lib/EnvConfig';
-import db from '../../lib/Database/Firestore';
-import type { ELEMENTS } from '../../typeDefs/typeDefs';
-import { RELEASED_ELEMENTS } from '../lib/Constants';
-import HallOfFameCache from '../lib/HallOfFameCache';
-import { crownProps } from '../lib/Utilities';
+import { ApplyOptions } from "@sapphire/decorators";
+import { Listener, type ListenerOptions } from "@sapphire/framework";
+import {
+  type APIEmbed,
+  ButtonStyle,
+  ComponentType,
+  ForumChannel,
+} from "discord.js";
+import { sequentialPromises } from "yaspr";
+import { PMAEventHandler } from "../../baseBot/lib/Utilities.js";
+import db from "../../lib/Database/Firestore.js";
+import EnvConfig from "../../lib/EnvConfig.js";
+import type { ELEMENTS } from "../../typeDefs/typeDefs.js";
+import { RELEASED_ELEMENTS } from "../lib/Constants.js";
+import HallOfFameCache from "../lib/HallOfFameCache.js";
+import { crownProps } from "../lib/Utilities.js";
 
 @ApplyOptions<ListenerOptions>({
   emitter: PMAEventHandler,
-  event: 'HoFPublish',
-  name: 'Hall of Fame Publisher',
+  event: "HoFPublish",
+  name: "Hall of Fame Publisher",
 })
 export default class HoFPublish extends Listener {
-  static dashLine = '-------------------------------------';
+  static dashLine = "-------------------------------------";
 
   public async publish(element: ELEMENTS, HallOfFameForum: ForumChannel) {
-    const isUnaligned = () => element === 'unaligned';
+    const isUnaligned = () => element === "unaligned";
     const oneCrownEmbeds = await HallOfFameCache.generateEmbeds(element, 1);
 
     const twoCrownEmbeds = isUnaligned()
@@ -41,7 +46,7 @@ export default class HoFPublish extends Listener {
         files: [
           {
             attachment: iconPic,
-            name: 'Icon.png',
+            name: "Icon.png",
           },
         ],
       },
@@ -79,9 +84,9 @@ export default class HoFPublish extends Listener {
           components: [
             {
               type: ComponentType.Button,
-              label: 'Back to first place',
+              label: "Back to first place",
               style: ButtonStyle.Link,
-              emoji: '⬆',
+              emoji: "⬆",
               url: firstMsg.url,
             },
           ],
@@ -92,25 +97,28 @@ export default class HoFPublish extends Listener {
 
   public async run() {
     await db
-      .collection('hall-of-fame-config')
-      .doc('channel')
+      .collection("hall-of-fame-config")
+      .doc("channel")
       .get()
       .then(async (docSnap) => {
         const forumDB = docSnap.data();
 
         if (!forumDB) {
-          throw new Error('Cannot fetch Forum channel for Hall Of Fame');
+          throw new Error("Cannot fetch Forum channel for Hall Of Fame");
         }
 
-        const tvmGuild = await this.container.client.guilds.fetch(EnvConfig.guildId);
+        const tvmGuild = await this.container.client.guilds.fetch(
+          EnvConfig.guildId,
+        );
         return tvmGuild.channels.fetch(forumDB.forumId as string);
       })
       .then(async (forumChannel) => {
         if (!(forumChannel instanceof ForumChannel)) {
-          throw new Error('Could not obtain text forum channel');
+          throw new TypeError("Could not obtain text forum channel");
         }
 
-        const publisher = async (element: ELEMENTS) => this.publish(element, forumChannel);
+        const publisher = async (element: ELEMENTS) =>
+          this.publish(element, forumChannel);
 
         return sequentialPromises(RELEASED_ELEMENTS, publisher);
       });

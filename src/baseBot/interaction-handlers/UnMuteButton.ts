@@ -1,11 +1,18 @@
-import { container, InteractionHandler, InteractionHandlerTypes } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
-import { type ButtonInteraction } from 'discord.js';
-import { ROLE_IDS } from '../../lib/Constants';
-import EnvConfig from '../../lib/EnvConfig';
+import {
+  container,
+  InteractionHandler,
+  InteractionHandlerTypes,
+} from "@sapphire/framework";
+import { Time } from "@sapphire/time-utilities";
+import { type ButtonInteraction } from "discord.js";
+import { ROLE_IDS } from "../../lib/Constants.js";
+import EnvConfig from "../../lib/EnvConfig.js";
 
 export default class UnMuteButton extends InteractionHandler {
-  public constructor(ctx: InteractionHandler.LoaderContext, options: InteractionHandler.Options) {
+  public constructor(
+    ctx: InteractionHandler.LoaderContext,
+    options: InteractionHandler.Options,
+  ) {
     super(ctx, {
       ...options,
       interactionHandlerType: InteractionHandlerTypes.Button,
@@ -13,7 +20,7 @@ export default class UnMuteButton extends InteractionHandler {
   }
 
   public override parse(interaction: ButtonInteraction) {
-    if (interaction.customId !== 'unmute_me_rng') return this.none();
+    if (interaction.customId !== "unmute_me_rng") return this.none();
 
     return this.some();
   }
@@ -36,7 +43,7 @@ export default class UnMuteButton extends InteractionHandler {
 
     if (diff > Time.Hour) {
       this.container.logger.info(
-        'Will not unmute user because 1 hour has passed since the unmute message being sent.',
+        "Will not unmute user because 1 hour has passed since the unmute message being sent.",
         {
           memberID: member.id,
         },
@@ -44,21 +51,24 @@ export default class UnMuteButton extends InteractionHandler {
 
       return interaction.editReply({
         content:
-          'Cannot remove timeout/mute role after 1 hour has passed.\nYou may contact mods regarding this matter',
+          "Cannot remove timeout/mute role after 1 hour has passed.\nYou may contact mods regarding this matter",
         components: [],
       });
     }
 
-    this.container.logger.debug('Removing roles/timeout');
-    const unMuteReason = "Removed freeze mute role on user's request (muted by RNG luck)";
+    this.container.logger.debug("Removing roles/timeout");
+    const unMuteReason =
+      "Removed freeze mute role on user's request (muted by RNG luck)";
     await member.roles
       .remove(ROLE_IDS.OTHERS.FROZEN_RNG, unMuteReason)
       .catch(container.logger.debug);
-    await member.disableCommunicationUntil(null, unMuteReason).catch(container.logger.debug);
+    await member
+      .disableCommunicationUntil(null, unMuteReason)
+      .catch(container.logger.debug);
 
-    this.container.logger.debug('Editing msg to remove button');
+    this.container.logger.debug("Editing msg to remove button");
     return interaction.editReply({
-      content: 'Timeout/mute role is successfully removed',
+      content: "Timeout/mute role is successfully removed",
       components: [],
     });
   }

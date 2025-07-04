@@ -1,105 +1,109 @@
-import { ApplyOptions } from '@sapphire/decorators';
-import { Listener, type ListenerOptions } from '@sapphire/framework';
-import type { APIEmbed, ForumChannel, TextChannel } from 'discord.js';
-import { PMAEventHandler } from '../../baseBot/lib/Utilities';
-import { ChannelIds, COLORS, ICONS, ThreadIds } from '../../lib/Constants';
-import db from '../../lib/Database/Firestore';
+import { ApplyOptions } from "@sapphire/decorators";
+import { Listener, type ListenerOptions } from "@sapphire/framework";
+import type { APIEmbed, ForumChannel, TextChannel } from "discord.js";
+import { PMAEventHandler } from "../../baseBot/lib/Utilities.js";
+import { ChannelIds, COLORS, ICONS, ThreadIds } from "../../lib/Constants.js";
+import db from "../../lib/Database/Firestore.js";
 
-interface LBSetupArgs {
+type LBSetupArgs = {
   forumChannel?: ForumChannel;
   textChannel?: TextChannel;
 }
 @ApplyOptions<ListenerOptions>({
   emitter: PMAEventHandler,
-  event: 'LBSetup',
-  name: 'Leaderboard Channel Setup',
+  event: "LBSetup",
+  name: "Leaderboard Channel Setup",
 })
 export default class LBSetup extends Listener {
   public async run(channels: LBSetupArgs) {
     const { logger } = this.container;
-    logger.debug('Got', channels);
+    logger.debug("Got", channels);
 
     await db
-      .collection('leaderboard-config')
-      .doc('channel')
+      .collection("leaderboard-config")
+      .doc("channel")
       .set(
-        { forumId: channels.forumChannel?.id, channelId: channels.textChannel?.id },
+        {
+          forumId: channels.forumChannel?.id,
+          channelId: channels.textChannel?.id,
+        },
         {
           merge: true,
         },
       )
       .then(async () => {
-        logger.debug('Channels registered in database for Leaderboard');
+        logger.debug("Channels registered in database for Leaderboard");
         if (channels.textChannel) {
           return this.setupSummaryChannel(channels.textChannel);
         }
-        throw new Error('Incorrect channel type for leaderboard setup');
+
+        throw new Error("Incorrect channel type for leaderboard setup");
       })
       .catch(logger.error);
   }
 
   public async setupSummaryChannel(channel: TextChannel) {
     const anemoSkillBoard: APIEmbed = {
-      title: 'Anemo placeholder',
-      description: 'Will be updated soon',
+      title: "Anemo placeholder",
+      description: "Will be updated soon",
       color: COLORS.ANEMO,
     };
 
     const geoSkillBoard: APIEmbed = {
-      title: 'Geo placeholder',
-      description: 'Will be updated soon',
+      title: "Geo placeholder",
+      description: "Will be updated soon",
       color: COLORS.GEO,
     };
 
     const electroSkillBoard: APIEmbed = {
-      title: 'Electro placeholder',
-      description: 'Will be updated soon',
+      title: "Electro placeholder",
+      description: "Will be updated soon",
       color: COLORS.ELECTRO,
     };
 
     const dendroSkillBoard: APIEmbed = {
-      title: 'Dendro placeholder',
-      description: 'Will be updated soon',
+      title: "Dendro placeholder",
+      description: "Will be updated soon",
       color: COLORS.DENDRO,
     };
 
     const hydroSkillBoard: APIEmbed = {
-      title: 'Hydro Placeholder',
-      description: 'Will be updated soon',
+      title: "Hydro Placeholder",
+      description: "Will be updated soon",
       color: COLORS.HYDRO,
     };
 
     const uniSkillBoard: APIEmbed = {
-      title: 'Universal placeholder',
-      description: 'Will be updated soon',
+      title: "Universal placeholder",
+      description: "Will be updated soon",
       color: COLORS.UNIVERSAL,
     };
 
     const cmd = this.container.client.application?.commands.cache.find(
-      (command) => command.name === 'leaderboard',
+      (command) => command.name === "leaderboard",
     );
-    const subCmd = cmd?.options.find((option) => option.name === 'register');
+    const subCmd = cmd?.options.find((option) => option.name === "register");
 
-    const subCmdMention = `</${cmd?.name || 'leaderboard'} ${
-      subCmd?.name || 'register'
+    const subCmdMention = `</${cmd?.name || "leaderboard"} ${
+      subCmd?.name || "register"
     }:${cmd?.id}>`;
     const information: APIEmbed = {
       color: COLORS.EMBED_COLOR,
-      title: '**Traveler Mains Damage Leaderboards**',
+      title: "**Traveler Mains Damage Leaderboards**",
       description:
         "_This leaderboard is not a measurement of your traveler's power, it's mostly for fun. Just because you're not on top doesn't mean you're bad. This is an arbitrary damage per screenshot leaderboard._",
       fields: [
         {
-          name: '***What are the rules?***',
+          name: "***What are the rules?***",
           value:
             'All fights must be against "Masanori" - the nameless samurai.\n\n **Solo Traveler** - Must only use Traveler in the party. No resonance, food, potion, coop mode, etc.\n **Open Category** - All the other restrictions besides Masanori being the target are lifted. Any form of buffing is allowed.',
         },
         {
-          name: '***How do I enter?***',
+          name: "***How do I enter?***",
           value: `Send an image (preferably a video) with damage number, element & group category type as message text, of your fight against "Masanori" - the nameless samurai in <#${
             ChannelIds.SHOWCASE
           }>.\nCopy the message link and use ${
-            subCmdMention || '`/leaderboard register`'
+            subCmdMention || "`/leaderboard register`"
           } command at <#${
             ThreadIds.LEADERBOARD_APPLICATION
           }>. After registering, ping a mod to get approval!\n\nExample format: \`uni 12345 solo\``,
@@ -114,11 +118,15 @@ export default class LBSetup extends Listener {
 
     const webhooks = await channel.guild.fetchWebhooks();
 
-    const botHooks = webhooks.filter((hook) => hook.owner?.id === this.container.client.user?.id);
+    const botHooks = webhooks.filter(
+      (hook) => hook.owner?.id === this.container.client.user?.id,
+    );
 
-    let webhook = botHooks.filter((hook) => hook.name === 'Damage Leaderboard').first();
+    let webhook = botHooks
+      .filter((hook) => hook.name === "Damage Leaderboard")
+      .first();
     const webhookOptions = {
-      name: 'Damage Leaderboard',
+      name: "Damage Leaderboard",
       avatar: Buffer.from(await (await fetch(ICONS.MASANORI)).arrayBuffer()),
     };
 
@@ -127,7 +135,7 @@ export default class LBSetup extends Listener {
         name: webhookOptions.name,
         avatar: webhookOptions.avatar,
         channel,
-        reason: 'Damager Leaderboard Webhook channel changed',
+        reason: "Damager Leaderboard Webhook channel changed",
       });
     } else {
       webhook = await channel.createWebhook({
@@ -138,53 +146,55 @@ export default class LBSetup extends Listener {
     }
 
     await db
-      .collection('leaderboards')
-      .doc('webhook')
+      .collection("leaderboards")
+      .doc("webhook")
       .set({
         webhookID: webhook.id,
         channelID: webhook.channelId,
       })
-      .then(() => this.container.logger.debug('Webhook details saved in database'))
+      .then(() =>
+        this.container.logger.debug("Webhook details saved in database"),
+      )
       .catch(this.container.logger.error);
 
     await webhook.send({ embeds: [information] });
 
     await webhook.send({ embeds: [uniSkillBoard] }).then(async (message) =>
-      db.collection('leaderboards').doc('uni-dmg-n5').set({
+      db.collection("leaderboards").doc("uni-dmg-n5").set({
         messageID: message?.id,
       }),
     );
 
     await webhook.send({ embeds: [anemoSkillBoard] }).then(async (message) =>
-      db.collection('leaderboards').doc('anemo-dmg-skill').set({
+      db.collection("leaderboards").doc("anemo-dmg-skill").set({
         messageID: message?.id,
       }),
     );
 
     await webhook.send({ embeds: [geoSkillBoard] }).then(async (message) =>
-      db.collection('leaderboards').doc('geo-dmg-skill').set({
+      db.collection("leaderboards").doc("geo-dmg-skill").set({
         messageID: message?.id,
       }),
     );
 
     await webhook.send({ embeds: [electroSkillBoard] }).then(async (message) =>
-      db.collection('leaderboards').doc('electro-dmg-skill').set({
+      db.collection("leaderboards").doc("electro-dmg-skill").set({
         messageID: message?.id,
       }),
     );
 
     await webhook.send({ embeds: [dendroSkillBoard] }).then(async (message) =>
-      db.collection('leaderboards').doc('dendro-dmg-skill').set({
+      db.collection("leaderboards").doc("dendro-dmg-skill").set({
         messageID: message?.id,
       }),
     );
 
     await webhook.send({ embeds: [hydroSkillBoard] }).then(async (message) =>
-      db.collection('leaderboards').doc('hydro-dmg-skill').set({
+      db.collection("leaderboards").doc("hydro-dmg-skill").set({
         messageID: message?.id,
       }),
     );
 
-    PMAEventHandler.emit('LBUpdate');
+    PMAEventHandler.emit("LBUpdate");
   }
 }

@@ -1,15 +1,15 @@
-import { ApplyOptions } from '@sapphire/decorators';
-import { Command } from '@sapphire/framework';
-import { ApplicationCommandOptionType, PermissionFlagsBits } from 'discord.js';
-import { COLORS } from '../../lib/Constants';
-import EnvConfig from '../../lib/EnvConfig';
-import type { DBQuotes } from '../../typeDefs/typeDefs';
-import QuotesManager from '../lib/QuotesManager';
-import { PMAEventHandler } from '../lib/Utilities';
+import { ApplyOptions } from "@sapphire/decorators";
+import { Command } from "@sapphire/framework";
+import { ApplicationCommandOptionType, PermissionFlagsBits } from "discord.js";
+import { COLORS } from "../../lib/Constants.js";
+import EnvConfig from "../../lib/EnvConfig.js";
+import type { DBQuotes } from "../../typeDefs/typeDefs.js";
+import QuotesManager from "../lib/QuotesManager.js";
+import { PMAEventHandler } from "../lib/Utilities.js";
 
 @ApplyOptions<Command.Options>({
-  name: 'add-quote',
-  description: 'Adds a quote/gif/reason among various things in bot',
+  name: "add-quote",
+  description: "Adds a quote/gif/reason among various things in bot",
 })
 export default class GuildCommand extends Command {
   public override registerApplicationCommands(registry: Command.Registry) {
@@ -23,87 +23,87 @@ export default class GuildCommand extends Command {
         options: [
           {
             type: ApplicationCommandOptionType.String,
-            name: 'quote_gif_reason',
+            name: "quote_gif_reason",
             description:
-              'Enter a quote/gif/reason. You can also tag people or add emojis from current server',
+              "Enter a quote/gif/reason. You can also tag people or add emojis from current server",
             required: true,
           },
           {
             type: ApplicationCommandOptionType.String,
-            name: 'type',
+            name: "type",
             description:
-              'Enter a quote/gif/reason. You can also tag people or add emojis from current server',
+              "Enter a quote/gif/reason. You can also tag people or add emojis from current server",
             required: true,
             choices: [
               {
-                name: 'FBI Quotes',
-                value: 'FBIQuotes',
+                name: "FBI Quotes",
+                value: "FBIQuotes",
               },
               {
-                name: 'FBI Gifs',
-                value: 'FBIGifs',
+                name: "FBI Gifs",
+                value: "FBIGifs",
               },
               {
-                name: 'RNG Mute Quotes',
-                value: 'RNGMuteQuotes',
+                name: "RNG Mute Quotes",
+                value: "RNGMuteQuotes",
               },
               {
-                name: 'RNG Mute Reasons',
-                value: 'RNGMuteReasons',
+                name: "RNG Mute Reasons",
+                value: "RNGMuteReasons",
               },
               {
-                name: 'TikTok Gifs',
-                value: 'TikTokGifs',
+                name: "TikTok Gifs",
+                value: "TikTokGifs",
               },
               {
-                name: 'TikTok Quotes',
-                value: 'TikTokQuotes',
+                name: "TikTok Quotes",
+                value: "TikTokQuotes",
               },
               {
-                name: 'Abyss Gifs',
-                value: 'abyssGifs',
+                name: "Abyss Gifs",
+                value: "abyssGifs",
               },
               {
-                name: 'Abyss Quotes',
-                value: 'abyssQuotes',
+                name: "Abyss Quotes",
+                value: "abyssQuotes",
               },
               {
-                name: 'Ban Hammer Reasons',
-                value: 'banHammerReasons',
+                name: "Ban Hammer Reasons",
+                value: "banHammerReasons",
               },
               {
-                name: 'Bonk Gifs',
-                value: 'bonkGifs',
+                name: "Bonk Gifs",
+                value: "bonkGifs",
               },
               {
-                name: 'Crowd Sourced Bonk Reasons',
-                value: 'crowdSourcedBonkReasons',
+                name: "Crowd Sourced Bonk Reasons",
+                value: "crowdSourcedBonkReasons",
               },
               {
-                name: 'Crowd Sourced Horny Bonk Reasons',
-                value: 'crowdSourcedHornyBonkReasons',
+                name: "Crowd Sourced Horny Bonk Reasons",
+                value: "crowdSourcedHornyBonkReasons",
               },
               {
-                name: 'Horny Bonk Gifs',
-                value: 'hornyBonkGifs',
+                name: "Horny Bonk Gifs",
+                value: "hornyBonkGifs",
               },
               {
-                name: 'Leak Quotes',
-                value: 'leakQuotes',
+                name: "Leak Quotes",
+                value: "leakQuotes",
               },
               {
-                name: 'Leak Mute Reasons',
-                value: 'leaksMuteReasons',
+                name: "Leak Mute Reasons",
+                value: "leaksMuteReasons",
               },
               {
-                name: 'Self Horny Bonk Gifs',
-                value: 'selfHornyBonkGifs',
+                name: "Self Horny Bonk Gifs",
+                value: "selfHornyBonkGifs",
               },
               {
-                name: 'Yoyoverse Quotes',
-                value: 'yoyoverseQuotes',
+                name: "Yoyoverse Quotes",
+                value: "yoyoverseQuotes",
               },
-            ] as Array<{ name: string; value: DBQuotes }>,
+            ] as { name: string; value: DBQuotes }[],
           },
         ],
       },
@@ -113,28 +113,30 @@ export default class GuildCommand extends Command {
     );
   }
 
-  public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
-    const quote = interaction.options.getString('quote_gif_reason', true);
-    const quoteType = interaction.options.getString('type', true) as DBQuotes;
+  public override async chatInputRun(
+    interaction: Command.ChatInputCommandInteraction,
+  ) {
+    const quote = interaction.options.getString("quote_gif_reason", true);
+    const quoteType = interaction.options.getString("type", true) as DBQuotes;
     QuotesManager.add(quoteType, quote)
       .then(() => {
         interaction.reply({
           embeds: [
             {
-              title: 'Quote/GIF/Reason Added!',
+              title: "Quote/GIF/Reason Added!",
               color: COLORS.EMBED_COLOR,
               description: `Your quote/gif/reason: \n\n\`${quote}\`\n\nIt is added into ${quoteType}`,
             },
           ],
         });
-        return PMAEventHandler.emit('RefreshQuotes');
+        return PMAEventHandler.emit("RefreshQuotes");
       })
-      .catch((err) => {
-        this.container.logger.error(err);
+      .catch((error) => {
+        this.container.logger.error(error);
         interaction.reply({
           embeds: [
             {
-              title: 'Failed to add',
+              title: "Failed to add",
               color: COLORS.ERROR,
               description: `Your quote/gif/reason: \n\n\`${quote}\`\n\nCould not be added into ${quoteType}`,
             },
@@ -142,9 +144,9 @@ export default class GuildCommand extends Command {
 
           files: [
             {
-              attachment: JSON.stringify(err, null, 2),
-              name: 'Error log.txt',
-              description: 'Error logs while adding quote',
+              attachment: JSON.stringify(error, null, 2),
+              name: "Error log.txt",
+              description: "Error logs while adding quote",
             },
           ],
         });

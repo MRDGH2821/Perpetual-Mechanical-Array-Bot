@@ -13,6 +13,7 @@
     "deps",
     "devcontainer",
     "eslint",
+    "megalinter",
     "prettier",
     "trunk",
     "vscode"

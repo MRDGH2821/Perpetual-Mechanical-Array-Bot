@@ -1,9 +1,9 @@
-import { LogLevel } from '@sapphire/framework';
-import { Client, GatewayIntentBits } from 'discord.js';
+import { LogLevel } from "@sapphire/framework";
+import { Client, GatewayIntentBits } from "discord.js";
 
 async function deleteAllCommands() {
   const bot = new Client({
-    defaultPrefix: 'pma!',
+    defaultPrefix: "pma!",
     caseInsensitiveCommands: true,
     logger: {
       level: LogLevel.Debug,
@@ -20,14 +20,14 @@ async function deleteAllCommands() {
 
   const { rest } = bot;
 
-  bot.logger.info('Login Successful');
+  bot.logger.info("Login Successful");
   const { GUILD_ID, CLIENT_ID } = process.env;
   await rest
     .put(`/applications/${CLIENT_ID}/guilds/${GUILD_ID}/commands`, { body: [] })
-    .then(() => bot.logger.info('Deleted guild commands'));
+    .then(() => bot.logger.info("Deleted guild commands"));
   await rest
     .put(`/applications/${CLIENT_ID}/commands`, { body: [] })
-    .then(() => bot.logger.info('Deleted global commands'));
+    .then(() => bot.logger.info("Deleted global commands"));
 
   process.exit(0);
 }

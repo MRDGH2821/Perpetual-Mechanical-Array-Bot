@@ -3,8 +3,8 @@
 }
 ---
 import { Subcommand } from '@sapphire/plugin-subcommands';
-import EnvConfig from '../lib/EnvConfig';
-import type { JSONCmd } from '../typeDefs/typeDefs';
+import EnvConfig from '../lib/EnvConfig.js';
+import type { JSONCmd } from '../typeDefs/typeDefs.js';
 
 const cmdDef: JSONCmd = {
   name: '{{name}}',

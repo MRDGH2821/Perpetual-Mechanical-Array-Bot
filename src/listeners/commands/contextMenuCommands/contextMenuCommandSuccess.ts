@@ -1,6 +1,9 @@
-import type { ContextMenuCommandSuccessPayload, Logger } from '@sapphire/framework';
-import { Listener, LogLevel } from '@sapphire/framework';
-import { logSuccessCommand } from '../../../lib/utils';
+import type {
+  ContextMenuCommandSuccessPayload,
+  Logger,
+} from "@sapphire/framework";
+import { Listener, LogLevel } from "@sapphire/framework";
+import { logSuccessCommand } from "../../../lib/utils.js";
 
 export default class ContextMenuCommandSuccessEvent extends Listener {
   public run(payload: ContextMenuCommandSuccessPayload) {

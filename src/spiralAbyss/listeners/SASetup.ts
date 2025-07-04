@@ -1,21 +1,21 @@
-import { ApplyOptions } from '@sapphire/decorators';
-import { Listener, type ListenerOptions } from '@sapphire/framework';
-import type { ForumChannel } from 'discord.js';
-import { PMAEventHandler } from '../../baseBot/lib/Utilities';
-import db from '../../lib/Database/Firestore';
+import { ApplyOptions } from "@sapphire/decorators";
+import { Listener, type ListenerOptions } from "@sapphire/framework";
+import type { ForumChannel } from "discord.js";
+import { PMAEventHandler } from "../../baseBot/lib/Utilities.js";
+import db from "../../lib/Database/Firestore.js";
 
 @ApplyOptions<ListenerOptions>({
   emitter: PMAEventHandler,
-  event: 'SASetup',
-  name: 'Spiral Abyss Channel Setup',
+  event: "SASetup",
+  name: "Spiral Abyss Channel Setup",
 })
 export default class SASetup extends Listener {
   public async run(forumChannel: ForumChannel) {
     this.container.logger.debug(`Got ${forumChannel}`);
 
     await db
-      .collection('spiral-abyss-config')
-      .doc('channel')
+      .collection("spiral-abyss-config")
+      .doc("channel")
       .set(
         { forumId: forumChannel.id },
         {
@@ -23,8 +23,10 @@ export default class SASetup extends Listener {
         },
       )
       .then(() =>
-        this.container.logger.debug('Forum channel registered in database for Spiral Abyss'),
+        this.container.logger.debug(
+          "Forum channel registered in database for Spiral Abyss",
+        ),
       )
-      .catch(this.container.logger.error);
+      .catch((error) => this.container.logger.error(error));
   }
 }

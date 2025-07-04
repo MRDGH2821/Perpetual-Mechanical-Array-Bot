@@ -75,7 +75,7 @@ You will not need to clone entire repository in this case. But you need to perfo
 After you have `firebase-service-acc` folder & `.env` file ready, create a file `docker-compose.yml` and put this:
 
 ```yml
-version: '3.9'
+version: "3.9"
 
 services:
   pma-bot:

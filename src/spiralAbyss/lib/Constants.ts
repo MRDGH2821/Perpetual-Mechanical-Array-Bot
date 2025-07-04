@@ -1,18 +1,20 @@
-import type { SpiralAbyssClearTypes } from '../typeDefs/spiralAbyssTypes';
+import type { SpiralAbyssClearTypes } from "../typeDefs/spiralAbyssTypes.js";
 
 export const SPIRAL_ABYSS_TYPE_CHOICES = [
   {
-    name: 'Abyssal Traveler',
-    value: 'traveler',
+    name: "Abyssal Traveler",
+    value: "traveler",
   },
   {
-    name: 'Abyssal Conqueror',
-    value: 'conqueror',
+    name: "Abyssal Conqueror",
+    value: "conqueror",
   },
   {
-    name: 'Abyssal Sovereign',
-    value: 'sovereign',
+    name: "Abyssal Sovereign",
+    value: "sovereign",
   },
-] as Array<{ name: string; value: SpiralAbyssClearTypes }>;
+] as { name: string; value: SpiralAbyssClearTypes }[];
 
-export const VALID_ABYSS_CLEAR_TYPES = SPIRAL_ABYSS_TYPE_CHOICES.map((c) => c.value);
+export const VALID_ABYSS_CLEAR_TYPES = SPIRAL_ABYSS_TYPE_CHOICES.map(
+  (choices) => choices.value,
+);

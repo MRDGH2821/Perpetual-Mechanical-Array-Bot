@@ -1,25 +1,25 @@
-import { ApplyOptions } from '@sapphire/decorators';
-import { Command } from '@sapphire/framework';
-import { DurationFormatter } from '@sapphire/time-utilities';
-import { ButtonStyle, ComponentType, User, userMention } from 'discord.js';
-import { readFileSync } from 'fs';
-import { COLORS } from '../../lib/Constants';
+import { readFileSync } from "fs";
+import { ApplyOptions } from "@sapphire/decorators";
+import { Command } from "@sapphire/framework";
+import { DurationFormatter } from "@sapphire/time-utilities";
+import { ButtonStyle, ComponentType, User, userMention } from "discord.js";
+import { COLORS } from "../../lib/Constants.js";
 
 const pkg = JSON.parse(
-  readFileSync('package.json', {
-    encoding: 'utf-8',
+  readFileSync("package.json", {
+    encoding: "utf-8",
   }),
 );
 
 const deps = Object.entries(pkg.dependencies)
   .map(([depName, depVer]) => `\`${depName}\`: ${depVer}`)
-  .join('\n');
+  .join("\n");
 
 const uptimeD = new DurationFormatter();
 
 @ApplyOptions<Command.Options>({
-  name: 'about',
-  description: 'About the bot',
+  name: "about",
+  description: "About the bot",
 })
 export default class UserCommand extends Command {
   public override registerApplicationCommands(registry: Command.Registry) {
@@ -29,7 +29,9 @@ export default class UserCommand extends Command {
     });
   }
 
-  public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
+  public override async chatInputRun(
+    interaction: Command.ChatInputCommandInteraction,
+  ) {
     const owner: User | undefined =
       interaction.client.application.owner instanceof User
         ? interaction.client.application.owner
@@ -37,17 +39,17 @@ export default class UserCommand extends Command {
     return interaction.reply({
       embeds: [
         {
-          title: '**About the bot**',
+          title: "**About the bot**",
           color: COLORS.EMBED_COLOR,
           description: `Version ${pkg.version}\nModified by: ${
-            owner || '*cannot be determined*'
-          }\nCreated by: ${userMention('867811595266424852')}\n\nThe bot uses:\n${deps}`,
+            owner || "*cannot be determined*"
+          }\nCreated by: ${userMention("867811595266424852")}\n\nThe bot uses:\n${deps}`,
           fields: [
             {
-              name: '**Uptime**',
+              name: "**Uptime**",
               value: `Bot uptime: ${uptimeD.format(
                 interaction.client.uptime,
-              )}\nProcess uptime: ${uptimeD.format(process.uptime() * 1000)}`,
+              )}\nProcess uptime: ${uptimeD.format(process.uptime() * 1_000)}`,
             },
           ],
         },
@@ -58,7 +60,7 @@ export default class UserCommand extends Command {
           components: [
             {
               type: ComponentType.Button,
-              label: 'Source Code',
+              label: "Source Code",
               style: ButtonStyle.Link,
               url: pkg.homepage,
             },

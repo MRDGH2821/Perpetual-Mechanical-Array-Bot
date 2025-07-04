@@ -1,15 +1,26 @@
-import { InteractionHandler, InteractionHandlerTypes } from '@sapphire/framework';
-import type { AutocompleteInteraction } from 'discord.js';
-import type { KitTechnology } from '../../../typeDefs/typeDefs';
-import { AMC_PROPS, DMC_PROPS, EMC_PROPS, GMC_PROPS } from '../../lib/TravelerTechnologies';
+import {
+  InteractionHandler,
+  InteractionHandlerTypes,
+} from "@sapphire/framework";
+import type { AutocompleteInteraction } from "discord.js";
+import type { KitTechnology } from "../../../typeDefs/typeDefs.js";
+import {
+  AMC_PROPS,
+  DMC_PROPS,
+  EMC_PROPS,
+  GMC_PROPS,
+} from "../../lib/TravelerTechnologies.js";
 
 export default class TravelerTechAutocompleteHandler extends InteractionHandler {
-  public constructor(ctx: InteractionHandler.LoaderContext, options: InteractionHandler.Options) {
+  public constructor(
+    ctx: InteractionHandler.LoaderContext,
+    options: InteractionHandler.Options,
+  ) {
     super(ctx, {
       ...options,
       interactionHandlerType: InteractionHandlerTypes.Autocomplete,
       enabled: true,
-      name: 'TravelerTechAutoComplete',
+      name: "TravelerTechAutoComplete",
     });
   }
 
@@ -31,45 +42,55 @@ export default class TravelerTechAutocompleteHandler extends InteractionHandler 
 
     let choices: KitTechnology[] | undefined;
 
-    const findTech = (tech: KitTechnology) => tech.name.toLowerCase().includes(focusedOption);
+    const findTech = (tech: KitTechnology) =>
+      tech.name.toLowerCase().includes(focusedOption);
 
     switch (cmdName) {
       case AMC_PROPS.skill.name: {
         choices = AMC_PROPS.skill.techs.filter(findTech);
         break;
       }
+
       case AMC_PROPS.burst.name: {
         choices = AMC_PROPS.burst.techs.filter(findTech);
         break;
       }
+
       case GMC_PROPS.skill.name: {
         choices = GMC_PROPS.skill.techs.filter(findTech);
         break;
       }
+
       case GMC_PROPS.burst.name: {
         choices = GMC_PROPS.burst.techs.filter(findTech);
         break;
       }
+
       case EMC_PROPS.skill.name: {
         choices = EMC_PROPS.skill.techs.filter(findTech);
         break;
       }
+
       case EMC_PROPS.burst.name: {
         choices = EMC_PROPS.burst.techs.filter(findTech);
         break;
       }
+
       case DMC_PROPS.skill.name: {
         choices = DMC_PROPS.skill.techs.filter(findTech);
         break;
       }
+
       case DMC_PROPS.burst.name: {
         choices = DMC_PROPS.burst.techs.filter(findTech);
         break;
       }
+
       default: {
         choices = undefined;
       }
     }
+
     // customLogger.debug({ choices });
     if (choices) {
       return this.some(
@@ -81,6 +102,7 @@ export default class TravelerTechAutocompleteHandler extends InteractionHandler 
           .slice(0, 24),
       );
     }
+
     return this.none();
   }
 }

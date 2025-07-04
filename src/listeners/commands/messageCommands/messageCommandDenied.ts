@@ -1,5 +1,9 @@
-import type { Events, MessageCommandDeniedPayload, UserError } from '@sapphire/framework';
-import { Listener } from '@sapphire/framework';
+import type {
+  Events,
+  MessageCommandDeniedPayload,
+  UserError,
+} from "@sapphire/framework";
+import { Listener } from "@sapphire/framework";
 
 export default class MessageCommandDeniedEvent extends Listener<
   typeof Events.MessageCommandDenied
@@ -10,9 +14,9 @@ export default class MessageCommandDeniedEvent extends Listener<
   ) {
     // `context: { silent: true }` should make UserError silent:
     // Use cases for this are for example permissions error when running the `eval` command.
-    if (Reflect.get(Object(context), 'silent')) return;
+    if (Reflect.get(new Object(context), "silent")) return;
 
-    // eslint-disable-next-line consistent-return
+     
     return message.reply({
       content,
       allowedMentions: { users: [message.author.id], roles: [] },

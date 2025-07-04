@@ -1,24 +1,26 @@
-import { container } from '@sapphire/framework';
-import { s, type SchemaOf } from '@sapphire/shapeshift';
-import { range } from '@sapphire/utilities';
-import { type APIEmbed, Collection, type User } from 'discord.js';
-import { sequentialPromises } from 'yaspr';
-import { parseBoolean } from '../../baseBot/lib/Utilities';
-import { EMPTY_STRING } from '../../lib/Constants';
-import db from '../../lib/Database/Firestore';
-import { getUser, publishEmbedsGenerator } from '../../lib/utils';
-import type { ELEMENTS } from '../../typeDefs/typeDefs';
-import { crownProps } from './Utilities';
+import { container } from "@sapphire/framework";
+import { s, type SchemaOf } from "@sapphire/shapeshift";
+import { range } from "@sapphire/utilities";
+import { type APIEmbed, Collection, type User } from "discord.js";
+import { sequentialPromises } from "yaspr";
+import { parseBoolean } from "../../baseBot/lib/Utilities.js";
+import { EMPTY_STRING } from "../../lib/Constants.js";
+import db from "../../lib/Database/Firestore.js";
+import { getUser, publishEmbedsGenerator } from "../../lib/utils.js";
+import type { ELEMENTS } from "../../typeDefs/typeDefs.js";
+import { crownProps } from "./Utilities.js";
 
 type CrownQuantity = 1 | 2 | 3;
-interface DBHallOfFameData {
+type DBHallOfFameData = {
   crowns: CrownQuantity;
-  userID: User['id'];
+  userID: User["id"];
 }
 
-type DataCollection = Collection<User['id'], DBHallOfFameData>;
+type DataCollection = Collection<User["id"], DBHallOfFameData>;
 
-type SubCache = { 1: DataCollection } & Partial<Record<CrownQuantity, DataCollection>>;
+type SubCache = Partial<
+  Record<CrownQuantity, DataCollection>
+> & { 1: DataCollection };
 
 type CacheType = Partial<Record<ELEMENTS, SubCache>>;
 
@@ -73,7 +75,10 @@ export default class HallOfFameCache {
     return parseBoolean(process.env.HALL_OF_FAME_READY);
   }
 
-  static async #fetchDB(element: ELEMENTS, topEntries = 0): Promise<DBHallOfFameData[]> {
+  static async #fetchDB(
+    element: ELEMENTS,
+    topEntries = 0,
+  ): Promise<DBHallOfFameData[]> {
     return new Promise((resolve, reject) => {
       const dataArray: DBHallOfFameData[] = [];
 
@@ -81,16 +86,17 @@ export default class HallOfFameCache {
       if (!cache) {
         reject(new Error(`Cache for ${element} does not exist`));
       }
+
       db.collection(`${element}-crown`)
-        .orderBy('crowns', 'desc')
+        .orderBy("crowns", "desc")
         .limit(topEntries)
         .get()
         .then((query) =>
-          query.forEach((docSnap) => {
+          { for (const docSnap of query) {
             const data = docSnap.data();
             const validatedData = HoFDataSchema.parse(data);
             dataArray.push(validatedData);
-          }),
+          } },
         )
         .then(() => resolve(dataArray))
         .catch(reject);
@@ -109,9 +115,12 @@ export default class HallOfFameCache {
     const subCache = cache[quantity];
 
     if (!subCache) {
-      throw new Error(`Sub cache for ${element} with quantity ${quantity} does not exist`, {
-        cause: `Got quantity ${quantity} for element ${element}`,
-      });
+      throw new Error(
+        `Sub cache for ${element} with quantity ${quantity} does not exist`,
+        {
+          cause: `Got quantity ${quantity} for element ${element}`,
+        },
+      );
     }
 
     return subCache;
@@ -119,18 +128,19 @@ export default class HallOfFameCache {
 
   static async #prepareSubCache(element: ELEMENTS) {
     const hofData = await this.#fetchDB(element);
-    range(1, 3, 1).forEach((qty) => {
+    for (const qty of range(1, 3, 1)) {
       try {
         const collection = this.#accessCache(element, qty as CrownQuantity);
-        hofData.forEach((data) => {
-          if (parseInt(`${data.crowns}`, 10) === qty) {
+        for (const data of hofData) {
+          if (Number.parseInt(`${data.crowns}`, 10) === qty) {
             collection.set(data.userID, data);
           }
-        });
+        }
       } catch {
         logger.debug(`Skipping ${element}-${qty}`);
       }
-    });
+    }
+
     logger.debug(`Cache for ${element} is ready`);
   }
 
@@ -139,9 +149,9 @@ export default class HallOfFameCache {
 
     // await sequentialPromises(validElements, this.#prepareSubCache);
 
-    // eslint-disable-next-line no-restricted-syntax
+     
     for (const ele of validElements) {
-      // eslint-disable-next-line no-await-in-loop
+       
       await this.#prepareSubCache(ele);
     }
   }
@@ -155,7 +165,7 @@ export default class HallOfFameCache {
     return new Promise((resolve, reject) => {
       const collection = this.#accessCache(element, quantity);
 
-      logger.debug('Building embeds for: ', {
+      logger.debug("Building embeds for: ", {
         element,
         users: collection.size,
       });
@@ -179,11 +189,12 @@ export default class HallOfFameCache {
           if (users.length < 1) {
             embed.fields?.push({
               name: EMPTY_STRING,
-              value: 'No members found in this section',
+              value: "No members found in this section",
             });
 
-            return resolve([embed]);
+            resolve([embed]); return;
           }
+
           return publishEmbedsGenerator({
             users,
             embedTemplate: embed,
@@ -196,39 +207,39 @@ export default class HallOfFameCache {
     });
   }
 
-  static isUserInCache(userID: User['id']) {
+  static isUserInCache(userID: User["id"]) {
     const anemo = {
-      1: this.#accessCache('anemo', 1).has(userID),
-      2: this.#accessCache('anemo', 2).has(userID),
-      3: this.#accessCache('anemo', 3).has(userID),
+      1: this.#accessCache("anemo", 1).has(userID),
+      2: this.#accessCache("anemo", 2).has(userID),
+      3: this.#accessCache("anemo", 3).has(userID),
     };
 
     const geo = {
-      1: this.#accessCache('geo', 1).has(userID),
-      2: this.#accessCache('geo', 2).has(userID),
-      3: this.#accessCache('geo', 3).has(userID),
+      1: this.#accessCache("geo", 1).has(userID),
+      2: this.#accessCache("geo", 2).has(userID),
+      3: this.#accessCache("geo", 3).has(userID),
     };
 
     const electro = {
-      1: this.#accessCache('electro', 1).has(userID),
-      2: this.#accessCache('electro', 2).has(userID),
-      3: this.#accessCache('electro', 3).has(userID),
+      1: this.#accessCache("electro", 1).has(userID),
+      2: this.#accessCache("electro", 2).has(userID),
+      3: this.#accessCache("electro", 3).has(userID),
     };
 
     const dendro = {
-      1: this.#accessCache('dendro', 1).has(userID),
-      2: this.#accessCache('dendro', 2).has(userID),
-      3: this.#accessCache('dendro', 3).has(userID),
+      1: this.#accessCache("dendro", 1).has(userID),
+      2: this.#accessCache("dendro", 2).has(userID),
+      3: this.#accessCache("dendro", 3).has(userID),
     };
 
     const hydro = {
-      1: this.#accessCache('hydro', 1).has(userID),
-      2: this.#accessCache('hydro', 2).has(userID),
-      3: this.#accessCache('hydro', 3).has(userID),
+      1: this.#accessCache("hydro", 1).has(userID),
+      2: this.#accessCache("hydro", 2).has(userID),
+      3: this.#accessCache("hydro", 3).has(userID),
     };
 
     const unaligned = {
-      1: this.#accessCache('unaligned', 1).has(userID),
+      1: this.#accessCache("unaligned", 1).has(userID),
     };
 
     return {

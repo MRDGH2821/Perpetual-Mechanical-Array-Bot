@@ -1,14 +1,16 @@
-import { ApplyOptions } from '@sapphire/decorators';
-import { Events, Listener, type ListenerOptions } from '@sapphire/framework';
-import type { Interaction } from 'discord.js';
-import { COLORS } from '../../lib/Constants';
-import { serverLogChannel } from '../../lib/utils';
+import { ApplyOptions } from "@sapphire/decorators";
+import { Events, Listener, type ListenerOptions } from "@sapphire/framework";
+import type { Interaction } from "discord.js";
+import { COLORS } from "../../lib/Constants.js";
+import { serverLogChannel } from "../../lib/utils.js";
 
 @ApplyOptions<ListenerOptions>({
-  name: 'CommandLogs',
+  name: "CommandLogs",
   event: Events.ChatInputCommandFinish,
 })
-export default class CommandLogs extends Listener<typeof Events.ChatInputCommandFinish> {
+export default class CommandLogs extends Listener<
+  typeof Events.ChatInputCommandFinish
+> {
   public async run(interaction: Interaction) {
     if (!interaction.isChatInputCommand()) {
       return;
@@ -23,21 +25,23 @@ export default class CommandLogs extends Listener<typeof Events.ChatInputCommand
     const logChannel = await serverLogChannel();
 
     const subCommand = {
-      cmd: 'none',
-      group: 'none',
+      cmd: "none",
+      group: "none",
     };
 
     try {
-      subCommand.group = interaction.options.getSubcommandGroup() || 'none';
-      subCommand.cmd = interaction.options.getSubcommand() || 'none';
-    } catch (e) {
-      this.container.logger.debug('There are no sub commands in this guild command');
+      subCommand.group = interaction.options.getSubcommandGroup() || "none";
+      subCommand.cmd = interaction.options.getSubcommand() || "none";
+    } catch {
+      this.container.logger.debug(
+        "There are no sub commands in this guild command",
+      );
     }
 
     logChannel.send({
       embeds: [
         {
-          title: '**Interaction Log**',
+          title: "**Interaction Log**",
           author: {
             name: user.tag,
             icon_url: user.displayAvatarURL(),

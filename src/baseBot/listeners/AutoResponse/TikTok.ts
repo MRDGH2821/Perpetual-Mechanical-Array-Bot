@@ -1,31 +1,36 @@
-import { ApplyOptions } from '@sapphire/decorators';
-import { Events, Listener, type ListenerOptions } from '@sapphire/framework';
-import { Time } from '@sapphire/time-utilities';
-import { pickRandom } from '@sapphire/utilities';
-import type { Message } from 'discord.js';
-import CoolDownManager from '../../../lib/CoolDownManager';
-import QuotesManager from '../../lib/QuotesManager';
-import { parseBoolean } from '../../lib/Utilities';
+import { ApplyOptions } from "@sapphire/decorators";
+import { Events, Listener, type ListenerOptions } from "@sapphire/framework";
+import { Time } from "@sapphire/time-utilities";
+import { pickRandom } from "@sapphire/utilities";
+import type { Message } from "discord.js";
+import CoolDownManager from "../../../lib/CoolDownManager.js";
+import QuotesManager from "../../lib/QuotesManager.js";
+import { parseBoolean } from "../../lib/Utilities.js";
 
-const rateLimit = new CoolDownManager(3000);
-rateLimit.add('TikTok_ICD', 3000);
+const rateLimit = new CoolDownManager(3_000);
+rateLimit.add("TikTok_ICD", 3_000);
 
 const isEnabled = () => parseBoolean(process.env.AUTORESPONSE_TIKTOK);
 @ApplyOptions<ListenerOptions>({
   enabled: true,
   event: Events.MessageCreate,
-  name: 'TikTok Autoresponse',
+  name: "TikTok Autoresponse",
 })
-export default class TikTokResponse extends Listener<typeof Events.MessageCreate> {
+export default class TikTokResponse extends Listener<
+  typeof Events.MessageCreate
+> {
   static Quote = () =>
     pickRandom(
       [
-        'Do this\n https://tenor.com/view/tiktok-tiktokbad-bad-trash-garbage-gif-21041014',
-        'https://cdn.discordapp.com/attachments/803459900180004904/1005441017375367208/image0.gif',
-        'https://tenor.com/view/tiktok-tiktok-cringe-watermark-tiktok-watermark-watermark-cringe-gif-22182993',
-        'Somebody mentioned TikTok?!?!?!??!? \n\n*Dies of cringe*',
+        "Do this\n https://tenor.com/view/tiktok-tiktokbad-bad-trash-garbage-gif-21041014",
+        "https://cdn.discordapp.com/attachments/803459900180004904/1005441017375367208/image0.gif",
+        "https://tenor.com/view/tiktok-tiktok-cringe-watermark-tiktok-watermark-watermark-cringe-gif-22182993",
+        "Somebody mentioned TikTok?!?!?!??!? \n\n*Dies of cringe*",
       ]
-        .concat(QuotesManager.getQuotes('TikTokGifs'), QuotesManager.getQuotes('TikTokQuotes'))
+        .concat(
+          QuotesManager.getQuotes("TikTokGifs"),
+          QuotesManager.getQuotes("TikTokQuotes"),
+        )
         .flat(),
     );
 
@@ -36,19 +41,20 @@ export default class TikTokResponse extends Listener<typeof Events.MessageCreate
       return;
     }
 
-    if (message.channelId === '840268374621945906') {
+    if (message.channelId === "840268374621945906") {
       return;
     }
 
-    if (!content.toLowerCase().includes('tiktok')) {
+    if (!content.toLowerCase().includes("tiktok")) {
       return;
     }
 
     if (message.author.bot) {
       return;
     }
+
     try {
-      const isLimited = rateLimit.check('TikTok_ICD');
+      const isLimited = rateLimit.check("TikTok_ICD");
       if (isLimited < 1) {
         const { channel } = message;
         channel
@@ -56,17 +62,17 @@ export default class TikTokResponse extends Listener<typeof Events.MessageCreate
             content: TikTokResponse.Quote(),
           })
           .then((msg) => {
-            rateLimit.add('TikTok_ICD', 3000);
-            return this.deleteMsg(msg);
+            rateLimit.add("TikTok_ICD", 3_000);
+            this.deleteMsg(msg);
           })
           .catch(this.container.logger.debug);
       }
-    } catch (e) {
-      this.container.logger.debug(e);
+    } catch (error) {
+      this.container.logger.debug(error);
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
+   
   private deleteMsg(message: Message) {
     setTimeout(async () => {
       await message.delete();

@@ -1,6 +1,9 @@
-import { Precondition } from '@sapphire/framework';
-import type { ChatInputCommandInteraction, ContextMenuCommandInteraction } from 'discord.js';
-import { isStaff } from '../lib/Utilities';
+import { Precondition } from "@sapphire/framework";
+import type {
+  ChatInputCommandInteraction,
+  ContextMenuCommandInteraction,
+} from "discord.js";
+import { isStaff } from "../lib/Utilities.js";
 
 export default class ModOnly extends Precondition {
   public override chatInputRun(interaction: ChatInputCommandInteraction) {
@@ -11,23 +14,27 @@ export default class ModOnly extends Precondition {
     return this.logicRun(interaction);
   }
 
-  private logicRun(interaction: ChatInputCommandInteraction | ContextMenuCommandInteraction) {
+  private logicRun(
+    interaction: ChatInputCommandInteraction | ContextMenuCommandInteraction,
+  ) {
     if (interaction.member) {
       if (isStaff(interaction.member)) {
         return this.ok();
       }
+
       return this.error({
-        message: 'Only Mods can use this',
+        message: "Only Mods can use this",
       });
     }
+
     return this.error({
-      message: 'This command can only be used in server',
+      message: "This command can only be used in server",
     });
   }
 }
 
-declare module '@sapphire/framework' {
-  interface Preconditions {
+declare module "@sapphire/framework" {
+  type Preconditions = {
     ModOnly: never;
   }
 }

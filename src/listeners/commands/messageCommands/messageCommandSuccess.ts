@@ -1,6 +1,6 @@
-import type { Logger, MessageCommandSuccessPayload } from '@sapphire/framework';
-import { Listener, LogLevel } from '@sapphire/framework';
-import { logSuccessCommand } from '../../../lib/utils';
+import type { Logger, MessageCommandSuccessPayload } from "@sapphire/framework";
+import { Listener, LogLevel } from "@sapphire/framework";
+import { logSuccessCommand } from "../../../lib/utils.js";
 
 export default class MessageCommandSuccessEvent extends Listener {
   public run(payload: MessageCommandSuccessPayload) {

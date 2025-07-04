@@ -1,73 +1,77 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable class-methods-use-this */
+ 
 import {
   type ChatInputOrContextMenuCommandInteraction,
   HttpUrlRegex,
   isGuildMember,
-} from '@sapphire/discord.js-utilities';
-import { Subcommand } from '@sapphire/plugin-subcommands';
-import { pickRandom } from '@sapphire/utilities';
-import type { GuildMember, Message, SelectMenuComponentOptionData } from 'discord.js';
+} from "@sapphire/discord.js-utilities";
+import { Subcommand } from "@sapphire/plugin-subcommands";
+import { pickRandom } from "@sapphire/utilities";
+import type {
+  GuildMember,
+  Message,
+  SelectMenuComponentOptionData,
+} from "discord.js";
 import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
   ButtonStyle,
   ComponentType,
   PermissionFlagsBits,
-} from 'discord.js';
-import HallOfFameCache from '../../hallOfFame/lib/HallOfFameCache';
-import { ChannelIds, COLORS, EMOJIS, ROLE_IDS } from '../../lib/Constants';
-import EnvConfig from '../../lib/EnvConfig';
-import type { JSONCmd } from '../../typeDefs/typeDefs';
-import AssignRoles from '../lib/AssignRoles';
-import { guildMessageIDsExtractor, isStaff } from '../lib/Utilities';
+} from "discord.js";
+import HallOfFameCache from "../../hallOfFame/lib/HallOfFameCache.js";
+import { ChannelIds, COLORS, EMOJIS, ROLE_IDS } from "../../lib/Constants.js";
+import EnvConfig from "../../lib/EnvConfig.js";
+import type { JSONCmd } from "../../typeDefs/typeDefs.js";
+import AssignRoles from "../lib/AssignRoles.js";
+import { guildMessageIDsExtractor, isStaff } from "../lib/Utilities.js";
 
 const cmdDef: JSONCmd = {
-  name: 'give-role',
-  description: 'Gives role to selected user',
+  name: "give-role",
+  description: "Gives role to selected user",
   defaultMemberPermissions: PermissionFlagsBits.ManageRoles,
   dmPermission: false,
   type: ApplicationCommandType.ChatInput,
   options: [
     {
       type: 1,
-      name: 'one',
-      description: 'Give one role!',
+      name: "one",
+      description: "Give one role!",
       options: [
         {
-          name: 'member',
-          description: 'Select member',
+          name: "member",
+          description: "Select member",
           type: ApplicationCommandOptionType.User,
           required: true,
         },
         {
-          name: 'role',
-          description: 'Select Role',
+          name: "role",
+          description: "Select Role",
           type: ApplicationCommandOptionType.String,
           required: true,
           autocomplete: true,
         },
         {
-          name: 'proof_link',
-          description: 'Message link as proof of achievement',
+          name: "proof_link",
+          description: "Message link as proof of achievement",
           type: ApplicationCommandOptionType.String,
         },
       ],
     },
     {
       type: 1,
-      name: 'multi',
-      description: 'Give multiple roles!',
+      name: "multi",
+      description: "Give multiple roles!",
       options: [
         {
-          name: 'member',
-          description: 'Select member',
+          name: "member",
+          description: "Select member",
           type: ApplicationCommandOptionType.User,
           required: true,
         },
         {
-          name: 'proof_link',
-          description: 'Message link as proof of achievement',
+          name: "proof_link",
+          description: "Message link as proof of achievement",
           type: ApplicationCommandOptionType.String,
         },
       ],
@@ -82,15 +86,15 @@ export default class GuildCommand extends Subcommand {
       description: cmdDef.description,
       requiredUserPermissions: PermissionFlagsBits.ManageRoles,
       requiredClientPermissions: PermissionFlagsBits.ManageRoles,
-      preconditions: ['ModOnly'],
+      preconditions: ["ModOnly"],
       subcommands: [
         {
           name: cmdDef.options![0].name,
-          type: 'method',
+          type: "method",
         },
         {
           name: cmdDef.options![1].name,
-          type: 'method',
+          type: "method",
         },
       ],
     });
@@ -103,7 +107,7 @@ export default class GuildCommand extends Subcommand {
 
     registry.registerContextMenuCommand(
       {
-        name: 'Give Roles',
+        name: "Give Roles",
         type: ApplicationCommandType.Message,
         dmPermission: false,
         dm_permission: false,
@@ -118,10 +122,13 @@ export default class GuildCommand extends Subcommand {
   private async messageCrawler(member: GuildMember) {
     const { client } = member;
 
-    const guild = await (await client.guilds.fetch()).get(EnvConfig.guildId)?.fetch();
+    const guild = await (await client.guilds.fetch())
+      .get(EnvConfig.guildId)
+      ?.fetch();
     if (!guild) {
-      throw new Error('Cannot fetch guild');
+      throw new Error("Cannot fetch guild");
     }
+
     const roleAppChannel = await (
       await guild.channels.fetch(ChannelIds.ROLE_APPLICATION, {
         force: true,
@@ -129,16 +136,20 @@ export default class GuildCommand extends Subcommand {
     )?.fetch();
 
     if (!roleAppChannel?.isTextBased()) {
-      throw new Error('Cannot fetch Role Applications channel');
+      throw new Error("Cannot fetch Role Applications channel");
     }
 
     const messages = await roleAppChannel.messages.fetch({
       limit: 20,
     });
 
-    const memberMessages = messages.filter((msg) => msg.author.id === member.id);
+    const memberMessages = messages.filter(
+      (msg) => msg.author.id === member.id,
+    );
 
-    memberMessages.sort((msg1, msg2) => msg2.createdTimestamp - msg1.createdTimestamp);
+    memberMessages.sort(
+      (msg1, msg2) => msg2.createdTimestamp - msg1.createdTimestamp,
+    );
     const messagesWithAttachments = memberMessages.filter(
       (msg) => msg.attachments.size > 0 || HttpUrlRegex.test(msg.content),
     );
@@ -153,8 +164,9 @@ export default class GuildCommand extends Subcommand {
         embeds: [
           {
             color: COLORS.EMBED_COLOR,
-            title: 'Should I show all roles?',
-            description: 'Should I show all roles? \nOr hide already assigned roles?',
+            title: "Should I show all roles?",
+            description:
+              "Should I show all roles? \nOr hide already assigned roles?",
           },
         ],
         components: [
@@ -163,15 +175,15 @@ export default class GuildCommand extends Subcommand {
             components: [
               {
                 type: ComponentType.Button,
-                label: 'Show All Roles',
+                label: "Show All Roles",
                 style: ButtonStyle.Secondary,
-                customId: 'show_all_roles',
+                customId: "show_all_roles",
               },
               {
                 type: ComponentType.Button,
-                label: 'Hide Assigned Roles',
+                label: "Hide Assigned Roles",
                 style: ButtonStyle.Success,
-                customId: 'hide_assigned_roles',
+                customId: "hide_assigned_roles",
               },
             ],
           },
@@ -191,7 +203,7 @@ export default class GuildCommand extends Subcommand {
           },
         }),
       )
-      .then((btnCtx) => btnCtx.customId === 'show_all_roles');
+      .then((btnCtx) => btnCtx.customId === "show_all_roles");
   }
 
   private async selectRoles(
@@ -202,7 +214,7 @@ export default class GuildCommand extends Subcommand {
       embeds: [
         {
           color: COLORS.EMBED_COLOR,
-          description: 'Loading...',
+          description: "Loading...",
         },
       ],
     });
@@ -213,98 +225,113 @@ export default class GuildCommand extends Subcommand {
     const roles = await interaction.guild?.roles.fetch();
     let selectedRoles: string[] = [];
     if (!roles) {
-      throw new Error('Fetching roles failed');
+      throw new Error("Fetching roles failed");
     }
+
     const crownData = HallOfFameCache.isUserInCache(member.id);
     const optionsArr: SelectMenuComponentOptionData[] = [
       {
-        description: 'Completed a Spiral Abyss Criteria',
-        emoji: pickRandom([EMOJIS.DullBlade, EMOJIS.DvalinHYPE, '🌀', '⚔️', '😎']),
-        label: 'Triumphed over Abyss',
+        description: "Completed a Spiral Abyss Criteria",
+        emoji: pickRandom([
+          EMOJIS.DullBlade,
+          EMOJIS.DvalinHYPE,
+          "🌀",
+          "⚔️",
+          "😎",
+        ]),
+        label: "Triumphed over Abyss",
         value: ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER,
       },
       {
         default: memberRoles.has(ROLE_IDS.REPUTATION.MONDSTADT),
-        description: '100% Map + Subregions + Achievements + Max Reputation',
-        emoji: '🕊️',
-        label: roles.get(ROLE_IDS.REPUTATION.MONDSTADT)?.name || 'Megastar in Mondstadt',
+        description: "100% Map + Subregions + Achievements + Max Reputation",
+        emoji: "🕊️",
+        label:
+          roles.get(ROLE_IDS.REPUTATION.MONDSTADT)?.name ||
+          "Megastar in Mondstadt",
         value: ROLE_IDS.REPUTATION.MONDSTADT,
       },
       {
         default: memberRoles.has(ROLE_IDS.REPUTATION.LIYUE),
-        description: '100% Map + Subregions + Achievements + Max Reputation',
-        emoji: '⚖️',
-        label: roles.get(ROLE_IDS.REPUTATION.LIYUE)?.name || 'Legend in Liyue',
+        description: "100% Map + Subregions + Achievements + Max Reputation",
+        emoji: "⚖️",
+        label: roles.get(ROLE_IDS.REPUTATION.LIYUE)?.name || "Legend in Liyue",
         value: ROLE_IDS.REPUTATION.LIYUE,
       },
       {
         default: memberRoles.has(ROLE_IDS.REPUTATION.INAZUMA),
-        description: '100% Map + Subregions + Achievements + Max Reputation',
-        emoji: '⛩️',
-        label: roles.get(ROLE_IDS.REPUTATION.INAZUMA)?.name || 'Illustrious in Inazuma',
+        description: "100% Map + Subregions + Achievements + Max Reputation",
+        emoji: "⛩️",
+        label:
+          roles.get(ROLE_IDS.REPUTATION.INAZUMA)?.name ||
+          "Illustrious in Inazuma",
         value: ROLE_IDS.REPUTATION.INAZUMA,
       },
       {
         default: memberRoles.has(ROLE_IDS.REPUTATION.SUMERU),
-        description: '100% Map + Subregions + Achievements + Max Reputation',
-        emoji: '🌴',
-        label: roles.get(ROLE_IDS.REPUTATION.SUMERU)?.name || 'Scholarly in Sumeru',
+        description: "100% Map + Subregions + Achievements + Max Reputation",
+        emoji: "🌴",
+        label:
+          roles.get(ROLE_IDS.REPUTATION.SUMERU)?.name || "Scholarly in Sumeru",
         value: ROLE_IDS.REPUTATION.SUMERU,
       },
       {
         default: memberRoles.has(ROLE_IDS.REPUTATION.FONTAINE),
-        description: '100% Map + Subregions + Achievements + Max Reputation',
-        emoji: '⚓',
-        label: roles.get(ROLE_IDS.REPUTATION.FONTAINE)?.name || 'Fabulous in Fontaine',
+        description: "100% Map + Subregions + Achievements + Max Reputation",
+        emoji: "⚓",
+        label:
+          roles.get(ROLE_IDS.REPUTATION.FONTAINE)?.name ||
+          "Fabulous in Fontaine",
         value: ROLE_IDS.REPUTATION.FONTAINE,
       },
       {
         default: crownData.anemo[3],
-        description: 'Crowned their Anemo Traveler',
-        emoji: EMOJIS.Anemo || '🌪️',
-        label: roles.get(ROLE_IDS.CROWN.ANEMO)?.name || 'Anemo Crown Role',
+        description: "Crowned their Anemo Traveler",
+        emoji: EMOJIS.Anemo || "🌪️",
+        label: roles.get(ROLE_IDS.CROWN.ANEMO)?.name || "Anemo Crown Role",
         value: ROLE_IDS.CROWN.ANEMO,
       },
       {
         default: crownData.geo[3],
-        description: 'Crowned their Geo Traveler',
-        emoji: EMOJIS.Geo || '🪨',
-        label: roles.get(ROLE_IDS.CROWN.GEO)?.name || 'Geo Crown Role',
+        description: "Crowned their Geo Traveler",
+        emoji: EMOJIS.Geo || "🪨",
+        label: roles.get(ROLE_IDS.CROWN.GEO)?.name || "Geo Crown Role",
         value: ROLE_IDS.CROWN.GEO,
       },
       {
         default: crownData.electro[3],
-        description: 'Crowned their Electro Traveler',
-        emoji: EMOJIS.Electro || '⚡',
-        label: roles.get(ROLE_IDS.CROWN.ELECTRO)?.name || 'Electro Crown Role',
+        description: "Crowned their Electro Traveler",
+        emoji: EMOJIS.Electro || "⚡",
+        label: roles.get(ROLE_IDS.CROWN.ELECTRO)?.name || "Electro Crown Role",
         value: ROLE_IDS.CROWN.ELECTRO,
       },
       {
         default: crownData.dendro[3],
-        description: 'Crowned their Dendro Traveler',
-        emoji: EMOJIS.Dendro || '🌲',
-        label: roles.get(ROLE_IDS.CROWN.DENDRO)?.name || 'Dendro Crown Role',
+        description: "Crowned their Dendro Traveler",
+        emoji: EMOJIS.Dendro || "🌲",
+        label: roles.get(ROLE_IDS.CROWN.DENDRO)?.name || "Dendro Crown Role",
         value: ROLE_IDS.CROWN.DENDRO,
       },
       {
         default: crownData.hydro[3],
-        description: 'Crowned their Hydro Traveler',
-        emoji: EMOJIS.Hydro || '🌊',
-        label: roles.get(ROLE_IDS.CROWN.HYDRO)?.name || 'Hydro Crown Role',
+        description: "Crowned their Hydro Traveler",
+        emoji: EMOJIS.Hydro || "🌊",
+        label: roles.get(ROLE_IDS.CROWN.HYDRO)?.name || "Hydro Crown Role",
         value: ROLE_IDS.CROWN.HYDRO,
       },
       {
         default: memberRoles.has(ROLE_IDS.CROWN.UNALIGNED),
-        description: 'Crowned their Unaligned Traveler',
-        emoji: pickRandom(['👑', '✨']),
-        label: roles.get(ROLE_IDS.CROWN.UNALIGNED)?.name || 'Unaligned Crown Role',
+        description: "Crowned their Unaligned Traveler",
+        emoji: pickRandom(["👑", "✨"]),
+        label:
+          roles.get(ROLE_IDS.CROWN.UNALIGNED)?.name || "Unaligned Crown Role",
         value: ROLE_IDS.CROWN.UNALIGNED,
       },
       {
         default: memberRoles.has(ROLE_IDS.OTHERS.WHALE),
-        description: 'Spent $1500, or have c6 5* chars or r5 5* weapons',
-        emoji: pickRandom(['🐋', '🐳', '💰']),
-        label: roles.get(ROLE_IDS.OTHERS.WHALE)?.name || 'Whale Role',
+        description: "Spent $1500, or have c6 5* chars or r5 5* weapons",
+        emoji: pickRandom(["🐋", "🐳", "💰"]),
+        label: roles.get(ROLE_IDS.OTHERS.WHALE)?.name || "Whale Role",
         value: ROLE_IDS.OTHERS.WHALE,
       },
     ].filter((option) => (showAllRoles ? true : !option.default));
@@ -312,7 +339,7 @@ export default class GuildCommand extends Subcommand {
       .editReply({
         embeds: [
           {
-            title: '**Select Roles**',
+            title: "**Select Roles**",
             description: `Select roles to give to ${member}. The amount of EXP will be calculated in end.`,
             color: COLORS.EMBED_COLOR,
           },
@@ -323,7 +350,7 @@ export default class GuildCommand extends Subcommand {
             components: [
               {
                 type: ComponentType.StringSelect,
-                customId: 'selected_roles',
+                customId: "selected_roles",
                 minValues: 1,
                 maxValues: optionsArr.length,
                 options: optionsArr,
@@ -344,6 +371,7 @@ export default class GuildCommand extends Subcommand {
             if (i.member) {
               return isStaff(i.member);
             }
+
             return false;
           },
         }),
@@ -358,18 +386,20 @@ export default class GuildCommand extends Subcommand {
     return selectedRoles;
   }
 
-  public async chatInputRun(interaction: Subcommand.ChatInputCommandInteraction) {
+  public async chatInputRun(
+    interaction: Subcommand.ChatInputCommandInteraction,
+  ) {
     await interaction.deferReply();
-    let member = interaction.options.getMember('member');
-    const proofLink = interaction.options.getString('proof_link');
+    let member = interaction.options.getMember("member");
+    const proofLink = interaction.options.getString("proof_link");
 
     if (!member || !isGuildMember(member)) {
-      throw new Error('Cannot fetch Member');
+      throw new Error("Cannot fetch Member");
     }
 
     member = await member.fetch(true);
     if (!member) {
-      throw new Error('Cannot fetch Member');
+      throw new Error("Cannot fetch Member");
     }
 
     let message: Message | null | undefined;
@@ -383,14 +413,14 @@ export default class GuildCommand extends Subcommand {
       message = await this.messageCrawler(member);
     }
 
-    const selectedRole = interaction.options.getString('role');
+    const selectedRole = interaction.options.getString("role");
     const selectedRoles = [];
 
     if (selectedRole) {
       selectedRoles.push(selectedRole);
     }
 
-    if (interaction.options.getSubcommand() === 'multi') {
+    if (interaction.options.getSubcommand() === "multi") {
       const moreRoles = await this.selectRoles(interaction, member);
       selectedRoles.push(...moreRoles);
     }
@@ -403,7 +433,9 @@ export default class GuildCommand extends Subcommand {
     }).awardRoles();
   }
 
-  public override async contextMenuRun(interaction: Subcommand.ContextMenuCommandInteraction) {
+  public override async contextMenuRun(
+    interaction: Subcommand.ContextMenuCommandInteraction,
+  ) {
     await interaction.deferReply({
       fetchReply: true,
       ephemeral: true,
@@ -412,7 +444,7 @@ export default class GuildCommand extends Subcommand {
     const message = interaction.targetMessage;
     const { member } = message;
     if (!member) {
-      throw new Error('Cannot Fetch Member');
+      throw new Error("Cannot Fetch Member");
     }
 
     const selectedRolesIDs = await this.selectRoles(interaction, member);

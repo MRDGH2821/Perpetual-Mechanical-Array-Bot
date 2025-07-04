@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import * as fs from "fs";
 
 function deleteFolderRecursive(path) {
   if (fs.existsSync(path) && fs.lstatSync(path).isDirectory()) {
@@ -20,12 +20,12 @@ function deleteFolderRecursive(path) {
 }
 
 const myArgs = process.argv.slice(2);
-console.log('myArgs: ', myArgs);
+console.log("myArgs: ", myArgs);
 
 if (myArgs[0]) {
-  console.log('Cleaning working tree...');
+  console.log("Cleaning working tree...");
   deleteFolderRecursive(myArgs[0]);
-  console.log('Successfully cleaned working tree!');
+  console.log("Successfully cleaned working tree!");
 } else {
-  throw new Error('Provide path to folder to be deleted as argument');
+  throw new Error("Provide path to folder to be deleted as argument");
 }

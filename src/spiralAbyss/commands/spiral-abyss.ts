@@ -1,26 +1,26 @@
-import { Subcommand } from '@sapphire/plugin-subcommands';
-import { ApplicationCommandOptionType, time } from 'discord.js';
-import { COLORS } from '../../lib/Constants';
-import EnvConfig from '../../lib/EnvConfig';
-import { viewBook } from '../../lib/utils';
-import { SAJobSchedule } from '../../scheduledTasks';
-import type { JSONCmd } from '../../typeDefs/typeDefs';
-import { SPIRAL_ABYSS_TYPE_CHOICES } from '../lib/Constants';
-import SpiralAbyssCache from '../lib/SpiralAbyssCache';
-import type { SpiralAbyssClearTypes } from '../typeDefs/spiralAbyssTypes';
+import { Subcommand } from "@sapphire/plugin-subcommands";
+import { ApplicationCommandOptionType, time } from "discord.js";
+import { COLORS } from "../../lib/Constants.js";
+import EnvConfig from "../../lib/EnvConfig.js";
+import { viewBook } from "../../lib/utils.js";
+import { SAJobSchedule } from "../../scheduledTasks.js";
+import type { JSONCmd } from "../../typeDefs/typeDefs.js";
+import { SPIRAL_ABYSS_TYPE_CHOICES } from "../lib/Constants.js";
+import SpiralAbyssCache from "../lib/SpiralAbyssCache.js";
+import type { SpiralAbyssClearTypes } from "../typeDefs/spiralAbyssTypes.js";
 
 const cmdDef: JSONCmd = {
-  name: 'spiral-abyss',
-  description: 'Spiral Abyss commands',
+  name: "spiral-abyss",
+  description: "Spiral Abyss commands",
   options: [
     {
       type: 1,
-      name: 'ranks',
-      description: 'Show Spiral Abyss rankings',
+      name: "ranks",
+      description: "Show Spiral Abyss rankings",
       options: [
         {
-          name: 'clear_type',
-          description: 'Select Clear Type',
+          name: "clear_type",
+          description: "Select Clear Type",
           type: ApplicationCommandOptionType.String,
           required: true,
           choices: SPIRAL_ABYSS_TYPE_CHOICES,
@@ -29,8 +29,8 @@ const cmdDef: JSONCmd = {
     },
     {
       type: ApplicationCommandOptionType.Subcommand,
-      name: 'when-refresh',
-      description: 'When does the Spiral Abyss refresh?',
+      name: "when-refresh",
+      description: "When does the Spiral Abyss refresh?",
     },
   ],
 };
@@ -40,14 +40,14 @@ export default class GuildCommand extends Subcommand {
       ...options,
       name: cmdDef.name,
       description: cmdDef.description,
-      preconditions: ['SACacheCheck'],
+      preconditions: ["SACacheCheck"],
       subcommands: [
         {
           name: cmdDef.options![0].name,
-          type: 'method',
+          type: "method",
           async chatInputRun(interaction) {
             const clearType = interaction.options.getString(
-              'clear_type',
+              "clear_type",
               true,
             ) as SpiralAbyssClearTypes;
 
@@ -62,7 +62,7 @@ export default class GuildCommand extends Subcommand {
         },
         {
           name: cmdDef.options![1].name,
-          type: 'method',
+          type: "method",
           async chatInputRun(interaction) {
             const SAPublishDate = SAJobSchedule.nextInvocation();
 
@@ -70,13 +70,13 @@ export default class GuildCommand extends Subcommand {
               embeds: [
                 {
                   color: COLORS.EMBED_COLOR,
-                  title: 'Spiral Abyss Refresh Schedule',
+                  title: "Spiral Abyss Refresh Schedule",
                   description: `Next refresh is scheduled at: ${time(SAPublishDate)} (${time(
                     SAPublishDate,
-                    'R',
+                    "R",
                   )})`,
                   footer: {
-                    text: 'Note: It will roughly take 30 mins to reflect new data in respective channel',
+                    text: "Note: It will roughly take 30 mins to reflect new data in respective channel",
                   },
                 },
               ],

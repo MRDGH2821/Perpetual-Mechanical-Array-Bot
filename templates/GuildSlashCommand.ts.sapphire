@@ -4,7 +4,7 @@
 ---
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
-import EnvConfig from '../lib/EnvConfig';
+import EnvConfig from '../lib/EnvConfig.js';
 import { ApplicationCommandType } from 'discord.js';
 
 @ApplyOptions<Command.Options>({

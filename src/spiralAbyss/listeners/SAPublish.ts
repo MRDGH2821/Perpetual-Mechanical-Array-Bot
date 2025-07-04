@@ -1,24 +1,32 @@
-import { ApplyOptions } from '@sapphire/decorators';
-import { Listener, type ListenerOptions } from '@sapphire/framework';
-import { type APIEmbed, ButtonStyle, ComponentType, ForumChannel } from 'discord.js';
-import { sequentialPromises } from 'yaspr';
-import { PMAEventHandler } from '../../baseBot/lib/Utilities';
-import EnvConfig from '../../lib/EnvConfig';
-import db from '../../lib/Database/Firestore';
-import { VALID_ABYSS_CLEAR_TYPES } from '../lib/Constants';
-import SpiralAbyssCache from '../lib/SpiralAbyssCache';
-import { SAProps } from '../lib/Utilities';
-import type { SpiralAbyssClearTypes } from '../typeDefs/spiralAbyssTypes';
+import { ApplyOptions } from "@sapphire/decorators";
+import { Listener, type ListenerOptions } from "@sapphire/framework";
+import {
+  type APIEmbed,
+  ButtonStyle,
+  ComponentType,
+  ForumChannel,
+} from "discord.js";
+import { sequentialPromises } from "yaspr";
+import { PMAEventHandler } from "../../baseBot/lib/Utilities.js";
+import db from "../../lib/Database/Firestore.js";
+import EnvConfig from "../../lib/EnvConfig.js";
+import { VALID_ABYSS_CLEAR_TYPES } from "../lib/Constants.js";
+import SpiralAbyssCache from "../lib/SpiralAbyssCache.js";
+import { SAProps } from "../lib/Utilities.js";
+import type { SpiralAbyssClearTypes } from "../typeDefs/spiralAbyssTypes.js";
 
 @ApplyOptions<ListenerOptions>({
   emitter: PMAEventHandler,
-  event: 'SAPublish',
-  name: 'Spiral Abyss Publisher',
+  event: "SAPublish",
+  name: "Spiral Abyss Publisher",
 })
 export default class SAPublish extends Listener {
-  static dashLine = '-------------------------------------';
+  public static dashLine = "-------------------------------------";
 
-  public async publish(clearType: SpiralAbyssClearTypes, SpiralAbyssForum: ForumChannel) {
+  public async publish(
+    clearType: SpiralAbyssClearTypes,
+    SpiralAbyssForum: ForumChannel,
+  ) {
     const clearEmbeds = await SpiralAbyssCache.generateEmbeds(clearType);
 
     const currentDate = new Date();
@@ -52,9 +60,9 @@ export default class SAPublish extends Listener {
           components: [
             {
               type: ComponentType.Button,
-              label: 'Back to first place',
+              label: "Back to first place",
               style: ButtonStyle.Link,
-              emoji: '⬆',
+              emoji: "⬆",
               url: firstMsg.url,
             },
           ],
@@ -65,22 +73,24 @@ export default class SAPublish extends Listener {
 
   public async run() {
     await db
-      .collection('spiral-abyss-config')
-      .doc('channel')
+      .collection("spiral-abyss-config")
+      .doc("channel")
       .get()
       .then(async (docSnap) => {
         const forumDB = docSnap.data();
 
         if (!forumDB) {
-          throw new Error('Cannot fetch Forum channel for Spiral Abyss');
+          throw new Error("Cannot fetch Forum channel for Spiral Abyss");
         }
 
-        const tvmGuild = await this.container.client.guilds.fetch(EnvConfig.guildId);
+        const tvmGuild = await this.container.client.guilds.fetch(
+          EnvConfig.guildId,
+        );
         return tvmGuild.channels.fetch(forumDB.forumId as string);
       })
       .then(async (forumChannel) => {
         if (!(forumChannel instanceof ForumChannel)) {
-          throw new Error('Could not obtain text forum channel');
+          throw new TypeError("Could not obtain text forum channel");
         }
 
         const publisher = async (clrType: SpiralAbyssClearTypes) =>

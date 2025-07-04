@@ -1,13 +1,16 @@
-import { container } from '@sapphire/framework';
-import { type APIEmbed, Collection, type Role, time } from 'discord.js';
-import { parseBoolean } from '../../baseBot/lib/Utilities';
-import { EMPTY_STRING, ROLE_IDS } from '../../lib/Constants';
-import EnvConfig from '../../lib/EnvConfig';
-import { publishEmbedsGenerator } from '../../lib/utils';
-import type { BackupCacheFileType, SpiralAbyssClearTypes } from '../typeDefs/spiralAbyssTypes';
-import { SAProps } from './Utilities';
+import { container } from "@sapphire/framework";
+import { type APIEmbed, Collection, type Role, time } from "discord.js";
+import { parseBoolean } from "../../baseBot/lib/Utilities.js";
+import { EMPTY_STRING, ROLE_IDS } from "../../lib/Constants.js";
+import EnvConfig from "../../lib/EnvConfig.js";
+import { publishEmbedsGenerator } from "../../lib/utils.js";
+import type {
+  BackupCacheFileType,
+  SpiralAbyssClearTypes,
+} from "../typeDefs/spiralAbyssTypes.js";
+import { SAProps } from "./Utilities.js";
 
-type CacheType = Record<SpiralAbyssClearTypes, Role['members']>;
+type CacheType = Record<SpiralAbyssClearTypes, Role["members"]>;
 
 const { logger } = container;
 
@@ -20,7 +23,7 @@ export default class SpiralAbyssCache {
     sovereign: new Collection(),
   };
 
-  static isCacheReady() {
+  public static isCacheReady() {
     return parseBoolean(process.env.SPIRAL_ABYSS_READY);
   }
 
@@ -28,61 +31,68 @@ export default class SpiralAbyssCache {
     let roleId: ROLE_IDS.SpiralAbyss;
 
     switch (clearType) {
-      case 'traveler': {
+      case "traveler": {
         roleId = ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER;
         break;
       }
-      case 'conqueror': {
+
+      case "conqueror": {
         roleId = ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR;
         break;
       }
-      case 'sovereign': {
+
+      case "sovereign": {
         roleId = ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN;
         break;
       }
+
       default: {
         throw new Error(`Invalid Clear Type ${clearType}`);
       }
     }
+
     const guild = await container.client.guilds.fetch(EnvConfig.guildId);
 
     try {
       const role = await guild.roles.fetch(roleId);
       const guildMembers = await guild.members.fetch();
-      const getMembers = () => guildMembers.filter((member) => member.roles.cache.has(roleId));
-      const members: Role['members'] = role ? role.members : new Collection();
+      const getMembers = () =>
+        guildMembers.filter((member) => member.roles.cache.has(roleId));
+      const members: Role["members"] = role ? role.members : new Collection();
 
       if (members.size < 1) {
         return getMembers();
       }
+
       return members;
-    } catch (e) {
-      container.logger.error(e);
-      container.logger.debug('Setting self in cache');
+    } catch (error) {
+      container.logger.error(error);
+      container.logger.debug("Setting self in cache");
       const self = await guild.members.me!.fetch(true)!;
-      const members: Role['members'] = new Collection();
+      const members: Role["members"] = new Collection();
       members.set(self.id, self);
       return members;
     }
   }
 
-  static accessCache(clearType: SpiralAbyssClearTypes) {
+  public static accessCache(clearType: SpiralAbyssClearTypes) {
     const collection = this.#cache[clearType];
     if (!collection) {
       throw new Error(`'${clearType}' is not a valid Spiral Abyss Clear Type`);
     }
+
     return collection;
   }
 
-  static async prepareCache() {
+  public static async prepareCache() {
     this.#cache = {
-      traveler: await this.#fetchDB('traveler'),
-      conqueror: await this.#fetchDB('conqueror'),
-      sovereign: await this.#fetchDB('sovereign'),
+      traveler: await this.#fetchDB("traveler"),
+      conqueror: await this.#fetchDB("conqueror"),
+      sovereign: await this.#fetchDB("sovereign"),
     };
   }
 
-  static async generateEmbeds(
+  public static async generateEmbeds(
     clearType: SpiralAbyssClearTypes,
     usersPerPage = this.#usersPerPage,
     date = new Date(),
@@ -90,8 +100,8 @@ export default class SpiralAbyssCache {
     const props = SAProps(clearType);
     return new Promise((resolve, reject) => {
       const collection = this.accessCache(clearType);
-      logger.debug('Building embeds for: ', {
-        'Clear Type': clearType,
+      logger.debug("Building embeds for: ", {
+        "Clear Type": clearType,
         users: collection.size,
       });
 
@@ -102,8 +112,8 @@ export default class SpiralAbyssCache {
           url: props.icon,
         },
         description: `Cycle Details: \n${
-          date.getDate() < 16 ? 'Waxing Phase' : 'Waning Phase'
-        } \n${time(date, 'F')}`,
+          date.getDate() < 16 ? "Waxing Phase" : "Waning Phase"
+        } \n${time(date, "F")}`,
         timestamp: date.toISOString(),
         fields: [],
       };
@@ -113,7 +123,7 @@ export default class SpiralAbyssCache {
       if (users.length < 1) {
         embed.fields?.push({
           name: EMPTY_STRING,
-          value: 'No members found in this section',
+          value: "No members found in this section",
         });
 
         resolve([embed]);
@@ -129,7 +139,7 @@ export default class SpiralAbyssCache {
     });
   }
 
-  static exportCacheBackup(): BackupCacheFileType {
+  public static exportCacheBackup(): BackupCacheFileType {
     return {
       traveler: this.#cache.traveler.map((member) => member.id),
       conqueror: this.#cache.conqueror.map((member) => member.id),
@@ -137,15 +147,17 @@ export default class SpiralAbyssCache {
     };
   }
 
-  static async removeRoles() {
-    this.#cache.traveler.forEach(async (member) => {
+  public static async removeRoles() {
+    for (const member of this.#cache.traveler.values()) {
       await member.roles.remove(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER);
-    });
-    this.#cache.conqueror.forEach(async (member) => {
-      await member.roles.remove(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER);
-    });
-    this.#cache.sovereign.forEach(async (member) => {
-      await member.roles.remove(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER);
-    });
+    }
+
+    for (const member of this.#cache.conqueror.values()) {
+      await member.roles.remove(ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR);
+    }
+
+    for (const member of this.#cache.sovereign.values()) {
+      await member.roles.remove(ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN);
+    }
   }
 }

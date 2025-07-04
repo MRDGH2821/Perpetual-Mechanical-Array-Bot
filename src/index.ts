@@ -1,29 +1,29 @@
-import './healthInfo';
-import './lib/setup';
-import './scheduledTasks';
-import { join } from 'node:path';
-import { LogLevel, SapphireClient } from '@sapphire/framework';
-import { getRootData } from '@sapphire/pieces';
-import type { ClientOptions } from 'discord.js';
-import { GatewayIntentBits, Partials } from 'discord.js';
-import { cred } from './lib/Database/Firestore';
-import { pmaLogger } from './pma-logger';
+import "./healthInfo";
+import "./lib/setup";
+import "./scheduledTasks";
+import { join } from "node:path";
+import { LogLevel, SapphireClient } from "@sapphire/framework";
+import { getRootData } from "@sapphire/pieces";
+import type { ClientOptions } from "discord.js";
+import { GatewayIntentBits, Partials } from "discord.js";
+import { cred } from "./lib/Database/Firestore.js";
+import { pmaLogger } from "./pma-logger.js";
 
 class CustomClient extends SapphireClient {
   private readonly rootData = getRootData();
 
   public constructor(options: ClientOptions) {
     super(options);
-    this.stores.registerPath(join(this.rootData.root, 'baseBot'));
-    this.stores.registerPath(join(this.rootData.root, 'hallOfFame'));
-    this.stores.registerPath(join(this.rootData.root, 'spiralAbyss'));
-    this.stores.registerPath(join(this.rootData.root, 'damageLeaderboard'));
-    this.stores.registerPath(join(this.rootData.root, 'seasons'));
+    this.stores.registerPath(join(this.rootData.root, "baseBot"));
+    this.stores.registerPath(join(this.rootData.root, "hallOfFame"));
+    this.stores.registerPath(join(this.rootData.root, "spiralAbyss"));
+    this.stores.registerPath(join(this.rootData.root, "damageLeaderboard"));
+    this.stores.registerPath(join(this.rootData.root, "seasons"));
   }
 }
 
 const client = new CustomClient({
-  defaultPrefix: 'pma!',
+  defaultPrefix: "pma!",
   caseInsensitiveCommands: true,
   logger: {
     instance: pmaLogger,
@@ -46,11 +46,12 @@ const client = new CustomClient({
 const main = async () => {
   try {
     if (!cred.cert && !cred.path) {
-      throw new Error('Cannot find Firebase credentials');
+      throw new Error("Cannot find Firebase credentials");
     }
-    client.logger.info('Logging in');
+
+    client.logger.info("Logging in");
     await client.login();
-    client.logger.info('Logged in as', client.user?.tag);
+    client.logger.info("Logged in as", client.user?.tag);
   } catch (error) {
     client.logger.fatal(error);
     client.destroy();

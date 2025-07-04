@@ -1,29 +1,29 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable promise/always-return */
-import { ApplyOptions } from '@sapphire/decorators';
-import { fetch, FetchResultTypes } from '@sapphire/fetch';
-import { Listener, type ListenerOptions } from '@sapphire/framework';
-import type { Attachment, User } from 'discord.js';
-import { sequentialPromises } from 'yaspr';
-import { PMAEventHandler } from '../../baseBot/lib/Utilities';
-import { ChannelIds, COLORS, ROLE_IDS } from '../../lib/Constants';
-import EnvConfig from '../../lib/EnvConfig';
-import SpiralAbyssCache from '../lib/SpiralAbyssCache';
-import type { BackupCacheFileType } from '../typeDefs/spiralAbyssTypes';
+import { ApplyOptions } from "@sapphire/decorators";
+import { fetch, FetchResultTypes } from "@sapphire/fetch";
+import { Listener, type ListenerOptions } from "@sapphire/framework";
+import type { Attachment, User } from "discord.js";
+import { sequentialPromises } from "yaspr";
+import { PMAEventHandler } from "../../baseBot/lib/Utilities.js";
+import { ChannelIds, COLORS, ROLE_IDS } from "../../lib/Constants.js";
+import EnvConfig from "../../lib/EnvConfig.js";
+import SpiralAbyssCache from "../lib/SpiralAbyssCache.js";
+import type { BackupCacheFileType } from "../typeDefs/spiralAbyssTypes.js";
 
-interface SpiralAbyssRestoreArgs {
+type SpiralAbyssRestoreArgs = {
   backupFile: Attachment;
   user: User;
-}
+};
 
 @ApplyOptions<ListenerOptions>({
   emitter: PMAEventHandler,
-  event: 'SARestore',
-  name: 'Spiral Abyss Roles Restorer',
+  event: "SARestore",
+  name: "Spiral Abyss Roles Restorer",
 })
 export default class SARestore extends Listener {
   public async run(args: SpiralAbyssRestoreArgs) {
-    const tvmGuild = await this.container.client.guilds.fetch(EnvConfig.guildId);
+    const tvmGuild = await this.container.client.guilds.fetch(
+      EnvConfig.guildId,
+    );
     const archivesChannel = await tvmGuild.channels.fetch(ChannelIds.ARCHIVES);
 
     this.container.logger.debug(args.backupFile);
@@ -42,7 +42,8 @@ export default class SARestore extends Listener {
     let countConqueror = 0;
     let countSovereign = 0;
 
-    const { ABYSSAL_CONQUEROR, ABYSSAL_SOVEREIGN, ABYSSAL_TRAVELER } = ROLE_IDS.SpiralAbyss;
+    const { ABYSSAL_CONQUEROR, ABYSSAL_SOVEREIGN, ABYSSAL_TRAVELER } =
+      ROLE_IDS.SpiralAbyss;
 
     if (fileContent.traveler) {
       const assignTraveler = async (userId: string) =>
@@ -50,7 +51,7 @@ export default class SARestore extends Listener {
           .then(() => {
             countTraveler += 1;
           })
-          .catch(this.container.logger.error);
+          .catch((error) => this.container.logger.error(error));
 
       await sequentialPromises(fileContent.traveler, assignTraveler);
     }
@@ -61,7 +62,7 @@ export default class SARestore extends Listener {
           .then(() => {
             countConqueror += 1;
           })
-          .catch(this.container.logger.error);
+          .catch((error) => this.container.logger.error(error));
 
       await sequentialPromises(fileContent.conqueror, assignConqueror);
     }
@@ -72,7 +73,7 @@ export default class SARestore extends Listener {
           .then(() => {
             countSovereign += 1;
           })
-          .catch(this.container.logger.error);
+          .catch((error) => this.container.logger.error(error));
 
       await sequentialPromises(fileContent.sovereign, assignSovereign);
     }
@@ -80,31 +81,33 @@ export default class SARestore extends Listener {
     await SpiralAbyssCache.prepareCache();
 
     if (!archivesChannel?.isTextBased()) {
-      throw new Error('Need Text based channel to send Spiral Abyss role restore status');
+      throw new Error(
+        "Need Text based channel to send Spiral Abyss role restore status",
+      );
     }
 
     await archivesChannel.send({
       content: args.user.toString(),
       embeds: [
         {
-          title: 'Spiral Abyss Roles restore statistics',
+          title: "Spiral Abyss Roles restore statistics",
           color: COLORS.EMBED_COLOR,
-          description: 'Results of restoring backup',
+          description: "Results of restoring backup",
           fields: [
             {
-              name: 'Backup File Statistics',
+              name: "Backup File Statistics",
               value: `**Traveler**: ${fileContent.traveler?.length}\n**Conqueror**: ${fileContent.conqueror?.length}\n**Sovereign**: ${fileContent.sovereign?.length}`,
             },
             {
-              name: 'Successful Restore Statistics',
+              name: "Successful Restore Statistics",
               value: `**Traveler**: ${countTraveler}\n**Conqueror**: ${countConqueror}\n**Sovereign**: ${countSovereign}`,
             },
             {
-              name: 'Reality (The actual stat to look for)',
+              name: "Reality (The actual stat to look for)",
               value: `**Traveler**: ${
-                SpiralAbyssCache.accessCache('traveler').size
-              }\n**Conqueror**: ${SpiralAbyssCache.accessCache('conqueror').size}\n**Sovereign**: ${
-                SpiralAbyssCache.accessCache('sovereign').size
+                SpiralAbyssCache.accessCache("traveler").size
+              }\n**Conqueror**: ${SpiralAbyssCache.accessCache("conqueror").size}\n**Sovereign**: ${
+                SpiralAbyssCache.accessCache("sovereign").size
               }`,
             },
           ],

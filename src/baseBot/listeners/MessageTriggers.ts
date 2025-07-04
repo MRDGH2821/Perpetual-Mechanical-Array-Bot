@@ -1,58 +1,68 @@
-import { ApplyOptions } from '@sapphire/decorators';
-import { Events, Listener, type ListenerOptions } from '@sapphire/framework';
-import { ButtonStyle, ComponentType, type Message, userMention } from 'discord.js';
-import { sequentialPromises } from 'yaspr';
-import AutoResponseTrigger from '../lib/AutoResponseTrigger';
+import { ApplyOptions } from "@sapphire/decorators";
+import { Events, Listener, type ListenerOptions } from "@sapphire/framework";
+import {
+  ButtonStyle,
+  ComponentType,
+  type Message,
+  userMention,
+} from "discord.js";
+import { sequentialPromises } from "yaspr";
+import AutoResponseTrigger from "../lib/AutoResponseTrigger.js";
 
 const triggers: AutoResponseTrigger[] = [
   new AutoResponseTrigger({
-    name: 'Baguette',
-    quotes: [userMention('823564960671072336')],
+    name: "Baguette",
+    quotes: [userMention("823564960671072336")],
     conditions: {
-      envName: 'AUTORESPONSE_BAGUETTE',
-      searchString: 'baguette',
+      envName: "AUTORESPONSE_BAGUETTE",
+      searchString: "baguette",
     },
     quoteCategories: [],
-    coolDownTime: 3000,
+    coolDownTime: 3_000,
   }),
   new AutoResponseTrigger({
-    name: 'FBI',
+    name: "FBI",
     quotes: [
-      '*FBI investigation commences*',
-      '*FBI is coming*',
-      'Did you know FBI stands for Faraway Buddy Insideyourdevice ?',
-      'https://tenor.com/view/chicken-fbi-skeptic-chicken-funny-gif-14153035',
-      'https://tenor.com/view/dark-red-fbi-warning-gif-18254979',
-      'https://tenor.com/view/fbi-swat-busted-police-open-up-gif-16928811',
-      'https://tenor.com/view/priyam-raj-fbi-meme-fbi-open-up-fbi-gamer-gif-19628656',
-      'https://tenor.com/view/traffic-fbi-open-up-raid-gif-13450966',
-      'Rick Astley was a part of F.B.I. ||(music band)||',
-      'You know what, I wonder if its actually NSA which spies or FBI :thinking:',
+      "*FBI investigation commences*",
+      "*FBI is coming*",
+      "Did you know FBI stands for Faraway Buddy Insideyourdevice ?",
+      "https://tenor.com/view/chicken-fbi-skeptic-chicken-funny-gif-14153035",
+      "https://tenor.com/view/dark-red-fbi-warning-gif-18254979",
+      "https://tenor.com/view/fbi-swat-busted-police-open-up-gif-16928811",
+      "https://tenor.com/view/priyam-raj-fbi-meme-fbi-open-up-fbi-gamer-gif-19628656",
+      "https://tenor.com/view/traffic-fbi-open-up-raid-gif-13450966",
+      "Rick Astley was a part of F.B.I. ||(music band)||",
+      "You know what, I wonder if its actually NSA which spies or FBI :thinking:",
     ],
-    quoteCategories: ['FBIGifs', 'FBIQuotes'],
+    quoteCategories: ["FBIGifs", "FBIQuotes"],
     conditions: {
-      envName: 'AUTORESPONSE_FBI',
-      searchString: 'fbi',
+      envName: "AUTORESPONSE_FBI",
+      searchString: "fbi",
     },
-    coolDownTime: 3000,
+    coolDownTime: 3_000,
   }),
   new AutoResponseTrigger({
-    name: 'Yoyoverse',
-    quotes: [`Did you know that saying yoyoverse pings ${userMention('476219631539847188')}`],
+    name: "Yoyoverse",
+    quotes: [
+      `Did you know that saying yoyoverse pings ${userMention("476219631539847188")}`,
+    ],
     conditions: {
-      envName: 'AUTORESPONSE_YOYOVERSE',
-      searchString: 'yoyoverse',
+      envName: "AUTORESPONSE_YOYOVERSE",
+      searchString: "yoyoverse",
     },
-    quoteCategories: ['yoyoverseQuotes'],
-    coolDownTime: 3000,
+    quoteCategories: ["yoyoverseQuotes"],
+    coolDownTime: 3_000,
   }),
   new AutoResponseTrigger({
-    name: 'BanHammer',
-    quotes: ['Who are we banning today? :smirk:', 'BAN BAN BAN BAN BAN BAN BAN!'],
+    name: "BanHammer",
+    quotes: [
+      "Who are we banning today? :smirk:",
+      "BAN BAN BAN BAN BAN BAN BAN!",
+    ],
     conditions: {
       searchString: /(b+a+n+)\s*(h+a+m+m+e+r+)/gimu,
     },
-    quoteCategories: ['banHammerReasons'],
+    quoteCategories: ["banHammerReasons"],
     allowedMentions: {
       roles: [],
       users: [],
@@ -61,8 +71,9 @@ const triggers: AutoResponseTrigger[] = [
   })
     .setCustomCondition(async (message: Message) => {
       if (message.member) {
-        return message.member.permissions.has('BanMembers');
+        return message.member.permissions.has("BanMembers");
       }
+
       return false;
     })
     .setCustomAction(async (botMessage: Message, sourceMessage: Message) => {
@@ -74,7 +85,7 @@ const triggers: AutoResponseTrigger[] = [
               {
                 type: ComponentType.Button,
                 style: ButtonStyle.Link,
-                label: 'See the mod in action!',
+                label: "See the mod in action!",
                 url: sourceMessage.url,
               },
             ],
@@ -86,14 +97,17 @@ const triggers: AutoResponseTrigger[] = [
 
 @ApplyOptions<ListenerOptions>({
   event: Events.MessageCreate,
-  name: 'MessageTriggers',
+  name: "MessageTriggers",
   enabled: true,
 })
-export default class MessageTriggers extends Listener<typeof Events.MessageCreate> {
+export default class MessageTriggers extends Listener<
+  typeof Events.MessageCreate
+> {
   public async run(message: Message) {
-    if (message.channelId === '840268374621945906') {
+    if (message.channelId === "840268374621945906") {
       return;
     }
+
     if (message.author.bot) {
       return;
     }

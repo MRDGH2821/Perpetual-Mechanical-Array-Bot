@@ -1,6 +1,6 @@
-import { Subcommand } from '@sapphire/plugin-subcommands';
-import { Time } from '@sapphire/time-utilities';
-import type { APIEmbed, Message, ModalSubmitInteraction } from 'discord.js';
+import { Subcommand } from "@sapphire/plugin-subcommands";
+import { Time } from "@sapphire/time-utilities";
+import type { APIEmbed, Message, ModalSubmitInteraction } from "discord.js";
 import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
@@ -10,15 +10,19 @@ import {
   MessageFlags,
   TextInputStyle,
   time,
-} from 'discord.js';
-import { guildMessageIDsExtractor, isStaff, PMAEventHandler } from '../../baseBot/lib/Utilities';
-import { ChannelIds, COLORS, ICONS } from '../../lib/Constants';
-import EnvConfig from '../../lib/EnvConfig';
-import { parseTruthy, viewBook } from '../../lib/utils';
-import { LBFJobSchedule, LBUJobSchedule } from '../../scheduledTasks';
-import type { ButtonActionRow, JSONCmd } from '../../typeDefs/typeDefs';
-import { LEADERBOARD_DAMAGE_TYPE_CHOICES } from '../lib/Constants';
-import LeaderboardCache from '../lib/LeaderboardCache';
+} from "discord.js";
+import {
+  guildMessageIDsExtractor,
+  isStaff,
+  PMAEventHandler,
+} from "../../baseBot/lib/Utilities.js";
+import { ChannelIds, COLORS, ICONS } from "../../lib/Constants.js";
+import EnvConfig from "../../lib/EnvConfig.js";
+import { parseTruthy, viewBook } from "../../lib/utils.js";
+import { LBFJobSchedule, LBUJobSchedule } from "../../scheduledTasks.js";
+import type { ButtonActionRow, JSONCmd } from "../../typeDefs/typeDefs.js";
+import { LEADERBOARD_DAMAGE_TYPE_CHOICES } from "../lib/Constants.js";
+import LeaderboardCache from "../lib/LeaderboardCache.js";
 import {
   extractLinks,
   leaderboardProps,
@@ -26,88 +30,90 @@ import {
   parseGroupType,
   parseLBElement,
   proofLinkValidator,
-} from '../lib/Utilities';
-import type { LBRegistrationArgs } from '../typeDefs/leaderboardTypeDefs';
+} from "../lib/Utilities.js";
+import type { LBRegistrationArgs } from "../typeDefs/leaderboardTypeDefs.js";
 
 const cmdDef: JSONCmd = {
-  name: 'leaderboard',
-  description: 'Leaderboard commands',
+  name: "leaderboard",
+  description: "Leaderboard commands",
   options: [
     {
       type: 1,
-      name: 'ranks',
-      description: 'Show Leaderboard rankings',
+      name: "ranks",
+      description: "Show Leaderboard rankings",
       options: [
         {
-          name: 'element',
-          description: 'Select Element',
+          name: "element",
+          description: "Select Element",
           type: ApplicationCommandOptionType.String,
           required: true,
           choices: LEADERBOARD_DAMAGE_TYPE_CHOICES,
         },
         {
-          name: 'group_type',
-          description: 'Select group type',
+          name: "group_type",
+          description: "Select group type",
           type: ApplicationCommandOptionType.String,
           required: true,
           choices: [
-            { name: 'Solo', value: 'solo' },
-            { name: 'Open', value: 'open' },
+            { name: "Solo", value: "solo" },
+            { name: "Open", value: "open" },
           ],
         },
       ],
     },
     {
       type: ApplicationCommandOptionType.Subcommand,
-      name: 'register',
-      description: 'Register damage score',
+      name: "register",
+      description: "Register damage score",
       options: [
         {
-          name: 'contestant',
-          description: 'Who made the score? (User ID can also be put)',
+          name: "contestant",
+          description: "Who made the score? (User ID can also be put)",
           required: true,
           type: ApplicationCommandOptionType.User,
         },
         {
-          name: 'element',
-          description: 'Which element was used?',
+          name: "element",
+          description: "Which element was used?",
           type: ApplicationCommandOptionType.String,
           required: true,
           choices: LEADERBOARD_DAMAGE_TYPE_CHOICES,
         },
         {
-          name: 'group_type',
-          description: 'Whether this score was made solo or not',
+          name: "group_type",
+          description: "Whether this score was made solo or not",
           type: ApplicationCommandOptionType.String,
           required: true,
           choices: [
-            { name: 'Solo', value: 'solo' },
-            { name: 'Open', value: 'open' },
+            { name: "Solo", value: "solo" },
+            { name: "Open", value: "open" },
           ],
         },
         {
-          name: 'score',
-          description: 'Score i.e. Damage value',
+          name: "score",
+          description: "Score i.e. Damage value",
           type: ApplicationCommandOptionType.Integer,
           required: true,
         },
         {
-          name: 'proof_link',
-          description: 'Upload proof on traveler showcase channel & copy link to message',
+          name: "proof_link",
+          description:
+            "Upload proof on traveler showcase channel & copy link to message",
           type: ApplicationCommandOptionType.String,
           required: true,
         },
         {
-          name: 'force_update',
-          description: 'Update the score forcefully even if lower (default false)',
+          name: "force_update",
+          description:
+            "Update the score forcefully even if lower (default false)",
           type: ApplicationCommandOptionType.Boolean,
         },
       ],
     },
     {
       type: ApplicationCommandOptionType.Subcommand,
-      name: 'when-refresh',
-      description: 'When will the leaderboard refresh?',
+      name: "when-refresh",
+      description: "When will the leaderboard refresh?",
     },
   ],
 };
@@ -117,31 +123,39 @@ export default class GuildCommand extends Subcommand {
       ...options,
       name: cmdDef.name,
       description: cmdDef.description,
-      preconditions: ['LBCacheCheck'],
+      preconditions: ["LBCacheCheck"],
       subcommands: [
         {
-          name: cmdDef.options![0].name,
-          type: 'method',
+          name: cmdDef.options![0]!.name,
+          type: "method",
           async chatInputRun(interaction) {
-            const element = parseLBElement(interaction.options.getString('element', true));
-            const groupType = parseGroupType(interaction.options.getString('group_type', true));
+            const element = parseLBElement(
+              interaction.options.getString("element", true),
+            );
+            const groupType = parseGroupType(
+              interaction.options.getString("group_type", true),
+            );
             await interaction.deferReply({
               ephemeral: true,
             });
 
-            const embeds = await LeaderboardCache.generateEmbeds(element, groupType, 5);
+            const embeds = await LeaderboardCache.generateEmbeds(
+              element,
+              groupType,
+              5,
+            );
             const pager = await viewBook(embeds);
             return pager(interaction);
           },
         },
         {
-          name: cmdDef.options![1].name,
-          type: 'method',
-          chatInputRun: 'parseRegistration',
+          name: cmdDef.options![1]!.name,
+          type: "method",
+          chatInputRun: "parseRegistration",
         },
         {
-          name: cmdDef.options![2].name,
-          type: 'method',
+          name: cmdDef.options![2]!.name,
+          type: "method",
           async chatInputRun(interaction) {
             const forumPublish = LBFJobSchedule.nextInvocation();
             const lbUpdate = LBUJobSchedule.nextInvocation();
@@ -149,14 +163,14 @@ export default class GuildCommand extends Subcommand {
               embeds: [
                 {
                   color: COLORS.EMBED_COLOR,
-                  title: 'Leaderboard Refresh Schedule',
+                  title: "Leaderboard Refresh Schedule",
                   description: `Next refresh is scheduled at:\n\n**Weekly Leaderboard**: ${time(
                     forumPublish,
-                  )} (${time(forumPublish, 'R')}) \n**Summary Leaderboard**: ${time(
+                  )} (${time(forumPublish, "R")}) \n**Summary Leaderboard**: ${time(
                     lbUpdate,
-                  )} (${time(lbUpdate, 'R')})`,
+                  )} (${time(lbUpdate, "R")})`,
                   footer: {
-                    text: 'Note: It will roughly take 30 mins to reflect new data in respective channel',
+                    text: "Note: It will roughly take 30 mins to reflect new data in respective channel",
                   },
                 },
               ],
@@ -167,7 +181,6 @@ export default class GuildCommand extends Subcommand {
     });
   }
 
-  // eslint-disable-next-line class-methods-use-this
   private validateProofLink(link: string): boolean {
     try {
       proofLinkValidator.parse(link);
@@ -177,17 +190,24 @@ export default class GuildCommand extends Subcommand {
     }
   }
 
-  public async parseRegistration(interaction: Subcommand.ChatInputCommandInteraction) {
-    const contestant = interaction.options.getUser('contestant', true);
-    const element = parseLBElement(interaction.options.getString('element', true));
-    const groupType = parseGroupType(interaction.options.getString('group_type', true));
-    const score = interaction.options.getInteger('score', true);
-    const proofLink = interaction.options.getString('proof_link', true);
-    const shouldForceUpdate = interaction.options.getBoolean('force_update') || false;
+  public async parseRegistration(
+    interaction: Subcommand.ChatInputCommandInteraction,
+  ) {
+    const contestant = interaction.options.getUser("contestant", true);
+    const element = parseLBElement(
+      interaction.options.getString("element", true),
+    );
+    const groupType = parseGroupType(
+      interaction.options.getString("group_type", true),
+    );
+    const score = interaction.options.getInteger("score", true);
+    const proofLink = interaction.options.getString("proof_link", true);
+    const shouldForceUpdate =
+      interaction.options.getBoolean("force_update") ?? false;
 
     if (!this.validateProofLink(proofLink)) {
       return interaction.reply({
-        content: 'Invalid proof link',
+        content: "Invalid proof link",
         flags: MessageFlags.Ephemeral,
       });
     }
@@ -201,11 +221,14 @@ export default class GuildCommand extends Subcommand {
       });
     }
 
-    const lbChannel = await interaction.guild?.channels.fetch(ChannelIds.SHOWCASE);
+    const lbChannel = await interaction.guild?.channels.fetch(
+      ChannelIds.SHOWCASE,
+    );
     if (!lbChannel?.isTextBased()) {
-      throw new Error('Cannot fetch showcase text channel');
+      throw new Error("Cannot fetch showcase text channel");
     }
-    const proofMessage = await lbChannel.messages.fetch(ids.messageId);
+
+    const proofMessage = await lbChannel.messages.fetch(ids.messageId!);
 
     return this.registerContestant(
       {
@@ -220,7 +243,6 @@ export default class GuildCommand extends Subcommand {
     );
   }
 
-  // eslint-disable-next-line class-methods-use-this
   public async extractData(message: Message) {
     const attachment = message.attachments.first();
     const contestant = message.author;
@@ -242,9 +264,11 @@ export default class GuildCommand extends Subcommand {
     };
   }
 
-  public override async contextMenuRun(interaction: Subcommand.ContextMenuCommandInteraction) {
+  public override async contextMenuRun(
+    interaction: Subcommand.ContextMenuCommandInteraction,
+  ) {
     if (!interaction.isMessageContextMenuCommand()) {
-      throw new Error('No message found');
+      throw new Error("No message found");
     }
 
     const message = interaction.targetMessage;
@@ -255,19 +279,19 @@ export default class GuildCommand extends Subcommand {
 
     await interaction.showModal({
       title: `Registering user ${contestant.tag}`,
-      customId: 'registration_form',
-      custom_id: 'registration_form',
+      customId: "registration_form",
+      custom_id: "registration_form",
       components: [
         {
           type: ComponentType.ActionRow,
           components: [
             {
               type: ComponentType.TextInput,
-              customId: 'score',
-              label: 'Score?',
+              customId: "score",
+              label: "Score?",
               style: TextInputStyle.Short,
               required: true,
-              placeholder: 'Insert score',
+              placeholder: "Insert score",
               value: assets.possibleScore,
             },
           ],
@@ -277,11 +301,11 @@ export default class GuildCommand extends Subcommand {
           components: [
             {
               type: ComponentType.TextInput,
-              customId: 'element',
-              label: 'Element?',
+              customId: "element",
+              label: "Element?",
               style: TextInputStyle.Short,
               required: true,
-              placeholder: 'Uni/Anemo/Geo/Electro/Dendro/Hydro/Pyro/Cryo',
+              placeholder: "Uni/Anemo/Geo/Electro/Dendro/Hydro/Pyro/Cryo",
               value: assets.possibleElement,
             },
           ],
@@ -291,11 +315,11 @@ export default class GuildCommand extends Subcommand {
           components: [
             {
               type: ComponentType.TextInput,
-              customId: 'group_type',
-              label: 'Did solo or open?',
+              customId: "group_type",
+              label: "Did solo or open?",
               style: TextInputStyle.Short,
               required: true,
-              placeholder: 'Solo/Open',
+              placeholder: "Solo/Open",
               value: assets.possibleGroupType,
             },
           ],
@@ -305,10 +329,10 @@ export default class GuildCommand extends Subcommand {
           components: [
             {
               type: ComponentType.TextInput,
-              customId: 'force_update',
-              label: 'Force update score?',
+              customId: "force_update",
+              label: "Force update score?",
               style: TextInputStyle.Short,
-              placeholder: 'Yes/No/Y/N (Default no)',
+              placeholder: "Yes/No/Y/N (Default no)",
               required: false,
             },
           ],
@@ -324,11 +348,16 @@ export default class GuildCommand extends Subcommand {
         },
       })
       .then(async (modalCtx) => {
-        const score = modalCtx.fields.getTextInputValue('score');
-        const element = parseLBElement(modalCtx.fields.getTextInputValue('element'));
-        const groupType = parseGroupType(modalCtx.fields.getTextInputValue('group_type'));
+        const score = modalCtx.fields.getTextInputValue("score");
+        const element = parseLBElement(
+          modalCtx.fields.getTextInputValue("element"),
+        );
+        const groupType = parseGroupType(
+          modalCtx.fields.getTextInputValue("group_type"),
+        );
         const shouldForceUpdate =
-          parseTruthy(modalCtx.fields.getTextInputValue('force_update')) || false;
+          parseTruthy(modalCtx.fields.getTextInputValue("force_update")) ||
+          false;
         await modalCtx.deferReply({
           ephemeral: true,
         });
@@ -338,7 +367,7 @@ export default class GuildCommand extends Subcommand {
             element,
             groupType,
             proofMessage: message,
-            score: parseInt(score, 10),
+            score: Number.parseInt(score, 10),
             shouldForceUpdate,
           },
           modalCtx,
@@ -349,9 +378,9 @@ export default class GuildCommand extends Subcommand {
   public async registerContestant(
     args: LBRegistrationArgs,
     interaction:
+      | ModalSubmitInteraction
       | Subcommand.ChatInputCommandInteraction
-      | Subcommand.ContextMenuCommandInteraction
-      | ModalSubmitInteraction,
+      | Subcommand.ContextMenuCommandInteraction,
   ) {
     if (!interaction.deferred) {
       await interaction.deferReply();
@@ -373,7 +402,7 @@ export default class GuildCommand extends Subcommand {
     const props = leaderboardProps(args.element);
     const assets = await this.extractData(args.proofMessage);
     const embed: APIEmbed = {
-      title: '**Entry Verification**',
+      title: "**Entry Verification**",
       color: props.color,
       thumbnail: {
         url: props.icon,
@@ -381,29 +410,33 @@ export default class GuildCommand extends Subcommand {
       description: `**Contestant**: ${args.contestant} \`${args.contestant.tag}\` \n**Category**: [${args.element}] ${props.name} \n**Group**: ${args.groupType} \n**Score (i.e. Dmg value)**: ${args.score} \n\n**Proof**: \n${args.proofMessage.url}`,
       fields: [],
       image: {
-        url: '',
+        url: "",
       },
       video: {
-        url: '',
+        url: "",
       },
     };
 
-    if (!args.shouldForceUpdate && oldScoreData && oldScoreData.score > args.score) {
+    if (
+      !args.shouldForceUpdate &&
+      oldScoreData &&
+      oldScoreData.score > args.score
+    ) {
       return interaction.editReply({
         embeds: [
           {
             color: COLORS.ERROR,
-            title: '**Higher score detected!**',
+            title: "**Higher score detected!**",
             thumbnail: { url: ICONS.CROSS_MARK },
             description:
-              'A higher score for same contestant was detected in leaderboard thus rejecting submission.',
+              "A higher score for same contestant was detected in leaderboard thus rejecting submission.",
             fields: [
               {
-                name: 'Score in Leaderboard',
+                name: "Score in Leaderboard",
                 value: `[${oldScoreData.score}](${oldScoreData.proof})`,
               },
               {
-                name: 'Score input',
+                name: "Score input",
                 value: `[${args.score}](${args.proofMessage.url})`,
               },
             ],
@@ -415,13 +448,13 @@ export default class GuildCommand extends Subcommand {
             components: [
               {
                 type: ComponentType.Button,
-                label: 'Old Proof',
+                label: "Old Proof",
                 style: ButtonStyle.Link,
                 url: oldScoreData.proof,
               },
               {
                 type: ComponentType.Button,
-                label: 'New Proof',
+                label: "New Proof",
                 style: ButtonStyle.Link,
                 url: args.proofMessage.url,
               },
@@ -430,14 +463,17 @@ export default class GuildCommand extends Subcommand {
         ],
       });
     }
+
     try {
       const { author, content, attachments } = args.proofMessage;
       const firstAtt = attachments.first();
 
       const proofURL =
-        firstAtt?.url ||
-        firstAtt?.proxyURL ||
-        (assets.possibleLinks ? assets.possibleLinks[0] : 'https://youtube.com');
+        firstAtt?.url ??
+        firstAtt?.proxyURL ??
+        (assets.possibleLinks
+          ? assets.possibleLinks[0]
+          : "https://youtube.com");
 
       embed.image = {
         url: proofURL,
@@ -447,23 +483,23 @@ export default class GuildCommand extends Subcommand {
       };
       embed.fields?.push(
         {
-          name: '**Auto Verification**',
+          name: "**Auto Verification**",
           value: `**Contestant**: ${
             author.id === args.contestant.id
-              ? 'Verified'
+              ? "Verified"
               : `Cannot Verify (most likely submission done on behalf of ${
                   args.contestant?.tag
                 } by ${author.tag})\n**Score**: ${
                   content.match(`${args.score}`)?.length
-                    ? 'Verified'
+                    ? "Verified"
                     : "Cannot Verify (most likely because contestant didn't put score as text while uploading proof)"
                 }`
           }`,
         },
         {
-          name: '**Attachments direct link**',
-          value: `Link 1: ${firstAtt?.url || 'Failed to get attachment url'}\nLink 2: ${
-            firstAtt?.proxyURL || 'Failed to get attachment url'
+          name: "**Attachments direct link**",
+          value: `Link 1: ${firstAtt?.url ?? "Failed to get attachment url"}\nLink 2: ${
+            firstAtt?.proxyURL ?? "Failed to get attachment url"
           }\nOther links: ${assets.possibleLinks?.toString()}`,
         },
       );
@@ -471,10 +507,10 @@ export default class GuildCommand extends Subcommand {
       if (oldScoreData) {
         const diff = Number(args.score) - Number(oldScoreData.score);
 
-        const diffSign = diff < 0 ? '-' : '+';
+        const diffSign = diff < 0 ? "-" : "+";
 
         embed.fields?.push({
-          name: '**Previous Score**',
+          name: "**Previous Score**",
           value: `[${oldScoreData.score}](${oldScoreData.proof}) \nA difference of ${diffSign} ${diff}`,
         });
       }
@@ -484,15 +520,15 @@ export default class GuildCommand extends Subcommand {
         components: [
           {
             type: ComponentType.Button,
-            label: 'Show Proof',
-            emoji: '🧾',
+            label: "Show Proof",
+            emoji: "🧾",
             style: ButtonStyle.Link,
             url: proofURL,
           },
           {
             type: ComponentType.Button,
-            label: 'Jump to message',
-            emoji: '💬',
+            label: "Jump to message",
+            emoji: "💬",
             style: ButtonStyle.Link,
             url: args.proofMessage.url,
           },
@@ -504,16 +540,16 @@ export default class GuildCommand extends Subcommand {
         components: [
           {
             type: ComponentType.Button,
-            customId: 'accepted',
-            label: 'Accept',
-            emoji: '👍',
+            customId: "accepted",
+            label: "Accept",
+            emoji: "👍",
             style: ButtonStyle.Success,
           },
           {
             type: ComponentType.Button,
-            customId: 'declined',
-            label: 'Decline',
-            emoji: '👎',
+            customId: "declined",
+            label: "Decline",
+            emoji: "👎",
             style: ButtonStyle.Danger,
           },
         ],
@@ -525,9 +561,9 @@ export default class GuildCommand extends Subcommand {
           components: [approveRow, linkRow],
         })
         .then(async (msg) => {
-          interaction.followUp({
+          await interaction.followUp({
             content:
-              firstAtt?.url ||
+              firstAtt?.url ??
               (assets.possibleLinks
                 ? assets.possibleLinks[0]
                 : "No URLs/Videos found in contestant's message"),
@@ -540,23 +576,24 @@ export default class GuildCommand extends Subcommand {
             async filter(itx) {
               await itx.deferUpdate();
               if (!isStaff(itx.member)) {
-                itx.followUp({
-                  content: 'Ping a mod to get approval!',
+                await itx.followUp({
+                  content: "Ping a mod to get approval!",
                   flags: MessageFlags.Ephemeral,
                 });
               }
+
               return isStaff(itx.member);
             },
           });
         })
         .then(async (btnCtx) => {
-          if (btnCtx.customId === 'accepted') {
+          if (btnCtx.customId === "accepted") {
             const successEmbed: APIEmbed = {
               ...embed,
               thumbnail: {
                 url: ICONS.CHECK_MARK,
               },
-              title: '**Submission Accepted!**',
+              title: "**Submission Accepted!**",
               color: COLORS.SUCCESS,
             };
             return LeaderboardCache.registerScore({
@@ -566,19 +603,20 @@ export default class GuildCommand extends Subcommand {
               typeCategory: parseGroupType(args.groupType),
               userID: args.contestant.id,
             }).then(async () => {
-              PMAEventHandler.emit('LBPostRegister', args, oldScoreData);
+              PMAEventHandler.emit("LBPostRegister", args, oldScoreData);
               return btnCtx.editReply({
                 embeds: [successEmbed],
                 components: [linkRow],
               });
             });
           }
+
           const failEmbed: APIEmbed = {
             ...embed,
             thumbnail: {
               url: ICONS.CROSS_MARK,
             },
-            title: '**Submission Rejected!**',
+            title: "**Submission Rejected!**",
             color: COLORS.ERROR,
           };
           return btnCtx.editReply({
@@ -586,20 +624,20 @@ export default class GuildCommand extends Subcommand {
             components: [linkRow],
           });
         });
-    } catch (e) {
-      this.container.logger.error(e);
+    } catch (error) {
+      this.container.logger.error(error);
 
-      return await interaction.editReply({
+      return interaction.editReply({
         embeds: [
           {
-            title: '**An error occurred**',
-            description: `There was an error while registration:\n\n${e}`,
+            title: "**An error occurred**",
+            description: `There was an error while registration:\n\n${error}`,
           },
         ],
         files: [
           {
-            attachment: `${e}`,
-            name: 'Error while registering user.txt',
+            attachment: `${error}`,
+            name: "Error while registering user.txt",
           },
         ],
       });
@@ -612,7 +650,7 @@ export default class GuildCommand extends Subcommand {
     });
     registry.registerContextMenuCommand(
       {
-        name: 'Register Score for leaderboard',
+        name: "Register Score for leaderboard",
         type: ApplicationCommandType.Message,
         dm_permission: false,
         dmPermission: false,

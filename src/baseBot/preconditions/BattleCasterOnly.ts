@@ -1,13 +1,13 @@
-import { isGuildMember } from '@sapphire/discord.js-utilities';
-import { Precondition } from '@sapphire/framework';
+import { isGuildMember } from "@sapphire/discord.js-utilities";
+import { Precondition } from "@sapphire/framework";
 import type {
   APIInteractionGuildMember,
   ChatInputCommandInteraction,
   ContextMenuCommandInteraction,
   GuildMember,
   Message,
-} from 'discord.js';
-import { ROLE_IDS } from '../../lib/Constants';
+} from "discord.js";
+import { ROLE_IDS } from "../../lib/Constants.js";
 
 export default class BattleCasterOnly extends Precondition {
   public override messageRun(message: Message) {
@@ -22,29 +22,34 @@ export default class BattleCasterOnly extends Precondition {
     return this.applyCondition(interaction.member);
   }
 
-  private applyCondition(member?: GuildMember | APIInteractionGuildMember | null) {
+  private applyCondition(
+    member?: APIInteractionGuildMember | GuildMember | null,
+  ) {
     if (isGuildMember(member)) {
       return this.condition(member);
     }
+
     return this.error({
-      message: 'Guild member cannot be fetched',
+      message: "Guild member cannot be fetched",
     });
   }
 
   private condition(member: GuildMember) {
-    const isBattleCaster = member.roles.cache.has(ROLE_IDS.OTHERS.BATTLE_CASTER);
+    const isBattleCaster = member.roles.cache.has(
+      ROLE_IDS.OTHERS.BATTLE_CASTER,
+    );
 
     return isBattleCaster
       ? this.ok()
       : this.error({
-          identifier: 'battle-caster-only',
-          message: 'This command is available only for Battle Casters',
+          identifier: "battle-caster-only",
+          message: "This command is available only for Battle Casters",
         });
   }
 }
 
-declare module '@sapphire/framework' {
-  interface Preconditions {
+declare module "@sapphire/framework" {
+  type Preconditions = {
     BattleCasterOnly: never;
   }
 }

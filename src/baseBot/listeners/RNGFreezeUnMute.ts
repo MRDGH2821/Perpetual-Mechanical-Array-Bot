@@ -1,15 +1,17 @@
-import { ApplyOptions } from '@sapphire/decorators';
-import { Events, Listener, type ListenerOptions } from '@sapphire/framework';
-import { ROLE_IDS } from '../../lib/Constants';
-import EnvConfig from '../../lib/EnvConfig';
+import { ApplyOptions } from "@sapphire/decorators";
+import { Events, Listener, type ListenerOptions } from "@sapphire/framework";
+import { ROLE_IDS } from "../../lib/Constants.js";
+import EnvConfig from "../../lib/EnvConfig.js";
 
 @ApplyOptions<ListenerOptions>({
   enabled: true,
   event: Events.ShardReady,
-  name: 'RNGFreezeUnmute',
+  name: "RNGFreezeUnmute",
   once: true,
 })
-export default class RNGFreezeUnMuteEvent extends Listener<typeof Events.ShardReady> {
+export default class RNGFreezeUnMuteEvent extends Listener<
+  typeof Events.ShardReady
+> {
   public async run() {
     const guild = await this.container.client.guilds.fetch(EnvConfig.guildId);
 
@@ -18,21 +20,26 @@ export default class RNGFreezeUnMuteEvent extends Listener<typeof Events.ShardRe
     if (!freezeRNGRole) {
       return;
     }
+
     let length = 0;
-    freezeRNGRole.members.forEach((member) => {
+    for (const member of freezeRNGRole.members) {
       member.roles
-        .remove(freezeRNGRole, 'Bot restarted, cannot have them muted for long duration')
+        .remove(
+          freezeRNGRole,
+          "Bot restarted, cannot have them muted for long duration",
+        )
         .then(() => {
           length += 1;
           return length;
         })
         .catch((error) =>
           this.container.logger.error(
-            'Unexpected error while un-muting users freezed by RNG',
+            "Unexpected error while un-muting users freezed by RNG",
             error,
           ),
         );
-    });
+    }
+
     this.container.logger.info(`Unmuted ${length} users`);
   }
 }

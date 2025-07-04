@@ -1,23 +1,23 @@
-import { ApplyOptions } from '@sapphire/decorators';
-import { Command } from '@sapphire/framework';
+import { ApplyOptions } from "@sapphire/decorators";
+import { Command } from "@sapphire/framework";
 import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
   MessageFlags,
   roleMention,
-} from 'discord.js';
-import { ChannelIds, ROLE_IDS } from '../../lib/Constants';
-import EnvConfig from '../../lib/EnvConfig';
+} from "discord.js";
+import { ChannelIds, ROLE_IDS } from "../../lib/Constants.js";
+import EnvConfig from "../../lib/EnvConfig.js";
 
 @ApplyOptions<Command.Options>({
-  name: 'ping-gladiators',
-  description: 'Pings Gladiators in voting channel',
+  name: "ping-gladiators",
+  description: "Pings Gladiators in voting channel",
 })
 export default class GuildCommand extends Command {
   public constructor(context: Command.Context, options: Command.Options) {
     super(context, {
       ...options,
-      preconditions: [['ModOnly', 'BattleCasterOnly']],
+      preconditions: [["ModOnly", "BattleCasterOnly"]],
     });
   }
 
@@ -31,14 +31,14 @@ export default class GuildCommand extends Command {
         type: ApplicationCommandType.ChatInput,
         options: [
           {
-            name: 'ping_archons',
-            description: 'Should I ping archons too?',
+            name: "ping_archons",
+            description: "Should I ping archons too?",
             type: ApplicationCommandOptionType.Boolean,
             required: false,
           },
           {
-            name: 'text',
-            description: 'Text to send',
+            name: "text",
+            description: "Text to send",
             type: ApplicationCommandOptionType.String,
             required: false,
           },
@@ -50,18 +50,23 @@ export default class GuildCommand extends Command {
     );
   }
 
-  public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
-    const toPingArchons = interaction.options.getBoolean('ping_archons') || false;
-    const text = interaction.options.getString('text') || '';
+  public override async chatInputRun(
+    interaction: Command.ChatInputCommandInteraction,
+  ) {
+    const toPingArchons =
+      interaction.options.getBoolean("ping_archons") || false;
+    const text = interaction.options.getString("text") || "";
 
-    const voterChannel = interaction.guild?.channels.cache.get(ChannelIds.ARENA_OF_VOTERS);
+    const voterChannel = interaction.guild?.channels.cache.get(
+      ChannelIds.ARENA_OF_VOTERS,
+    );
 
     if (!voterChannel?.isTextBased()) {
-      throw new Error('Cannot send message in non-text channel');
+      throw new Error("Cannot send message in non-text channel");
     }
 
     const content = `${roleMention(ROLE_IDS.OTHERS.GLADIATORS)}${
-      toPingArchons ? roleMention(ROLE_IDS.OTHERS.ARCHONS) : ' '
+      toPingArchons ? roleMention(ROLE_IDS.OTHERS.ARCHONS) : " "
     }\n${text}`;
 
     voterChannel.send({
@@ -69,7 +74,7 @@ export default class GuildCommand extends Command {
     });
 
     return interaction.reply({
-      content: 'Will be pinged soon',
+      content: "Will be pinged soon",
       flags: MessageFlags.Ephemeral,
     });
   }
