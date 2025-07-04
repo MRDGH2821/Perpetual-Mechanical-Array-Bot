@@ -1,0 +1,8 @@
+{
+  "plugins": [
+    "prettier-plugin-packagejson"
+  ],
+  "singleQuote": false,
+  "tabWidth": 2,
+  "useTabs": false
+}
