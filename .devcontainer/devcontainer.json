@@ -26,6 +26,7 @@
         "evondev.indent-rainbow-palettes",
         "exiasr.hadolint",
         "foxundermoon.shell-format",
+        "github.vscode-github-actions",
         "idered.npm",
         "kamikillerto.vscode-colorize",
         "ms-azuretools.vscode-containers",
