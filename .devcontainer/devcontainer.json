@@ -1,16 +1,4 @@
 {
-  "name": "PMA Bot Dev Container",
-  "image": "mcr.microsoft.com/devcontainers/typescript-node",
-  "features": {
-    "ghcr.io/dhoeric/features/hadolint": {},
-    "ghcr.io/devcontainers/features/docker-in-docker": {},
-    "ghcr.io/trunk-io/devcontainer-feature/trunk": {},
-    "ghcr.io/devcontainers-extra/features/npm-package": {
-      "package": "mega-linter-runner"
-    }
-  },
-  "forwardPorts": [5901, 6080],
-  "postCreateCommand": "npm install",
   "customizations": {
     "vscode": {
       "extensions": [
@@ -42,5 +30,17 @@
         "wdhongtw.gpg-indicator"
       ]
     }
-  }
+  },
+  "features": {
+    "ghcr.io/devcontainers-extra/features/npm-package": {
+      "package": "mega-linter-runner"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker": {},
+    "ghcr.io/dhoeric/features/hadolint": {},
+    "ghcr.io/trunk-io/devcontainer-feature/trunk": {}
+  },
+  "forwardPorts": [5901, 6080, 11434],
+  "image": "mcr.microsoft.com/devcontainers/typescript-node",
+  "name": "PMA Bot Dev Container",
+  "postCreateCommand": "npm install"
 }
