@@ -15,7 +15,8 @@ export default class QuotesManager {
           const data = docSnap.data();
           if (data) {
             quotesArray = data.array as unknown as string[];
-            resolve(quotesArray); return;
+            resolve(quotesArray);
+            return;
           }
 
           resolve([]);

@@ -292,9 +292,9 @@ export default class GuildCommand extends Subcommand {
 
                     void channel.send({
                       content: shouldAnnounceWithPing
-                        ? roleMention(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER) +
-                          roleMention(ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR) +
-                          roleMention(ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN)
+                        ? roleMention(ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_TRAVELER) +
+                          roleMention(ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_CONQUEROR) +
+                          roleMention(ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_SOVEREIGN)
                         : roleMention(ROLE_IDS.OTHERS.ARCHONS),
                       embeds: [announceEmb],
                       components: [],
@@ -412,7 +412,7 @@ export default class GuildCommand extends Subcommand {
               title: "A new Abyssal Sovereign has risen!",
               color: 0x5f7eb1,
               description: `Congratulations ${user} for getting ${roleMention(
-                ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN,
+                ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_SOVEREIGN,
               )}!\n\n__Teams they used:__\n${team1.toString()}\n${team2.toString()}\n${team3.toString()}\n${team4.toString()}`,
             };
 

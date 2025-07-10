@@ -224,22 +224,26 @@ export const BURST_NAMES = Object.values(availableProps).map(
 );
 
 export function isSkill(input: string) {
-  return Boolean(SKILL_NAMES.find((name) =>
-    name.toLowerCase().includes(input.toLowerCase()),
-  ));
+  return Boolean(
+    SKILL_NAMES.find((name) =>
+      name.toLowerCase().includes(input.toLowerCase()),
+    ),
+  );
 }
 
 export function isBurst(input: string) {
-  return Boolean(BURST_NAMES.find((name) =>
-    name.toLowerCase().includes(input.toLowerCase()),
-  ));
+  return Boolean(
+    BURST_NAMES.find((name) =>
+      name.toLowerCase().includes(input.toLowerCase()),
+    ),
+  );
 }
 
 type FindTechArgs = {
   element: ELEMENTS;
   id: KitTechnology["id"];
   type: DamageType;
-}
+};
 type FindPropArgs = Omit<FindTechArgs, "id">;
 export function getKitProp(options: FindPropArgs): KitProp {
   const { element, type } = options;

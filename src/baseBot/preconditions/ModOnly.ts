@@ -36,5 +36,5 @@ export default class ModOnly extends Precondition {
 declare module "@sapphire/framework" {
   type Preconditions = {
     ModOnly: never;
-  }
+  };
 }

@@ -37,7 +37,7 @@ type SendConfessionArgs = {
   };
   shouldPingArchons: boolean;
   shouldSkipMultiline: boolean;
-}
+};
 
 const subCmdOpt: ApplicationCommandSubCommandData["options"] = [
   {

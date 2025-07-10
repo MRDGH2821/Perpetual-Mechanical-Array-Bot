@@ -14,7 +14,7 @@ export type LBProp = {
   emoji: ValueOf<typeof EMOJIS>;
   icon: ICONS;
   name: string;
-}
+};
 
 export function leaderboardProps(element: LBElements): LBProp {
   switch (element) {
@@ -110,7 +110,9 @@ export function parseGroupType(groupType: string): GroupCategoryType {
 }
 
 export function extractLinks(str: string) {
-  return /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\w$&+,:;=\-]+@)?[\d.A-Za-z\-]+|(?:www\.|[\w$&+,:;=\-]+@)[\d.A-Za-z\-]+)((?:\/[\w%+./~\-]*)?\??[\w%&+.;=@\-]*#?[\w!./\\]*)?)/.exec(str);
+  return /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\w$&+,:;=\-]+@)?[\d.A-Za-z\-]+|(?:www\.|[\w$&+,:;=\-]+@)[\d.A-Za-z\-]+)((?:\/[\w%+./~\-]*)?\??[\w%&+.;=@\-]*#?[\w!./\\]*)?)/.exec(
+    str,
+  );
 }
 
 export function parseDamageCategory(
@@ -138,7 +140,8 @@ export function parseDamageCategory(
 }
 
 export function digitEmoji(digit: unknown) {
-  const parsed = digit instanceof Number ? digit : Number.parseInt(String(digit), 10);
+  const parsed =
+    digit instanceof Number ? digit : Number.parseInt(String(digit), 10);
   switch (parsed) {
     case 0:
       return "0️⃣";

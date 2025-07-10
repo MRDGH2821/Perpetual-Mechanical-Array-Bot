@@ -16,5 +16,5 @@ export default class SACacheCheck extends Precondition {
 declare module "@sapphire/framework" {
   type Preconditions = {
     SACacheCheck: never;
-  }
+  };
 }

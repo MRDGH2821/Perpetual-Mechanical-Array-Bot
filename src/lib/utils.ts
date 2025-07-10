@@ -60,7 +60,9 @@ export function getSuccessLoggerData(
 
 export function logSuccessCommand(
   payload:
-    ChatInputCommandSuccessPayload | ContextMenuCommandSuccessPayload | MessageCommandSuccessPayload,
+    | ChatInputCommandSuccessPayload
+    | ContextMenuCommandSuccessPayload
+    | MessageCommandSuccessPayload,
 ): void {
   const successLoggerData: ReturnType<typeof getSuccessLoggerData> =
     "interaction" in payload
@@ -90,7 +92,7 @@ type PublishEmbedBuilderOption = {
   embedTemplate: APIEmbed;
   users: User[];
   usersPerPage: number;
-}
+};
 export async function publishEmbedsGenerator(
   options: PublishEmbedBuilderOption,
 ): Promise<PublishEmbedBuilderOption["embedTemplate"][]> {
@@ -98,7 +100,7 @@ export async function publishEmbedsGenerator(
   return new Promise((resolve, reject) => {
     try {
       const chunks = chunk(users, usersPerPage);
-      const embeds: typeof embedTemplate[] = [];
+      const embeds: (typeof embedTemplate)[] = [];
       for (const piece of chunks) {
         let value = "";
         const embed = deepClone(embedTemplate);
@@ -182,6 +184,7 @@ export function userLink(userOrID: User | User["id"]) {
 export function parseElement(element: string): ELEMENTS {
   const possibleElement = element.toLowerCase();
 
+  // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
   switch (true) {
     case /\banemo\b/gimu.test(possibleElement):
       return "anemo";

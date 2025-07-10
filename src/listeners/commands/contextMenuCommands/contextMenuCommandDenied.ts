@@ -1,5 +1,3 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
- 
 import type {
   ContextMenuCommandDeniedPayload,
   Events,
@@ -16,6 +14,7 @@ export default class ContextMenuCommandDeniedEvent extends Listener<
   ) {
     // `context: { silent: true }` should make UserError silent:
     // Use cases for this are for example permissions error when running the `eval` command.
+    // eslint-disable-next-line no-new-object
     if (Reflect.get(new Object(context), "silent")) return;
 
     if (interaction.deferred || interaction.replied) {

@@ -32,17 +32,17 @@ export default class SpiralAbyssCache {
 
     switch (clearType) {
       case "traveler": {
-        roleId = ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER;
+        roleId = ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_TRAVELER;
         break;
       }
 
       case "conqueror": {
-        roleId = ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR;
+        roleId = ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_CONQUEROR;
         break;
       }
 
       case "sovereign": {
-        roleId = ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN;
+        roleId = ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_SOVEREIGN;
         break;
       }
 
@@ -68,9 +68,9 @@ export default class SpiralAbyssCache {
     } catch (error) {
       container.logger.error(error);
       container.logger.debug("Setting self in cache");
-      const self = await guild.members.me!.fetch(true)!;
+      const myself = await guild.members.me!.fetch(true)!;
       const members: Role["members"] = new Collection();
-      members.set(self.id, self);
+      members.set(myself.id, myself);
       return members;
     }
   }
@@ -149,15 +149,15 @@ export default class SpiralAbyssCache {
 
   public static async removeRoles() {
     for (const member of this.#cache.traveler.values()) {
-      await member.roles.remove(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER);
+      await member.roles.remove(ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_TRAVELER);
     }
 
     for (const member of this.#cache.conqueror.values()) {
-      await member.roles.remove(ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR);
+      await member.roles.remove(ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_CONQUEROR);
     }
 
     for (const member of this.#cache.sovereign.values()) {
-      await member.roles.remove(ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN);
+      await member.roles.remove(ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_SOVEREIGN);
     }
   }
 }

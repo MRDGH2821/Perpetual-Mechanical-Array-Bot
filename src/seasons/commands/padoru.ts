@@ -1,6 +1,11 @@
 import { ApplyOptions } from "@sapphire/decorators";
 import { Command } from "@sapphire/framework";
-import { ApplicationCommandOptionType, roleMention } from "discord.js";
+import {
+  ApplicationCommandOptionType,
+  ApplicationCommandType,
+  InteractionContextType,
+  roleMention,
+} from "discord.js";
 import { EMOJIS, ROLE_IDS } from "../../lib/Constants.js";
 
 const { LuminePadoru } = EMOJIS;
@@ -14,6 +19,8 @@ export default class UserCommand extends Command {
     registry.registerChatInputCommand({
       name: this.name,
       description: this.description,
+      type: ApplicationCommandType.ChatInput,
+      contexts: [InteractionContextType.Guild],
       options: [
         {
           name: "padoru_count",
@@ -33,10 +40,9 @@ export default class UserCommand extends Command {
     });
   }
 
-   
   public multiplyString(str: string, num: number) {
     let result = "";
-    for (let i = 0; i < num; i += 1) {
+    for (let _ = 0; _ < num; _ += 1) {
       result += str;
     }
 
@@ -46,8 +52,15 @@ export default class UserCommand extends Command {
   public override async chatInputRun(
     interaction: Command.ChatInputCommandInteraction,
   ) {
-    const padoruCount = interaction.options.getInteger("padoru_count") || 5;
-    const pingArchons = interaction.options.getBoolean("ping_archons") || false;
+    const padoruCount = interaction.options.getInteger("padoru_count") ?? 5;
+    const pingArchons = interaction.options.getBoolean("ping_archons") ?? false;
+    const channel = await interaction.channel?.fetch(true);
+    if (!channel?.isSendable()) {
+      return interaction.reply({
+        content: "I cannot Padoru Poem in this channel 😕",
+        ephemeral: true,
+      });
+    }
 
     const padoruPoem = [
       "Hashire Sori Yo",
@@ -58,18 +71,14 @@ export default class UserCommand extends Command {
       (line) =>
         `${pingArchons ? `${roleMention(ROLE_IDS.OTHERS.ARCHONS)} ` : ""}${line}`,
     );
+    await interaction.reply({
+      content: `Merry Christmas ${interaction.user}!`,
+    });
+    await channel.send(padoruPoem[0]!);
+    await channel.send(padoruPoem[1]!);
+    await channel.send(padoruPoem[2]!);
+    await channel.send(padoruPoem[3]!);
 
-    return interaction
-      .reply({
-        content: `Merry Christmas ${interaction.user}!`,
-        fetchReply: true,
-      })
-      .then(async (msg) => msg.channel.send(padoruPoem[0]))
-      .then(async (msg) => msg.channel.send(padoruPoem[1]))
-      .then(async (msg) => msg.channel.send(padoruPoem[2]))
-      .then(async (msg) => msg.channel.send(padoruPoem[3]))
-      .then(async (msg) =>
-        msg.channel?.send(this.multiplyString(LuminePadoru, padoruCount)),
-      );
+    return channel.send(this.multiplyString(LuminePadoru, padoruCount));
   }
 }

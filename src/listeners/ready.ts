@@ -30,7 +30,6 @@ export default class ReadyEvent extends Listener {
     PMAEventHandler.emit("RefreshQuotes");
   }
 
-   
   private printBanner() {
     const success = green("+");
 
@@ -44,7 +43,6 @@ export default class ReadyEvent extends Listener {
     // Offset Pad
     const pad = " ".repeat(7);
 
-     
     console.log(
       String.raw`
 ${line01} ${pad}${blc("1.0.0")}
@@ -59,12 +57,10 @@ ${line03}${dev ? ` ${pad}${blc("<")}${llc("/")}${blc(">")} ${llc("DEVELOPMENT MO
     const stores = [...client.stores.values()];
     const last = stores.pop()!;
 
-     
     for (const store of stores) logger.info(this.styleStore(store, false));
     logger.info(this.styleStore(last, true));
   }
 
-   
   private styleStore(store: Store<any>, last: boolean) {
     return gray(
       `${last ? "└─" : "├─"} Loaded ${this.style(store.size.toString().padEnd(3, " "))} ${

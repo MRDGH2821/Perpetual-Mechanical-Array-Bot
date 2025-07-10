@@ -10,7 +10,7 @@ export type SpiralAbyssProp = {
   emoji: ValueOf<typeof EMOJIS> | string;
   icon: ICONS;
   name: string;
-}
+};
 
 export function SAProps(clearType: SpiralAbyssClearTypes): SpiralAbyssProp {
   switch (clearType) {

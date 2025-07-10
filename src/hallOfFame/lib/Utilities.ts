@@ -9,7 +9,7 @@ export type CrownProp = {
   icon: ICONS;
   name: string;
   plural: string;
-}
+};
 
 export function crownProps(element: ELEMENTS): CrownProp {
   switch (element) {
@@ -72,6 +72,18 @@ They went extra mile to crown Unaligned Traveler in Archon Quest Chapter 2: Prol
         emoji: EMOJIS.Hydro,
         plural: "Monarques of Tides",
       };
+    case "cryo": {
+      throw new Error('Not implemented yet: "cryo" case');
+    }
+
+    case "pyro": {
+      throw new Error('Not implemented yet: "pyro" case');
+    }
+
+    case "uni": {
+      throw new Error('Not implemented yet: "uni" case');
+    }
+
     default: {
       throw new Error(`Props for ${element} does not exist`);
     }

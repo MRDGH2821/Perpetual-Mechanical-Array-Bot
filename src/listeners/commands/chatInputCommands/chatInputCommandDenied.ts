@@ -14,6 +14,7 @@ export default class ChatInputCommandDeniedEvent extends Listener<
   ) {
     // `context: { silent: true }` should make UserError silent:
     // Use cases for this are for example permissions error when running the `eval` command.
+    // eslint-disable-next-line no-new-object
     if (Reflect.get(new Object(context), "silent")) return true;
 
     if (interaction.deferred || interaction.replied) {

@@ -8,7 +8,7 @@ import db from "../../lib/Database/Firestore.js";
 type LBSetupArgs = {
   forumChannel?: ForumChannel;
   textChannel?: TextChannel;
-}
+};
 @ApplyOptions<ListenerOptions>({
   emitter: PMAEventHandler,
   event: "LBSetup",

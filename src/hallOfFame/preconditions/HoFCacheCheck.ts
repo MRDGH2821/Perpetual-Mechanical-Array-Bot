@@ -16,5 +16,5 @@ export default class HoFCacheCheck extends Precondition {
 declare module "@sapphire/framework" {
   type Preconditions = {
     HoFCacheCheck: never;
-  }
+  };
 }

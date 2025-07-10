@@ -1,7 +1,8 @@
 import type { Message, User } from "discord.js";
 
 export type ElementDamageCategories =
-  `${N5Elements}-dmg-n5` | `${SkillElements}-dmg-skill`;
+  | `${N5Elements}-dmg-n5`
+  | `${SkillElements}-dmg-skill`;
 
 export type SkillElements = "anemo" | "dendro" | "electro" | "geo" | "hydro";
 
@@ -18,7 +19,7 @@ export type LBRegistrationArgs = {
   proofMessage: Message;
   score: number;
   shouldForceUpdate: boolean;
-}
+};
 
 export type DBLeaderboardData = {
   elementCategory: ElementDamageCategories;
@@ -26,4 +27,4 @@ export type DBLeaderboardData = {
   score: number;
   typeCategory: GroupCategoryType;
   userID: User["id"];
-}
+};

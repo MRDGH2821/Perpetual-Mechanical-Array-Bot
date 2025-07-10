@@ -78,7 +78,7 @@ function searchBase64CredEnv() {
 }
 
 const finalCred =
-  searchBase64CredEnv() || searchCredEnv() || applicationDefault();
+  searchBase64CredEnv() ?? searchCredEnv() ?? applicationDefault();
 
 if (!finalCred) {
   throw new Error("Can't find firebase service account credentials.");
@@ -120,7 +120,7 @@ async function deleteQueryBatch(
   // Recurse on the next process tick, to avoid
   // exploding the stack.
   process.nextTick(() => {
-    deleteQueryBatch(query, resolve);
+    void deleteQueryBatch(query, resolve);
   });
 }
 

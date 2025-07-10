@@ -9,7 +9,7 @@ import { parseBoolean } from "./Utilities.js";
 type TriggerCondition = {
   envName?: string;
   searchString: RegExp | string;
-}
+};
 type ConditionFunction =
   | ((...args: unknown[]) => Promise<boolean>)
   | ((message: Message) => Promise<boolean>);
@@ -57,8 +57,6 @@ export default class AutoResponseTrigger {
 
       return this.actionFn(this.botMessage, this.sourceMessage);
     }
-
-    
   }
 
   allowedMentions: MessageMentionOptions = {

@@ -124,7 +124,7 @@ export default class LBPostRegister extends Listener {
       throw new Error("Cannot fetch Leaderboard Registration log thread");
     }
 
-    await thread.join(',');
+    await thread.join(",");
 
     const props = leaderboardProps(args.element);
     const embedLog = {

@@ -1,5 +1,5 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
- 
+
 import { randomInt } from "crypto";
 import EventEmitter from "events";
 import { setTimeout } from "timers/promises";
@@ -76,7 +76,7 @@ type FreezeOptions = {
   duration: number;
   member: GuildMember;
   reason: string;
-}
+};
 export async function freezeMuteUser(options: FreezeOptions) {
   const pain1 = [EMOJIS.Aether_Pain1, EMOJIS.Lumine_Pain1];
   const pain2 = [EMOJIS.Aether_Pain2, EMOJIS.Lumine_Pain2];

@@ -4,4 +4,4 @@ export type BackupCacheFileType = {
   conqueror: string[];
   sovereign: string[];
   traveler: string[];
-}
+};

@@ -8,6 +8,7 @@ export default class ChatInputCommandErrorEvent extends Listener<
 > {
   public async run(err: Error, payload: ChatInputCommandErrorPayload) {
     const { interaction } = payload;
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string
     const errMsg = `${err}\n\n${codeBlock("md", JSON.stringify(err, null, 2))}`;
     return interaction.deferred
       ? interaction.editReply({

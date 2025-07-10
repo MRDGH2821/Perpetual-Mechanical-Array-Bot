@@ -46,7 +46,9 @@ export default class UserCommand extends Command {
 
   private async sendPing(
     interactionOrMessage:
-      Command.ChatInputCommandInteraction | Command.ContextMenuCommandInteraction | Message,
+      | Command.ChatInputCommandInteraction
+      | Command.ContextMenuCommandInteraction
+      | Message,
   ) {
     const pingMessage =
       interactionOrMessage instanceof Message

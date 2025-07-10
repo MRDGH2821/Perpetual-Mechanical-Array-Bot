@@ -8,7 +8,12 @@ import {
   MessageFlags,
   roleMention,
 } from "discord.js";
-import { COLORS, EMPTY_STRING, ROLE_IDS, ThreadIds } from "../../lib/Constants.js";
+import {
+  COLORS,
+  EMPTY_STRING,
+  ROLE_IDS,
+  ThreadIds,
+} from "../../lib/Constants.js";
 import { pmaLogger } from "../../pma-logger.js";
 import type {
   ButtonActionRow,
@@ -21,12 +26,20 @@ type AssignRoleOptions = {
   member: GuildMember;
   message: Message | null | undefined;
   selectedRolesIDs: string[];
-}
+};
 
 type RegionEmoji = "⚓" | "⚖️" | "⛩️" | "🌴" | "🕊️" | "🤔";
 
 type CrownEmoji =
-  "<:Anemo:803516622772895764>" | "<:Cryo:803516632735154177>" | "<:Dendro:803516669984505856>" | "<:Electro:803516644923146260>" | "<:Geo:803516612430135326>" | "<:Hydro:803516313782714378>" | "<:Pyro:803516441424822303>" | "✨" | "🤔";
+  | "<:Anemo:803516622772895764>"
+  | "<:Cryo:803516632735154177>"
+  | "<:Dendro:803516669984505856>"
+  | "<:Electro:803516644923146260>"
+  | "<:Geo:803516612430135326>"
+  | "<:Hydro:803516313782714378>"
+  | "<:Pyro:803516441424822303>"
+  | "✨"
+  | "🤔";
 
 type AbyssEmoji = "⚔️" | "🌀" | "🤔" | "😎";
 
@@ -37,7 +50,7 @@ type RoleAssignStats = {
   exp: number;
   notes: string;
   role: string;
-}
+};
 
 export default class AssignRoles {
   readonly #member: GuildMember;
@@ -58,20 +71,20 @@ export default class AssignRoles {
     let filteredRoles = options.selectedRolesIDs;
 
     if (
-      options.selectedRolesIDs.includes(ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN)
+      options.selectedRolesIDs.includes(ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_SOVEREIGN)
     ) {
       const denyList = [
-        ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR,
-        ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER,
+        ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_CONQUEROR,
+        ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_TRAVELER,
       ].map(String);
       filteredRoles = options.selectedRolesIDs.filter(
         (id) => !denyList.includes(id),
       );
     } else if (
-      options.selectedRolesIDs.includes(ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR)
+      options.selectedRolesIDs.includes(ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_CONQUEROR)
     ) {
       filteredRoles = options.selectedRolesIDs.filter(
-        (id) => id !== ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER,
+        (id) => id !== ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_TRAVELER,
       );
     }
 
@@ -90,8 +103,8 @@ export default class AssignRoles {
 
     await this.#member.roles
       .add(repRoles, "Completed regional exploration & achievements")
-      .then(() =>
-        { for (const role of repRoles) {
+      .then(() => {
+        for (const role of repRoles) {
           let emoji: RegionEmoji = "🤔";
 
           switch (role) {
@@ -132,8 +145,8 @@ export default class AssignRoles {
             role,
             emoji,
           });
-        } },
-      );
+        }
+      });
   }
 
   async #awardWhaleRole() {
@@ -279,12 +292,14 @@ export default class AssignRoles {
             quantity,
             target: this.#member,
           });
-          return this.#member.roles.add(roleID).then(() => resolve({
+          return this.#member.roles.add(roleID).then(() =>
+            resolve({
               exp,
               notes: `${quantity} crown(s)`,
               role: roleID,
               emoji: props.emoji,
-            }));
+            }),
+          );
         })
         .catch(reject);
     });
@@ -301,9 +316,7 @@ export default class AssignRoles {
     }) as ROLE_IDS.CROWN[];
     const results: RoleAssignStats[] = [];
 
-     
     for (const roleId of crownRoles) {
-       
       const result = await this.#awardElementalCrownRole(roleId);
       results.push(result);
     }
@@ -312,7 +325,7 @@ export default class AssignRoles {
   }
 
   async #awardSpiralAbyssRole() {
-    const { SpiralAbyss } = ROLE_IDS;
+    const { SPIRAL_ABYSS: SpiralAbyss } = ROLE_IDS;
 
     const beforeRemoval = {
       sovereign: this.#member.roles.cache.has(SpiralAbyss.ABYSSAL_SOVEREIGN),
@@ -322,11 +335,11 @@ export default class AssignRoles {
 
     let previousRole = "none";
     if (beforeRemoval.sovereign) {
-      previousRole = roleMention(ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN);
+      previousRole = roleMention(ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_SOVEREIGN);
     } else if (beforeRemoval.conqueror) {
-      previousRole = roleMention(ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR);
+      previousRole = roleMention(ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_CONQUEROR);
     } else if (beforeRemoval.traveler) {
-      previousRole = roleMention(ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER);
+      previousRole = roleMention(ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_TRAVELER);
     }
 
     await this.#member.roles.remove(
@@ -337,30 +350,30 @@ export default class AssignRoles {
     async function restoreRoles(newRoleID: string, target: GuildMember) {
       if (
         beforeRemoval.sovereign ||
-        newRoleID === ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN
+        newRoleID === ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_SOVEREIGN
       ) {
         return target.roles.add(
-          ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN,
+          ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_SOVEREIGN,
           "Cleared Spiral Abyss at Sovereign Difficulty",
         );
       }
 
       if (
         beforeRemoval.conqueror ||
-        newRoleID === ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR
+        newRoleID === ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_CONQUEROR
       ) {
         return target.roles.add(
-          ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR,
+          ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_CONQUEROR,
           "Cleared Spiral Abyss at Conqueror Difficulty",
         );
       }
 
       if (
         beforeRemoval.traveler ||
-        newRoleID === ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER
+        newRoleID === ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_TRAVELER
       ) {
         return target.roles.add(
-          ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER,
+          ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_TRAVELER,
           "Cleared Spiral Abyss at Traveler Difficulty",
         );
       }
@@ -458,7 +471,7 @@ export default class AssignRoles {
         const conditionals: RoleAssignStats = {
           exp: 500,
           notes: "Cleared 36/36 with Traveler",
-          role: ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER,
+          role: ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_TRAVELER,
           emoji: "😎",
         };
 
@@ -478,14 +491,14 @@ export default class AssignRoles {
           conditionals.exp = 5_000;
           conditionals.notes =
             "Cleared with 4 different Traveler elements with 4 different teams with no overlap between teammates";
-          conditionals.role = ROLE_IDS.SpiralAbyss.ABYSSAL_SOVEREIGN;
+          conditionals.role = ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_SOVEREIGN;
           conditionals.emoji = "⚔️";
         }
 
         if (clearType === "conqueror") {
           conditionals.exp = 1_500;
           conditionals.notes = "Cleared with 3 different traveler elements";
-          conditionals.role = ROLE_IDS.SpiralAbyss.ABYSSAL_CONQUEROR;
+          conditionals.role = ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_CONQUEROR;
           conditionals.emoji = "🌀";
         }
 
@@ -533,7 +546,7 @@ export default class AssignRoles {
 
     if (
       this.#hasSelectedRolesFrom(
-        Object.values(ROLE_IDS.SpiralAbyss).map(String),
+        Object.values(ROLE_IDS.SPIRAL_ABYSS).map(String),
       )
     ) {
       await this.#awardSpiralAbyssRole();

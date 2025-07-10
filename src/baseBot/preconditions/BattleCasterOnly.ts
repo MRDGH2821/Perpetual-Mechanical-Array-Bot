@@ -51,5 +51,5 @@ export default class BattleCasterOnly extends Precondition {
 declare module "@sapphire/framework" {
   type Preconditions = {
     BattleCasterOnly: never;
-  }
+  };
 }

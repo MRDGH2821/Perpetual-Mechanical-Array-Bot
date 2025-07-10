@@ -207,7 +207,6 @@ export default class UserCommand extends Subcommand {
       });
   }
 
-   
   public async gangAdd(interaction: Subcommand.ChatInputCommandInteraction) {
     const members = [
       interaction.options.getMember("member1"),
@@ -219,7 +218,6 @@ export default class UserCommand extends Subcommand {
 
     const validatedMembers = [];
 
-     
     for (const member of members) {
       if (isGuildMember(member)) {
         validatedMembers.push(member);
@@ -245,8 +243,8 @@ export default class UserCommand extends Subcommand {
       });
     }
 
-    for (const member of validatedMembers) member.roles.add(ROLE_IDS.OTHERS.GANG_GANG_WOO)
-    ;
+    for (const member of validatedMembers)
+      member.roles.add(ROLE_IDS.OTHERS.GANG_GANG_WOO);
 
     return interaction.reply({
       embeds: [

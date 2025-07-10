@@ -72,7 +72,6 @@ export default class TikTokResponse extends Listener<
     }
   }
 
-   
   private deleteMsg(message: Message) {
     setTimeout(async () => {
       await message.delete();

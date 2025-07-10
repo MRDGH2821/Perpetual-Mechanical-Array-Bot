@@ -1,5 +1,5 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
- 
+
 import {
   type ChatInputOrContextMenuCommandInteraction,
   HttpUrlRegex,
@@ -240,7 +240,7 @@ export default class GuildCommand extends Subcommand {
           "😎",
         ]),
         label: "Triumphed over Abyss",
-        value: ROLE_IDS.SpiralAbyss.ABYSSAL_TRAVELER,
+        value: ROLE_IDS.SPIRAL_ABYSS.ABYSSAL_TRAVELER,
       },
       {
         default: memberRoles.has(ROLE_IDS.REPUTATION.MONDSTADT),

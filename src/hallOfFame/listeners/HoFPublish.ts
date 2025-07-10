@@ -21,7 +21,7 @@ import { crownProps } from "../lib/Utilities.js";
   name: "Hall of Fame Publisher",
 })
 export default class HoFPublish extends Listener {
-  static dashLine = "-------------------------------------";
+  private static dashLine = "-------------------------------------";
 
   public async publish(element: ELEMENTS, HallOfFameForum: ForumChannel) {
     const isUnaligned = () => element === "unaligned";

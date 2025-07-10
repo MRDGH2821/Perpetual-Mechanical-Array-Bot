@@ -14,13 +14,13 @@ type CrownQuantity = 1 | 2 | 3;
 type DBHallOfFameData = {
   crowns: CrownQuantity;
   userID: User["id"];
-}
+};
 
 type DataCollection = Collection<User["id"], DBHallOfFameData>;
 
-type SubCache = Partial<
-  Record<CrownQuantity, DataCollection>
-> & { 1: DataCollection };
+type SubCache = Partial<Record<CrownQuantity, DataCollection>> & {
+  1: DataCollection;
+};
 
 type CacheType = Partial<Record<ELEMENTS, SubCache>>;
 
@@ -91,13 +91,13 @@ export default class HallOfFameCache {
         .orderBy("crowns", "desc")
         .limit(topEntries)
         .get()
-        .then((query) =>
-          { for (const docSnap of query) {
+        .then((query) => {
+          for (const docSnap of query) {
             const data = docSnap.data();
             const validatedData = HoFDataSchema.parse(data);
             dataArray.push(validatedData);
-          } },
-        )
+          }
+        })
         .then(() => resolve(dataArray))
         .catch(reject);
     });
@@ -149,9 +149,7 @@ export default class HallOfFameCache {
 
     // await sequentialPromises(validElements, this.#prepareSubCache);
 
-     
     for (const ele of validElements) {
-       
       await this.#prepareSubCache(ele);
     }
   }
@@ -192,7 +190,8 @@ export default class HallOfFameCache {
               value: "No members found in this section",
             });
 
-            resolve([embed]); return;
+            resolve([embed]);
+            return;
           }
 
           return publishEmbedsGenerator({

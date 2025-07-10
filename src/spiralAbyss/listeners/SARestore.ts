@@ -6,6 +6,7 @@ import { sequentialPromises } from "yaspr";
 import { PMAEventHandler } from "../../baseBot/lib/Utilities.js";
 import { ChannelIds, COLORS, ROLE_IDS } from "../../lib/Constants.js";
 import EnvConfig from "../../lib/EnvConfig.js";
+import type { ValueOf } from "../../typeDefs/typeDefs.js";
 import SpiralAbyssCache from "../lib/SpiralAbyssCache.js";
 import type { BackupCacheFileType } from "../typeDefs/spiralAbyssTypes.js";
 
@@ -34,7 +35,10 @@ export default class SARestore extends Listener {
 
     const getMember = async (id: string) => tvmGuild.members.fetch(id);
 
-    async function assignRole(roleId: ROLE_IDS.SpiralAbyss, userId: string) {
+    async function assignRole(
+      roleId: ValueOf<typeof ROLE_IDS.SPIRAL_ABYSS>,
+      userId: string,
+    ) {
       return getMember(userId).then(async (member) => member.roles.add(roleId));
     }
 
@@ -43,7 +47,7 @@ export default class SARestore extends Listener {
     let countSovereign = 0;
 
     const { ABYSSAL_CONQUEROR, ABYSSAL_SOVEREIGN, ABYSSAL_TRAVELER } =
-      ROLE_IDS.SpiralAbyss;
+      ROLE_IDS.SPIRAL_ABYSS;
 
     if (fileContent.traveler) {
       const assignTraveler = async (userId: string) =>

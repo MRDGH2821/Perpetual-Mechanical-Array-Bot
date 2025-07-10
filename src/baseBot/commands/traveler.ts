@@ -9,7 +9,11 @@ import type {
 import { ApplicationCommandOptionType, MessageFlags } from "discord.js";
 import EnvConfig from "../../lib/EnvConfig.js";
 import type { ELEMENTS, JSONCmd } from "../../typeDefs/typeDefs.js";
-import { getElementProp, getTech, isSkill } from "../lib/TravelerTechnologies.js";
+import {
+  getElementProp,
+  getTech,
+  isSkill,
+} from "../lib/TravelerTechnologies.js";
 
 function APISubCommandBuilder(element: ELEMENTS): ApplicationCommandOptionData {
   const eleProp = getElementProp(element);

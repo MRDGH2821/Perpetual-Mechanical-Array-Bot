@@ -24,5 +24,5 @@ export default class LBCacheCheck extends Precondition {
 declare module "@sapphire/framework" {
   type Preconditions = {
     LBCacheCheck: never;
-  }
+  };
 }
