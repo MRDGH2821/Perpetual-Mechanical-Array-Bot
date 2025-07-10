@@ -13,10 +13,4 @@ export default defineConfig([
       parserOptions: { project: ["./tsconfig.json", "./tsconfig.eslint.json"] },
     },
   },
-  {
-    rules: {
-      "promise/prefer-await-to-then": "off",
-      "promise/prefer-await-to-callbacks": "off",
-    },
-  },
 ]);
