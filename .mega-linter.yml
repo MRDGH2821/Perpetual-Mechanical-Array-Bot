@@ -27,9 +27,9 @@ FILEIO_REPORTER: false
 JAVASCRIPT_DEFAULT_STYLE: prettier
 TYPESCRIPT_DEFAULT_STYLE: prettier
 SPELL_CSPELL_ANALYZE_FILE_NAMES: false
-PRE_COMMANDS:
-  - command: npm ci --force --include=dev
-    cwd: workspace
+# PRE_COMMANDS:
+#   - command: npm ci --force --include=dev
+#     cwd: workspace
 POST_COMMANDS:
   - command: npm run format
     cwd: workspace
